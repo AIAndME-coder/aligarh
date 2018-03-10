@@ -57,7 +57,7 @@ class ContentController extends Controller {
   }
 
   protected function LoadClass(){
-    return  'App\Http\Controllers\\'.$this->Content->ctrl;
+    return  'App\Http\Controllers\\'.Auth::user()->allow_content.'\\'.$this->Content->ctrl;
   }
 
   protected function LoadFunc($func = 'func'){
