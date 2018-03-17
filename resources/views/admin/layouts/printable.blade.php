@@ -40,18 +40,8 @@
   </head>
 
 <body>
-  <div class="container">
+  <div id="app">
     @yield('content')
-
-    <div class="footer">
-        <div class="pull-right">
-             <strong>All rights reserved</strong>
-        </div>
-        <div>
-            <strong>Copyright</strong> HASHMANAGEMENT © 2017
-        </div>
-    </div>
-
   </div>
 
 
@@ -63,6 +53,13 @@
     <script src="{{ URL::to('src/js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 
     @yield('script')
+
+    <!-- Vue -->
+<!--     <script src="{{ URL::to('src/vue.min-2.5.15.js') }}"></script> -->
+    <!-- Vue dev version -->
+    <script src="{{ URL::to('src/vue.js') }}"></script>
+    @yield('vue')
+
 
     <script src="{{ URL::to('src/js/bootstrap.min.js') }}"></script>
 

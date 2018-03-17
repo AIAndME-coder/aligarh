@@ -261,13 +261,13 @@
     }
 
     function loadOptions(data, type, full, meta) {
-        opthtm = '<a href="{{ URL('employee/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn '+ ((full.employee_id != null)? ((full.active)? 'btn-info' : 'btn-primary') : 'btn-default') +' btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
+        opthtm = '<a href="{{ URL('employee/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn '+ ((full.user_id != null)? ((full.active)? 'btn-info' : 'btn-primary') : 'btn-default') +' btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
 
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
           opthtm += '<a href="{{ URL('employee/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Profile" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         @endif
 
-        if(full.employee_id != null){
+        if(full.user_id != null){
           opthtm += '<a href="{{ URL('users/edit') }}/'+full.user_id+'" data-toggle="tooltip" title="Edit User" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         }
 
@@ -310,7 +310,7 @@
           ],
           Processing: true,
           serverSide: true,
-          ajax: '{{ URL('ajax/employee') }}',
+          ajax: '{{ URL('employee') }}',
           columns: [
             {data: 'name', name: 'employees.name'},
             {data: 'email', name: 'employees.email'},
@@ -379,11 +379,11 @@
           readURL(this);
       });
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-employee').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
         $('.edit-employee').hide();
       @endif
 

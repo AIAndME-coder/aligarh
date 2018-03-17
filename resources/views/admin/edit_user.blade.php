@@ -88,7 +88,7 @@
                                         </div>
                                       </div>
 
-                                      @if(Auth::user()->privileges->{$root['content']['id']}->editpwd)
+                                      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->editpwd)
                                       <div class="form-group{{ ($errors->has('password'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Password</label>
                                         <div class="col-md-6">
@@ -134,7 +134,7 @@
                                                 <b>Option:</b>
                                                 <select class="select2 form-control" id="select_{{ $chunk->id }}" multiple="multiple" name="privileges[{{$chunk->id}}][options][]" style="width: 100%">
                                                   @foreach($chunk->options AS $k => $option)
-                                                    @if(Auth::user()->privileges->{$chunk->id}->{$k})
+                                                    @if(Auth::user()->getprivileges->privileges->{$chunk->id}->{$k})
                                                       <option value="{{ $k }}">{{ $option }}</option>
                                                     @endif
                                                   @endforeach
@@ -185,7 +185,7 @@
     <script src="{{ URL::to('src/js/plugins/select2/select2.full.min.js') }}"></script>
 
     <script type="text/javascript">
-    var privileges = {!! json_encode($user->privileges) !!};
+    var privileges = {!! json_encode($user->getprivileges->privileges) !!};
 
       $(document).ready(function(){
 

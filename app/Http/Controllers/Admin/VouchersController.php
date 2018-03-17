@@ -34,6 +34,12 @@ class VouchersController extends Controller
     }
 
     public function GetVoucher(){
+      if ($this->Request->ajax()) {
+      return Datatables::queryBuilder(DB::table('vouchers')
+                                        ->leftJoin('vendors', 'vouchers.vendor_id', '=', 'vendors.id')
+                                        ->select('vouchers.id', 'vouchers.net_amount', 'vouchers.voucher_no', 'vouchers.voucher_date', 'vendors.v_name'))
+                                        ->make(true);
+      }
     	$this->data['vendors']	=	Vendor::get();
     	$this->data['items']	=	Item::get();
     	return view('admin.voucher', $this->data);
@@ -43,16 +49,6 @@ class VouchersController extends Controller
 		$this->data['voucher']  = Voucher::findorfail($this->data['root']['option']);
 		return view('admin.voucher_detail', $this->data);
 	}
-
-    public function AjaxGetVoucher(){
-    	if ($this->Request->ajax()) {
-	    return Datatables::queryBuilder(DB::table('vouchers')
-                                        ->leftJoin('vendors', 'vouchers.vendor_id', '=', 'vendors.id')
-                                        ->select('vouchers.id', 'vouchers.net_amount', 'vouchers.voucher_no', 'vouchers.voucher_date', 'vendors.v_name'))
-                                        ->make(true);
-    	}
-    	return abort(404);
-    }
 
     public function EditVoucher(){
 

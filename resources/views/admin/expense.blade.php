@@ -359,15 +359,15 @@
 
           });
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-expense').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
         $('.edit-expense').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->summary == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->summary == 0)
         $('.summary-expense').hide();
       @endif
 

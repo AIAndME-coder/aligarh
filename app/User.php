@@ -25,12 +25,11 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'privileges'    =>  'object',
         'settings'      =>  'object',
     ];
 
-    public function NavPrivileges($id, $option) {
-        return isset($this->privileges->{$id}->{$option})? $this->privileges->{$id}->{$option} : 0;
+    public function getprivileges(){
+        return $this->hasOne('App\UserPrivilege');
     }
 
     public function AcademicSession() {

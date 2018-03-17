@@ -57,14 +57,14 @@ class TeacherController extends Controller
 
   public function GetTeacher(){
     //$this->data['teachers'] = Teacher::select('name', 'email', 'address', 'id', 'phone')->get();
-    return view('admin.teacher', $this->data);
-  }
 
-  public function AjaxGetTeacher(){
-    //return Datatables::eloquent(Teacher::select('name', 'email', 'address', 'id', 'phone'))->make(true);
-    return Datatables::queryBuilder(DB::table('teachers')
-                                        ->leftJoin('users', 'teachers.id', '=', 'users.teacher_id')
-                                        ->select('teachers.name', 'teachers.email', 'teachers.address', 'teachers.id', 'teachers.phone', 'users.teacher_id', 'users.active', 'users.id AS user_id'))->make(true);
+    if($this->Request->ajax()){
+      return Datatables::queryBuilder(DB::table('teachers')
+                                          ->leftJoin('users', 'teachers.user_id', '=', 'users.id')
+                                          ->select('teachers.name', 'teachers.email', 'teachers.address', 'teachers.id', 'teachers.phone', 'users.active', 'users.id AS user_id'))->make(true);
+    }
+    
+    return view('admin.teacher', $this->data);
   }
 
   public function FindTeacher(){
@@ -168,7 +168,7 @@ class TeacherController extends Controller
   protected function SetAttributes(){
     $this->Teacher->name = $this->Request->input('name');
     $this->Teacher->f_name = $this->Request->input('f_name');
-    $this->Teacher->husband_name = $this->Request->input('husband_name');
+//    $this->Teacher->husband_name = $this->Request->input('husband_name');
     $this->Teacher->subject = $this->Request->input('subject');
     $this->Teacher->gender = $this->Request->input('gender');
     $this->Teacher->email = $this->Request->input('email');

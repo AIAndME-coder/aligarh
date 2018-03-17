@@ -297,11 +297,11 @@
 
           });
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->create == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->create == 0)
         $('.make-notice').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->delete == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->delete == 0)
         $('.delete-notice').hide();
       @endif
 

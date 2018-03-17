@@ -1,22 +1,21 @@
 <?php
 return [
 
-	1=>
-		[
-			'feename'	=>	'Examination Fee',
-			'feeamount'	=>	0,
-		],
 	[
-		'feename'	=>	'Admission Fee',
-		'feeamount'	=>	0,
+		'fee_name'	=>	'Registration Fee',
+		'amount'	=>	500,
 	],
 	[
-		'feename'	=>	'Stationery Fee',
-		'feeamount'	=>	0,
+		'fee_name'	=>	'Admission Fee',
+		'amount'	=>	8000,
 	],
 	[
-		'feename'	=>	'Board Fee',
-		'feeamount'	=>	0,
+		'fee_name'	=>	'Annual Charges',
+		'amount'	=>	2100,
+	],
+	[
+		'fee_name'	=>	'Examination Fee',
+		'amount'	=>	0,
 	],
 
 ];

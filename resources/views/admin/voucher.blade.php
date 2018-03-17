@@ -250,7 +250,7 @@
 
        opthtm = '<a href="{{ URL('vouchers/details') }}/'+full.id+'" data-toggle="tooltip" title="Detail" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-eye"></span></a>';
 
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
           opthtm += '<a href="{{ URL('vouchers/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Voucher" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         @endif
 
@@ -298,7 +298,7 @@
           ],
           Processing: true,
           serverSide: true,
-          ajax: '{{ URL('ajax/vouchers') }}',
+          ajax: '{{ URL('vouchers') }}',
           columns: [
             {data: 'id', name: 'vouchers.id'},
             {data: 'voucher_no', name: 'vouchers.voucher_no'},
@@ -393,7 +393,7 @@
       @endif
 
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-voucher').hide();
       @endif
 

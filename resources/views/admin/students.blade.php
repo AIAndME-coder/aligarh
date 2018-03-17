@@ -26,9 +26,9 @@
                   <h2>Students</h2>
                   <ol class="breadcrumb">
                     <li>Home</li>
-                      <li Class="active">
-                          <a>Students</a>
-                      </li>
+                    <li Class="active">
+                        <a>Students</a>
+                    </li>
                   </ol>
               </div>
               <div class="col-lg-4 col-md-6">
@@ -37,7 +37,6 @@
           </div>
 
           <!-- main Section -->
-
           <div class="wrapper wrapper-content animated fadeInRight">
 
             <div class="row ">
@@ -96,6 +95,18 @@
                                           @if ($errors->has('name'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
+                                      <div class="form-group{{ ($errors->has('father_name'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Father Name</label>
+                                        <div class="col-md-6">
+                                          <input type="text" name="father_name" placeholder="Father Name" value="{{ old('father_name') }}" class="form-control"/>
+                                          @if ($errors->has('father_name'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('father_name') }}</strong>
                                               </span>
                                           @endif
                                         </div>
@@ -226,42 +237,30 @@
                                         </div>
                                       </div>
 
-                                      <div class="form-group{{ ($errors->has('parent'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">Parent</label>
+                                      <div class="form-group{{ ($errors->has('guardian'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">guardian</label>
                                         <div class="col-md-6">
-                                          <select class="form-control" name="parent">
-                                            <option value="" disabled selected>Parent</option>
-                                            @foreach($parents as $parent)
-                                              <option value="{{ $parent->id }}">{{ $parent->name.' | '.$parent->email }}</option>
+                                          <select class="form-control" name="guardian">
+                                            <option value="" disabled selected>Guardian</option>
+                                            @foreach($guardians as $guardian)
+                                              <option value="{{ $guardian->id }}">{{ $guardian->name.' | '.$guardian->email }}</option>
                                             @endforeach
                                           </select>
-                                          @if ($errors->has('parent'))
+                                          @if ($errors->has('guardian'))
                                               <span class="help-block">
-                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('parent') }}</strong>
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('guardian') }}</strong>
                                               </span>
                                           @endif
                                         </div>
                                       </div>
 
-                                      <div class="form-group{{ ($errors->has('parent_relation'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">Parent Relation</label>
+                                      <div class="form-group{{ ($errors->has('guardian_relation'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Guardian Relation</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="parent_relation" placeholder="Parent Relation" value="{{ old('parent_relation') }}" class="form-control"/>
-                                          @if ($errors->has('parent_relation'))
+                                          <input type="text" name="guardian_relation" placeholder="Guardian Relation" value="{{ old('guardian_relation') }}" class="form-control"/>
+                                          @if ($errors->has('guardian_relation'))
                                               <span class="help-block">
-                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('parent_relation') }}</strong>
-                                              </span>
-                                          @endif
-                                        </div>
-                                      </div>
-
-                                      <div class="form-group{{ ($errors->has('email'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">E-Mail</label>
-                                        <div class="col-md-6">
-                                          <input type="text" name="email" placeholder="E-Mail" value="{{ old('email') }}" class="form-control"/>
-                                          @if ($errors->has('email'))
-                                              <span class="help-block">
-                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('email') }}</strong>
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('guardian_relation') }}</strong>
                                               </span>
                                           @endif
                                         </div>
@@ -298,10 +297,22 @@
                                         </div>
                                       </div>
 
+                                      <div class="form-group{{ ($errors->has('receipt_no'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Receipt No</label>
+                                        <div class="col-md-6">
+                                          <input type="text" name="receipt_no" placeholder="Receipt NO" value="{{ old('receipt_no') }}" class="form-control" />
+                                          @if ($errors->has('receipt_no'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('receipt_no') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="col-lg-8">
                                       <div class="panel panel-info">
                                       <div class="panel-heading">
-                                        Additional Feeses <a href="#" id="addfee" data-toggle="tooltip" title="Add Fee" style="color: #ffffff"><span class="fa fa-plus"></span></a>
+                                        Additional Feeses <a href="#" id="addfee" data-toggle="tooltip" title="Add Fee" @click="addAdditionalFee()" style="color: #ffffff"><span class="fa fa-plus"></span></a>
                                       </div>
                                       <div class="panel-body">
                                       <table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
@@ -317,7 +328,7 @@
                                             <td>Tuition Fee</td>
                                             <td>
                                               <div>
-                                                <input type="number" name="tuition_fee" value="{{ old('tuition_fee') }}" placeholder="Tuition Fee" class="form-control"/>
+                                                <input type="number" name="tuition_fee" v-model.number="fee.tuition_fee" placeholder="Tuition Fee" min="1" class="form-control"/>
                                                 @if ($errors->has('tuition_fee'))
                                                     <span class="help-block">
                                                         <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('tuition_fee') }}</strong>
@@ -327,33 +338,28 @@
                                             </td>
                                             <td></td>
                                           </tr>
-                                          @if(COUNT(old('fee')) >= 1)
-                                          @foreach(old('fee') AS $k=>$v)
-                                            <tr>
-                                              <td><input type="text" name="fee[{{ $k }}][feename]" class="form-control" required="true" value="{{ $v['feename'] }}"></td>
-                                              <td><input type="number" name="fee[{{ $k }}][feeamount]" class="form-control additfeeamount" required="true" value="{{ $v['feeamount'] }}"></td>
-                                              <td><a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" title="Remove" ><span class="fa fa-trash"></span></a></td>
+
+                                            <tr v-for="(fee, k) in fee.additionalfee">
+                                              <td><input type="text" :name="'fee['+ k +'][fee_name]'" class="form-control" required="true" v-model="fee.fee_name"></td>
+                                              <td><input type="number" :name="'fee['+ k +'][amount]'" class="form-control additfeeamount" required="true" min="1" v-model.number="fee.amount"></td>
+                                              <td><a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" @click="removeAdditionalFee(k)" title="Remove" ><span class="fa fa-trash"></span></a></td>
                                             </tr>
-                                          @endforeach
-                                          @elseif(config('additionalfee'))
-                                          @foreach(config('additionalfee') AS $k=>$v)
-                                            <tr>
-                                              <td><input type="text" name="fee[{{ $k }}][feename]" class="form-control" required="true" value="{{ $v['feename'] }}"></td>
-                                              <td><input type="number" name="fee[{{ $k }}][feeamount]" class="form-control additfeeamount" required="true" value="{{ $v['feeamount'] }}"></td>
-                                              <td><a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" title="Remove" ><span class="fa fa-trash"></span></a></td>
-                                            </tr>
-                                          @endforeach
-                                          @endif
+
                                         </tbody>
                                         <tfoot>
                                           <tr>
+                                            <th>Total</th>
+                                            <th>@{{ total_amount }}</th>
+                                            <th></th>
+                                          </tr>
+                                          <tr>
                                             <td>Discount</td>
-                                            <td><input type="number" name="discount" class="form-control" placeholder="Discount" value="{{ old('discount') }}"></td>
+                                            <td><input type="number" name="discount" class="form-control" placeholder="Discount" min="0" v-model.number="fee.discount"></td>
                                             <td></td>
                                           </tr>
                                           <tr>
-                                            <th>Total</th>
-                                            <th id="total">{{ old('net_amount') }}</th>
+                                            <th>Net Amount</th>
+                                            <th>@{{ net_amount }}</th>
                                             <th></th>
                                           </tr>
                                         </tfoot>
@@ -361,8 +367,8 @@
                                       </div>
                                       </div>
                                       </div>
-                                      <input type="hidden" name="net_amount" value="{{ old('net_amount') }}">
-                                      <input type="hidden" name="total_amount" value="{{ old('total_amount') }}">
+                                      <input type="hidden" name="net_amount" v-model="net_amount">
+                                      <input type="hidden" name="total_amount" v-model="total_amount">
 
                                       <div class="form-group">
                                           <div class="col-md-offset-2 col-md-6">
@@ -411,26 +417,12 @@
     <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
 
+
+
     <script type="text/javascript">
 
     var tbl;
     var tr;
-    no = 10;
-
-    function Calc(){
-//      alert();
-      tuition_fee =  Number($('[name="tuition_fee"]').val());
-      discount =  Number($('[name="discount"]').val());
-      additfeeamount = 0;
-      $('.additfeeamount').each(function(){
-        additfeeamount = additfeeamount + Number($(this).val());
-      });
-      total = tuition_fee + additfeeamount;
-      net_amount = total - discount;
-      $('#total').text(net_amount);
-      $('[name="net_amount"]').val(net_amount);
-      $('[name="total_amount"]').val(total);
-    }
 
     function readURL(input) {
       if (input.files && input.files[0]) {
@@ -446,7 +438,7 @@
 
        opthtm = '<a href="{{ URL('students/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
 
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
           opthtm += '<a href="{{ URL('students/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Student" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         @endif
 
@@ -541,6 +533,12 @@
               name: {
                 required: true,
               },
+              email: {
+                email: true,
+              },
+              father_name: {
+                required: true,
+              },
               gender: {
                 required: true,
               },
@@ -550,10 +548,10 @@
               section: {
                 required: true,
               },
-              parent: {
+              guardian: {
                 required: true,
               },
-              parent_relation: {
+              guardian_relation: {
                 required: true,
               },
               tuition_fee: {
@@ -583,51 +581,15 @@
           }
       });
 
-      $('#addfee').click(function(){
-
-        tr = '<tr>';
-        tr  += '<td><input type="text" name="fee['+no+'][feename]" class="form-control" required="true"></td>';
-        tr  += '<td><input type="number" name="fee['+no+'][feeamount]" class="form-control additfeeamount" required="true"></td>';
-        tr  += '<td><a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" title="Remove" ><span class="fa fa-trash"></span></a></td>';
-        tr += '</tr>';
-
-        $('#additionalfeetbl tbody').append(tr);
-        $('.removefee').click(function(){
-          $(this).parents('tr').remove();
-        });
-        $('[data-toggle="tooltip"]').tooltip();
-        $('.additfeeamount').on("keyup change", function(){
-          Calc();
-        });
-        no = no+1;
-      });
-
-      $('.removefee').click(function(){
-        $(this).parents('tr').remove();
-        Calc();
-      });
-
-      $('[name="discount"]').on("keyup change", function(){
-        Calc();
-      });
-
-      $('[name="tuition_fee"]').on("keyup change", function(){
-        Calc();
-      });
-
-      $('.additfeeamount').on("keyup change", function(){
-        Calc();
-      });
-
       @if(COUNT($errors) >= 1)
       $('#tchr_rgstr [name="gender"]').val('{{ old('gender') }}');
-      $('#tchr_rgstr [name="parent"]').val('{{ old('parent') }}');
+      $('#tchr_rgstr [name="guardian"]').val('{{ old('guardian') }}');
       $('#tchr_rgstr [name="class"]').val("{{ old('class') }}");
       $('#tchr_rgstr [name="class"]').change();
       $('#tchr_rgstr [name="section"]').val('{{ old('section') }}');
       @endif
 
-      $('#tchr_rgstr [name="parent"]').attr('style', 'width:100%').select2({
+      $('#tchr_rgstr [name="guardian"]').attr('style', 'width:100%').select2({
                 placeholder: "Nothing Selected",
                 allowClear: true,
             });
@@ -642,15 +604,55 @@
           readURL(this);
       });
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-student').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
         $('.edit-student').hide();
       @endif
        
       });
     </script>
 
+    @endsection
+
+    @section('vue')
+    <script type="text/javascript">
+      var app = new Vue({
+        el: '#app',
+        data: { 
+          fee: {
+            additionalfee: {!! json_encode(old('fee', config('additionalfee'))) !!},
+            tuition_fee: {{ old('tuition_fee', 2100) }},
+            discount:  {{ old('discount', 0) }},
+          },
+        },
+
+        methods: {
+          addAdditionalFee: function (){
+            this.fee.additionalfee.push({
+              fee_name: '',
+              amount: 0
+            });
+          },
+          removeAdditionalFee: function(k){
+            this.fee.additionalfee.splice(k, 1);
+          }
+        },
+
+        computed: {
+          total_amount: function(){
+            tot_amount = (this.fee.tuition_fee);
+            for(k in this.fee.additionalfee) { 
+              tot_amount += (this.fee.additionalfee[k].amount);
+            }
+            return  tot_amount;
+          },
+          net_amount: function(){
+            return this.total_amount - this.fee.discount;
+          }
+        }
+      });
+    </script>
     @endsection

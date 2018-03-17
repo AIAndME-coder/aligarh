@@ -370,11 +370,11 @@
       @endif
 
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->make == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->make == 0)
         $('.make-result').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->report == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->report == 0)
         $('.get-result').hide();
       @endif
 

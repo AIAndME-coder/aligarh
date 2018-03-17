@@ -8,4 +8,8 @@ class AdditionalFee extends Model
 {
 
 
+	public function Student(){
+		return belongsTo('App\Atudent');
+	}
+
 }

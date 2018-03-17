@@ -173,7 +173,7 @@
 
       //  opthtm = '<a href="{{ URL('vendors/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
       opthtm = '';
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
           opthtm += '<a href="{{ URL('vendors/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Vendor" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         @endif
 
@@ -204,7 +204,7 @@
           ],
           Processing: true,
           serverSide: true,
-          ajax: '{{ URL('ajax/vendors') }}',
+          ajax: '{{ URL('vendors') }}',
           columns: [
             {data: 'v_name'},
             {data: 'c_name'},
@@ -242,7 +242,7 @@
         $('a[href="#tab-10"]').tab('show');
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-vendor').hide();
       @endif
 

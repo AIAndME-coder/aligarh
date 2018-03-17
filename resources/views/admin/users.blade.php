@@ -222,7 +222,7 @@
                                                 <b>Option:</b>
                                                 <select class="select2 form-control" multiple="multiple" name="privileges[{{$chunk->id}}][options][]" style="width: 100%">
                                                   @foreach($chunk->options AS $k => $option)
-                                                    @if(Auth::user()->privileges->{$chunk->id}->{$k})
+                                                    @if(Auth::user()->getprivileges->privileges->{$chunk->id}->{$k})
                                                       <option value="{{ $k }}">{{ $option }}</option>
                                                     @endif
                                                   @endforeach
@@ -289,13 +289,23 @@
 
     function loadOptions(data, type, full, meta) {
 
-        opthtm = '<a href="{{ URL('users/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-option"><span class="fa fa-edit"></span></a>';
-        if(full.teacher_id){
-          opthtm += '<a href="{{ URL('teacher/profile') }}/'+full.teacher_id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
-        } else {
-          opthtm += '<a href="{{ URL('employee/profile') }}/'+full.employee_id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
-        }
+        opthtm = '<a href="{{ URL('users/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit" class="btn btn-';
+        opthtm  +=   (full.active)? 'default' : 'danger';
+        opthtm  +=  ' btn-circle btn-xs edit-option"><span class="fa fa-edit"></span></a>';
+        
+        switch(full.user_type) {
+            case 'teacher':
+              opthtm += '<a href="{{ URL('teacher/profile') }}/'+full.foreign_id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
+                break;
 
+            case 'employee':
+              opthtm += '<a href="{{ URL('employee/profile') }}/'+full.foreign_id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
+                break;
+
+            default:
+            opthtm += '';       
+
+        }
         return opthtm;
     }
 
@@ -321,7 +331,7 @@
           ],
           Processing: true,
           serverSide: true,
-          ajax: '{{ URL('ajax/users') }}',
+          ajax: '{{ URL('users') }}',
           columns: [
             {data: 'name'},
             {data: 'email'},
@@ -472,11 +482,11 @@
       @endif
 
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-user').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
         $('.edit-user').hide();
       @endif
 

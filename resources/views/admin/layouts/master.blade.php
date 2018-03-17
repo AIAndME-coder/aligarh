@@ -27,12 +27,13 @@
 
     <script src="{{ URL::to('src/js/jquery-2.1.1.js') }}"></script>
 
-
   </head>
 
 <body class="pace-done md-skin {{ Auth::user()->settings->skin_config->nav_collapse }}">
   <div id="wrapper">
-    @yield('content')
+    <div id="app">
+        @yield('content')
+    </div>
   </div>
 
     <!-- Mainly scripts -->
@@ -85,6 +86,12 @@
     <!-- Toastr -->
     <script src="{{ URL::to('src/js/plugins/toastr/toastr.min.js') }}"></script>
 
+    <!-- Vue -->
+<!--     <script src="{{ URL::to('src/vue.min-2.5.15.js') }}"></script> -->
+    <!-- Vue dev version -->
+    <script src="{{ URL::to('src/vue.js') }}"></script>
+    @yield('vue')
+
     @if(Session::get('toastrmsg') !== null)
 
     <script type="text/javascript">
@@ -113,7 +120,6 @@
 	
     @yield('script')
 
-{{--    @include('includes.skin_config') --}}
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -127,6 +133,9 @@
     </script>
 
     <script src="{{ URL::to('src/js/bootstrap.min.js') }}"></script>
+    
+{{--    @include('admin.includes.skin_config')  --}}    
+
 
 </body>
 

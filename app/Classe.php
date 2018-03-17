@@ -13,6 +13,10 @@ class Classe extends Model
 		return $this->hasMany('App\Section', 'class_id')->orderBy('id');
 	}
 
+	public function Teacher(){
+		return $this->belongsTo('App\Teacher');
+	}
+
 /*
   public function teacher(){
     return $this->belongsTo('App\Teacher');

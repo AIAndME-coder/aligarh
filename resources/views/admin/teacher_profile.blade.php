@@ -45,7 +45,9 @@
                         </div>
                         <div>
                             <div class="ibox-content no-padding border-left-right">
+                              <center>
                                 <img alt="image" class="img-responsive" src="{{ URL(($teacher->image_url == '')? 'img/avatar.jpg' : $teacher->image_url) }}">
+                              </center>
                             </div>
                             <div class="ibox-content profile-content">
                                 <h4><strong>{{ $teacher->name }}</strong></h4>

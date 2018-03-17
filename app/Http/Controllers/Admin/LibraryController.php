@@ -26,14 +26,12 @@ class LibraryController extends Controller
     }
 
     public function GetLibrary(){
-      return view('admin.library', $this->data);
-    }
 
-    public function AjaxGetLibrary(){
-    	if ($this->Request->ajax()) {
-	    	return Datatables::eloquent(Book::select('id', 'title', 'author', 'edition', 'qty'))->make(true);
-    	}
-    	return abort(404);
+      if ($this->Request->ajax()) {
+        return Datatables::eloquent(Book::select('id', 'title', 'author', 'edition', 'qty'))->make(true);
+      }
+      return view('admin.library', $this->data);
+
     }
 
     public function EditBook(){

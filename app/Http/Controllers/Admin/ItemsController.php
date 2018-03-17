@@ -26,14 +26,10 @@ class ItemsController extends Controller
     }
 
     public function GetItem(){
-      return view('admin.item', $this->data);
-    }
-
-    public function AjaxGetItem(){
     	if ($this->Request->ajax()) {
 	    	return Datatables::eloquent(Item::select('id', 'name', 'category', 'qty', 'location', 'qty_level'))->make(true);
     	}
-    	return abort(404);
+      return view('admin.item', $this->data);
     }
 
     public function EditItem(){

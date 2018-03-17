@@ -25,7 +25,7 @@
 
             @foreach(App\AdminContent::navigations() AS $navigation)
                 @if($navigation->type == 'parent-content')
-                    <li data-show="{{ Auth::user()->NavPrivileges($navigation->id, 'default') }}" >
+                    <li data-show="{{ Auth::user()->getprivileges->NavPrivileges($navigation->id, 'default') }}" >
                         <a href="{{ URL($navigation->root) }}" data-root="{{ $navigation->root }}"><i class="{{ $navigation->icon }}"></i> <span class="nav-label">{{ $navigation->label }}</span></a>
                     </li>
                 @else
@@ -33,7 +33,7 @@
                         <a href="#"><i class="{{ $navigation->icon }}"></i> <span class="nav-label">{{ $navigation->label }}</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse">
                         @foreach($navigation->child_content AS $child_content)
-                            <li data-show="{{ Auth::user()->NavPrivileges($child_content->id, 'default') }}" >
+                            <li data-show="{{ Auth::user()->getprivileges->NavPrivileges($child_content->id, 'default') }}" >
                                 <a href="{{ URL($child_content->root) }}" data-root="{{ $child_content->root }}">{{ $child_content->label }}</a>
                             </li>
                         @endforeach

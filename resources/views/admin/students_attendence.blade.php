@@ -166,7 +166,7 @@
                                   <h2> Search Fields </h2>
                                   <div class="hr-line-dashed"></div>
 
-                                    <form id="rpt_att_frm" method="GET" action="{{ URL('student-attendance/report') }}" class="form-horizontal jumbotron" role="form" >
+                                    <form id="rpt_att_frm" method="GET" action="{{ URL('student-attendance/report') }}" class="form-horizontal jumbotron" target="_blank" role="form" >
 
                                       <div class="form-group{{ ($errors->has('class'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label"> Class </label>
@@ -222,6 +222,8 @@
                                     @if($root['job'] == 'report')
                                     <div class="row">
                                     <h3>Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h3>
+                                    <h4>No Of Students: {{ COUNT($students) }}</h3>
+                                    <h4>Teacher: {{ $selected_class->Teacher->name }}</h3>
                                       <div class="hr-line-dashed"></div>
                                         <div class="table-responsive">
                                           <table id="rpt-att" class="table table-striped table-bordered table-hover">
@@ -230,7 +232,7 @@
                                                 <td style="text-align: center;">
                                                   Students <i class="entypo-down-thin"></i> | Date <i class="entypo-right-thin"></i>
                                                 </td>
-                                                @for($i=1; $i <= $dbdate['noofdays']; $i++)
+                                                @for($i=1; $i <= $noofdays; $i++)
                                                   <th>{{ $i }}</th>
                                                 @endfor
                                               </tr>
@@ -239,8 +241,8 @@
                                               @foreach($students as $student)
                                               <tr>
                                                 <td>{{ $student->name }}</td>
-                                                @for($i=1; $i <= $dbdate['noofdays']; $i++)
-                                                  <th class="std_{{ $student->id }}_dat_{{ $i }}"></th>
+                                                @for($i=1; $i <= $noofdays; $i++)
+                                                  <th  class="std_{{ $student->id }}_dat_{{ $i }} {{ in_array($i, $sundays)? 'h' : '' }}"></th>
                                                 @endfor
                                               </tr>
                                               @endforeach
@@ -327,7 +329,7 @@
 --}}
       @if($root['job'] == 'report')
         attendancerpt = {!! json_encode($attendence) !!};
-        // console.log(attendancerpt);
+         console.log(attendancerpt);
         $.each(attendancerpt, function(k, v){
           $.each(v, function(i, d){
             date = new Date(d.date);
@@ -339,6 +341,7 @@
             $('.std_'+k+'_dat_'+day).html(prefix);
           });
         });
+        $('.h').css('background', 'yellow').html('H');
         $('.nav-tabs a[href="#tab-11"]').tab('show');
       @else
 //        $('.nav-tabs a[href="#tab-11"]').tab('show');
@@ -384,11 +387,11 @@
 
             });
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->make == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->make == 0)
         $('.make-attendance').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->report == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->report == 0)
         $('.get-attendance').hide();
       @endif
 

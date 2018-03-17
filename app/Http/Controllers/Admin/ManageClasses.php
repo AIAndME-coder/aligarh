@@ -27,8 +27,7 @@ class ManageClasses extends Controller
     if(Request::ajax()){
       return Datatables::queryBuilder(DB::table('classes')->leftjoin('teachers', 'classes.teacher_id', '=', 'teachers.id')
                                 ->select('classes.name', 'classes.numeric_name', 'classes.id','teachers.name AS teacher_name')
-                                )
-                              ->make(true);
+                                )->make(true);
     }
     $this->data['classes'] = DB::table('classes')->leftjoin('teachers', 'classes.teacher_id', '=', 'teachers.id')
                               ->select('classes.*', 'teachers.name AS teacher_name')
@@ -46,13 +45,6 @@ class ManageClasses extends Controller
   print_r($this->data['classes']);
   echo "</pre>";
   */
-  }
-
-  public function AjaxGetClasses(){
-    return Datatables::queryBuilder(DB::table('classes')->leftjoin('teachers', 'classes.teacher_id', '=', 'teachers.id')
-                              ->select('classes.name', 'classes.numeric_name', 'classes.id','teachers.name AS teacher_name')
-                              )
-                            ->make(true);
   }
 
   public function EditClass(){

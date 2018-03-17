@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\User;
-use Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\User;
+use Route;
 
 class ContentController extends Controller {
 
@@ -65,12 +64,12 @@ class ContentController extends Controller {
 //    $this->Content->$func = json_decode($this->Content->$func);
     if(!empty($this->Routes['job'])){
       $job = $this->Routes['job'];
-      if(isset($this->Content->$func->$job) && Auth::user()->privileges->{$this->Content->id}->$job){
+      if(isset($this->Content->$func->$job) && Auth::user()->getprivileges->privileges->{$this->Content->id}->$job){
         return $this->Content->$func->$job;
       }
       return  abort(404);
     }
-    return (isset($this->Content->$func->default) && Auth::user()->privileges->{$this->Content->id}->default)? $this->Content->$func->default : abort(404);
+    return (isset($this->Content->$func->default) && Auth::user()->getprivileges->privileges->{$this->Content->id}->default)? $this->Content->$func->default : abort(404);
   }
 
 

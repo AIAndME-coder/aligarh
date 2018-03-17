@@ -9,7 +9,6 @@ class AdminContent extends Model
 	protected $casts = [
 				'func'		=>	'object',
 				'post_func'	=>	'object',
-				'ajax_func'	=>	'object',
 				'options'	=>	'object',
 				];
 

@@ -20,13 +20,13 @@
                   <h2>Students</h2>
                   <ol class="breadcrumb">
                     <li>Home</li>
-                    <li><a href="{{ URL('students') }}"> Student </a></li>
-                      <li Class="active">
-                          <a>Profile</a>
-                      </li>
-                      <li Class="active">
-                          {{ $student->name }}
-                      </li>
+                    <li><a href="{{ URL('students') }}"> Students </a></li>
+                    <li Class="active">
+                        <a>Profile</a>
+                    </li>
+                    <li Class="active">
+                        {{ $student->name }}
+                    </li>
                   </ol>
               </div>
               <div class="col-lg-4 col-md-6">
@@ -35,7 +35,6 @@
           </div>
 
           <!-- main Section -->
-
         <div class="wrapper wrapper-content">
             <div class="row animated fadeInRight">
                 <div class="col-md-4">
@@ -45,7 +44,9 @@
                         </div>
                         <div>
                             <div class="ibox-content no-padding border-left-right">
+                              <center>
                                 <img alt="image" class="img-responsive" src="{{ URL(($student->image_url == '')? 'img/avatar.jpg' : $student->image_url) }}">
+                              </center>
                             </div>
                             <div class="ibox-content profile-content">
                                 <h4><strong>{{ $student->name }}</strong></h4>
@@ -66,6 +67,10 @@
                                     <tr>
                                         <th>Name :</th>
                                         <td>{{ $student->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Father Name :</th>
+                                        <td>{{ $student->father_name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Relegion :</th>
@@ -96,14 +101,18 @@
                                         <td>{{ $student->last_school }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Receipt No :</th>
+                                        <td>{{ $student->receipt_no }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Class :</th>
                                         <td>{{ $student->Std_Class->name }} {{ $student->Section->nick_name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Parent :</th>
                                         <td>
-                                          <a href="{{ URL('parents/profile/'.$student->Guardian->id) }}">
-                                            {{ $student->Guardian->name }}. ({{ $student->parent_relation }})
+                                          <a href="{{ URL('guardians/profile/'.$student->Guardian->id) }}">
+                                            {{ $student->Guardian->name }}. ({{ $student->guardian_relation }})
                                           </a>
                                         </td>
                                     </tr>
@@ -130,7 +139,6 @@
         </div>
 
           @include('admin.includes.footercopyright')
-
 
         </div>
 

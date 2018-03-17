@@ -2,13 +2,34 @@
 
 namespace App;
 
+//use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Auth;
 
 class Student extends Model {
 
+
+/*
+	protected static function boot() {
+		parent::boot();
+
+		static::addGlobalScope('session_id', function (Builder $builder) {
+			$builder->where('session_id', '=', Auth::user()->academic_session);
+		});
+	}
+*/
+
+	public function scopeCurrentSession($query){
+		return $query->where('session_id', Auth::user()->academic_session);
+	}
+
+	public function scopeActive($query){
+		return $query->where('active', 1);
+	}
+
 	public function Guardian() {
-		return $this->hasOne('App\Guardian', 'id', 'parent_id');
+		return $this->belongsTo('App\Guardian');
 	}
 
 	public function Std_Class() {

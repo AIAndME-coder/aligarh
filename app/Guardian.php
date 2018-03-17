@@ -9,7 +9,7 @@ class Guardian extends Model
 
 
 	public function Student() {
-		return $this->hasMany('App\Student', 'parent_id', 'id');
+		return $this->hasMany('App\Student');
 	}
 
 }

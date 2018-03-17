@@ -236,11 +236,11 @@
         $('a[href="#tab-10"]').tab('show');
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-subject').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
         $('.edit-subject').hide();
       @endif
 

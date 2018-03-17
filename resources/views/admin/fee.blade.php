@@ -322,7 +322,7 @@
         window.open('{{ URL('fee/invoice/'.Session::get('invoice_created')) }}', '_new');
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->create == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->create == 0)
         $('.make-fee').hide();
       @endif
 

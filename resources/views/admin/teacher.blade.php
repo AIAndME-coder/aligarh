@@ -159,18 +159,6 @@
                                         </div>
                                       </div>
 
-                                      <div class="form-group{{ ($errors->has('husband_name'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">Husband Name</label>
-                                        <div class="col-md-6">
-                                          <input type="text" name="husband_name" placeholder="Husband Name" value="{{ old('husband_name') }}" class="form-control"/>
-                                          @if ($errors->has('husband_name'))
-                                              <span class="help-block">
-                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('husband_name') }}</strong>
-                                              </span>
-                                          @endif
-                                        </div>
-                                      </div>
-
                                       <div class="form-group{{ ($errors->has('subject'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Subject</label>
                                         <div class="col-md-6">
@@ -307,12 +295,12 @@
     }
 
     function loadOptions(data, type, full, meta) {
-        opthtm = '<a href="{{ URL('teacher/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn '+ ((full.teacher_id != null)? ((full.active)? 'btn-info' : 'btn-primary') : 'btn-default') +' btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
+        opthtm = '<a href="{{ URL('teacher/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn '+ ((full.user_id != null)? ((full.active)? 'btn-info' : 'btn-primary') : 'btn-default') +' btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
         
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
           opthtm += '<a href="{{ URL('teacher/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Profile" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         @endif
-        if(full.teacher_id != null){
+        if(full.user_id != null){
           opthtm += '<a href="{{ URL('users/edit') }}/'+full.user_id+'" data-toggle="tooltip" title="Edit User" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         }
 
@@ -355,7 +343,7 @@
           ],
           Processing: true,
           serverSide: true,
-          ajax: '{{ URL('ajax/teacher') }}',
+          ajax: '{{ URL('teacher') }}',
           columns: [
             {data: "name", name: "teachers.name"},
             {data: "email", name: "teachers.email"},
@@ -432,11 +420,11 @@
           readURL(this);
       });
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
         $('.add-teacher').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
         $('.edit-teacher').hide();
       @endif
 

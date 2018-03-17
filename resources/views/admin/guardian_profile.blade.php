@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Parents |')
+  @section('title', 'Guardians |')
 
   @section('head')
   <!-- HEAD -->
@@ -17,16 +17,16 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Parents</h2>
+                  <h2>Guardians</h2>
                   <ol class="breadcrumb">
                     <li>Home</li>
-                    <li><a href="{{ URL('parents') }}"> Parent </a></li>
+                    <li><a href="{{ URL('guardians') }}"> Guardian </a></li>
                       <li Class="active">
                           <a>Profile</a>
                       </li>
                       <li Class="active">
                         <strong>
-                          {{ $parent->name }}
+                          {{ $guardian->name }}
                         </strong>
                       </li>
                   </ol>
@@ -43,7 +43,7 @@
                 <div class="row">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h4>Parent Details</h4>
+                            <h4>Guardian Details</h4>
                         </div>
                         <div class="ibox-content">
 
@@ -51,27 +51,27 @@
                                 <tbody>
                                     <tr>
                                         <th>Name :</th>
-                                        <td>{{ $parent->name }}</td>
+                                        <td>{{ $guardian->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Email :</th>
-                                        <td>{{ $parent->email }}</td>
+                                        <td>{{ $guardian->email }}</td>
                                     </tr>
                                     <tr>
                                         <th>Profession :</th>
-                                        <td>{{ $parent->profession }}</td>
+                                        <td>{{ $guardian->profession }}</td>
                                     </tr>
                                     <tr>
                                         <th>Address :</th>
-                                        <td>{{ $parent->address }}</td>
+                                        <td>{{ $guardian->address }}</td>
                                     </tr>
                                     <tr>
                                         <th>Contact NO :</th>
-                                        <td>{{ $parent->phone }}</td>
+                                        <td>{{ $guardian->phone }}</td>
                                     </tr>
                                     <tr>
                                         <th>Income :</th>
-                                        <td>{{ $parent->income }}</td>
+                                        <td>{{ $guardian->income }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -83,13 +83,15 @@
 
                 <div class="row">
                   <h1>Students</h1>
-                  @foreach($parent->Student AS $student)
+                  @foreach($guardian->Student AS $student)
                   <div class="col-lg-4">
                       <div class="contact-box">
                           <a href="{{ URL('students/profile/'.$student->id) }}">
                           <div class="col-sm-4">
                               <div class="text-center">
+                                <center>
                                   <img alt="image" class="img-circle m-t-xs img-responsive" src="{{ URL(($student->image_url == '')? 'img/avatar.jpg' : $student->image_url) }}">
+                                </center>
                                   <div class="m-t-xs font-bold">{{ $student->name }}</div>
                               </div>
                           </div>

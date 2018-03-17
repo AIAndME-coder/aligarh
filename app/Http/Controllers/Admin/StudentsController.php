@@ -46,13 +46,14 @@ class StudentsController extends Controller
   protected function PostValidate(){
     $this->validate($this->Request, [
         'name'    =>  'required',
+        'father_name'    =>  'required',
         'gender'  =>  'required',
         'class'   =>  'required',
         'section'  =>  'required',
         'gr_no'  =>  ($this->data['root']['job'] == 'edit')? 'required|unique:students,gr_no,'.$this->data['root']['option'] : 'required|unique:students',
-        'parent'    =>  'required',
-        'parent_relation'  =>  'required',
-        'email'   =>  ($this->data['root']['job'] == 'edit')? 'email|unique:students,email,'.$this->data['root']['option'] : 'email|unique:students',
+        'guardian'    =>  'required',
+        'guardian_relation'  =>  'required',
+//        'email'   =>  ($this->data['root']['job'] == 'edit')? 'email|unique:students,email,'.$this->data['root']['option'] : 'email|unique:students',
         'tuition_fee'  =>  'required|numeric',
         'dob'       =>  'required',
         'img'       =>  'image|mimes:jpeg,png,jpg|max:4096',
@@ -69,9 +70,10 @@ class StudentsController extends Controller
   			->select('students.name', 'students.address', 'students.id', 'students.phone', 'students.gr_no', 'classes.name AS class_name', 'sections.name AS section_name', 'sections.nick_name AS section_nick')
   			)->make(true);
   */
+//      return Datatables::eloquent(Student::query()->CurrentSession())->make(true);
       return Datatables::eloquent(Student::query())->make(true);
     }
-    $this->data['parents'] = Guardian::select('id', 'name', 'email')->get();
+    $this->data['guardians'] = Guardian::select('id', 'name', 'email')->get();
     $this->data['classes'] = Classe::select('id', 'name')->get();
     foreach ($this->data['classes'] as $key => $class) {		
     	$this->data['sections']['class_'.$class->id] = Section::select('name', 'id')->where(['class_id' => $class->id])->get();
@@ -85,13 +87,13 @@ class StudentsController extends Controller
     $this->Student = new Student;
     $this->SetAttributes();
     $this->Student->created_by  = Auth::user()->id;
-    $this->Student->save();
+    $this->Student->session_id  = Auth::user()->academic_session;
     $this->UpdateGrNo();
+    $this->Student->save();
     if($this->Request->hasFile('img')){
       $this->SaveImage();
+      $this->Student->save();
     }
-    $this->Student->session_id  = Auth::user()->academic_session;
-    $this->Student->save();
 
     $this->UpdateAdditionalFee();
 
@@ -107,7 +109,7 @@ class StudentsController extends Controller
 
   public function EditStudent(){
 
-  	$this->data['parents'] = Guardian::select('id', 'name', 'email')->get();
+  	$this->data['guardians'] = Guardian::select('id', 'name', 'email')->get();
   	$this->data['classes'] = Classe::select('id', 'name')->get();
   	foreach ($this->data['classes'] as $key => $class) {
   		$this->data['sections']['class_'.$class->id] = Section::select('name', 'id')->where(['class_id' => $class->id])->get();
@@ -145,12 +147,13 @@ class StudentsController extends Controller
 
   protected function SetAttributes(){
     $this->Student->name = $this->Request->input('name');
+    $this->Student->father_name = $this->Request->input('father_name');
     $this->Student->gender = $this->Request->input('gender');
     $this->Student->class_id = $this->Request->input('class');
     $this->Student->section_id = $this->Request->input('section');
 //    $this->Student->gr_no = $this->Request->input('gr_no');
-    $this->Student->parent_id = $this->Request->input('parent');
-    $this->Student->parent_relation = $this->Request->input('parent_relation');
+    $this->Student->guardian_id = $this->Request->input('guardian');
+    $this->Student->guardian_relation = $this->Request->input('guardian_relation');
     $this->Student->email = $this->Request->input('email');
     $this->Student->phone = $this->Request->input('phone');
     $this->Student->address = $this->Request->input('address');
@@ -163,6 +166,7 @@ class StudentsController extends Controller
     $this->Student->place_of_birth  = $this->Request->input('place_of_birth');
     $this->Student->relegion  = $this->Request->input('relegion');
     $this->Student->last_school = $this->Request->input('last_school');
+    $this->Student->receipt_no = $this->Request->input('receipt_no');
   }
 
   protected function UpdateAdditionalFee(){
@@ -171,8 +175,8 @@ class StudentsController extends Controller
       foreach ($this->Input['fee'] as $key => $value) {
         $AdditionalFee = new AdditionalFee;
         $AdditionalFee->student_id = $this->Student->id;
-        $AdditionalFee->fee_name = $value['feename'];
-        $AdditionalFee->amount = $value['feeamount'];
+        $AdditionalFee->fee_name = $value['fee_name'];
+        $AdditionalFee->amount = $value['amount'];
         $AdditionalFee->save();
       }
     }

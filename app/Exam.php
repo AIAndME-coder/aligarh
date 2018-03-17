@@ -17,5 +17,4 @@ class Exam extends Model
 		return Carbon::createFromFormat('Y-m-d', $end_date)->format('d/m/Y');
 	}
 
-
 }

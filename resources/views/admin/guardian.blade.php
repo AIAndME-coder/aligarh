@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Parents |')
+  @section('title', 'Guardians |')
 
   @section('head')
   <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -18,11 +18,11 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Parents</h2>
+                  <h2>Guardians</h2>
                   <ol class="breadcrumb">
                     <li>Home</li>
                       <li Class="active">
-                          <a>Parents</a>
+                          <a>Guardians</a>
                       </li>
                   </ol>
               </div>
@@ -40,10 +40,10 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Parents</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Guardians</a>
                             </li>
-                            <li class="add-parent">
-                              <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Parents</a>
+                            <li class="add-guardian">
+                              <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Guardians</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -65,12 +65,12 @@
 
                                 </div>
                             </div>
-                            <div id="tab-11" class="tab-pane fade add-parent">
+                            <div id="tab-11" class="tab-pane fade add-guardian">
                                 <div class="panel-body">
-                                  <h2> Parent Registration </h2>
+                                  <h2> Guardian Registration </h2>
                                   <div class="hr-line-dashed"></div>
 
-                                    <form id="tchr_rgstr" method="post" action="{{ URL('parents/add') }}" class="form-horizontal" >
+                                    <form id="tchr_rgstr" method="post" action="{{ URL('guardians/add') }}" class="form-horizontal" >
                                       {{ csrf_field() }}
 
                                       <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
@@ -180,10 +180,10 @@
     var tbl;
 
     function loadOptions(data, type, full, meta) {
-        opthtm = '<a href="{{ URL('parents/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
+        opthtm = '<a href="{{ URL('guardians/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
 
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
-          opthtm += '<a href="{{ URL('parents/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Profile" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
+          opthtm += '<a href="{{ URL('guardians/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Profile" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
         @endif
 
         return opthtm;
@@ -193,8 +193,8 @@
 
         opthtm = '<a data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
 
-        @if(Auth::user()->privileges->{$root['content']['id']}->edit)
-          opthtm += '<a data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-option eidt-parent"><span class="fa fa-edit"></span></a>';
+        @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
+          opthtm += '<a data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-option eidt-guardian"><span class="fa fa-edit"></span></a>';
         @endif
 
         tbl = $('.dataTables-teacher').DataTable({
@@ -218,7 +218,7 @@
           ],
           Processing: true,
           serverSide: true,
-          ajax: '{{ URL('ajax/parents') }}',
+          ajax: '{{ URL('guardians') }}',
           columns: [
             {data: 'name'},
             {data: 'email'},
@@ -261,12 +261,12 @@
         $('a[href="#tab-11"]').click();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->add == 0)
-        $('.add-parent').hide();
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
+        $('.add-guardian').hide();
       @endif
 
-      @if(Auth::user()->privileges->{$root['content']['id']}->edit == 0)
-        $('.edit-parent').hide();
+      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
+        $('.edit-guardian').hide();
       @endif
 
 

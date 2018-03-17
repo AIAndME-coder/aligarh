@@ -41,15 +41,20 @@ class StudentAttendenceCtrl extends Controller
 	        'date'  	=>  'required',
     	]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $this->Request->input('date'))->toDateString();
-		$qry = DB::table('students')
+
+/*		$qry = DB::table('students')
 					->select('students.id', 'students.name', 'students.gr_no')
 					->where(['students.class_id' => $this->Request->input('class')]);
+*/
+		$this->data['students'] = Student::select('students.id', 'students.name', 'students.gr_no')
+									->where(['students.class_id' => $this->Request->input('class')]);
+
 		if ($this->Request->has('section')) {
-			$qry->where(['students.section_id' => $this->Request->input('section')]);
+			$this->data['students']->where(['students.section_id' => $this->Request->input('section')]);
 			$this->data['section'] = Section::find($this->Request->input('section'));
 		}
 
-		$this->data['students']	=	$qry->get();
+		$this->data['students']	=	$this->data['students']->active()->get();
 		foreach ($this->data['students'] as $k => $row) {
 			$this->data['attendence'][$row->id] =	StudentAttendence::select('id as attendence_id', 'status')->where(['student_id' => $row->id, 'date' => $dbdate])->first();
 		}
@@ -97,11 +102,19 @@ class StudentAttendenceCtrl extends Controller
 		$qry = DB::table('students')
 					->select('students.id', 'students.name', 'students.gr_no')
 					->where(['students.class_id' => $this->Request->input('class')]);
+
+//		$this->data['students'] = Student::select('id', 'name', 'gr_no')->where(['class_id' => $this->Request->input('class')]);
+
+/*		if ($this->Request->has('section')) {
+			$this->data['students']->where(['students.section_id' => $this->Request->input('section')]);
+		}
+*/
 		if ($this->Request->has('section')) {
 			$qry->where(['students.section_id' => $this->Request->input('section')]);
 		}
 
 		$this->data['students']	=	$qry->get();
+//		$this->data['students']	=	$this->data['students']->CurrentSession()->get();
 		$this->data['attendence'] = [];
 		foreach ($this->data['students'] as $k => $row) {
 			$this->data['attendence'][$row->id] =	StudentAttendence::select('id as attendence_id', 'date', 'status')
@@ -114,14 +127,24 @@ class StudentAttendenceCtrl extends Controller
 		$this->data['input'] = $this->Request->input();
 		$this->data['selected_class'] = Classe::find($this->Request->input('class'));
 		$this->data['section'] = Section::find($this->Request->input('section'));
-		$this->data['section_nick'] = empty($this->data['section'])? 'ALL' : $this->data['section']->nick_name;
+		$this->data['section_nick'] = empty($this->data['section'])? '' : $this->data['section']->nick_name;
 //		$this->data['attendence'] = json_encode($this->data['attendence']);
 
 //		return response([$dbdate->endOfMonth()->day, $dbdate->toDateString(), $dbdate->endOfMonth()->toDateString()]);
 //		$this->data['dbdate'] = $dbdate;
-		$this->data['dbdate']['noofdays'] = $dbdate->endOfMonth()->day;
+		$this->data['noofdays'] = $dbdate->endOfMonth()->day;
+//		dd($dbdate->parse('first sunday of this month')->day);
+		$sundayday =	$dbdate->parse('first sunday of this month')->day;
+		while ($sundayday <= $this->data['noofdays']) {
+			$this->data['sundays'][] = $sundayday;
+			$sundayday += 7;
+		}
+		$this->data['noofsunday'] = COUNT($this->data['sundays']);
+		$this->data['input']['date'] = $dbdate->format('M-Y');
 //		return response($this->data['attendence']);
-		return $this->Index();
+//		return $this->Index();
+//		dd($this->data);
+		return view('admin.printable.students_attendence', $this->data);
 	}
 
 }

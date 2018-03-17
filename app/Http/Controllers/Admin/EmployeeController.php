@@ -51,6 +51,14 @@ class EmployeeController extends Controller
   }
 
   public function GetEmployee(){
+
+    if ($this->Request->ajax()) {
+      return Datatables::queryBuilder(DB::table('employees')
+                                          ->leftJoin('users', 'employees.user_id', '=', 'users.id')
+                                          ->select('employees.name', 'employees.email', 'employees.role', 'employees.id', 'employees.phone', 'users.active', 'users.id AS user_id'))
+                                          ->make(true);
+    }
+
     return view('admin.employee', $this->data);
   }
 
@@ -76,14 +84,6 @@ class EmployeeController extends Controller
       return response(isset($data)? $data : [0 => ['text' => 'No Data Available']]);
    }
     return abort(404);
-  }
-
-  public function AjaxGetEmployee(){
-//    return Datatables::eloquent(Employee::select('name', 'email', 'role', 'id', 'phone'))->make(true);
-    return Datatables::queryBuilder(DB::table('employees')
-                                        ->leftJoin('users', 'employees.id', '=', 'users.employee_id')
-                                        ->select('employees.name', 'employees.email', 'employees.role', 'employees.id', 'employees.phone', 'users.employee_id', 'users.active', 'users.id AS user_id'))
-                                        ->make(true);
   }
 
   public function EditEmployee(){
