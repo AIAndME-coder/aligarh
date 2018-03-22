@@ -101,6 +101,7 @@ class ManageSections extends Controller
     $this->validate($this->Request, [
         'name'  =>  'required',
         'nick_name'  =>  'required',
+        'capacity'  =>  'required:number',
 /*        'teacher' =>  'required',*/
         'class' =>  'required'
     ]);
@@ -109,6 +110,7 @@ class ManageSections extends Controller
   protected function SetAttributes(){
     $this->Sections->name = $this->Request->input('name');
     $this->Sections->nick_name = $this->Request->input('nick_name');
+    $this->Sections->capacity = $this->Request->input('capacity');
     $this->Sections->teacher_id = $this->Request->input('teacher');
     $this->Sections->class_id = $this->Request->input('class');
   }

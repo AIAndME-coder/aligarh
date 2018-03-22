@@ -8,12 +8,16 @@ use Auth;
 class Section extends Model
 {
 
-	public function Class() {
+	public function Classe() {
 		return $this->belongsTo('App\Classe', 'class_id');
 	}
 
 	public function Teacher() {
 		return $this->belongsTo('App\Teacher');
+	}
+
+	public function Students(){
+		return $this->hasMany('App\Student');
 	}
 
 	public function AddDefaultSection($classid, $teacherid){

@@ -6,6 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Auth;
+use App\AcademicSession;
 
 class Student extends Model {
 
@@ -24,8 +25,32 @@ class Student extends Model {
 		return $query->where('session_id', Auth::user()->academic_session);
 	}
 
+	public function scopeNewAdmission($query){
+		return $query->where('date_of_admission', '>=', Carbon::now()->toDateString());
+//		return $query->where('date_of_admission', '>=', AcademicSession::find(Auth::user()->academic_session)->getOriginal('from'));
+//		return $query->where('date_of_admission', '>=', '2018-04-01');
+	}
+
+	public function scopeOldAdmission($query){
+		return $query->where('date_of_admission', '<=', Carbon::now()->toDateString());
+//		return $query->where('date_of_admission', '<=', AcademicSession::find(Auth::user()->academic_session)->getOriginal('from'));
+//		return $query->where('date_of_admission', '<=', '2018-04-01');
+	}
+
 	public function scopeActive($query){
 		return $query->where('active', 1);
+	}
+
+	public function scopeInActive($query){
+		return $query->where('active', 0);
+	}
+
+	public function scopeWithOutDiscount($query){
+		return $query->where('discount', 0);
+	}
+
+	public function scopeWithDiscount($query){
+		return $query->where('discount', '>', 0);
 	}
 
 	public function Guardian() {

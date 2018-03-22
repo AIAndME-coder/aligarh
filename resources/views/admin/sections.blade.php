@@ -70,6 +70,7 @@
                                                   <tr>
                                                     <th>Name</th>
                                                     <th>Nick Name</th>
+                                                    <th>Capacity</th>
                                                     <th>Teacher</th>
                                                     <th class="edit-section">Options</th>
                                                   </tr>
@@ -79,6 +80,7 @@
                                                   <tr>
                                                     <td>{{ $section->name }}</td>
                                                     <td>{{ $section->nick_name }}</td>
+                                                    <td>{{ $section->Students()->Active()->count() }} | {{ $section->capacity }}</td>
                                                     <td>{{ $section->Teacher['name'] }}</td>
                                                     <td class="edit-section">
                                                       <a href="{{ URL('manage-sections/edit/'.$section->id) }}" data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-option">
@@ -143,6 +145,18 @@
                                           @if ($errors->has('nick_name'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('nick_name') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
+                                      <div class="form-group{{ ($errors->has('capacity'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Student Capacity</label>
+                                        <div class="col-md-6">
+                                          <input type="number" name="capacity" placeholder="Student Capacity" value="{{ old('capacity') }}" class="form-control" min="1" />
+                                          @if ($errors->has('capacity'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('capacity') }}</strong>
                                               </span>
                                           @endif
                                         </div>

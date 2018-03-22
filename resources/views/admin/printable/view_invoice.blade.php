@@ -42,7 +42,7 @@
     			</div>
     			<div class="col-xs-6 text-right">
     				<address>
-        			<strong>Date : {{ $invoice->created_at }}</strong><br>
+            			<strong>Date : {{ $invoice->created_at }}</strong><br>
     				</address>
     			</div>
     		</div>
@@ -98,6 +98,12 @@
 	    							<tr>
 		    							<td class="thick-line" colspan="4"><b>In Words :</b> <span id="inwords"></span></td>
 	    							</tr>
+                                    <tr>
+                                        <th colspan="3">Payment Type: {{ $invoice->payment_type }}</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="3">Chalan No: {{ $invoice->chalan_no }}</th>
+                                    </tr>
     						</tbody>
     					</table>
     				</div>

@@ -24,7 +24,7 @@
     body {
       padding: 0px;
       margin: 0px;
-      font-size: 15px;
+      font-size: 12px;
       }
     .table-bordered th,
     .table-bordered td {
@@ -132,7 +132,7 @@
 			this.checkattendance(this.noofdays);
 			this.calcattendence();
 			$('tbody .h').html('H');
-			$('.h').css('background', 'yellow');
+//			$('.h').css('background', 'yellow');
 			window.print();
 		},
 
@@ -184,10 +184,6 @@
 			}
 		},
 	});
-
-	console.log(app.students);
-	console.log(app.attendancerpt);
-	console.log(app.noofdays);
 </script>
 
 @endsection

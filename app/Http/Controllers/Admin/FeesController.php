@@ -93,12 +93,17 @@ class FeesController extends Controller
 											'gr_no' => $this->data['student']->gr_no,
 											])->first();
 
-
 		$this->data['Input'] = $this->Request->input();
 		return $this->Index();
 	}
 
 	public function UpdateInvoice(){
+
+		$this->validate($this->Request, [
+			'payment_type'  	=>  'required',
+			'chalan_no'		=>	'required_if:payment_type,Chalan'
+		]);
+
 		$this->Student = Student::findOrfail($this->data['root']['option']);
 		$this->AdditionalFee = $this->Student->AdditionalFee;
 
@@ -138,6 +143,9 @@ class FeesController extends Controller
 		$this->InvoiceMaster->total_amount = $this->Student->total_amount;
 		$this->InvoiceMaster->discount = $this->Student->discount;
 		$this->InvoiceMaster->paid_amount = $this->Student->net_amount;
+		$this->InvoiceMaster->payment_type = $this->Request->input('payment_type');
+		$this->InvoiceMaster->chalan_no = ($this->Request->input('payment_type') == 'Chalan')? $this->Request->input('chalan_no') : null;
+		$this->InvoiceMaster->date = Carbon::now()->toDateString();
 	}
 
 	public function PrintInvoice(){

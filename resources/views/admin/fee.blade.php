@@ -152,6 +152,19 @@
                                               <th>Discount</th>
                                               <th>{{ $student->discount or '0' }}</th>
                                             </tr>
+                                            <tr>
+                                              <th>Payment Type</th>
+                                              <th>
+                                                <div class="i-checks"><label> <input type="radio" value="Cash" name="payment_type" required="true" v-model="payment_type"> Cash </label></div>
+                                                <div class="i-checks"><label> <input type="radio" value="Chalan" name="payment_type" v-model="payment_type"> Chalan </label></div>
+                                                <div  class="i-checks"><input class="form-control" type="text" name="chalan_no" v-model="chalan_no" v-bind:required="payment_type == 'Chalan'" ></div>
+                                                @if ($errors->has('chalan_no'))
+                                                    <span class="help-block">
+                                                        <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('chalan_no') }} </strong>
+                                                    </span>
+                                                @endif
+                                              </th>
+                                            </tr>
                                           </tbody>
                                           <tfoot>
                                             <tr class="success">
@@ -327,6 +340,20 @@
       @endif
 
 
+      });
+    </script>
+
+    @endsection
+
+    @section('vue')
+
+    <script type="text/javascript">
+      var app = new Vue({
+        el: '#app',
+        data: {
+          chalan_no: "{{ $invoice->chalan_no or '' }}",
+          payment_type: "{{ $invoice->payment_type or '' }}",
+        },
       });
     </script>
 

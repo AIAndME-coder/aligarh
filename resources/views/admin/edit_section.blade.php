@@ -89,6 +89,18 @@
                                         </div>
                                       </div>
 
+                                      <div class="form-group{{ ($errors->has('capacity'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Student Capacity</label>
+                                        <div class="col-md-6">
+                                          <input type="number" name="capacity" placeholder="Student Capacity" value="{{ old('capacity', $section['capacity']) }}" class="form-control" min="1" />
+                                          @if ($errors->has('capacity'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('capacity') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="form-group{{ ($errors->has('teacher'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Teacher</label>
                                         <div class="col-md-6 select2-div">

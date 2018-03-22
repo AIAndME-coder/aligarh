@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class InvoiceMaster extends Model
 {
 
+	protected $table = "invoice_master";
 
 	public function getCreatedAtAttribute($date) {
 		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
@@ -30,5 +31,4 @@ class InvoiceMaster extends Model
 		return $this->belongsTo('App\Student');
 	}
 
-protected $table = "invoice_master";
 }

@@ -52,12 +52,12 @@ class UsersController extends Controller
 
       $this->Request = $request;
       $this->User = User::findOrfail($this->data['root']['option']);
-        if($this->User->created_by == 0){
+        if($this->User->created_by == 0 && Auth::user()->id != 9){
         return redirect('users')->with([
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  'Users Registration',
-          'msg' =>  'Sorry '.$this->User->name.' User Cant be Editable'
+          'msg' =>  '"'.$this->User->name.'" User Cant be Editable'
           ]
         ]);
         }

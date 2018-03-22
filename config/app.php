@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('TimeZone', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -181,6 +181,8 @@ return [
         //------------ Data Table
         Yajra\Datatables\DatatablesServiceProvider::class,
 
+        //------- Debugbar
+        Barryvdh\Debugbar\ServiceProvider::class,
 
     ],
 
@@ -234,6 +236,8 @@ return [
         //-- Data table
         'Datatables'  =>  Yajra\Datatables\Facades\Datatables::class,
 
+        //---- Debugbar
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
