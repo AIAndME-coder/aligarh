@@ -6,6 +6,7 @@
   <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
   <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+  <link href="{{ URL::to('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
   @endsection
 
   @section('content')
@@ -89,26 +90,9 @@
                                       </div>
 
                                       <div class="form-group{{ ($errors->has('month'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label"> Month </label>
-                                        <div class="col-md-6">
-                                          <select class="form-control" name="month" required="true">
-                                            <option></option>
-                                            @foreach($months AS $k=>$month)
-                                              <option value="{{ $k }}" >{{ $month }}</option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                      </div>
-
-                                      <div class="form-group{{ ($errors->has('year'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label"> Year </label>
-                                        <div class="col-md-6">
-                                          <select class="form-control" name="year" required="true">
-                                            <option></option>
-                                            <option>{{ $year-1 }}</option>
-                                            <option>{{ $year }}</option>
-                                            <option>{{ $year+1 }}</option>
-                                          </select>
+                                        <label class="col-md-2 control-label">Month</label>
+                                        <div class="col-md-6 input-group date" id="datepicker">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="month" readonly="true" class="form-control" required="true">
                                         </div>
                                       </div>
 
@@ -122,12 +106,12 @@
 
                                     @if($root['job'] == 'create')
                                     <div class="row">
-                                    <h3>Student Name: <span class="bg-info"> {{ $student->name }} | {{ $student->gr_no }} </span> / Month: ({{ $months[$Input['month']].'-'.$Input['year'] }})</h3>
+                                    <h3>Student Name: <span class="bg-info"> {{ $student->name }} | {{ $student->gr_no }} </span> / Month: ({{ Carbon\Carbon::createFromFormat('Y-m-d', $Input['month'])->Format('M-Y') }})</h3>
                                       <div class="hr-line-dashed"></div>
                                       @if(empty($invoice))
                                       <form action="{{ URL('fee/create/'.$student->id) }}" method="POST" class="form-horizontal">
                                         {{ csrf_field() }}
-                                        <input type="hidden" name="date" value="{{ '01/'.$Input['month'].'/'.$Input['year'] }}" required="true">
+                                        <input type="hidden" name="date" value="{{ $Input['month'] }}" required="true">
                                         <input type="hidden" name="student_id" value="{{ $student->id }}">
                                       @endif
                                         <table class="table table-striped table-bordered table-hover">
@@ -222,6 +206,10 @@
     <!-- Select2 -->
     <script src="{{ URL::to('src/js/plugins/select2/select2.full.min.js') }}"></script>
 
+    <!-- Data picker -->
+    <script src="{{ URL::to('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+
+
     <script type="text/javascript">
     var tbl;
 
@@ -242,10 +230,8 @@
         @if(isset($Input))
           $('[name="gr_no"').val('{{ $Input['gr_no'] }}');
           $('[name="month"').val('{{ $Input['month'] }}');
-          $('[name="year"').val('{{ $Input['year'] }}');
         @else
           $('[name="month"').val('{{ old('month') }}');
-          $('[name="year"').val('{{ old('year') }}');
         @endif
       @else
         $('a[href="#tab-10"]').tab('show');
@@ -304,6 +290,16 @@
                 required: true,
               },
             },
+        });
+
+        $('#datepicker').datepicker({
+
+          format: 'yyyy-mm-dd',
+          keyboardNavigation: false,
+          forceParse: false,
+          autoclose: true,
+
+          minViewMode: 1,
         });
 
         $('#select2').attr('style', 'width:100%').select2({

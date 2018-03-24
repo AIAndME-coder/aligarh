@@ -11,6 +11,12 @@ class InvoiceMaster extends Model
 
 	protected $table = "invoice_master";
 
+	protected $fillable = [
+		'user_id', 'student_id', 'gr_no', 'payment_month',
+		'total_amount', 'discount', 'paid_amount', 'payment_type',
+		'chalan_no', 'date',
+	];
+
 	public function getCreatedAtAttribute($date) {
 		return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d-m-Y');
 	}
