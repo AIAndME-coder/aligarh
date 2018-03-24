@@ -340,7 +340,7 @@
                                           </tr>
 
                                             <tr v-for="(fee, k) in fee.additionalfee">
-                                              <td><input type="text" :name="'fee['+ k +'][fee_name]'" class="form-control" required="true" v-model="fee.fee_name"></td>
+                                              <td><input type="hidden" :name="'fee['+k+'][id]'" value="0" ><input type="text" :name="'fee['+ k +'][fee_name]'" class="form-control" required="true" v-model="fee.fee_name"></td>
                                               <td><input type="number" :name="'fee['+ k +'][amount]'" class="form-control additfeeamount" required="true" min="1" v-model.number="fee.amount"></td>
                                               <td><a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" @click="removeAdditionalFee(k)" title="Remove" ><span class="fa fa-trash"></span></a></td>
                                             </tr>
@@ -631,6 +631,7 @@
         methods: {
           addAdditionalFee: function (){
             this.fee.additionalfee.push({
+              id: 0,
               fee_name: '',
               amount: 0
             });

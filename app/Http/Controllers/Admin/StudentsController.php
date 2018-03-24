@@ -175,6 +175,7 @@ class StudentsController extends Controller
 		if (COUNT($this->Request->input('fee')) >= 1) {
 			foreach ($this->Input['fee'] as $key => $value) {
 				$AdditionalFee = new AdditionalFee;
+				$AdditionalFee->id = $value['id'];
 				$AdditionalFee->student_id = $this->Student->id;
 				$AdditionalFee->fee_name = $value['fee_name'];
 				$AdditionalFee->amount = $value['amount'];
