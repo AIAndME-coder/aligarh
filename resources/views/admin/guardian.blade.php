@@ -39,7 +39,7 @@
                 <div class="col-lg-12">
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
-                            <li class="active">
+                            <li class="">
                               <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Guardians</a>
                             </li>
                             <li class="add-guardian">
@@ -47,7 +47,7 @@
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div id="tab-10" class="tab-pane fade in active">
+                            <div id="tab-10" class="tab-pane fade">
                                 <div class="panel-body">
                                   <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover dataTables-teacher" >
@@ -258,7 +258,9 @@
         });
 
       @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
-        $('a[href="#tab-11"]').click();
+        $('.nav-tabs a[href="#tab-11"]').tab('show');
+      @else
+        $('.nav-tabs a[href="#tab-10"]').tab('show');
       @endif
 
       @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)

@@ -194,6 +194,18 @@
                                         </div>
                                       </div>
 
+                                      <div class="form-group{{ ($errors->has('seeking_class'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Seeking Class</label>
+                                        <div class="col-md-6">
+                                          <input type="text" name="seeking_class" placeholder="Seeking Class" value="{{ old('seeking_class') }}" class="form-control"/>
+                                          @if ($errors->has('seeking_class'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('seeking_class') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="form-group{{ ($errors->has('class'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Class</label>
                                         <div class="col-md-6 select2-div">

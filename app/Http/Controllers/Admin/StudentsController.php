@@ -63,6 +63,7 @@ class StudentsController extends Controller
 	public function Index(){
 		//$this->data['teachers'] = Teacher::select('name', 'email', 'address', 'id', 'phone')->get();
 		if (Request::ajax()) {
+			return Datatables::eloquent(Student::query())->make(true);
 	/*
 			return Datatables::queryBuilder(DB::table('students')
 				->join('classes', 'students.class_id', '=', 'classes.id')
@@ -71,7 +72,6 @@ class StudentsController extends Controller
 				)->make(true);
 	*/
 //      return Datatables::eloquent(Student::query()->CurrentSession())->make(true);
-			return Datatables::eloquent(Student::query())->make(true);
 		}
 		$this->data['guardians'] = Guardian::select('id', 'name', 'email')->get();
 		$this->data['classes'] = Classe::select('id', 'name')->get();
@@ -160,6 +160,7 @@ class StudentsController extends Controller
 		$this->Student->phone = $this->Request->input('phone');
 		$this->Student->address = $this->Request->input('address');
 		$this->Student->tuition_fee = $this->Request->input('tuition_fee');
+		$this->Student->seeking_class = $this->Request->input('seeking_class');
 		$this->Student->total_amount = $this->Request->input('total_amount');
 		$this->Student->discount = $this->Request->input('discount');
 		$this->Student->net_amount = $this->Request->input('net_amount');

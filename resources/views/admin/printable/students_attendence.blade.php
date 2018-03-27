@@ -22,7 +22,7 @@
 
 
     body {
-      padding: 0px;
+      padding: 0px 10px;
       margin: 0px;
       font-size: 12px;
       }

@@ -101,6 +101,10 @@
                                         <td>{{ $student->last_school }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Seeking Class :</th>
+                                        <td>{{ $student->seeking_class }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Receipt No :</th>
                                         <td>{{ $student->receipt_no }}</td>
                                     </tr>
