@@ -94,16 +94,11 @@
 					<td>{{ $sum->paid_amount }}/=</td>
 				</tr>
 				@endforeach
-			</tbody>
-			<tfoot>
 				<tr>
 					<th colspan="7" class="text-right">Total</th>
-
-
 					<th>@{{ total_paid_amount }}/=</th>
 				</tr>
 
-			</tfoot>
 		</table>
 	</div>
 

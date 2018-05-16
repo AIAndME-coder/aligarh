@@ -60,7 +60,11 @@ class FeeCollectionReportController extends Controller
 		]);
 
 		$this->data['betweendates']	=	['start' => $request->input('start'), 'end' => $request->input('end')];
-		$this->data['invoice_dates'] = DB::table('invoice_master')->select('date')->whereBetween('date', $this->data['betweendates'])->groupBy('date')->get();
+		$this->data['invoice_dates'] = DB::table('invoice_master')
+											->select(DB::raw(" `date`, SUM(`discount`) AS `discount` "))
+											->whereBetween('date', $this->data['betweendates'])
+											->groupBy('date')
+											->get();
 
 		$this->data['daily_fee_collection'] = [];
 		foreach ($this->data['invoice_dates'] as $key => $date) {
@@ -89,7 +93,9 @@ class FeeCollectionReportController extends Controller
 
 		$this->data['total_cash_amount']	=	$collectflatten->sum('cash');
 		$this->data['total_chalan_amount']	=	$collectflatten->Sum('chalan');
-		$this->data['net_total_amount']	=	$collectflatten->sum('amount');
+		$this->data['total_discount_amount']	=	$this->data['invoice_dates']->sum('discount');
+		$this->data['net_total_amount']	=	($collectflatten->sum('amount') - $this->data['total_discount_amount']);
+
 
 		return view('admin.printable.daily_fee_collection', $this->data);
 	}

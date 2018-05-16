@@ -60,9 +60,9 @@
 	<h3>Daily Fee Collection Report</h3>
 	<h4>Between: ( {{ Carbon\Carbon::createFromFormat('Y-m-d', $betweendates['start'])->Format('M-Y') }} TO {{ Carbon\Carbon::createFromFormat('Y-m-d', $betweendates['end'])->Format('M-Y') }} )</h3>
 		
-		@foreach($daily_fee_collection AS $date => $fee_collection)
+		@foreach($invoice_dates AS $invoice)
 		<hr>
-		<h4>{{ Carbon\Carbon::createFromFormat('Y-m-d', $date)->Format('D, M d, Y') }}</h4>
+		<h4>{{ Carbon\Carbon::createFromFormat('Y-m-d', $invoice->date)->Format('D, M d, Y') }}</h4>
 		<table id="rpt-att" class="table table-bordered">
 			<thead>
 			  <tr>
@@ -73,7 +73,7 @@
 			  </tr>
 			</thead>
 			<tbody>
-				@foreach($fee_collection AS $collection)
+				@foreach($daily_fee_collection[$invoice->date] AS $collection)
 				<tr>
 					<td>{{ $collection->fee_name }}</td>
 					<td>{{ $collection->cash }}</td>
@@ -81,13 +81,17 @@
 					<td>{{ $collection->amount }}</td>
 				</tr>
 				@endforeach
+				<tr>
+					<td>Discount</td>
+					<td colspan="3">{{ $invoice->discount }}</td>
+				</tr>
 			</tbody>
 			<tfoot>
 				<tr>
 					<th class="text-right">Total</th>
-					<th>{{ $fee_collection->sum('cash') }}/=</th>
-					<th>{{ $fee_collection->sum('chalan') }}/=</th>
-					<th>{{ $fee_collection->sum('amount') }}/=</th>
+					<th>{{ $daily_fee_collection[$invoice->date]->sum('cash') }}/=</th>
+					<th>{{ $daily_fee_collection[$invoice->date]->sum('chalan') }}/=</th>
+					<th>{{ ($daily_fee_collection[$invoice->date]->sum('amount') - $invoice->discount) }}/=</th>
 				</tr>
 			</tfoot>
 		</table>
@@ -95,10 +99,15 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>Total</th>
-					<th>{{ $total_cash_amount }}/=</th>
-					<th>{{ $total_chalan_amount }}/=</th>
-					<th>{{ $net_total_amount }}/=</th>
+					<th colspan="2" class="text-center">Total</th>
+				</tr><tr>
+					<th>Cash Amount</th><th>{{ $total_cash_amount }}/=</th>
+				</tr><tr>
+					<th>Chalan Amount</th><th>{{ $total_chalan_amount }}/=</th>
+				</tr><tr>
+					<th>Discount Amount</th><th>{{ $total_discount_amount }}/=</th>
+				</tr><tr>
+					<th>Net Amount</th><th>{{ $net_total_amount }}/=</th>
 				</tr>
 			</thead>
 		</table>

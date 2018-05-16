@@ -57,6 +57,7 @@ return [
 		'default'	=>	0,
 		'add'		=>	0,
 		'edit'		=>	0,
+		'editclass'	=>	1,
 		'image'		=>	1,
 		'profile'	=>	1,
 		],

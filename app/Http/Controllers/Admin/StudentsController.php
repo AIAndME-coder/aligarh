@@ -125,7 +125,7 @@ class StudentsController extends Controller
 
 		$this->PostValidate();
 		$this->Student = Student::findorFail($this->data['root']['option']);
-		$this->SetAttributes();
+		$this->SetAttributes(false);
 
 		$this->UpdateGrNo();
 
@@ -147,12 +147,16 @@ class StudentsController extends Controller
 			]);
 	}
 
-	protected function SetAttributes(){
+	protected function SetAttributes($new = true){
 		$this->Student->name = $this->Request->input('name');
 		$this->Student->father_name = $this->Request->input('father_name');
 		$this->Student->gender = $this->Request->input('gender');
-		$this->Student->class_id = $this->Request->input('class');
-		$this->Student->section_id = $this->Request->input('section');
+
+		if($new || Auth::user()->getprivileges->privileges->{$this->data['root']['content']['id']}->editclass) {
+			$this->Student->class_id = $this->Request->input('class');
+			$this->Student->section_id = $this->Request->input('section');
+		}
+
 //		$this->Student->gr_no = $this->Request->input('gr_no');
 		$this->Student->guardian_id = $this->Request->input('guardian');
 		$this->Student->guardian_relation = $this->Request->input('guardian_relation');

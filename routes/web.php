@@ -26,10 +26,6 @@ Route::get('/_debugbar/open', [
     'uses' => '\Barryvdh\Debugbar\Controllers\OpenController@handler'
 ]);
 
-
-
-
-
 Route::get('logout', 'UserController@LogOut');
 Route::group(['middleware' => 'guest'], function(){
 	Route::get('login', 'UserController@GetLogin')->name('login');

@@ -20,7 +20,7 @@
         <div class="form-group{{ ($errors->has('email') || $errors->has('name')) ? ' has-error' : '' }}">
             <input type="text" class="form-control" placeholder="UserID" autofocus="true" name="userid" value="{{ old('name') }}{{ old('email') }}">
                 <span class="help-block">
-                    @if(env('DB_DATABASE') == "itgenera_aligarh")
+                    @if(env('DB_DATABASE') == "muhammad_aligarh")
                         Username: Demo
                     @endif
                 </span>
@@ -33,7 +33,7 @@
         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
             <input type="password" class="form-control" placeholder="Password" name="password">
                 <span class="help-block">
-                    @if(env('DB_DATABASE') == "itgenera_aligarh")
+                    @if(env('DB_DATABASE') == "muhammad_aligarh")
                         Password: 123456
                     @endif
                 </span>

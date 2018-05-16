@@ -25,15 +25,17 @@ class Student extends Model {
 		return $query->where('session_id', Auth::user()->academic_session);
 	}
 
-	public function scopeNewAdmission($query){
-		return $query->where('date_of_admission', '>=', Carbon::now()->toDateString());
+	public function scopeNewAdmission($query, $academic_session){
+//		return $query->where('date_of_admission', '>=', Carbon::now()->toDateString());
 //		return $query->where('date_of_admission', '>=', AcademicSession::find(Auth::user()->academic_session)->getOriginal('from'));
+		return $query->where('date_of_admission', '>=', $academic_session->getOriginal('from'));
 //		return $query->where('date_of_admission', '>=', '2018-04-01');
 	}
 
-	public function scopeOldAdmission($query){
-		return $query->where('date_of_admission', '<=', Carbon::now()->toDateString());
+	public function scopeOldAdmission($query, $academic_session){
+//		return $query->where('date_of_admission', '<=', Carbon::now()->toDateString());
 //		return $query->where('date_of_admission', '<=', AcademicSession::find(Auth::user()->academic_session)->getOriginal('from'));
+		return $query->where('date_of_admission', '<=', $academic_session->getOriginal('from'));
 //		return $query->where('date_of_admission', '<=', '2018-04-01');
 	}
 

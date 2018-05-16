@@ -170,6 +170,7 @@
 													</div>
 												</div>
 
+												@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->editclass)
 												<div class="form-group{{ ($errors->has('class'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">Class</label>
 													<div class="col-md-6 select2-div">
@@ -199,6 +200,7 @@
 														@endif
 													</div>
 												</div>
+												@endif
 
 												<div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">GR No</label>
@@ -511,14 +513,14 @@
 
 				computed: {
 					total_amount: function(){
-						tot_amount = (this.fee.tuition_fee);
+						tot_amount = Number(this.fee.tuition_fee);
 						for(k in this.fee.additionalfee) { 
-							tot_amount += (this.fee.additionalfee[k].amount);
+							tot_amount += Number(this.fee.additionalfee[k].amount);
 						}
 						return  tot_amount;
 					},
 					net_amount: function(){
-						return this.total_amount - this.fee.discount;
+						return Number(this.total_amount) - Number(this.fee.discount);
 					}
 				}
 			});
