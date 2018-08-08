@@ -146,14 +146,13 @@
 		var app = new Vue({
 			el:	'#app',
 			data:	{
-				transcripts: {!! json_encode($transcripts) !!},
+				transcripts: {!! json_encode($transcripts, JSON_NUMERIC_CHECK) !!},
 				loading: false,
 				computedStudents: []
 			},
 			methods: {
 				formSubmit: function(e){
 					this.loading = true;
-//					alert(e.target.method);
 					$.ajax({
 					type: e.target.method,
 					url:  e.target.action,
@@ -191,8 +190,8 @@
 						father_name: this.transcripts[k].student.father_name,
 						gr_no: this.transcripts[k].student.gr_no,
 						id: this.transcripts[k].id,
-						total_marks: this.transcripts[k].student_result.reduce((a, b) => a + Number(b.subject_result_attribute.total_marks), 0),
-						total_obtain_marks: this.transcripts[k].student_result.reduce((a, b) => a + Number(b.total_obtain_marks), 0),
+						total_marks: this.transcripts[k].student_result.reduce((a, b) => a + (b.subject_result_attribute.total_marks), 0),
+						total_obtain_marks: this.transcripts[k].student_result.reduce((a, b) => a + b.total_obtain_marks, 0),
 						transcript: this.transcripts[k].student_result,
 						transcriptshow: false
 					});

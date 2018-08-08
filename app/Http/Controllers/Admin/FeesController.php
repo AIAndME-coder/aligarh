@@ -174,6 +174,21 @@ class FeesController extends Controller
 		return view('admin.printable.view_chalan', $this->data);
 	}
 
+	public function UpdateFee(){
+		$this->validate($this->Request, [
+			'gr_no'  	=>  'required',
+		]);
+
+		$this->data['student'] = Student::with('AdditionalFee')->findOrfail($this->Request->input('gr_no'));
+
+		if (empty($this->data['student'])) {
+			return redirect()->back()->withInput()->withErrors(['gr_no' => 'GR No Not Found!']);
+		}
+
+		dd($this->data['student']);
+
+	}
+
 	protected function SaveInvoice($date){
 		$this->InvoiceMaster	=	InvoiceMaster::updateOrCreate(
 					[

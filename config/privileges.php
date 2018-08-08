@@ -83,6 +83,7 @@ return [
 	13 => [
 		'default'	=>	0,
 		'create'	=>	0,
+		'update'	=>	0,
 		'findstu'	=>	1,
 		'invoice'	=>	1,
 		'chalan'	=>	1,

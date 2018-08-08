@@ -164,7 +164,7 @@
 															<input type="hidden" :name="'students['+student.id+'][obtain_marks]['+k+'][attendance]'" v-model="student.student_result.obtain_marks[k].attendance">
 														</span>
 														<template v-if="student.student_result.obtain_marks[k].attendance">
-															<input type="number" class="form-control" :max="result.marks" :name="'students['+student.id+'][obtain_marks]['+k+'][marks]'" v-model="student.student_result.obtain_marks[k].marks" required="true">
+															<input type="number" step="0.01" class="form-control" :max="result.marks" :name="'students['+student.id+'][obtain_marks]['+k+'][marks]'" v-model="student.student_result.obtain_marks[k].marks" required="true">
 														</template>
 														<template v-else >
 															<input type="text" class="form-control" :value="'Absent'" readonly="true">

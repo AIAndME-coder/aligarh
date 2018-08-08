@@ -48,6 +48,9 @@
 							<li class="make-fee">
 							  <a data-toggle="tab" href="#tab-11"><span class="fa fa-edit"></span> Create Invoice</a>
 							</li>
+							<li class="">
+							  <a data-toggle="tab" href="#tab-12"><span class="fa fa-edit"></span> Update Fee</a>
+							</li>
 						</ul>
 						<div class="tab-content">
 							<div id="tab-10" class="tab-pane fade">
@@ -81,7 +84,7 @@
 									  <div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
 										<label class="col-md-2 control-label"> GR-No </label>
 										<div class="col-md-6">
-										  <select class="form-control" name="gr_no" id="select2" required="true"></select>
+										  <select class="form-control select2_grno" name="gr_no" required="true"></select>
 										  @if ($errors->has('gr_no'))
 											  <span class="help-block">
 												  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('gr_no') }} </strong>
@@ -208,6 +211,35 @@
 
 								</div>
 							</div>
+							<div id="tab-12" class="tab-pane fade">
+								<div class="panel-body">
+								  <h2> Update Fee </h2>
+								  <div class="hr-line-dashed"></div>
+
+									<form id="updt_fee_frm" method="GET" action="{{ URL('fee/update') }}" class="form-horizontal jumbotron" role="form" >
+
+									  <div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
+										<label class="col-md-2 control-label"> GR-No </label>
+										<div class="col-md-6">
+										  <select class="form-control select2_grno" name="gr_no" required="true"></select>
+										  @if ($errors->has('gr_no'))
+											  <span class="help-block">
+												  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('gr_no') }} </strong>
+											  </span>
+										  @endif
+										</div>
+									  </div>
+
+									  <div class="form-group">
+										  <div class="col-md-offset-2 col-md-6">
+											  <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
+										  </div>
+									  </div>
+
+									</form>
+
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -330,7 +362,7 @@
 		  autoclose: true,
 		});
 
-		$('#select2').attr('style', 'width:100%').select2({
+		$('.select2_grno').attr('style', 'width:100%').select2({
 			placeholder: 'Search contacts',
 			minimumInputLength: 3,
 			Html: true,
