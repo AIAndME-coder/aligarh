@@ -57,7 +57,7 @@ class StudentsController extends Controller
 				'guardian'    =>  'required',
 				'guardian_relation'  =>  'required',
 //        'email'   =>  ($this->data['root']['job'] == 'edit')? 'email|unique:students,email,'.$this->data['root']['option'] : 'email|unique:students',
-				'tuition_fee'  =>  'required|numeric',
+				'tuition_fee'  =>  'sometimes|required|numeric',
 				'dob'       =>  'required',
 				'img'       =>  'image|mimes:jpeg,png,jpg|max:4096',
 		]);
@@ -141,8 +141,8 @@ class StudentsController extends Controller
 		$this->Student->updated_by  = Auth::user()->id;
 		$this->Student->save();
 
-		$this->UpdateAcademicSessionHistory();
-		$this->UpdateAdditionalFee();
+//		$this->UpdateAcademicSessionHistory();
+//		$this->UpdateAdditionalFee();
 
 		return redirect('students')->with([
 				'toastrmsg' => [
@@ -162,6 +162,12 @@ class StudentsController extends Controller
 			$this->Student->class_id = $this->Request->input('class');
 			$this->Student->section_id = $this->Request->input('section');
 		}
+		if($new){
+			$this->Student->tuition_fee = $this->Request->input('tuition_fee');
+			$this->Student->net_amount = $this->Request->input('net_amount');
+			$this->Student->discount = $this->Request->input('discount');
+			$this->Student->total_amount = $this->Request->input('total_amount');
+		}
 
 //		$this->Student->gr_no = $this->Request->input('gr_no');
 		$this->Student->guardian_id = $this->Request->input('guardian');
@@ -169,11 +175,7 @@ class StudentsController extends Controller
 		$this->Student->email = $this->Request->input('email');
 		$this->Student->phone = $this->Request->input('phone');
 		$this->Student->address = $this->Request->input('address');
-		$this->Student->tuition_fee = $this->Request->input('tuition_fee');
 		$this->Student->seeking_class = $this->Request->input('seeking_class');
-		$this->Student->total_amount = $this->Request->input('total_amount');
-		$this->Student->discount = $this->Request->input('discount');
-		$this->Student->net_amount = $this->Request->input('net_amount');
 		$this->Student->date_of_birth   = Carbon::createFromFormat('d/m/Y', $this->Request->input('dob'))->toDateString();
 		$this->Student->date_of_admission   = Carbon::createFromFormat('d/m/Y', $this->Request->input('doa'))->toDateString();
 		$this->Student->place_of_birth  = $this->Request->input('place_of_birth');

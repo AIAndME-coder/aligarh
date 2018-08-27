@@ -22,18 +22,18 @@
 
 					<!-- Heading -->
 					<div class="row wrapper border-bottom white-bg page-heading">
-							<div class="col-lg-8 col-md-6">
-									<h2>Students</h2>
-									<ol class="breadcrumb">
-										<li>Home</li>
-											<li Class="active">
-													<a>Students</a>
-											</li>
-									</ol>
-							</div>
-							<div class="col-lg-4 col-md-6">
-								@include('admin.includes.academic_session')
-							</div>
+						<div class="col-lg-8 col-md-6">
+							<h2>Students</h2>
+							<ol class="breadcrumb">
+								<li>Home</li>
+								<li Class="active">
+										<a>Students</a>
+								</li>
+							</ol>
+						</div>
+						<div class="col-lg-4 col-md-6">
+							@include('admin.includes.academic_session')
+						</div>
 					</div>
 
 					<!-- main Section -->
@@ -288,82 +288,9 @@
 														@endif
 													</div>
 												</div>
-												<div class="col-lg-8">
-												<div class="panel panel-info">
-												<div class="panel-heading">
-													Additional Feeses <a href="#" id="addfee" data-toggle="tooltip" title="Add Fee" @click="addAdditionalFee()" style="color: #ffffff"><span class="fa fa-plus"></span></a>
-												</div>
-												<div class="panel-body">
-												<table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
-													<thead>
-														<tr>
-															<th>Name</th>
-															<th>Amount</th>
-															<th>Remove</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<td>Tuition Fee</td>
-															<td>
-																<div>
-																	<input type="number" name="tuition_fee" v-model.number="fee.tuition_fee" placeholder="Tuition Fee" class="form-control"/>
-																	@if ($errors->has('tuition_fee'))
-																			<span class="help-block">
-																					<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('tuition_fee') }}</strong>
-																			</span>
-																	@endif
-																</div>
-															</td>
-															<td></td>
-														</tr>
-
-														<tr v-for="(fee, k) in fee.additionalfee">
-															<td><input type="hidden" :name="'fee['+k+'][id]'" v-model="fee.id" ><input type="text" :name="'fee['+ k +'][fee_name]'" class="form-control" required="true" v-model="fee.fee_name"></td>
-															<td><input type="number" :name="'fee['+ k +'][amount]'" class="form-control additfeeamount" required="true" min="0" v-model.number="fee.amount"></td>
-															<td>
-																<div class="input-group">
-																	<span class="input-group-addon" data-toggle="tooltip" title="select if onetime charge">
-																		<input type="checkbox" :name="'fee['+ k +'][onetime]'" value="1" v-model="fee.onetime">
-																	</span>
-																	<span class="input-group-addon" data-toggle="tooltip" title="Active">
-																		<input type="checkbox" :name="'fee['+ k +'][active]'" value="1" v-model="fee.active">
-																	</span>
-																	<a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" @click="removeAdditionalFee(k)" title="Remove">
-																		<span class="fa fa-trash"></span>
-																	</a>
-																</div>
-															</td>
-														</tr>
-
-													</tbody>
-													<tfoot>
-														<tr>
-															<th>Total</th>
-															<th>@{{ total_amount }}</th>
-															<th></th>
-														</tr>
-														<tr>
-															<td>Discount</td>
-															<td><input type="number" name="discount" class="form-control" placeholder="Discount" min="0" v-model.number="fee.discount"></td>
-															<td></td>
-														</tr>
-														<tr>
-															<th>Net Amount</th>
-															<th>@{{ net_amount }}</th>
-															<th></th>
-														</tr>
-													</tfoot>
-												</table>
-												</div>
-												</div>
-												</div>
-												<input type="hidden" name="net_amount" v-model="net_amount">
-												<input type="hidden" name="total_amount" v-model="total_amount">
-
 												<div class="form-group">
 														<div class="col-md-offset-2 col-md-6">
-																<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Register </button>
+																<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Update </button>
 														</div>
 												</div>
 											</form>
@@ -501,50 +428,7 @@
 
 		@endsection
 
-		@section('vue')
-		<script type="text/javascript">
-			var app = new Vue({
-				el: '#app',
-				data: { 
-					fee: {
-						additionalfee: {!! json_encode(old('fee', $additional_fee)) !!},
-						tuition_fee: {{ old('tuition_fee', $student->tuition_fee) }},
-						discount:  {{ old('discount', $student->discount) }},
-					},
-				},
 
-				methods: {
-					addAdditionalFee: function (){
-						this.fee.additionalfee.push({
-							id: 0,
-							fee_name: '',
-							amount: 0,
-							active: 1,
-							onetime: 1
-						});
-					},
-					removeAdditionalFee: function(k){
-						this.fee.additionalfee.splice(k, 1);
-					}
-				},
-
-				computed: {
-					total_amount: function(){
-						tot_amount = Number(this.fee.tuition_fee);
-						for(k in this.fee.additionalfee) { 
-							if(this.fee.additionalfee[k].active){
-								tot_amount += Number(this.fee.additionalfee[k].amount);
-							}
-						}
-						return  tot_amount;
-					},
-					net_amount: function(){
-						return Number(this.total_amount) - Number(this.fee.discount);
-					}
-				}
-			});
-		</script>
-		@endsection
 
 
 

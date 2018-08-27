@@ -48,9 +48,11 @@
 							<li class="make-fee">
 							  <a data-toggle="tab" href="#tab-11"><span class="fa fa-edit"></span> Create Invoice</a>
 							</li>
+							@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)
 							<li class="">
 							  <a data-toggle="tab" href="#tab-12"><span class="fa fa-edit"></span> Update Fee</a>
 							</li>
+							@endif
 						</ul>
 						<div class="tab-content">
 							<div id="tab-10" class="tab-pane fade">
@@ -75,7 +77,7 @@
 								</div>
 							</div>
 							<div id="tab-11" class="tab-pane fade make-fee">
-								<div class="panel-body">
+								<div id="collectfeeApp" class="panel-body">
 								  <h2> Create Invoice </h2>
 								  <div class="hr-line-dashed"></div>
 
@@ -198,7 +200,7 @@
 											</div>
 										</div>
 
-										<div class="form-group">
+										<div class="form-group" v-if="NoOfMonths">
 											<div class="col-md-offset-4 col-md-4">
 												<button class="btn btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-save"></span> Collect </button>
 											</div>
@@ -211,12 +213,13 @@
 
 								</div>
 							</div>
+							
+							@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)
 							<div id="tab-12" class="tab-pane fade">
-								<div class="panel-body">
+								<div id="updatefeeApp" class="panel-body">
 								  <h2> Update Fee </h2>
 								  <div class="hr-line-dashed"></div>
-
-									<form id="updt_fee_frm" method="GET" action="{{ URL('fee/update') }}" class="form-horizontal jumbotron" role="form" >
+									<form id="GetStdFee" method="GET" v-on:submit.prevent="formSubmit($event)" action="{{ URL('fee/update') }}" class="form-horizontal jumbotron" role="form" >
 
 									  <div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
 										<label class="col-md-2 control-label"> GR-No </label>
@@ -232,14 +235,101 @@
 
 									  <div class="form-group">
 										  <div class="col-md-offset-2 col-md-6">
-											  <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
+											<button v-if="loading" class="btn btn-primary btn-block" disabled="true" type="submit"><span class="fa fa-pulse fa-spin fa-spinner"></span> Loading... </button>
+											<button v-else class="btn btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-search"></span> Search </button>
 										  </div>
 									  </div>
 
 									</form>
 
+									<form id="UpdateFee" v-if="fee.feedata" class="form-horizontal" v-on:submit.prevent="formSubmit($event)" method="POST" action="{{ URL('fee/update') }}" >
+										{{ csrf_field() }}
+										<input type="hidden" name="id" v-model="std.id">
+										<h2>@{{ std.name }}. (GR No. @{{ std.gr_no }})</h2>
+										<div class="hr-line-dashed"></div>
+										<div class="col-lg-8">
+											<div class="panel panel-info">
+												<div class="panel-heading">
+													Additional Feeses <a id="addfee" data-toggle="tooltip" title="Add Fee" @click="addAdditionalFee()" style="color: #ffffff"><span class="fa fa-plus"></span></a>
+												</div>
+												<div class="panel-body">
+													<table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
+														<thead>
+															<tr>
+																<th>Name</th>
+																<th>Amount</th>
+																<th>Remove</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>Tuition Fee</td>
+																<td>
+																	<div>
+																		<input type="number" name="tuition_fee" v-model.number="fee.tuition_fee" placeholder="Tuition Fee" class="form-control"/>
+																	</div>
+																</td>
+																<td></td>
+															</tr>
+
+															<tr v-for="(fee, k) in fee.additionalfee">
+																<td>
+																	<input type="hidden" :name="'fee['+k+'][id]'" v-model="fee.id" >
+																	<input type="text" :name="'fee['+ k +'][fee_name]'" class="form-control" required="true" v-model="fee.fee_name">
+																</td>
+																<td>
+																	<input type="number" :name="'fee['+ k +'][amount]'" class="form-control additfeeamount" required="true" min="0" v-model.number="fee.amount">
+																</td>
+																<td>
+																	<div class="input-group">
+																		<span class="input-group-addon" data-toggle="tooltip" title="select if onetime charge">
+																			<input type="checkbox" :name="'fee['+ k +'][onetime]'" value="1" v-model="fee.onetime">
+																		</span>
+																		<span class="input-group-addon" data-toggle="tooltip" title="Active">
+																			<input type="checkbox" :name="'fee['+ k +'][active]'" value="1" v-model="fee.active">
+																		</span>
+																		<a href="javascript:void(0);" class="btn btn-default text-danger removefee" data-toggle="tooltip" @click="removeAdditionalFee(k)" title="Remove">
+																			<span class="fa fa-trash"></span>
+																		</a>
+																	</div>
+																</td>
+															</tr>
+
+														</tbody>
+														<tfoot>
+															<tr>
+																<th>Total</th>
+																<th>@{{ total_amount }}</th>
+																<th></th>
+															</tr>
+															<tr>
+																<td>Discount</td>
+																<td><input type="number" name="discount" class="form-control" placeholder="Discount" min="0" v-model.number="fee.discount"></td>
+																<td></td>
+															</tr>
+															<tr>
+																<th>Net Amount</th>
+																<th>@{{ net_amount }}</th>
+																<th></th>
+															</tr>
+														</tfoot>
+													</table>
+												</div>
+											</div>
+										</div>
+										<input type="hidden" name="net_amount" v-model="net_amount">
+										<input type="hidden" name="total_amount" v-model="total_amount">
+
+										<div class="form-group">
+											<div class="col-md-offset-2 col-md-6">
+												<button v-if="loading" class="btn btn-primary btn-block" disabled="true" type="submit"><span class="fa fa-pulse fa-spin fa-spinner"></span> Loading... </button>
+												<button v-else class="btn btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-save"></span> Update Fee </button>
+											</div>
+										</div>
+									</form>
 								</div>
 							</div>
+							@endif
 						</div>
 					</div>
 				</div>
@@ -409,12 +499,12 @@
 	@if($root['job'] == 'create')
 	<script type="text/javascript">
 	  var app = new Vue({
-		el: '#app',
+		el: '#collectfeeApp',
 		data: {
 			months: {},
 			NoOfMonths:0,
 			fee: {
-				additionalfee: {!! json_encode($student->AdditionalFee) !!},
+				additionalfee: {!! json_encode($student->AdditionalFee, JSON_NUMERIC_CHECK) !!},
 				tuition_fee: {{ $student->tuition_fee or 0 }},
 				discount:  {{ $student->discount or 0 }},
 			},
@@ -476,6 +566,99 @@
 			},
 		}
 	  });
+	</script>
+	@endif
+
+	@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)
+	<script type="text/javascript">
+		var feeApp = new Vue({
+			el: '#updatefeeApp',
+			data: {	
+				loading: false,
+				fee: {
+					additionalfee: {},
+					tuition_fee: 0,
+					discount:  0,
+					feedata: false,
+				},
+				std: {
+					id: 0,
+					name: '',
+					gr_no: '',
+				}
+			},
+			methods: {
+				formSubmit: function(e){
+					this.loading = true;
+					$.ajax({
+					type: e.target.method,
+					url:  e.target.action,
+					data: $(e.target).serialize(),
+					success: function(msg){
+
+						if (e.target.id == 'GetStdFee') {
+//							console.log(msg);
+							feeApp.std.id = msg.id;
+							feeApp.std.name = msg.name;
+							feeApp.std.gr_no = msg.gr_no;
+							feeApp.fee.additionalfee = msg.additional_fee;
+							feeApp.fee.tuition_fee = msg.tuition_fee;
+							feeApp.fee.discount = msg.discount;
+							feeApp.fee.feedata = true;
+						} else {
+//							console.log(msg);
+							feeApp.AjaxMsg(msg);
+							feeApp.fee.feedata = false;
+						}
+
+						feeApp.loading = false;
+					},
+					error: function(){
+							alert("failure");
+							feeApp.loading = false;
+							feeApp.fee.feedata = false;
+						}
+					});
+				},
+				AjaxMsg: function(msg){
+						toastr.options = {
+							closeButton: true,
+							progressBar: true,
+							showMethod: 'slideDown',
+							timeOut: 8000
+						};
+						toastr[msg.type](msg.msg, msg.title);
+				},
+				addAdditionalFee: function (){
+					this.fee.additionalfee.push({
+						id: 0,
+						fee_name: '',
+						amount: 0,
+						active: 1,
+						onetime: 1
+					});
+				},
+				removeAdditionalFee: function(k){
+					this.fee.additionalfee.splice(k, 1);
+				}
+			},
+
+			computed: {
+				total_amount: function(){
+					tot_amount = Number(this.fee.tuition_fee);
+					for(k in this.fee.additionalfee) { 
+						if(this.fee.additionalfee[k].active){
+							tot_amount += Number(this.fee.additionalfee[k].amount);
+						}
+					}
+					return  tot_amount;
+				},
+				net_amount: function(){
+					return Number(this.total_amount) - Number(this.fee.discount);
+				}
+			}
+
+		});
 	</script>
 	@endif
 

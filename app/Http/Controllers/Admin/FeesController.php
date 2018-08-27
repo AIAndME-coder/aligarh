@@ -16,6 +16,7 @@ use DB;
 use PDF;
 use App\Http\Controllers\Controller;
 use App\AcademicSession;
+use Validator;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
 
 class FeesController extends Controller
@@ -174,19 +175,93 @@ class FeesController extends Controller
 		return view('admin.printable.view_chalan', $this->data);
 	}
 
-	public function UpdateFee(){
-		$this->validate($this->Request, [
-			'gr_no'  	=>  'required',
-		]);
+	public function GetStudentFee(){
 
-		$this->data['student'] = Student::with('AdditionalFee')->findOrfail($this->Request->input('gr_no'));
+		if($this->Request->ajax()){
 
-		if (empty($this->data['student'])) {
-			return redirect()->back()->withInput()->withErrors(['gr_no' => 'GR No Not Found!']);
+			$this->validate($this->Request, [
+				'gr_no'  	=>  'required',
+			]);
+
+			$this->data['student'] = Student::with('AdditionalFee')->find($this->Request->input('gr_no'));
+
+			if (empty($this->data['student'])) {
+				return redirect('fee')->withErrors(['gr_no' => 'GR No Not Found!']);
+			}
+
+			return response()->json($this->data['student'], 
+				200, 
+				['Content-Type' => 'application/json'],
+				JSON_NUMERIC_CHECK);
+
 		}
 
-		dd($this->data['student']);
+		return redirect('fee')->with([
+									'toastrmsg' => [
+										'type'	=> 'warning', 
+										'title'	=>  'Student Fee',
+										'msg'	=>  'Something is wrong!'
+									]
+								]);
 
+	}
+
+	public function UpdateFee(){
+
+		if($this->Request->ajax()){
+			$validator = Validator::make($this->Request->all(), [
+				'id' => 'required',
+				'tuition_fee' => 'required',
+				'fee'	=>	'sometimes|required'
+			]);
+
+			if ($validator->fails()) {
+				return  [
+					'type'	=> 'error', 
+					'title'	=>  'Student Fee',
+					'msg'	=>  'Something is wrong!'
+				];
+			}
+
+
+			$this->Student = Student::findOrfail($this->Request->input('id'));
+			$this->Student->tuition_fee = $this->Request->input('tuition_fee');
+			$this->Student->net_amount = $this->Request->input('net_amount');
+			$this->Student->discount = $this->Request->input('discount');
+			$this->Student->total_amount = $this->Request->input('total_amount');
+			$this->Student->save();
+			$this->UpdateAdditionalFee();
+		
+			return	[
+				'type'	=> 'success', 
+				'title'	=>  'Student Fee',
+				'msg'	=>  'Update Fee Successfull'
+			];
+		}
+	
+		return redirect('fee')->with([
+									'toastrmsg' => [
+										'type'	=> 'warning', 
+										'title'	=>  'Student Fee',
+										'msg'	=>  'Something is wrong!'
+									]
+								]);
+	}
+
+	protected function UpdateAdditionalFee(){
+		AdditionalFee::where(['student_id' => $this->Student->id])->delete();
+		if (COUNT($this->Request->input('fee')) >= 1) {
+			foreach ($this->Input['fee'] as $key => $value) {
+				$AdditionalFee = new AdditionalFee;
+				$AdditionalFee->id = $value['id'];
+				$AdditionalFee->student_id = $this->Student->id;
+				$AdditionalFee->fee_name = $value['fee_name'];
+				$AdditionalFee->amount = $value['amount'];
+				$AdditionalFee->onetime = isset($value['onetime'])? 1 : 0;
+				$AdditionalFee->active = isset($value['active'])? 1 : 0;
+				$AdditionalFee->save();
+			}
+		}
 	}
 
 	protected function SaveInvoice($date){
