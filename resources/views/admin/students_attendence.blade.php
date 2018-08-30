@@ -92,7 +92,7 @@
                                       <div class="form-group{{ ($errors->has('date'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label"> Date </label>
                                         <div class="col-md-6">
-                                        <input id="datetimepicker4" type="text" name="date" class="form-control" placeholder="Date" value="{{ old('date') }}" required="true">
+                                        <input id="datetimepicker4" type="text" name="date" class="form-control" placeholder="Date" value="{{ old('date') }}" required="true" autocomplete="off">
                                           @if ($errors->has('date'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('date') }}</strong>
@@ -202,7 +202,7 @@
                                       <div class="form-group{{ ($errors->has('date'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label"> Date Month </label>
                                         <div class="col-md-6">
-                                        <input id="datetimepicker4r" type="text" name="date" class="form-control" placeholder="Date" value="{{ old('date') }}" required="true">
+                                        <input id="datetimepicker4r" type="text" name="date" class="form-control" placeholder="Date" value="{{ old('date') }}" required="true" autocomplete="off">
                                           @if ($errors->has('date'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('date') }}</strong>

@@ -12,6 +12,7 @@ use App\Classe;
 use App\Section;
 use DB;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Auth;
 use App\Http\Controllers\Controller;
 
@@ -97,7 +98,7 @@ class StudentAttendenceCtrl extends Controller
 			'date'  	=>  'required',
 		]);
 
-		$dbdate =	Carbon::createFromFormat('d/m/Y', '1/'.$this->Request->input('date'));
+		$dbdate = Carbon::createFromFormat('d/m/Y', '1/'.$this->Request->input('date'));
 
 		$qry = DB::table('students')
 					->select('students.id', 'students.name', 'students.gr_no')
@@ -128,22 +129,23 @@ class StudentAttendenceCtrl extends Controller
 		$this->data['selected_class'] = Classe::find($this->Request->input('class'));
 		$this->data['section'] = Section::find($this->Request->input('section'));
 		$this->data['section_nick'] = empty($this->data['section'])? '' : $this->data['section']->nick_name;
-//		$this->data['attendence'] = json_encode($this->data['attendence']);
 
-//		return response([$dbdate->endOfMonth()->day, $dbdate->toDateString(), $dbdate->endOfMonth()->toDateString()]);
-//		$this->data['dbdate'] = $dbdate;
-		$this->data['noofdays'] = $dbdate->endOfMonth()->day;
-//		dd($dbdate->parse('first sunday of this month')->day);
-		$sundayday =	$dbdate->parse('first sunday of this month')->day;
-		while ($sundayday <= $this->data['noofdays']) {
-			$this->data['sundays'][] = $sundayday;
-			$sundayday += 7;
+		$loopdate =	CarbonPeriod::create($dbdate->startOfMonth()->toDateString(), $dbdate->endOfMonth()->toDateString());
+		$this->data['noofdays'] = $loopdate->count();
+		Carbon::setWeekendDays([
+			Carbon::SUNDAY,
+			Carbon::SATURDAY,
+		]);
+
+		foreach ($loopdate as $d) {
+			if($d->isWeekend()){
+				$this->data['weekends'][] = $d->day;
+			}
 		}
-		$this->data['noofsunday'] = COUNT($this->data['sundays']);
+
+		$this->data['noofweekends'] = COUNT($this->data['weekends']);
 		$this->data['input']['date'] = $dbdate->format('M-Y');
-//		return response($this->data['attendence']);
-//		return $this->Index();
-//		dd($this->data);
+
 		return view('admin.printable.students_attendence', $this->data);
 	}
 

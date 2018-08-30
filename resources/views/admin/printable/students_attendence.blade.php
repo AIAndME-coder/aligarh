@@ -60,7 +60,7 @@
 				<th>Students</th>
 				<th>Gr No</th>
 				@for($i=1; $i <= $noofdays; $i++)
-				<th class="{{ in_array($i, $sundays)? 'h' : '' }}" >{{ $i }}</th>
+				<th class="{{ in_array($i, $weekends)? 'h' : '' }}" >{{ $i }}</th>
 				@endfor
 				<th>H*</th>
 				<th>A*</th>
@@ -75,31 +75,31 @@
 					<td>{{ $student->name }}</td>
 					<td>{{ $student->gr_no }}</td>
 					@for($i=1; $i <= $noofdays; $i++)
-					<th  class="std_{{ $student->id }}_dat_{{ $i }} col_dat_{{ $i }} {{ in_array($i, $sundays)? 'h' : '' }}"></th>
+					<th  class="std_{{ $student->id }}_dat_{{ $i }} col_dat_{{ $i }} {{ in_array($i, $weekends)? 'h' : '' }}"></th>
 					@endfor
-					<td>{{ $noofsunday }}</td>
+					<td>{{ $noofweekends }}</td>
 					<td class="std_{{ $student->id }}_a"></td>
 					<td class="std_{{ $student->id }}_p"></td>
-					<td>{{ $noofdays-$noofsunday }}</td>
+					<td>{{ $noofdays-$noofweekends }}</td>
 					<td class="std_{{ $student->id }}_percent"></td>
 				</tr>
 				@endforeach
 				<tr>
 					<td colspan="2">Present</td>
 					@for($i=1; $i <= $noofdays; $i++)
-					<td  class="p_std_dat_{{ $i }} {{ in_array($i, $sundays)? 'h' : '' }}"></td>
+					<td  class="p_std_dat_{{ $i }} {{ in_array($i, $weekends)? 'h' : '' }}"></td>
 					@endfor
 				</tr>
 				<tr>
 					<td colspan="2">Absent</td>
 					@for($i=1; $i <= $noofdays; $i++)
-					<td  class="a_std_dat_{{ $i }} {{ in_array($i, $sundays)? 'h' : '' }}"></td>
+					<td  class="a_std_dat_{{ $i }} {{ in_array($i, $weekends)? 'h' : '' }}"></td>
 					@endfor
 				</tr>
 				<tr>
 					<td colspan="2">% Attendance</td>
 					@for($i=1; $i <= $noofdays; $i++)
-					<td  class="percent_std_dat_{{ $i }} {{ in_array($i, $sundays)? 'h' : '' }}"></td>
+					<td  class="percent_std_dat_{{ $i }} {{ in_array($i, $weekends)? 'h' : '' }}"></td>
 					@endfor
 				</tr>
 			</tbody>
@@ -157,7 +157,7 @@
 						$('.std_'+k+'_dat_'+day).html(prefix);
 					});
 //					this.attendancerpt.k.noofpresent = totp;
-					tota = noofdays-({{ COUNT($sundays) }}+totp);
+					tota = noofdays-({{ COUNT($weekends) }}+totp);
 					$('.std_'+k+'_p').html(totp);
 					$('.std_'+k+'_a').html(tota);
 					$('.std_'+k+'_percent').html(((totp/noofdays)*100).toFixed(1)+'%');
