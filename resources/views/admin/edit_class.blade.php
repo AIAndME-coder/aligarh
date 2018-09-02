@@ -47,75 +47,75 @@
 
 										<div class="ibox-content">
 
-																		<form id="tchr_rgstr" method="post" action="{{ URL('manage-classes/edit/'.$root['option']) }}" class="form-horizontal" >
-																			{{ csrf_field() }}
+													<form id="tchr_rgstr" method="post" action="{{ URL('manage-classes/edit/'.$root['option']) }}" class="form-horizontal" >
+														{{ csrf_field() }}
 
-																			<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
-																				<label class="col-md-2 control-label">Name</label>
-																				<div class="col-md-6">
-																					<input type="text" name="name" placeholder="Name" value="{{ old('name', $class->name) }}" class="form-control"/>
-																					@if ($errors->has('name'))
-																							<span class="help-block">
-																									<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
-																							</span>
-																					@endif
-																				</div>
-																			</div>
-
-																			<div class="form-group{{ ($errors->has('numeric_name'))? ' has-error' : '' }}">
-																				<label class="col-md-2 control-label">Name Numeric</label>
-																				<div class="col-md-6">
-																					<input type="number" name="numeric_name" placeholder="Numeric Name" value="{{ old('numeric_name', $class->numeric_name) }}" class="form-control"/>
-																					@if ($errors->has('numeric_name'))
-																							<span class="help-block">
-																									<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('numeric_name') }}</strong>
-																							</span>
-																					@endif
-																				</div>
-																			</div>
-
-																			<div class="form-group{{ ($errors->has('prifix'))? ' has-error' : '' }}">
-																				<label class="col-md-2 control-label">Prifix</label>
-																				<div class="col-md-6">
-																					<input type="text" name="prifix" placeholder="Prifix" value="{{ old('prifix', $class->prifix) }}" class="form-control" required="true" />
-																					@if ($errors->has('prifix'))
-																							<span class="help-block">
-																									<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('prifix') }}</strong>
-																							</span>
-																					@endif
-																				</div>
-																			</div>
-
-																			<div class="form-group{{ ($errors->has('teacher'))? ' has-error' : '' }}">
-																				<label class="col-md-2 control-label">Teacher</label>
-																				<div class="col-md-6 select2-div">
-																					<select class="form-control select2" name="teacher">
-																						<option></option>
-																						@foreach($teachers as $teacher)
-																							<option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-																						@endforeach
-																					</select>
-																					@if ($errors->has('teacher'))
-																							<span class="help-block">
-																									<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('teacher') }}</strong>
-																							</span>
-																					@endif
-																				</div>
-																			</div>
-
-																			<div class="form-group">
-																					<div class="col-md-offset-2 col-md-6">
-																							<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Save Changes </button>
-																					</div>
-																			</div>
-																		</form>
-
-																	</div>
+														<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
+															<label class="col-md-2 control-label">Name</label>
+															<div class="col-md-6">
+																<input type="text" name="name" placeholder="Name" value="{{ old('name', $class->name) }}" class="form-control"/>
+																@if ($errors->has('name'))
+																		<span class="help-block">
+																				<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
+																		</span>
+																@endif
 															</div>
-													</div>
-											</div>
+														</div>
 
+														<div class="form-group{{ ($errors->has('numeric_name'))? ' has-error' : '' }}">
+															<label class="col-md-2 control-label">Name Numeric</label>
+															<div class="col-md-6">
+																<input type="number" name="numeric_name" placeholder="Numeric Name" value="{{ old('numeric_name', $class->numeric_name) }}" class="form-control"/>
+																@if ($errors->has('numeric_name'))
+																		<span class="help-block">
+																				<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('numeric_name') }}</strong>
+																		</span>
+																@endif
+															</div>
+														</div>
+
+														<div class="form-group{{ ($errors->has('prifix'))? ' has-error' : '' }}">
+															<label class="col-md-2 control-label">Prifix</label>
+															<div class="col-md-6">
+																<input type="text" name="prifix" placeholder="Prifix" value="{{ old('prifix', $class->prifix) }}" class="form-control" required="true" />
+																@if ($errors->has('prifix'))
+																		<span class="help-block">
+																				<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('prifix') }}</strong>
+																		</span>
+																@endif
+															</div>
+														</div>
+
+														<div class="form-group{{ ($errors->has('teacher'))? ' has-error' : '' }}">
+															<label class="col-md-2 control-label">Teacher</label>
+															<div class="col-md-6 select2-div">
+																<select class="form-control select2" name="teacher">
+																	<option></option>
+																	@foreach($teachers as $teacher)
+																		<option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+																	@endforeach
+																</select>
+																@if ($errors->has('teacher'))
+																		<span class="help-block">
+																				<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('teacher') }}</strong>
+																		</span>
+																@endif
+															</div>
+														</div>
+
+														<div class="form-group">
+																<div class="col-md-offset-2 col-md-6">
+																		<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Save Changes </button>
+																</div>
+														</div>
+													</form>
+
+												</div>
 										</div>
+								</div>
+						</div>
+
+					</div>
 
 
 					@include('admin.includes.footercopyright')

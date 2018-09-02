@@ -23,7 +23,7 @@
                 <a href="{{ URL('dashboard') }}" data-root="dashboard"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
             </li>
 
-            @foreach(App\AdminContent::navigations() AS $navigation)
+            @foreach(App\AdminContent::with('child_content')->navigations() AS $navigation)
                 @if($navigation->type == 'parent-content')
                     <li data-show="{{ Auth::user()->getprivileges->NavPrivileges($navigation->id, 'default') }}" >
                         <a href="{{ URL($navigation->root) }}" data-root="{{ $navigation->root }}"><i class="{{ $navigation->icon }}"></i> <span class="nav-label">{{ $navigation->label }}</span></a>
