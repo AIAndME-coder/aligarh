@@ -5,6 +5,23 @@
   @section('head')
   <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
   <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+  <style type="text/css">
+  .print-table {
+    width: 100%;
+  }
+  .print-table th,
+  .print-table td {
+    border: 1px solid black !important;
+    padding: 0px;
+  }   
+
+  .print-table > tbody > tr > td {
+      padding: 1px;
+    }
+  .print-table > thead > tr > th {
+      padding: 3px;
+    }
+  </style>
   @endsection
 
   @section('content')
@@ -50,7 +67,7 @@
                             <div id="tab-10" class="tab-pane fade">
                                 <div class="panel-body">
                                   <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover dataTables-teacher" >
+                                    <table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
                                       <thead>
                                         <tr>
                                           <th>Name</th>
@@ -60,6 +77,15 @@
                                           <th>Options</th>
                                         </tr>
                                       </thead>
+                                      <tfoot>
+                                        <tr>
+                                          <th><input type="text" placeholder="Name..."></th>
+                                          <th><input type="text" placeholder="E-mail..."></th>
+                                          <th><input type="text" placeholder="Contact..."></th>
+                                          <th><input type="text" placeholder="Address..."></th>
+                                          <th>Options</th>
+                                        </tr>
+                                      </tfoot>
                                     </table>
                                   </div>
 
@@ -203,18 +229,23 @@
         tbl = $('.dataTables-teacher').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
-            { extend: 'copy'},
-            {extend: 'csv'},
-            {extend: 'excel', title: 'ExampleFile'},
-            {extend: 'pdf', title: 'ExampleFile'},
+//            { extend: 'copy'},
+//            {extend: 'csv'},
+//            {extend: 'excel', title: 'ExampleFile'},
+//            {extend: 'pdf', title: 'ExampleFile'},
 
             {extend: 'print',
               customize: function (win){
                 $(win.document.body).addClass('white-bg');
-                $(win.document.body).css('font-size', '10px');
+                $(win.document.body).css('font-size', '12px');
 
                 $(win.document.body).find('table')
                 .addClass('compact')
+                .addClass('print-table')
+                .removeClass('table')
+                .removeClass('table-striped')
+                .removeClass('table-bordered')
+                .removeClass('table-hover')
                 .css('font-size', 'inherit');
               }
             }
@@ -231,6 +262,28 @@
 //            {"defaultContent": opthtm, className: 'hidden-print', "orderable": false},
             {render: loadOptions, className: 'hidden-print', "orderable": false},
           ],
+          "order": [[0, "asc"]],
+          "scrollY": "450px",
+          "scrollX": true,
+          "scrollCollapse": true,
+          "paging": true,
+        });
+
+    var search = $.fn.dataTable.util.throttle(
+      function (colIdx, val ) {
+        tbl
+        .column( colIdx )
+        .search( val )
+        .draw();
+      },
+      1000
+    );
+
+//    for Column search
+        tbl.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', tbl.column( colIdx ).footer() ).on( 'keyup change', function () {
+                search(colIdx, this.value);
+            });
         });
 
       $('.dataTables-teacher tbody').on( 'mouseenter', '[data-toggle="tooltip"]', function () {

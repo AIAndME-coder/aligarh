@@ -5,6 +5,22 @@
   @section('head')
   <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
   <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+  <style type="text/css">
+  .print-table {
+    width: 100%;
+  }
+  .print-table th,
+  .print-table td {
+    border: 1px solid black !important;
+    padding: 0px;
+  }
+  .print-table > tbody > tr > td {
+      padding: 1px;
+    }
+  .print-table > thead > tr > th {
+      padding: 3px;
+    }
+  </style>
   @endsection
 
   @section('content')
@@ -50,45 +66,22 @@
                             <div id="tab-10" class="tab-pane fade">
                                 <div class="panel-body">
                                   <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover dataTables-teacher" >
+                                    <table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
                                       <thead>
                                         <tr>
                                           <th>Name</th>
                                           <th>E-Mail</th>
                                           <th>Contact</th>
                                           <th>Address</th>
-                                          <th>Options</th>
+                                          <th width="60px">Options</th>
                                         </tr>
                                       </thead>
-                                      {{--
-                                      <tbody>
-                                        @foreach($teachers as $teacher)
-                                        <tr>
-                                            <td>{{ $teacher->name }}</td>
-                                            <td>{{ $teacher->email }}</td>
-                                            <td>{{ $teacher->phone }}</td>
-                                            <td>{{ $teacher->address }}</td>
-                                            <td>
-                                              <div class="btn-group">
-                                                <button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle" aria-expanded="true">Action <span class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#"><span class="fa fa-user"></span> Profile</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="{{ URL('teacher/edit/'.$teacher->id) }}"><span class="fa fa-edit"></span> Edit</a></li>
-                                                    <li><a href="#"><span class="fa fa-trash"></span> Delete</a></li>
-                                                </ul>
-                                              </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                      </tbody>
-                                      --}}
                                       <tfoot>
                                         <tr>
-                                          <th>Name</th>
-                                          <th>E-Mail</th>
-                                          <th>Contact</th>
-                                          <th>Address</th>
+                                          <th><input type="text" placeholder="Name..."></th>
+                                          <th><input type="text" placeholder="E-Mail..."></th>
+                                          <th><input type="text" placeholder="Contact..."></th>
+                                          <th><input type="text" placeholder="Address..."></th>
                                           <th>Options</th>
                                         </tr>
                                       </tfoot>
@@ -325,18 +318,23 @@
     tbl =   $('.dataTables-teacher').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
-            {extend: 'copy'},
-            {extend: 'csv'},
-            {extend: 'excel', title: 'Teacher List'},
-            {extend: 'pdf', title: 'Teacher List'},
+//            {extend: 'copy'},
+//            {extend: 'csv'},
+//            {extend: 'excel', title: 'Teacher List'},
+//            {extend: 'pdf', title: 'Teacher List'},
 
             {extend: 'print',
               customize: function (win){
                 $(win.document.body).addClass('white-bg');
-                $(win.document.body).css('font-size', '10px');
+                $(win.document.body).css('font-size', '12px');
 
                 $(win.document.body).find('table')
                 .addClass('compact')
+                .addClass('print-table')
+                .removeClass('table')
+                .removeClass('table-striped')
+                .removeClass('table-bordered')
+                .removeClass('table-hover')
                 .css('font-size', 'inherit');
               },
               exportOptions: {
@@ -356,7 +354,30 @@
 //            {"defaultContent": opthtm, className: 'hidden-print'},
             {render: loadOptions, className: 'hidden-print', "orderable": false},
           ],
+          "order": [[0, "asc"]],
+          "scrollY": "450px",
+          "scrollX": true,
+          "scrollCollapse": true,
+          "paging": true,
         });
+
+    var search = $.fn.dataTable.util.throttle(
+      function (colIdx, val ) {
+        tbl
+        .column( colIdx )
+        .search( val )
+        .draw();
+      },
+      1000
+    );
+
+//    for Column search
+        tbl.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', tbl.column( colIdx ).footer() ).on( 'keyup change', function () {
+                search(colIdx, this.value);
+            });
+        });
+
 
 /*
     for Column search
@@ -370,12 +391,6 @@
         });
 */
 
-/*      $('.dataTables-teacher tbody').on( 'mouseenter', '.edit-option', function () {
-    //    $(this).attr('href','{{ URL('teacher/edit') }}/'+tbl.row( $(this).parents('tr') ).data().id);
-        $(this).tooltip('show');
-      });
-
-*/
 
       $(".dataTables-teacher tbody").on('mouseenter', "[data-toggle='tooltip']", function(){
           $(this).tooltip('show');
