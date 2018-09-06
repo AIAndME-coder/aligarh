@@ -90,4 +90,16 @@ class Student extends Model {
 		return $this->hasMany('App\AdditionalFee');
 	}
 
+	public function StudentAttendance(){
+		return $this->hasMany('App\StudentAttendance');
+	}
+
+	public function StudentAttendanceByDate(){
+		return $this->hasOne('App\StudentAttendance');
+	}
+
+	public function Invoices(){
+		return $this->hasMany('App\InvoiceMaster');
+	}
+
 }

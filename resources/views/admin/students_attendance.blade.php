@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Students Attendence |')
+  @section('title', 'Students Attendance |')
 
   @section('head')
     <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -103,7 +103,7 @@
 
                                       <div class="form-group">
                                           <div class="col-md-offset-2 col-md-6">
-                                              <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendence </button>
+                                              <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendance </button>
                                           </div>
                                       </div>
 
@@ -139,7 +139,7 @@
                                               <td>
                                                 <input type="hidden" name="student_id[{{ $student->id }}]" value="{{ $student->id }}">
                                                 <div class="checkbox checkbox-success">
-                                                  <input id="checkbox{{ $student->id }}" class="selectAtt" type="checkbox" name="attendence{{ $student->id }}" value="1" {{ (isset($attendence[$student->id]->status) && $attendence[$student->id]->status)? 'checked' : '' }} />
+                                                  <input id="checkbox{{ $student->id }}" class="selectAtt" type="checkbox" name="attendance{{ $student->id }}" value="1" {{ (isset($student->StudentAttendanceByDate->status) && $student->StudentAttendanceByDate->status)? 'checked' : '' }} />
                                                   <label for="checkbox{{ $student->id }}">
                                                   </label>
                                                 </div>
@@ -151,7 +151,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-4 col-md-4">
-                                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendence </button>
+                                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendance </button>
                                             </div>
                                         </div>
 
@@ -314,11 +314,9 @@
         $('#mk_att_frm [name="class"]').val("{{ $input['class'] }}");
         $('[name="class"]').change();
         $('[name="section"]').val("{{ $input['section'] }}");
-        @if($root['job'] == 'report')
-          $('#rpt_att_frm [name="date"]').val("{{ $input['date'] }}");
-        @else
-          $('#mk_att_frm [name="date"]').val("{{ $input['date'] }}");
-        @endif
+
+        $('#mk_att_frm [name="date"]').val("{{ $input['date'] }}");
+
       @endif
 {{--
       @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
@@ -327,26 +325,10 @@
 
       @endif
 --}}
-      @if($root['job'] == 'report')
-        attendancerpt = {!! json_encode($attendence) !!};
-         console.log(attendancerpt);
-        $.each(attendancerpt, function(k, v){
-          $.each(v, function(i, d){
-            date = new Date(d.date);
-            day = date.getDate();
-/*            console.log(d);
-            alert(day);
-*/
-            prefix = (d.status)? 'P' : '<span class="text-danger">A</span>';
-            $('.std_'+k+'_dat_'+day).html(prefix);
-          });
-        });
-        $('.h').css('background', 'yellow').html('H');
-        $('.nav-tabs a[href="#tab-11"]').tab('show');
-      @else
+
+
 //        $('.nav-tabs a[href="#tab-11"]').tab('show');
         $('.nav-tabs a[href="#tab-10"]').tab('show');
-      @endif
 
         $('#datetimepicker4').datetimepicker({
                  format: 'DD/MM/YYYY'

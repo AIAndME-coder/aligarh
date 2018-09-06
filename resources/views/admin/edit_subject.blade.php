@@ -106,6 +106,21 @@
                                         </div>
                                       </div>
 
+                                      <div class="form-group{{ ($errors->has('examinable'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Examinable</label>
+                                        <div class="col-md-6">
+                                          <select class="form-control" name="examinable">
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                          </select>
+                                          @if ($errors->has('examinable'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('examinable') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="form-group">
                                           <div class="col-md-offset-2 col-md-6">
                                               <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Register </button>
@@ -160,8 +175,9 @@
             },
         });
 
-        $('#tchr_rgstr [name="teacher"]').val('{{ old('teacher', $subject['teacher_id']) }}');
+        $('#tchr_rgstr [name="teacher"]').val("{{ old('teacher', $subject['teacher_id']) }}");
         $('#tchr_rgstr [name="class"]').val("{{ old('class', $subject['class_id']) }}");
+        $('#tchr_rgstr [name="examinable"]').val("{{ old('examinable', $subject['examinable']) }}");
         $('.select2').select2({
                 placeholder: "Nothing Selected",
                 allowClear: true,

@@ -9,9 +9,12 @@ use App\AcademicSessionHistory;
 use App\ExamRemark;
 use App\Classe;
 use App\Exam;
+use App\AcademicSession;
 use App\Grade;
 use App\Subject;
 use App\Student;
+use App\StudentAttendance;
+use Auth;
 use Validator;
 
 class ExamReportController extends Controller
@@ -69,9 +72,16 @@ class ExamReportController extends Controller
 			'class_id'	=>	$this->data['selected_class']->id,
 		])->with(['Student'	=>	function($qry){
 			$qry->select('id', 'name', 'gr_no', 'father_name');
+			$qry->with(['StudentAttendance' => function ($qry){
+				$qry->select('id', 'student_id', 'status', 'date');
+				$qry->GetAttendanceForExam($this->data['selected_exam']);
+			}]);
 		}])->with(['StudentResult'	=>	function($qry){
 			$qry->with('Subject')->with('SubjectResultAttribute')->orderBy('subject_result_attribute_id');
 		}])->get();
+
+
+//		dd($this->data['selected_exam']);
 
 		return view('admin.printable.exam_tabulation_sheet', $this->data);
 
@@ -159,7 +169,21 @@ class ExamReportController extends Controller
 		}
 
 		$this->data['selected_exams']	=	Exam::wherein('category_id', $exam_category[$request->input('exam')])->CurrentSession()->with('AcademicSession')->get();
+		
 		$this->data['student']			=	Student::findOrFail($request->input('student_id'));
+		$this->data['attendance']['total']		=	StudentAttendance::select('id', 'student_id', 'status', 'date')
+												->where('student_id', $this->data['student']->id)
+												->whereBetween('date', [$this->data['selected_exams'][0]->getOriginal('start_date'), $this->data['selected_exams'][1]->getOriginal('end_date')])
+//												->whereBetween('date', ['2018-04-01', '2019-03-31'])
+												->get();
+		$this->data['attendance']['first_exam']	=	StudentAttendance::select('id', 'student_id', 'status', 'date')
+													->where('student_id', $this->data['student']->id)
+													->whereBetween('date', [$this->data['selected_exams'][0]->getOriginal('start_date'), $this->data['selected_exams'][0]->getOriginal('end_date')])
+													->get();
+		$this->data['attendance']['second_exam']	=	StudentAttendance::select('id', 'student_id', 'status', 'date')
+														->where('student_id', $this->data['student']->id)
+														->whereBetween('date', [$this->data['selected_exams'][1]->getOriginal('start_date'), $this->data['selected_exams'][1]->getOriginal('end_date')])
+														->get();
 		$AcademicSessionHistory			=	AcademicSessionHistory::where('student_id', $this->data['student']->id)->CurrentSession()->with('classe')->first();
 		$this->data['student_class']	=	$AcademicSessionHistory->classe;
 		foreach ($this->data['selected_exams'] as $key => $value) {

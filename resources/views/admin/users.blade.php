@@ -7,6 +7,23 @@
   <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
   <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+    <style type="text/css">
+  .print-table {
+    width: 100%;
+  }
+  .print-table th,
+  .print-table td {
+    border: 1px solid black !important;
+    padding: 0px;
+  }   
+
+  .print-table > tbody > tr > td {
+      padding: 1px;
+    }
+  .print-table > thead > tr > th {
+      padding: 3px;
+    }
+  </style>
   @endsection
 
   @section('content')
@@ -313,20 +330,29 @@
         tbl = $('.dataTables-user').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
-            { extend: 'copy'},
-            {extend: 'csv'},
-            {extend: 'excel', title: 'ExampleFile'},
-            {extend: 'pdf', title: 'ExampleFile'},
+//            { extend: 'copy'},
+//            {extend: 'csv'},
+//            {extend: 'excel', title: 'ExampleFile'},
+//            {extend: 'pdf', title: 'ExampleFile'},
 
             {extend: 'print',
               customize: function (win){
                 $(win.document.body).addClass('white-bg');
-                $(win.document.body).css('font-size', '10px');
+                $(win.document.body).css('font-size', '12px');
 
                 $(win.document.body).find('table')
+                .addClass('print-table')
+                .removeClass('table')
+                .removeClass('table-striped')
+                .removeClass('table-bordered')
+                .removeClass('table-hover')
                 .addClass('compact')
                 .css('font-size', 'inherit');
-              }
+              },
+              exportOptions: {
+                columns: [ 0, 1, 2]
+              },
+              title: "Users | {{ config('systemInfo.title') }}",
             }
           ],
           Processing: true,

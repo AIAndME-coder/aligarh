@@ -81,7 +81,7 @@
                                                     <td>{{ $subject->book }}</td>
                                                     <td>{{ $subject->teacher_name }}</td>
                                                     <td class="edit-subject">
-                                                      <a href="{{ URL('manage-subjects/edit/'.$subject->id) }}" data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-option">
+                                                      <a href="{{ URL('manage-subjects/edit/'.$subject->id) }}" data-toggle="tooltip" title="Edit" class="btn btn-circle btn-xs edit-option {{ ($subject->examinable)? 'btn-primary' : 'btn-default' }}">
                                                         <span class="fa fa-edit"></span>
                                                       </a>
                                                     </td>
@@ -160,6 +160,21 @@
                                           @if ($errors->has('teacher'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('teacher') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
+                                      <div class="form-group{{ ($errors->has('examinable'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Examinable</label>
+                                        <div class="col-md-6">
+                                          <select class="form-control" name="examinable">
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                          </select>
+                                          @if ($errors->has('examinable'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('examinable') }}</strong>
                                               </span>
                                           @endif
                                         </div>

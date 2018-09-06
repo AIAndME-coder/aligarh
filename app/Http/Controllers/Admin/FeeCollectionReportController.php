@@ -138,27 +138,32 @@ class FeeCollectionReportController extends Controller
 			}
 		}
 
-		$classes =	$qryClasses->get();
+		$classes =	$qryClasses->with(['Section'	=>	function($qry){
+			$qry->with(['Students'	=>	function($qry){
+				$qry->Active();
+				$qry->with(['Invoices'	=>	function($qry){
+					$qry->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']]);
+				}]);
+				$qry->with('AdditionalFee');
+			}]);
+		}])->get();
 
 		$this->data['unpaid_fee_statment'] = [];
 		foreach ($classes as $key => $class) {
-			$sections	=	$qrySections->where('class_id', $class->id)->get();
-			foreach ($sections as $k => $section) {
 
-				$students = Student::where('students.class_id', $class->id)
-								->where('students.section_id', $section->id)
-								->Active()->get();
+			foreach ($class->Section as $k => $section) {
 
-				foreach ($students as $key => $student) {
-					$this->data['stdinvoices'][$student->id] = InvoiceMaster::where('student_id', $student->id)
-											->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']])
-											->get();
+				foreach ($section->Students as $key => $student) {
 
-					$month = $this->data['betweendates']['start'];
-
+					if ($student->getOriginal('date_of_admission') > $this->data['session']->getOriginal('from')) {
+						$month = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_admission'))->startOfMonth()->toDateString();
+					} else {
+						$month = $this->data['betweendates']['start'];
+					}
+					$repetStd = false;
 					while ($month <= $this->data['betweendates']['end']) {
 
-						$invoice = $this->data['stdinvoices'][$student->id]->where('payment_month', Carbon::createFromFormat('Y-m-d', $month)->format('M-Y'));
+						$invoice = $student->Invoices->where('payment_month', Carbon::createFromFormat('Y-m-d', $month)->format('M-Y'));
 						if ($invoice->count()	<=	0) {
 
 							if (empty($this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name])) {
@@ -171,8 +176,9 @@ class FeeCollectionReportController extends Controller
 															'name'	=>	$student->name,
 															'father_name'	=>	$student->father_name,
 															'month'	=>	Carbon::createFromFormat('Y-m-d', $month)->format('M-Y'), 
-															'amount'	=>	$student->net_amount,
+															'amount'	=>	$this->CalculateFee($student, $repetStd),
 														]);
+							$repetStd = true;
 						}
 						$month = Carbon::createFromFormat('Y-m-d', $month)->addMonth()->format('Y-m-d');
 					}
@@ -183,6 +189,16 @@ class FeeCollectionReportController extends Controller
 		$this->data['unpaid_fee_statment'] = collect($this->data['unpaid_fee_statment']);
 		return view('admin.printable.unpaid_fee_statment', $this->data);
 
+	}
+
+	private function CalculateFee($student, $repeatStd){
+		if ($repeatStd) {
+			$tot = $student->tuition_fee;
+			$tot += $student->AdditionalFee->where('onetime', 0)->SUM('amount');
+			$tot -= $student->discount;
+			return $tot;
+		}
+		return $student->net_amount;
 	}
 
 

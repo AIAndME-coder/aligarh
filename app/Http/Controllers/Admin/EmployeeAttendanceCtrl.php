@@ -18,7 +18,7 @@ class EmployeeAttendanceCtrl extends Controller
 {
 
 	//  protected $Routes;
-	protected $data, $Attendence, $Request;
+	protected $data, $Attendance, $Request;
 
 	public function __Construct($Routes, $Request){
 		$this->data['root'] = $Routes;
@@ -94,7 +94,7 @@ class EmployeeAttendanceCtrl extends Controller
 
 		$this->data['input'] = $this->Request->input();
 		$this->data['dbdate']['noofdays'] = $dbdate->endOfMonth()->day;
-//		return response($this->data['attendence']);
+//		return response($this->data['attendance']);
 		return $this->Index();
 	}
 

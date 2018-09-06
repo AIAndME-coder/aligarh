@@ -56,7 +56,7 @@
 
 	<div class="row">
 	<h3 class="text-center">{{ config('systemInfo.title') }}</h3>
-	<h4>Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h4>
+	<h4>Attendance Of Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h4>
 	<h4>No Of Students: {{ COUNT($students) }}</h3>
 	<h4>Teacher: {{ $selected_class->Teacher->name or '' }}</h3>
 		<table id="rpt-att" class="table table-bordered">
@@ -80,12 +80,12 @@
 					<td>{{ $student->name }}</td>
 					<td>{{ $student->gr_no }}</td>
 					@for($i=1; $i <= $noofdays; $i++)
-					<td  class="std_{{ $student->id }}_dat_{{ $i }} col_dat_{{ $i }} {{ in_array($i, $weekends)? 'h' : '' }}"></td>
+						<td  class="std_{{ $student->id }}_dat_{{ $i }} col_dat_{{ $i }} {{ in_array($i, $weekends)? 'h' : '' }}"></td>
 					@endfor
 					<td>{{ $noofweekends }}</td>
 					<td class="std_{{ $student->id }}_a"></td>
 					<td class="std_{{ $student->id }}_p"></td>
-					<td>{{ $noofdays-$noofweekends }}</td>
+					<td class="std_{{ $student->id }}_r"></td>
 					<td class="std_{{ $student->id }}_percent"></td>
 				</tr>
 				@endforeach
@@ -130,13 +130,13 @@
 		el: '#app',
 		data: { 
 			students: {!! json_encode($students, JSON_NUMERIC_CHECK) !!},
-			attendancerpt: {!! json_encode($attendence, JSON_NUMERIC_CHECK) !!},
 			noofdays: {!! json_encode($noofdays, JSON_NUMERIC_CHECK) !!},
+			weekends: {!! json_encode($weekends, JSON_NUMERIC_CHECK) !!}
 		},
 
 		mounted: function(){
 			this.checkattendance(this.noofdays);
-			this.calcattendence();
+			this.calcattendance();
 			$('tbody .h').html('H');
 //			$('.h').css('background', 'yellow');
 			window.print();
@@ -144,32 +144,34 @@
 
 		methods: {
 			checkattendance: function(noofdays){
-				$.each(this.attendancerpt, function(k, v){
+				this.students.forEach(function(v, k){
 					totp = 0;
 					tota = 0;
-					$.each(v, function(i, d){
+					totr = 0;
+					$.each(v.student_attendance, function(i, d){
 						date = new Date(d.date);
 						day = date.getDate();
-						/*            console.log(d);
-						alert(day);
-						*/
 						if(d.status){
 							prefix = 'P';
 							totp++;
 						} else {
 							prefix =	'<span class="text-danger">A</span>';
+							tota++
 						}
-						$('.std_'+k+'_dat_'+day).html(prefix);
+						$('.std_'+v.id+'_dat_'+day).html(prefix);
+						totr++;
 					});
 //					this.attendancerpt.k.noofpresent = totp;
-					tota = noofdays-({{ COUNT($weekends) }}+totp);
-					$('.std_'+k+'_p').html(totp);
-					$('.std_'+k+'_a').html(tota);
-					$('.std_'+k+'_percent').html(((totp/noofdays)*100).toFixed(1)+'%');
-
+					$('.std_'+v.id+'_a').html(tota);
+					$('.std_'+v.id+'_p').html(totp);
+					$('.std_'+v.id+'_r').html(totr);
+//					$('.std_'+v.id+'_percent').html(((totp/noofdays)*100).toFixed(1)+'%');
+					if (totr) {	
+						$('.std_'+v.id+'_percent').html(((totp/totr)*100).toFixed(1)+'%');
+					}
 				});
 			},
-			calcattendence: function(){
+			calcattendance: function(){
 
 				for (var i = this.noofdays; i >= 0; i--) {
 					p = 0;
@@ -178,13 +180,17 @@
 					$('.col_dat_'+i).each(function(v){
 						if ($(this).text() == 'P') {
 							p++;
-						} else {
+						} else if ($(this).text() == 'A') {
 							a++;
 						}
 					});
+					r = p+a;
 					$('.p_std_dat_'+i).html(p);
 					$('.a_std_dat_'+i).html(a);
-					$('.percent_std_dat_'+i).html(((p/{{ COUNT($students) }})*100).toFixed(1)+'%');
+//					$('.percent_std_dat_'+i).html(((p/this.students.length)*100).toFixed(1)+'%');
+					if(r > 0){	
+						$('.percent_std_dat_'+i).html(((p/r)*100).toFixed(1)+'%');
+					}
 				}
 
 			}

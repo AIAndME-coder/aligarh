@@ -30,7 +30,7 @@ class ManageSubjects extends Controller
 		foreach ($this->data['classes'] as $key => $class) {
 		$this->data['subjects']['class_'.$class->id] = DB::table('subjects')
 			->leftjoin('teachers', 'subjects.teacher_id', '=', 'teachers.id')
-			->select('subjects.name', 'subjects.book', 'subjects.id', 'teachers.name AS teacher_name')
+			->select('subjects.name', 'subjects.book', 'subjects.id', 'subjects.examinable', 'teachers.name AS teacher_name')
 			->where('subjects.class_id', '=', $class->id)
 			->get();
 		}
@@ -117,6 +117,7 @@ class ManageSubjects extends Controller
 	protected function SetAttributes(){
 		$this->Subjects->name = $this->Request->input('name');
 		$this->Subjects->book = $this->Request->input('book');
+		$this->Subjects->examinable	=	$this->Request->input('examinable');
 		$this->Subjects->teacher_id = $this->Request->input('teacher');
 		$this->Subjects->class_id = $this->Request->input('class');
 	}

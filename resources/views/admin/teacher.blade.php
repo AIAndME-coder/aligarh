@@ -339,7 +339,8 @@
               },
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
-              }
+              },
+              title: "Teachers | {{ config('systemInfo.title') }}",
             }
           ],
           Processing: true,

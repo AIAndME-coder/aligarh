@@ -541,7 +541,8 @@
               },
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
-              }
+              },
+              title: "Students | {{ config('systemInfo.title') }}",
             }
           ],
           Processing: true,

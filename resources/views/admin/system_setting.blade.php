@@ -103,7 +103,10 @@
 																			<div class="form-group{{ ($errors->has('contact_no'))? ' has-error' : '' }}">
 																				<label class="col-md-2 control-label">Contact No</label>
 																				<div class="col-md-6">
-																					<input type="text" name="contact_no" value="{{ old('contact_no', config('systemInfo.contact_no')) }}" placeholder="Contact No" class="form-control" data-mask="(999) 999-9999"/>
+																					<div class="input-group m-b">
+																						<span class="input-group-addon">+92</span>
+																						<input type="text" name="contact_no" value="{{ old('contact_no', config('systemInfo.contact_no')) }}" placeholder="Contact No" class="form-control" data-mask="9999999999"/>
+																					</div>
 																					@if ($errors->has('contact_no'))
 																							<span class="help-block">
 																									<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('contact_no') }}</strong>

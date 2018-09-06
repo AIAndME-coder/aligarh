@@ -34,7 +34,7 @@ class ManageStudentResultCtrl extends Controller
 		$this->data['exams'] = Exam::Active()->get();
 		$this->data['classes'] = Classe::select('id', 'name')->get();
 		foreach ($this->data['classes'] as $key => $class) {
-			$this->data['subjects']['class_'.$class->id] = Subject::select('name', 'id')->where(['class_id' => $class->id])->get();
+			$this->data['subjects']['class_'.$class->id] = Subject::select('name', 'id')->where(['class_id' => $class->id])->Examinable()->get();
 		}
 		return view('admin.manage_result', $this->data);
 	}

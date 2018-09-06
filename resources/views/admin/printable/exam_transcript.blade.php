@@ -77,7 +77,7 @@
 						<h4> S/O - D/O: <u> @{{ student.father_name }} </u></h4>
 					</td>
 					<td>
-						<h4>Attendance: ____________________</h4>
+						<h4>Attendance: <u>@{{ StudentAttendance(attendance.total)+'/'+attendance.total.length }}</u></h4>
 					</td>
 				</tr>
 			</tbody>
@@ -143,6 +143,14 @@
 					<th colspan="3">@{{ (!isNaN(grand_total.total_percentage[1]))? grand_total.total_percentage[1]+'%' : '-' }}</th>
 					<th colspan="3">@{{ grand_total.total_percentage[2]+'%' }}</th>
 					
+				</tr>
+
+				<tr>
+					<th>Attendance</th>
+
+					<th colspan="3">@{{ StudentAttendance(attendance.first_exam)+'/'+attendance.first_exam.length }}</th>
+					<th colspan="3">@{{ StudentAttendance(attendance.second_exam)+'/'+attendance.second_exam.length }}</th>
+					<th colspan="3">@{{ StudentAttendance(attendance.total)+'/'+attendance.total.length }}</th>
 				</tr>
 
 				<tr>
@@ -226,6 +234,7 @@
 			special: ['zeroth','first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelvth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth'],
 			deca: ['twent', 'thirt', 'fourt', 'fift', 'sixt', 'sevent', 'eight', 'ninet'],
 			student: {!! json_encode($student, JSON_NUMERIC_CHECK) !!},
+			attendance: {!! json_encode($attendance, JSON_NUMERIC_CHECK) !!},
 			selected_exams: {!! json_encode($selected_exams, JSON_NUMERIC_CHECK) !!},
 			results: {!! json_encode($results, JSON_NUMERIC_CHECK) !!},
 			grades: {!! json_encode($grades, JSON_NUMERIC_CHECK) !!},
@@ -242,6 +251,9 @@
 					true, true, true
 				],
 			},
+		},
+		computed: {
+
 		},
 		mounted: function(){
 			if (this.results[0]) {
@@ -303,6 +315,9 @@
 				if (n < 20) return this.special[n];
 				if (n%10 === 0) return this.deca[Math.floor(n/10)-2] + 'ieth';
 				return this.deca[Math.floor(n/10)-2] + 'y-' + this.special[n%10];
+			},
+			StudentAttendance: function(attendance){
+				return	_.filter(attendance, function(atten) { if (atten.status) return atten }).length;
 			},
 			compute_result:		function(){
 

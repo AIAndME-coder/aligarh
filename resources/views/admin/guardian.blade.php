@@ -247,7 +247,11 @@
                 .removeClass('table-bordered')
                 .removeClass('table-hover')
                 .css('font-size', 'inherit');
-              }
+              },
+              exportOptions: {
+                columns: [ 0, 1, 2, 3]
+              },
+              title: "Guardians | {{ config('systemInfo.title') }}",
             }
           ],
           Processing: true,

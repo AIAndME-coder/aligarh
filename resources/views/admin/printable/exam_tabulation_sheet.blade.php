@@ -64,6 +64,7 @@
 						<th rowspan="2">SI No</th>
 						<th rowspan="2">GR No</th>
 						<th rowspan="2">Student Name</th>
+						<th rowspan="2">Atten</th>
 
 						<th v-for="subject in subject_result_attributes" :colspan="(subject.attributes.length == 1)? 2 : subject.attributes.length + 2">@{{ subject.subject.name }}</th>
 
@@ -89,6 +90,7 @@
 							<td>@{{ k+1 }}</td>
 							<td>@{{ student.gr_no }}</td>
 							<td>@{{ student.name }}</td>
+							<td>@{{ student.student_atten+'/'+student.total_atten }}</td>
 							<template v-for="result in student.result">
 								<template v-for="mark in result.obtain_marks">
 									<td v-if="mark.attendance">@{{ mark.marks }}</td>
@@ -149,6 +151,8 @@
 					id: this.transcripts[k].id,
 					total_marks: this.transcripts[k].student_result.reduce((a, b) => a + Number(b.subject_result_attribute.total_marks), 0),
 					total_obtain_marks: this.transcripts[k].student_result.reduce((a, b) => a + Number(b.total_obtain_marks), 0),
+					student_atten: _.filter(this.transcripts[k].student.student_attendance, function(atten) { if (atten.status) return atten }).length,
+					total_atten: this.transcripts[k].student.student_attendance.length,
 					percentage: 0,
 					rank:	0,
 					result: {},

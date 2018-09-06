@@ -24,7 +24,11 @@ class ManageSections extends Controller
   public function GetSections(){
 
     $this->data['teachers'] = Teacher::select('name', 'id')->get();
-    $this->data['classes'] = Classe::select('name', 'id')->orderBy('numeric_name')->get();
+    $this->data['classes'] = Classe::select('name', 'id')->orderBy('numeric_name')->with(['Section' => function($qry){
+      $qry->with(['Students' => function($qry){
+        $qry->Active();
+      }])->with('Teacher');
+    }])->get();
 
     return view('admin.sections', $this->data);
 

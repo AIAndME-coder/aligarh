@@ -69,7 +69,7 @@
 
                                       <div class="form-group">
                                           <div class="col-md-offset-2 col-md-6">
-                                              <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendence </button>
+                                              <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendance </button>
                                           </div>
                                       </div>
 
@@ -117,7 +117,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-4 col-md-4">
-                                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendence </button>
+                                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Make Attendance </button>
                                             </div>
                                         </div>
 
