@@ -138,6 +138,18 @@ class ManageStudentResultCtrl extends Controller
 		return $array;
 	}
 
+	public function RemoveResult($request){
+		SubjectResultAttribute::findOrFail($request->input('SavedResultId'))->delete();
+		StudentResult::where('subject_result_attribute_id', $request->input('SavedResultId'))->delete();
+		return redirect('manage-result')->with([
+									'toastrmsg' => [
+										'type'	=> 'success', 
+										'title'	=>  'Student Results',
+										'msg'	=>  'Deleted Results Successfull'
+									]
+								]); 
+	}
+
 	public function ResultAttributes(){
 		$this->validate($this->Request, [
 			'exam'  	=>  'required',

@@ -105,6 +105,7 @@ return [
 	16 => [
 		'default'	=>	0,
 		'make'		=>	0,
+		'remove'		=>	0,
 		'resultattributes'	=>	0,
 		'maketranscript'	=>	1,
 		],

@@ -112,7 +112,11 @@
 
 									@if($root['job'] == 'make')
 									<div class="row">
-									  <h3>Exam: {{ $selected_exam->name }}, Class: {{ $selected_class->name }} ({{ $selected_subject->name }})</h3>
+										<form v-if="SavedResultId > 0" id="SavedResultRemoveForm" method="POST" action="{{ URL('manage-result/remove') }}">
+											{{ csrf_field() }}
+											<input type="hidden" name="SavedResultId" :value="SavedResultId">
+										</form>
+									  <h3>Exam: {{ $selected_exam->name }}, Class: {{ $selected_class->name }} ({{ $selected_subject->name }})<button v-if="SavedResultId > 0" @click="removeResult()" class="pull-right btn btn-danger" title="Remove" data-toggle="tooltip"><span class="fa fa-trash"></span></button></h3>
 									  <div class="hr-line-dashed"></div>
 
 									  <form action="{{ URL('manage-result/make') }}" class="form-horizontal" method="POST">
@@ -348,10 +352,10 @@
 	  $('[name="class"]').on('change', function(){
 		clsid = $(this).val();
 		$('[name="class"]').val(clsid);
-		  $('[name="subject"]').html('<option></option>');
+		  $('select[name="subject"]').html('<option></option>');
 		  if(subjects['class_'+clsid].length > 0 && clsid > 0){          
 			$.each(subjects['class_'+clsid], function(k, v){
-			  $('[name="subject"]').append('<option value="'+v['id']+'">'+v['name']+'</option>');
+			  $('select[name="subject"]').append('<option value="'+v['id']+'">'+v['name']+'</option>');
 			});
 		  }
 	  });
@@ -360,14 +364,14 @@
 		$('[name="class"]').val("{{ old('class') }}");
 		$('[name="class"]').change();
 		$('[name="exam"]').val("{{ old('exam') }}");
-		$('[name="subject"]').val('{{ old('subject') }}');
+		$('select[name="subject"]').val('{{ old('subject') }}');
 
 	  @elseif(isset($input) && $input !== null)
 		$('[name="class"]').val("{{ $input['class'] }}");
 		$('[name="class"]').change();
 		$('[name="exam"]').val("{{ $input['exam'] }}");
 		@if($root['job'] == 'make')
-		$('[name="subject"]').val("{{ $input['subject'] }}");
+		$('select[name="subject"]').val("{{ $input['subject'] }}");
 		@endif
 	  @endif
 
@@ -399,7 +403,12 @@
 			el:	'#app',
 			data:	{
 				students: {!! json_encode($students) !!},
-				ResutlAttributes: {!! (COUNT($result_attribute) > 0)? json_encode($result_attribute->attributes) : json_encode([['name'=>'','marks'=>0]]) !!},
+				ResutlAttributes: {!! (COUNT($result_attribute) > 0)? json_encode($result_attribute->attributes, JSON_NUMERIC_CHECK) : json_encode([['name'=>'','marks'=>0]]) !!},
+				@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->remove)
+					SavedResultId: {{ $result_attribute->id or 0 }},
+				@else
+					SavedResultId: 0,
+				@endif
 				std: {},
 				computedStudents: []
 			},
@@ -434,6 +443,11 @@
 				},
 				tooltipdestroy: function(){
 					$(event.target).tooltip('destroy');
+				},
+				removeResult: function(){
+					if(confirm('Are You sure to Delete Result!')){	
+						$("#SavedResultRemoveForm").submit();
+					}
 				}
 			},
 			computed: 	{
