@@ -51,6 +51,9 @@
                             <div class="ibox-content profile-content">
                                 <h4><strong>{{ $student->name }}</strong></h4>
                                 <p><i class="fa fa-map-marker"></i> {{ $student->address }}</p>
+                                @if($student->active == 0)
+                                <p><b>Date Of Leaving:</b> {{  $student->date_of_leaving }}</p>
+                                @endif
                             </div>
                         </div>
                     </div>

@@ -57,7 +57,7 @@ class ManageStudentResultCtrl extends Controller
 													'subject_id'	=>	$this->Input['subject']
 												])->first();
 
-		$this->data['students']	=	Student::select('id', 'name', 'gr_no')->where(['class_id' => $this->Input['class']])->CurrentSession()->Active();
+		$this->data['students']	=	Student::select('id', 'name', 'gr_no')->where(['class_id' => $this->Input['class']])->CurrentSession()->Active()->orderBy('name');
 
 		if ($this->data['result_attribute']) {
 			$this->data['students']->with(['StudentSubjectResult' => function($query){

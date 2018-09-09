@@ -107,7 +107,11 @@ class FeeCollectionReportController extends Controller
 
 
 	public function FreeshipStudents(Request $Request){
-		$this->data['classes'] = Classe::all();
+		$this->data['classes'] = Classe::with(['Section'	=>	function($qry){
+			$qry->with(['Students'	=>	function($qry){
+				$qry->WithDiscount()->Active()->CurrentSession()->OrderBy('name');
+			}]);
+		}])->get();
 //		$this->data['session'] = AcademicSession::find(Auth::user()->academic_session);
 		return view('admin.printable.list_freeship_students', $this->data);
 	}
@@ -140,7 +144,7 @@ class FeeCollectionReportController extends Controller
 
 		$classes =	$qryClasses->with(['Section'	=>	function($qry){
 			$qry->with(['Students'	=>	function($qry){
-				$qry->Active();
+//				$qry->Active();
 				$qry->with(['Invoices'	=>	function($qry){
 					$qry->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']]);
 				}]);
@@ -161,6 +165,9 @@ class FeeCollectionReportController extends Controller
 						$month = $this->data['betweendates']['start'];
 					}
 					$repetStd = false;
+					if($this->data['betweendates']['end'] > $student->getOriginal('date_of_leaving') && $student->getOriginal('date_of_leaving')){
+						$this->data['betweendates']['end'] = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_leaving'))->startOfMonth()->toDateString();
+					}
 					while ($month <= $this->data['betweendates']['end']) {
 
 						$invoice = $student->Invoices->where('payment_month', Carbon::createFromFormat('Y-m-d', $month)->format('M-Y'));

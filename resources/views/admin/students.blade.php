@@ -487,7 +487,7 @@
 
     function loadOptions(data, type, full, meta) {
 
-       opthtm = '<a href="{{ URL('students/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
+       opthtm = '<a href="{{ URL('students/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-'+((full.active == 1)? 'default' : 'danger') +' btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
 
         @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit)
           opthtm += '<a href="{{ URL('students/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Student" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';

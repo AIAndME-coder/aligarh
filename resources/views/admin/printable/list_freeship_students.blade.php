@@ -1,5 +1,5 @@
 @extends('admin.layouts.printable')
-@section('title', 'Fee Receipts Statment | ')
+@section('title', 'Full & Half Freeship Statment | ')
 
 @section('head')
 
@@ -63,7 +63,7 @@
 
 		@foreach($classes AS $class)
 			@foreach($class->Section AS $section)
-				@if($section->Students()->WithDiscount()->Active()->CurrentSession()->count())
+				@if($section->Students->count())
 				<h4>{{ $class->name }} {{ $section->nick_name }}</h4>
 				<table id="rpt-att" class="table table-bordered">
 					<thead>
@@ -78,7 +78,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($section->Students()->WithDiscount()->Active()->CurrentSession()->OrderBy('name')->get() AS $student)
+						@foreach($section->Students AS $student)
 						<tr>
 							<td>{{ $student->gr_no }}</td>
 							<td>{{ $student->name }}</td>

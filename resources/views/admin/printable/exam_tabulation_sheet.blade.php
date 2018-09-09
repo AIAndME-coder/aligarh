@@ -86,7 +86,7 @@
 				</thead>
 				<tbody>
 					<template v-for="(student, k) in computed_transcripts" :key="student.id">
-						<tr>
+						<tr v-if="student.result.length">
 							<td>@{{ k+1 }}</td>
 							<td>@{{ student.gr_no }}</td>
 							<td>@{{ student.name }}</td>

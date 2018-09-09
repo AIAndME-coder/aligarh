@@ -109,18 +109,9 @@
 				<tr>
 					<th colspan="3" class="text-right">Total</th>
 					<td>{{ $annualfeeses->sum('amount') }}</td>
-					<td>{{ $statment->sum('april') }}</td>
-					<td>{{ $statment->sum('may') }}</td>
-					<td>{{ $statment->sum('jun') }}</td>
-					<td>{{ $statment->sum('july') }}</td>
-					<td>{{ $statment->sum('aug') }}</td>
-					<td>{{ $statment->sum('sept') }}</td>
-					<td>{{ $statment->sum('oct') }}</td>
-					<td>{{ $statment->sum('nov') }}</td>
-					<td>{{ $statment->sum('dec') }}</td>
-					<td>{{ $statment->sum('jan') }}</td>
-					<td>{{ $statment->sum('feb') }}</td>
-					<td>{{ $statment->sum('march') }}</td>
+					@foreach($months AS $k => $month)
+						<td>{{ ($statment->sum($k)	-	$annualfeeses->where('payment_month', '=', $month)->sum('amount')) }}</td>
+					@endforeach
 					<td>{{ $statment->sum('total_amount') }}</td>
 				</tr>
 			</tfoot>
