@@ -78,8 +78,16 @@
                                         <tr>
                                           <th>GR No</th>
                                           <th>Name</th>
+                                          <th>Father Name</th>
+                                          <th>Religion</th>
                                           <th>Contact</th>
                                           <th>Address</th>
+                                          <th>Birth Date</th>
+                                          <th>Place Of Birth</th>
+                                          <th>Last School</th>
+                                          <th>Admission Date</th>
+                                          <th>Remove Date</th>
+                                          <th>Cause Of Removal</th>
                                           <th>Active</th>
                                           <th>Options</th>
                                         </tr>
@@ -88,8 +96,16 @@
                                         <tr>
                                           <th><input type="text" placeholder="Gr No..." autocomplete="off"></th>
                                           <th><input type="text" placeholder="Name..." autocomplete="off"></th>
+                                          <th><input type="text" placeholder="Father Name..." autocomplete="off"></th>
+                                          <th><input type="text" placeholder="Religion..." autocomplete="off"></th>
                                           <th><input type="text" placeholder="Contact..." autocomplete="off"></th>
                                           <th><input type="text" placeholder="Address..." autocomplete="off"></th>
+                                          <th>DOB</th>
+                                          <th>Place Of Birth</th>
+                                          <th>Last School</th>
+                                          <th>Admission Date</th>
+                                          <th>Remove Date</th>
+                                          <th>Cause Of Removal</th>
                                           <th></th>
                                           <th>
                                             <select id="filterActive">
@@ -465,6 +481,8 @@
 
     <script src="{{ URL::to('src/js/plugins/dataTables/datatables.min.js') }}"></script>
 
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+
     <script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
 
     <!-- Input Mask-->
@@ -549,10 +567,11 @@
                 .css('font-size', 'inherit');
               },
               exportOptions: {
-                columns: [ 0, 1, 2, 3]
+                columns: ":visible"
               },
               title: "Students | {{ config('systemInfo.title') }}",
-            }
+            },
+            'colvis'
           ],
           Processing: true,
           serverSide: true,
@@ -560,8 +579,16 @@
           columns: [
             {data: 'gr_no', name: 'students.gr_no'},
             {data: 'name', name: 'students.name'},
+            {data: 'father_name', name: 'students.father_name'},
+            {data: 'religion', name: 'students.religion', visible: false},
             {data: 'phone', name: 'students.phone'},
             {data: 'address', name: 'students.address'},
+            {data: 'date_of_birth', name: 'students.date_of_birth'},
+            {data: 'place_of_birth', name: 'students.place_of_birth'},
+            {data: 'last_school', name: 'students.last_school'},
+            {data: 'date_of_admission', name: 'students.date_of_admission'},
+            {data: 'date_of_leaving', name: 'students.date_of_leaving', visible: false},
+            {data: 'cause_of_leaving', name: 'students.cause_of_leaving', visible: false},
             {data: 'active', name: 'students.active', visible: false},
 //            {"defaultContent": opthtm, className: 'hidden-print'},
             {render: loadOptions, className: 'hidden-print', "orderable": false},
@@ -603,7 +630,7 @@
             });
         });
         $("#filterActive").on('change', function(){
-          search(4, this.value);
+          search((tbl.columns.length-2), this.value);
         });
 
 
