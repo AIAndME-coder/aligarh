@@ -1,5 +1,5 @@
 @extends('admin.layouts.printable')
-@section('title', 'Student Chalan | ')
+@section('title', 'Student Challan | ')
 
 @section('head')
 
@@ -60,19 +60,19 @@
 			<table style="width: 100%">
 				<tbody>
 					<tr>
-						<td class="text-center">Bunglo No 1/18-A (Big Plot)</td>
+						<td class="text-center">Bungalow No 1/18-A (Big Plot)</td>
 					</tr>
 					<tr>
 						<td class="text-center">Shah Faisal Colony, Karachi. Tel 021-34596866</td>
 					</tr>
 					<tr style="border-top:1px solid black">
-						<td>Bank: JS Bank</td>
+						<td>Bank: Bank Islami.</td>
 					</tr>
 					<tr>
-						<td>Plot# CB-34, Shah Fsisal Colony, Karachi</td>
+						<td>Shah Fsisal Colony No 3 Branch.</td>
 					</tr>
 					<tr>
-						<td>Account No. 538909</td>
+						<td>Account No. 1155-0000850-0001.</td>
 					</tr>
 				</tbody>
 			</table>
@@ -81,9 +81,9 @@
 		<div id="stdcopy">
 			<table style="margin-top: 15px">
 				<tbody>
-					<tr><td width="300px">R.No. <u>{{ config('systemInfo.next_chalan_no') }}</u></td><td width="200px">Issue Date. <u>{{ Carbon\Carbon::createFromFormat('Y-m-d', $issue_date)->Format('d-m-Y') }}</u></td></tr>
+					<tr><td width="250px">R.No. <u>{{ config('systemInfo.next_chalan_no') }}</u></td><td width="250px">Issue Date. <u>{{ Carbon\Carbon::createFromFormat('Y-m-d', $issue_date)->Format('d-m-Y') }}</u></td></tr>
 					<tr><td></td><td>Due Date. <u>{{ Carbon\Carbon::createFromFormat('Y-m-d', $due_date)->Format('d-m-Y') }}</u></td></tr>
-					<tr><td>Name. <u>{{ $student->name }}</u></td><td>Father's. <u>{{ $student->father_name }}</u></td></tr>
+					<tr><td>Name. <u>{{ $student->name }}</u></td><td>Father Name. <u>{{ $student->father_name }}</u></td></tr>
 					<tr><td>Class. <u>{{ $student->std_class->name }}</u></td><td>G.R No. <u>{{ $student->gr_no }}</u></td></tr>
 					<tr><td colspan="2">Fee for the month. <u>
 						@foreach($months as $month)
@@ -96,7 +96,13 @@
 
 				<table class="table table-bordered">
 					<tbody>
-						<tr style="background: blue; color: white;"><th width="300px">Particular</th><th width="200px">Amount</th></tr>
+						<tr style="background: blue; color: white;">
+							<th width="300px">
+								<span v-if="(additionalfee.length > 0) || (total_discount > 0)">Particular's</span>
+								<span v-else>Particular</span>
+							</th>
+							<th width="200px">Amount</th>
+						</tr>
 
 						<tr>
 							<td>Tuition Fee</td>
@@ -107,12 +113,10 @@
 							<td>@{{ additionalfe.sumamount }}</td>
 						</tr>
 
-						@if($student->discount > 0)
-						<tr>
+						<tr v-if="total_discount > 0">
 							<th>Discount</th>
 							<th>@{{ total_discount }}</th>
 						</tr>
-						@endif
 
 						<tr><th class="text-right">Total</th><th>@{{ net_amount }}/=</th></tr>
 					</tbody>
@@ -126,9 +130,9 @@
 				<li>All Types of Fees are non refundable.</li>
 				<li>Late fee of 150 will be charged after 15th of every month irrespective of holidays.</li>
 				<li>Receipt will only be valid when it bears the bank stamp and signature of the designated bank officer.</li>
-				<li>After 25th of each moth the fee challan will no longer be valid for payment.</li>
+				<li>Fee challan will not be valid for payment after 25th of each month.</li>
 				<li>If the voucher is lost by the parent or student, Rs 70/- will be charged for duplicate receipt.</li>
-				<li>Only cash is acceptable.</li>
+				<li>Only cash will be acceptable.</li>
 			</ol>
 		</div>
 	</div>
@@ -222,7 +226,8 @@
 		},
 		methods: {
 			inwords: function (){
-				return toWords(this.net_amount);
+				var inWords = toWords(this.net_amount);
+				return inWords.charAt(0).toUpperCase() + inWords.slice(1);
 			}
 		}
 	  });

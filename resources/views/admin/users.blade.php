@@ -307,7 +307,7 @@
     function loadOptions(data, type, full, meta) {
 
         opthtm = '<a href="{{ URL('users/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit" class="btn btn-';
-        opthtm  +=   (full.active)? 'default' : 'danger';
+        opthtm  +=   (full.active == 1)? 'default' : 'danger';
         opthtm  +=  ' btn-circle btn-xs edit-option"><span class="fa fa-edit"></span></a>';
         
         switch(full.user_type) {
