@@ -19,9 +19,10 @@ class FeeCollectionReportController extends Controller
 
 	use CalcMonths;
 
-	protected $data, $session;
+	protected $data, $session, $Request;
 
-	public function __Construct($Routes){
+	public function __Construct($Routes, $Request){
+		$this->Request = $Request;
 		$this->data['root'] = $Routes;
 	}
 
@@ -131,18 +132,18 @@ class FeeCollectionReportController extends Controller
 			];
 
 		$qryClasses = new Classe;
-		$qrySections = new Section;
 
 		if ($request->has('class')) {
 			$qryClasses	=	$qryClasses->where('id', $request->input('class'));
-			if($request->has('section')){
-				$qrySections	=	$qrySections->where('id', $request->input('section'));
-			}
 		}
 
 		$classes =	$qryClasses->with(['Section'	=>	function($qry){
+			if($this->Request->has('section')){
+				$qry->where('id', $this->Request->input('section'));
+			}
 			$qry->with(['Students'	=>	function($qry){
 //				$qry->Active();
+				$qry->WithFullDiscount();
 				$qry->with(['Invoices'	=>	function($qry){
 					$qry->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']]);
 				}]);
@@ -166,9 +167,11 @@ class FeeCollectionReportController extends Controller
 					}
 					$repetStd = false;
 					if($this->data['betweendates']['end'] > $student->getOriginal('date_of_leaving') && $student->getOriginal('date_of_leaving')){
-						$this->data['betweendates']['end'] = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_leaving'))->startOfMonth()->toDateString();
+						$endmonth = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_leaving'))->startOfMonth()->toDateString();
+					} else {
+						$endmonth = $this->data['betweendates']['end'];
 					}
-					while ($month <= $this->data['betweendates']['end']) {
+					while ($month <= $endmonth) {
 
 						$invoice = $student->Invoices->where('payment_month', Carbon::createFromFormat('Y-m-d', $month)->format('M-Y'));
 						if ($invoice->count()	<=	0) {

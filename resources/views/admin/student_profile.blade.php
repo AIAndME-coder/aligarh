@@ -5,13 +5,64 @@
   @section('head')
   <!-- HEAD -->
 		<link href="{{ URL::to('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+
+	<style type="text/css">
+		@media print{
+			body {
+				padding: 0px 10px;
+				margin: 0px;
+				font-size: 13px;
+			}
+			.invoice-title h2, .invoice-title h3 {
+				display: inline-block;
+			}
+
+			.table > tbody > tr > td, 
+			.table > tbody > tr > th {
+				border-top: none;
+				padding: 3px;
+			}
+
+/*			.table > thead > tr > .no-line {
+				border-bottom: none;
+			}
+			.table > tbody > tr > .thick-line {
+				border-top: 1px solid;
+			}
+*/
+			.bottom-border {
+				border-bottom: 1px solid;
+			}
+
+
+			.table-bordered th,
+			.table-bordered td {
+				border: 1px solid black !important;
+				padding: 0px;
+			}   
+
+			.sibling-table > tbody > tr > td {
+				padding: 1px;
+			}
+			.sibling-table > thead > tr > th {
+				padding: 2px;
+			}
+			.sibling-table {
+				margin-bottom: 10px;
+			}
+			a[href]:after {
+				content: none;
+				/*      content: " (" attr(href) ")";*/
+			}
+		}
+	</style>
   @endsection
 
   @section('content')
 
   @include('admin.includes.side_navbar')
 
-		<div id="page-wrapper" class="gray-bg">
+		<div id="page-wrapper" class="gray-bg hidden-print">
 
 		  @include('admin.includes.top_navbar')
 
@@ -90,6 +141,29 @@
 						</div>
 					</div>
 
+					<div v-if="siblings.length" class="ibox float-e-margins">
+						<div class="ibox-title">
+							<h5>Siblings</h5>
+						</div>
+						<div class="ibox-content">
+							<table class="table">
+								<thead>
+									<th>S.No</th>
+									<th>Gr No</th>
+									<th>Name</th>
+								</thead>
+								<tbody>
+									<tr v-for="(std, k) in siblings">
+										<td>@{{k+1}}</td>
+										<td>@{{std.gr_no}}</td>
+										<td>@{{std.name}}</td>
+									</tr>
+								</tbody>
+								
+							</table>
+						</div>
+					</div>
+
 					<div class="ibox float-e-margins">
 						<div class="ibox-title">
 							<h5>Certificates</h5>
@@ -135,7 +209,7 @@
 				<div class="col-md-8">
 					<div class="ibox float-e-margins">
 						<div class="ibox-title">
-							<h5>Details</h5>
+							<h5>Details <a v-on:click.stop.prevent="print()" title="Profile Print" data-toggle="tooltip"><span class="fa fa-print"></span></a> </h5>
 						</div>
 						<div class="ibox-content">
 
@@ -223,6 +297,10 @@
 
 		</div>
 
+		<div id="student_profile_printable" class="visible-print">
+			@include('admin.printable.student_profile')
+		</div>
+
 	@endsection
 
 	@section('script')
@@ -250,6 +328,7 @@
 					}).mouseleave(function(){
 						$(this).tooltip('destroy');
 					});
+//				window.print();
 			},
 			updated: function(){
 				$('input[name="date_of_leaving"]').datepicker({
@@ -262,6 +341,15 @@
 					}).change(function(){
 						app.student.date_of_leaving = $(this).val();
 					});
+			},
+			computed: {
+				siblings: function(){
+					return this.student.guardian.student;
+/*					vm = this;
+					return	_.filter(this.student.guardian.student, function(std){
+								return std.id !== vm.student.id;
+							});*/
+				}
 			},
 			methods: {
 				formSubmit: function(e){
@@ -291,6 +379,9 @@
 							app.loading = false;
 						}
 					});
+				},
+				print: 	function(){
+					window.print();
 				}
 			}
 

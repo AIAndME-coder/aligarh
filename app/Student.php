@@ -54,6 +54,10 @@ class Student extends Model {
 		return $query->where('discount', '>', 0);
 	}
 
+	public function scopeWithFullDiscount($query){
+		return $query->where('net_amount', '>', 0);
+	}
+
 	public function Guardian() {
 		return $this->belongsTo('App\Guardian');
 	}
@@ -84,6 +88,10 @@ class Student extends Model {
 
 	public function getDateOfAdmissionAttribute($date){
 		return Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
+	}
+
+	public function setDateOfBirthInwordsAttribute($date){
+		$this->attributes['date_of_birth_inwords']	=	Carbon::createFromFormat('Y-m-d', $date)->format('l jS \\of F Y');
 	}
 
 	public function AdditionalFee(){

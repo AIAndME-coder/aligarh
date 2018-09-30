@@ -45,7 +45,17 @@ class StudentsController extends Controller
 	}
 
 	public function GetProfile() {
-		$this->data['student']  = Student::with('Certificates')->with('StdClass')->with('Section')->with('Guardian')->findorfail($this->data['root']['option']);
+		$this->data['student']  = Student::with('Certificates')
+									->with('StdClass')
+									->with('Section')
+									->with(['Guardian'	=>	function($qry){
+										$qry->with(['Student'	=>	function($qry){
+											$qry->select('id', 'guardian_id', 'name', 'gr_no');
+											$qry->where('id', '!=', $this->data['root']['option']);
+										}]);
+									}])
+									->findorfail($this->data['root']['option']);
+		$this->data['student']->date_of_birth_inwords = $this->data['student']->getOriginal('date_of_birth');
 		return view('admin.student_profile', $this->data);
 	}
 
@@ -244,7 +254,7 @@ class StudentsController extends Controller
 
 	private function CompileStudentForCertificate($student_id){
 		$this->data['student']	= Student::findorfail($student_id);
-		$this->data['student']['date_of_birth_words'] = Carbon::createFromFormat('Y-m-d', $this->data['student']->getOriginal('date_of_birth'))->format('l jS \\of F Y');
+		$this->data['student']->date_of_birth_inwords = $this->data['student']->getOriginal('date_of_birth');
 		$this->data['student']['class_name']	=	Classe::select('name')->findorfail($this->data['student']->class_id)->name;
 	}
 

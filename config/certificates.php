@@ -19,7 +19,7 @@ return [
 
 			<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><em><span style="font-size:12.0pt"><span style="font-family:&quot;Times New Roman&quot;,&quot;serif&quot;">Date of Birth (In figure) <u> {{date_of_birth}} </u></span></span></em></span></span></p>
 
-			<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><em><span style="font-size:12.0pt"><span style="font-family:&quot;Times New Roman&quot;,&quot;serif&quot;">Date of Birth (In words) <u> {{date_of_birth_words}} </u></span></span></em></span></span></p>
+			<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><em><span style="font-size:12.0pt"><span style="font-family:&quot;Times New Roman&quot;,&quot;serif&quot;">Date of Birth (In words) <u> {{date_of_birth_inwords}} </u></span></span></em></span></span></p>
 
 			<p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Calibri,sans-serif"><em><span style="font-size:12.0pt"><span style="font-family:&quot;Times New Roman&quot;,&quot;serif&quot;">Date of Admission <u> {{date_of_admission}} </u></span></span></em></span></span></p>
 
