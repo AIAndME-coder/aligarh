@@ -77,13 +77,13 @@
 				</tbody>
 			</table>
 		</div>
-		<h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Student Copy </h4>
+		<h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Student's Copy </h4>
 		<div id="stdcopy">
 			<table style="margin-top: 15px">
 				<tbody>
 					<tr><td width="250px">R.No. <u>{{ config('systemInfo.next_chalan_no') }}</u></td><td width="250px">Issue Date. <u>{{ Carbon\Carbon::createFromFormat('Y-m-d', $issue_date)->Format('d-m-Y') }}</u></td></tr>
 					<tr><td></td><td>Due Date. <u>{{ Carbon\Carbon::createFromFormat('Y-m-d', $due_date)->Format('d-m-Y') }}</u></td></tr>
-					<tr><td>Name. <u>{{ $student->name }}</u></td><td>Father Name. <u>{{ $student->father_name }}</u></td></tr>
+					<tr><td>Name. <u>{{ $student->name }}</u></td><td>Father's Name. <u>{{ $student->father_name }}</u></td></tr>
 					<tr><td>Class. <u>{{ $student->std_class->name }}</u></td><td>G.R No. <u>{{ $student->gr_no }}</u></td></tr>
 					<tr><td colspan="2">Fee for the month. <u>
 						@foreach($months as $month)
@@ -98,8 +98,7 @@
 					<tbody>
 						<tr style="background: blue; color: white;">
 							<th width="300px">
-								<span v-if="(additionalfee.length > 0) || (total_discount > 0)">Particular's</span>
-								<span v-else>Particular</span>
+								<span>Particulars</span>
 							</th>
 							<th width="200px">Amount</th>
 						</tr>
@@ -139,13 +138,13 @@
 
 	<div class="row" style="border: 1px solid black; padding: 2px; width: 507px; height: 1000px; margin-left: 504px; position: absolute;" id="schoolcopy">
 		<div v-html="address"></div>
-		<h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> School Copy </h4>
+		<h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> School's Copy </h4>
 		<div v-html="schoolcopy"></div>
 	</div>
 
 	<div class="row" style="border: 1px solid black; padding: 2px; width: 507px; height: 1000px; margin-left: 1020px; position: absolute;" id=bankcopy>
 		<div v-html="address"></div>
-		<h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Bank Copy </h4>
+		<h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Bank's Copy </h4>
 		<div v-html="schoolcopy"></div>
 	</div>
 

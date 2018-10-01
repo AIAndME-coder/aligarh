@@ -2,6 +2,7 @@
 
 	<div class="row">
 		<h2 class="text-center">{{ config('systemInfo.title') }}</h3>
+		<h4 class="text-center">{{ config('systemInfo.address') }}</h4>
 		<h3 class="text-center"><u>ADMISSION FORM</u></h4>
 			<hr>
 		<div class="col-xs-9" style="padding-left: 0px">

@@ -62,6 +62,7 @@ return [
 		'editclass'	=>	1,
 		'image'		=>	1,
 		'profile'	=>	1,
+		'interview'	=>	1,
 		],
 	// Students Attendance
 	10 => [

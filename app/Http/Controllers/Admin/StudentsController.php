@@ -20,6 +20,7 @@ use App\AcademicSessionHistory;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Certificate;
+use App\ParentInterview;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
 
 class StudentsController extends Controller 
@@ -306,6 +307,64 @@ class StudentsController extends Controller
 									]
 								]);
 
+	}
+
+	public function GetInterview(){
+		$this->data['student'] = Student::with('ParentInterview')->with(['StdClass' => function($qry){
+			$qry->select('id', 'name');
+		}])->findorFail($this->data['root']['option']);
+		return view('admin.parent_interview', $this->data);
+	}
+
+	public function UpdateInterview(){
+
+		if($this->Request->ajax()){
+			$validator = Validator::make($this->Request->all(), [
+				'student_id' => 'required'
+			]);
+
+			if ($validator->fails()) {
+				return  [
+					'type'	=> 'error', 
+					'title'	=>  'Parent Interview',
+					'msg'	=>  'Something is wrong!'
+				];
+			}
+
+			ParentInterview::updateOrCreate(
+				['student_id'	=>	$this->Request->input('student_id')],
+				[
+					'father_qualification'	=>	$this->Request->input('father_qualification'),
+					'mother_qualification'	=>	$this->Request->input('mother_qualification'),
+					'father_occupation'	=>	$this->Request->input('father_occupation'),
+					'mother_occupation'	=>	$this->Request->input('mother_occupation'),
+					'monthly_income'	=>	$this->Request->input('monthly_income'),
+					'other_job_father'	=>	$this->Request->input('other_job_father'),
+					'other_job_mother'	=>	$this->Request->input('other_job_mother'),
+					'family_structure'	=>	$this->Request->input('family_structure'),
+					'parents_living'	=>	$this->Request->input('parents_living'),
+					'no_of_children'	=>	$this->Request->input('no_of_children'),
+					'questions'			=>	$this->Request->input('questions'),
+					'questions_montessori'	=>	$this->Request->input('questions_montessori'),
+					'remarks'				=>	$this->Request->input('remarks'),
+				]
+			);
+			
+			return	[
+				'type'	=> 'success', 
+				'title'	=>  'Parent Interview',
+				'msg'	=>  'Update Interview Successfull'
+			];
+		}
+	
+		return redirect('Students')->with([
+									'toastrmsg' => [
+										'type'	=> 'warning', 
+										'title'	=>  'Students',
+										'msg'	=>  'Something is wrong!'
+									]
+								]);
+//		dd($this->Request);
 	}
 
 	protected function SetAttributes($new = true){

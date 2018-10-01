@@ -286,6 +286,8 @@
 								</tbody>
 							</table>
 
+							<a :href="URL+'/students/interview/'+student.id" class=" btn btn-primary btn-block"><span class="fa fa-podcast"></span> Parent Interview</a>
+
 						</div>
 					</div>
 
@@ -298,7 +300,7 @@
 		</div>
 
 		<div id="student_profile_printable" class="visible-print">
-			@include('admin.printable.student_profile')
+			@include('admin.printable.include.student_profile')
 		</div>
 
 	@endsection

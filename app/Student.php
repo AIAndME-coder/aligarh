@@ -82,6 +82,10 @@ class Student extends Model {
 		return $this->hasOne('App\StudentResult');
 	}
 
+	public function ParentInterview(){
+		return $this->hasOne('App\ParentInterview');
+	}
+
 	public function getDateOfBirthAttribute($date){
 		return Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
 	}
