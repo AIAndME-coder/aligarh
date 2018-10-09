@@ -128,11 +128,17 @@ class StudentAttendanceCtrl extends Controller
 			$qry->where(['section_id' => $this->Request->input('section')]);
 		}
 
-		$this->data['students']	=	$qry->orderBy('name')->Active()->with(['StudentAttendance'	=>	function($qry){
+		$this->data['students']	=	$qry->orderBy('name')
+									->where(function($qry){
+										$qry->Active()
+											->orWhere('date_of_leaving', '>=', $this->DateRange['start']);
+									})
+									->with(['StudentAttendance'	=>	function($qry){
 			$qry->select('id', 'student_id', 'date', 'status')
 				->whereBetween('date', $this->DateRange)
 				->orderby('date');
 		}])->get();
+
 //		$this->data['students']	=	$this->data['students']->CurrentSession()->get();
 		$this->data['input'] = $this->Request->input();
 		$this->data['selected_class'] = Classe::find($this->Request->input('class'));
