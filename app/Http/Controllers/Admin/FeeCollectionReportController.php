@@ -142,7 +142,7 @@ class FeeCollectionReportController extends Controller
 				$qry->where('id', $this->Request->input('section'));
 			}
 			$qry->with(['Students'	=>	function($qry){
-//				$qry->Active();
+				$qry->Active();
 				$qry->WithFullDiscount();
 				$qry->with(['Invoices'	=>	function($qry){
 					$qry->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']]);

@@ -256,18 +256,16 @@
 													<table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
 														<thead>
 															<tr>
-																<th>Name</th>
-																<th>Amount</th>
-																<th>Remove</th>
+																<th width="40%">Name</th>
+																<th width="40%">Amount</th>
+																<th width="20%">Action</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr>
 																<td>Tuition Fee</td>
 																<td>
-																	<div>
-																		<input type="number" name="tuition_fee" v-model.number="fee.tuition_fee" placeholder="Tuition Fee" class="form-control"/>
-																	</div>
+																	<input type="number" name="tuition_fee" v-model.number="fee.tuition_fee" placeholder="Tuition Fee" class="form-control"/>
 																</td>
 																<td></td>
 															</tr>

@@ -113,7 +113,7 @@
                                     <div class="row">
                                       <h3>Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h3>
                                       <div class="hr-line-dashed"></div>
-                                      <form action="{{ URL('student-attendance/make') }}" method="POST">
+                                      <form id="submitAttenFrm" action="{{ URL('student-attendance/make') }}" method="POST">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="date" value="{{ $input['date'] }}">
                                         <table class="table table-striped table-bordered table-hover">
@@ -138,10 +138,13 @@
                                               <td>{{ $student->name }}</td>
                                               <td>
                                                 <input type="hidden" name="student_id[{{ $student->id }}]" value="{{ $student->id }}">
-                                                <div class="checkbox checkbox-success">
+                                                <div class="pull-left checkbox checkbox-success">
                                                   <input id="checkbox{{ $student->id }}" class="selectAtt" type="checkbox" name="attendance{{ $student->id }}" value="1" {{ (isset($student->StudentAttendanceByDate->status) && $student->StudentAttendanceByDate->status)? 'checked' : '' }} />
                                                   <label for="checkbox{{ $student->id }}">
                                                   </label>
+                                                </div>
+                                                <div class="pull-right">
+                                                	<a href="#" class="btn text-danger remvoebtn" data-id="{{ $student->id }}" data-toggle="tooltip" title="remove" ><span class="fa fa-remove"></span></a>
                                                 </div>
                                               </td>
                                             </tr>
@@ -282,6 +285,12 @@
     var tbl;
     var attendancerpt;
       $(document).ready(function(){
+
+		$(".remvoebtn").click(function(){
+			var stdid =	$(this).attr('data-id');
+      		$(this).closest('tr').remove();
+      		$("#submitAttenFrm").append('<input type="hidden" name="delete['+stdid+']" value="'+stdid+'" />');
+		});	
       
         $('[data-toggle="tooltip"]').tooltip();
         $('div .checkbox').css('margin', '0px');

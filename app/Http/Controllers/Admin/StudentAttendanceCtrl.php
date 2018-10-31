@@ -88,16 +88,23 @@ class StudentAttendanceCtrl extends Controller
 			'date'  	=>  'required',
 		]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $this->Request->input('date'))->toDateString();
-		foreach($this->Request->input('student_id') as $student_id) {
-			StudentAttendance::updateOrCreate(
-				[
-					'date'		 => $dbdate,
-					'student_id' => $student_id,
-				],
-				[
-					'status'	=>	($this->Request->input('attendance'.$student_id) !== null)? 1 : 0,
-				]
-			);
+		if($this->Request->has('student_id')){
+			foreach($this->Request->input('student_id') as $student_id) {
+				StudentAttendance::updateOrCreate(
+					[
+						'date'		 => $dbdate,
+						'student_id' => $student_id,
+					],
+					[
+						'status'	=>	($this->Request->input('attendance'.$student_id) !== null)? 1 : 0,
+					]
+				);
+			}
+		}
+		if($this->Request->has('delete')){
+			StudentAttendance::where('date', $dbdate)
+								->whereIn('student_id', $this->Request->input('delete'))
+								->delete();
 		}
 		return redirect('student-attendance')->with([
 									'toastrmsg' => [

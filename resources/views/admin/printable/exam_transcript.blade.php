@@ -141,7 +141,7 @@
 
 					<th colspan="3">@{{ (!isNaN(grand_total.total_percentage[0]))? grand_total.total_percentage[0]+'%' : '-' }}</th>
 					<th colspan="3">@{{ (!isNaN(grand_total.total_percentage[1]))? grand_total.total_percentage[1]+'%' : '-' }}</th>
-					<th colspan="3">@{{ grand_total.total_percentage[2]+'%' }}</th>
+					<th colspan="3">@{{ (grand_total.total_percentage[2])? grand_total.total_percentage[2]+'%' : '-' }}</th>
 					
 				</tr>
 
@@ -243,10 +243,10 @@
 			exam_remarks: '',
 			computed_result: [],
 			grand_total: {
-				total_marks:	[0, 0],
-				total_obtain_marks: [0, 0],
-				total_percentage: [],
-				ranks: ['-', '-'],
+				total_marks:	[0, 0, 0],
+				total_obtain_marks: [0, 0, 0],
+				total_percentage: [0, 0, 0],
+				ranks: ['-', '-', '-'],
 				pass: [
 					true, true, true
 				],
@@ -276,10 +276,13 @@
 
 			this.grand_total.total_percentage = this.grand_total_percentage();
 
-			this.grand_total.total_marks[2]	=	(this.grand_total.total_marks[0] + this.grand_total.total_marks[1]);
-			this.grand_total.total_obtain_marks[2]	=	(this.grand_total.total_obtain_marks[0] + this.grand_total.total_obtain_marks[1]);
+			if (this.grand_total.total_marks[1]) {
 
-			this.grand_total.total_percentage[2]	=	parseFloat(((this.grand_total.total_obtain_marks[2]/this.grand_total.total_marks[2])*100).toFixed(2));
+				this.grand_total.total_marks[2]	=	(this.grand_total.total_marks[0] + this.grand_total.total_marks[1]);
+				this.grand_total.total_obtain_marks[2]	=	(this.grand_total.total_obtain_marks[0] + this.grand_total.total_obtain_marks[1]);
+
+				this.grand_total.total_percentage[2]	=	parseFloat(((this.grand_total.total_obtain_marks[2]/this.grand_total.total_marks[2])*100).toFixed(2));
+			}
 
 			window.print();
 
@@ -299,6 +302,7 @@
 				return 	[
 							parseFloat(((this.grand_total.total_obtain_marks[0]/this.grand_total.total_marks[0])*100).toFixed(2)),
 							parseFloat(((this.grand_total.total_obtain_marks[1]/this.grand_total.total_marks[1])*100).toFixed(2)),
+							0
 						];
 			},
 			check_result: function(results){
@@ -340,6 +344,7 @@
 						total_marks_sum: 0,
 						total_obtain_marks_sum: 0,
 						percentage_sum: 0,
+						grade_sum: '-',
 					});
 
 					vm.grand_total.total_marks[mainloop]	+=	computed_result[k].total_marks[mainloop]	=	result.subject_result_attribute.total_marks;
@@ -372,13 +377,17 @@
 						vm.grand_total.pass[subloop] = false;
 					}
 
-					computed_result[k].total_marks_sum = (computed_result[k].total_marks[mainloop] + computed_result[k].total_marks[subloop]);
-					computed_result[k].total_obtain_marks_sum = (computed_result[k].total_obtain_marks[mainloop] + computed_result[k].total_obtain_marks[subloop]);
+					if(computed_result[k].total_marks[mainloop] && computed_result[k].total_marks[subloop]){
 
-					computed_result[k].percentage_sum = ((computed_result[k].total_obtain_marks_sum / computed_result[k].total_marks_sum)*100).toFixed(2);
-					computed_result[k].grade_sum	=	vm.Grade(computed_result[k].percentage_sum);
-					if(computed_result[k].grade_sum.toLowerCase() == 'f' && vm.grand_total.pass[2]){
-						vm.grand_total.pass[2] = false;
+						computed_result[k].total_marks_sum = (computed_result[k].total_marks[mainloop] + computed_result[k].total_marks[subloop]);
+						computed_result[k].total_obtain_marks_sum = (computed_result[k].total_obtain_marks[mainloop] + computed_result[k].total_obtain_marks[subloop]);
+
+						computed_result[k].percentage_sum = ((computed_result[k].total_obtain_marks_sum / computed_result[k].total_marks_sum)*100).toFixed(2);
+						computed_result[k].grade_sum	=	vm.Grade(computed_result[k].percentage_sum);
+						
+						if(computed_result[k].grade_sum.toLowerCase() == 'f' && vm.grand_total.pass[2]){
+							vm.grand_total.pass[2] = false;
+						}
 					}
 
 				});

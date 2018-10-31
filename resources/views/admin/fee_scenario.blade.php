@@ -63,9 +63,9 @@
 																					<table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
 																						<thead>
 																							<tr>
-																								<th>Name</th>
-																								<th>Amount</th>
-																								<th>Action</th>
+																								<th width="40%">Name</th>
+																								<th width="40%">Amount</th>
+																								<th width="20%">Action</th>
 																							</tr>
 																						</thead>
 																						<tbody>
