@@ -133,16 +133,23 @@
 
 					<th>@{{ grand_total.total_marks[2] }}</th>
 					<th>@{{ grand_total.total_obtain_marks[2] }}</th>
-					<th>@{{ (grand_total.pass[2])? Grade(grand_total.total_percentage[2]) : 'F' }}</th>
+					<th v-if="grand_total.total_percentage[2]">
+						@{{ (grand_total.pass[2])? Grade(grand_total.total_percentage[2]) : 'F' }}
+					</th>
+					<th v-else>-</th>
 
 				</tr>
 				<tr>
 					<th>Percentage: </th>
 
-					<th colspan="3">@{{ (!isNaN(grand_total.total_percentage[0]))? grand_total.total_percentage[0]+'%' : '-' }}</th>
-					<th colspan="3">@{{ (!isNaN(grand_total.total_percentage[1]))? grand_total.total_percentage[1]+'%' : '-' }}</th>
+					<th colspan="3" v-if="grand_total.pass[0]">@{{ (!isNaN(grand_total.total_percentage[0]))? grand_total.total_percentage[0]+'%' : '-' }}</th>
+					<th colspan="3" v-else>-</th>
+
+					<th colspan="3" v-if="grand_total.pass[1]">@{{ (!isNaN(grand_total.total_percentage[1]))? grand_total.total_percentage[1]+'%' : '-' }}</th>
+					<th colspan="3" v-else>-</th>
+
 					<th colspan="3">@{{ (grand_total.total_percentage[2])? grand_total.total_percentage[2]+'%' : '-' }}</th>
-					
+
 				</tr>
 
 				<tr>
@@ -176,15 +183,15 @@
 					</template>
 					<th colspan="3" v-else>Faild</th>
 
-					<template v-if="grand_total.pass[2]">
-						<th colspan="3" v-if="Grade(grand_total.total_percentage[2]) == '-'">
-							-
+					<template v-if="grand_total.total_percentage[2]">
+						<th colspan="3" v-if="Grade(grand_total.total_percentage[2]).toLowerCase() == 'f'">
+							Faild
 						</th>
 						<th colspan="3" v-else>
 							Passed, Grade: @{{ Grade(grand_total.total_percentage[2]) }}
 						</th>
 					</template>
-					<th colspan="3" v-else>Faild</th>
+					<th colspan="3" v-else>-</th>
 
 				</tr>
 			</tbody>
@@ -291,7 +298,7 @@
 			Grade: function (percentage) {
 				grad = '-';
 				this.grades.forEach(function(grade){
-					if(Number(grade.from_percent) < percentage && percentage <= Number(grade.to_percent)){
+					if(Number(grade.from_percent) <= percentage && percentage <= Number(grade.to_percent)){
 						grad = grade.prifix;
 						return grad;
 					}
@@ -384,7 +391,7 @@
 
 						computed_result[k].percentage_sum = ((computed_result[k].total_obtain_marks_sum / computed_result[k].total_marks_sum)*100).toFixed(2);
 						computed_result[k].grade_sum	=	vm.Grade(computed_result[k].percentage_sum);
-						
+
 						if(computed_result[k].grade_sum.toLowerCase() == 'f' && vm.grand_total.pass[2]){
 							vm.grand_total.pass[2] = false;
 						}

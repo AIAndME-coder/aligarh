@@ -88,7 +88,7 @@
 
 			</thead>
 			<tbody>
-				<template v-for="(student, k) in ComputedStudentResult" :key="student.id">
+				<template v-for="(student, k) in result_attribute.student_result" :key="student.id">
 					<tr>
 						<td>@{{ k+1 }}</td>
 						<td>@{{ student.student.gr_no }}</td>
@@ -150,6 +150,7 @@
 		},
 
 		mounted: function(){
+			this.OrderByStudent();
 			window.print();
 		},
 		computed: {
@@ -166,6 +167,9 @@
 			},
 		},
 		methods: {
+			OrderByStudent:	function(){
+				this.result_attribute.student_result =	_.orderBy(this.result_attribute.student_result, 'student.name');
+			},
 			GradePercentage: function(k){
 				this.result_attribute.student_result[k].percentage	= this.Percentage(this.result_attribute.student_result[k].total_obtain_marks);
 				return	this.result_attribute.student_result[k].grade	=	this.Grade(this.result_attribute.student_result[k].percentage);
@@ -176,7 +180,7 @@
 			Grade: function (percentage) {
 				grad = '-';
 				this.grades.forEach(function(grade){
-					if(Number(grade.from_percent) < percentage  && percentage <= Number(grade.to_percent)){
+					if(Number(grade.from_percent) <= percentage  && percentage <= Number(grade.to_percent)){
 						grad = grade.prifix;
 					}
 				});

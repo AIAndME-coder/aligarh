@@ -193,7 +193,7 @@
 			Grade: function (percentage) {
 				grad = '-';
 				this.grades.forEach(function(grade){
-					if(Number(grade.from_percent) < percentage  && percentage <= Number(grade.to_percent)){
+					if(Number(grade.from_percent) <= percentage  && percentage <= Number(grade.to_percent)){
 						grad = grade.prifix;
 					}
 				});
@@ -220,6 +220,8 @@
 						} else{
 							vm.computed_transcripts[i].rank	=	vm.computed_transcripts[i-1].rank;
 						}
+					} else {
+						vm.computed_transcripts[i].rank	=	0;
 					}
 				});
 			},

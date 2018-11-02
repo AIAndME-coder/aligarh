@@ -98,7 +98,7 @@
 
 						<td>@{{ student.total_obtain_marks_sum }}</td>
 						<td>@{{ student.percentage }}</td>
-						<td>@{{ (student.rank)? Grade(student.percentage) : 'F' }}</td>
+						<td>@{{ Grade(student.percentage) }}</td>
 						<td>@{{ student.rank }}</td>
 						<td>@{{ student.remarks }}</td>
 					</tr>
@@ -152,7 +152,7 @@
 		},
 		mounted: function(){
 			this.computed_result = 	this.compute_result();
-//			this.RankCounter();
+			this.RankCounter();
 			window.print();
 		},
 		computed: {
@@ -162,7 +162,7 @@
 			Grade: function (percentage) {
 				grad = '-';
 				this.grades.forEach(function(grade){
-					if(Number(grade.from_percent) < percentage  && percentage <= Number(grade.to_percent)){
+					if(Number(grade.from_percent) <= percentage  && percentage <= Number(grade.to_percent)){
 						grad = grade.prifix;
 						return grad;
 					}
@@ -171,13 +171,16 @@
 			},
 			RankCounter: function(){
 				vm = this;
+				var rankno = 0;
 				this.computed_result.forEach(function(result, i){
-					if (i == 0) {
-						vm.computed_result[i].rank	=	1;
-					} else if (vm.computed_result[i-1].percentage > result.percentage) {
-						vm.computed_result[i].rank	=	vm.computed_result[i-1].rank+1;
-					} else{
-						vm.computed_result[i].rank	=	vm.computed_result[i-1].rank;
+					if(result.total_obtain_marks[0] && result.total_obtain_marks[1]){
+						if (i == 0) {
+							vm.computed_result[i].rank	=	rankno	= 1;
+						} else if (vm.computed_result[i-1].percentage > result.percentage) {
+							vm.computed_result[i].rank	=	++rankno;
+						} else {
+							vm.computed_result[i].rank	=	rankno;
+						}
 					}
 				});
 			},
@@ -212,7 +215,7 @@
 						total_marks_sum: 0,
 						total_obtain_marks_sum: 0,
 						percentage: 0,
-						rank:	result.rank,
+						rank:	0,
 					});
 //					console.log(vm.results);
 					computed_result[k].total_marks[mainloop]	=	result.student_result.reduce((a, b) => a + Number(b.subject_result_attribute.total_marks), 0);
