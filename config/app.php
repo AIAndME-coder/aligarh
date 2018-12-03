@@ -184,6 +184,9 @@ return [
         //------- Debugbar
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        //-------DomPDF
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -238,6 +241,8 @@ return [
 
         //---- Debugbar
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        //-----DomPDF
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

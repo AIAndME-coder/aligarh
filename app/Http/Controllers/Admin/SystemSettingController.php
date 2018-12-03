@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
+use App\SystemInvoice;
+use PDF;
 
 class SystemSettingController extends Controller
 {
@@ -18,7 +20,16 @@ class SystemSettingController extends Controller
 
 
 	public function GetSetting(){
+		$this->data['system_invoices']	=	SystemInvoice::all();
 		return view('admin.system_setting', $this->data);
+	}
+
+	public function PrintInvoiceHistory(){
+		$this->data['system_invoices']	=	SystemInvoice::all();
+		$pdf = PDF::loadView('admin.printable.system_invoice_history', $this->data)->setPaper('a4');
+		return $pdf->stream('invoice-history-2018.pdf');
+//		return $pdf->download('invoice-history-2018.pdf');
+//		return view('admin.printable.system_invoice_history', $this->data);
 	}
 
 	public function UpdateSetting(Request $request){

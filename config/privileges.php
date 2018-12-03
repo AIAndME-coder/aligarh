@@ -162,6 +162,7 @@ return [
 	// System Settings
 	30 => [
 		'default'	=>	0,
+		'print-invoice-history'	=>	1,
 		'update'	=>	0,
 		],
 

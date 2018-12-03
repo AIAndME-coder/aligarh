@@ -3,15 +3,16 @@
 	@section('title', 'System Settings |')
 
 	@section('head')
-
+	<!-- HEAD -->
 	<link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+
 	@endsection
 
 	@section('content')
 
 	@include('admin.includes.side_navbar')
 
-				<div id="page-wrapper" class="gray-bg">
+				<div id="page-wrapper" class="gray-bg hidden-print">
 
 					@include('admin.includes.top_navbar')
 
@@ -39,12 +40,15 @@
 								<div class="col-lg-12">
 										<div class="tabs-container">
 												<ul class="nav nav-tabs">
-														<li class="active">
-															<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> General Info</a>
-														</li>
+													<li class="active">
+														<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> General Info</a>
+													</li>
+													<li>
+														<a data-toggle="tab" href="#tab-11"><span class="fa fa-list"></span> Package Info</a>
+													</li>
 												</ul>
 												<div class="tab-content">
-														<div id="tab-11" class="tab-pane fade fade in active add-guardian">
+														<div id="tab-10" class="tab-pane fade fade in active add-guardian">
 																<div class="panel-body">
 																	<h2> General </h2>
 																	<div class="hr-line-dashed"></div>
@@ -143,6 +147,35 @@
 
 																</div>
 														</div>
+														<div id="tab-11" class="tab-pane fade fade in ">
+															<div class="panel-body">
+																<h2> Invoices <small> 4000/month billing backage </small> <a class="" title="Download" data-toggle="tooltip" href="{{ URL('system-setting/print-invoice-history') }}" target="_blank"> <span class="fa fa-download"> </span> </a> </h2>
+																<div class="hr-line-dashed"></div>
+																<table class="table table-bordered table-hover">
+																	<thead>
+																		<tr>
+																			<th>ID</th>
+																			<th>Billing Month</th>
+																			<th>Amount</th>
+																			<th>Status</th>
+																			<th>Date Of Payment</th>
+																			<th>Created At</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr v-for="invoice in system_invoices">
+																			<td>@{{invoice.id}}</td>
+																			<td>@{{invoice.billing_month}}</td>
+																			<td>@{{invoice.amount}}</td>
+																			<td>@{{invoice.status}}</td>
+																			<td>@{{invoice.date_of_payment}}</td>
+																			<td>@{{invoice.created_at}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+
 												</div>
 										</div>
 								</div>
@@ -150,9 +183,7 @@
 
 					</div>
 
-
 					@include('admin.includes.footercopyright')
-
 
 				</div>
 
@@ -174,6 +205,7 @@
 
 			$(document).ready(function(){
 
+				$("[data-toggle='tooltip']").tooltip();
 
 				$("#tchr_rgstr").validate({
 						rules: {
@@ -201,4 +233,15 @@
 			});
 		</script>
 
+		@endsection
+
+		@section('vue')
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					system_invoices: {!! json_encode($system_invoices, JSON_NUMERIC_CHECK) !!},
+				},
+			})
+		</script>
 		@endsection

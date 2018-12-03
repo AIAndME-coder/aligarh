@@ -331,6 +331,10 @@
 		},
 		watch:	{
 			send_to: function(n, o){
+				this.selected_student_k = 0;
+				this.selected_guardian_k = 0;
+				this.selected_teacher_k = 0;
+				this.selected_employee_k = 0;
 						vm = this;
 				setTimeout(function(){
 						$('.select2'+n).select2().on('change', function(){
@@ -406,7 +410,7 @@
 			},
 			teacher_number: function(){
 				if(this.selected_teacher_k > 0){
-					return this.Teacher[this.selected_teacher_k-1].phone;
+					return this.Teachers[this.selected_teacher_k-1].phone;
 				}
 				return 0;
 			},
@@ -434,7 +438,7 @@
 			},
 			teacher_id: function(){
 				if(this.selected_teacher_k > 0){
-					return this.Teacher[this.selected_teacher_k-1].id;
+					return this.Teachers[this.selected_teacher_k-1].id;
 				}
 				return 0;
 			},
