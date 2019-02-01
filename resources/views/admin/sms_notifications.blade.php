@@ -78,7 +78,7 @@
 											<tr v-if="send_to == 'student'">
 												<td>Student</td>
 												<td width="40%">
-													<select class="form-control select2student" v-model="selected_student_k" required="true">
+													<select class="form-control select2student" v-model="selected_student_k">
 														<option v-for="(student, k) in Students" :value="k+1">@{{  student.gr_no+' | '+student.name+' | '+student.phone }}</option>
 													</select>
 												</td>
@@ -87,7 +87,7 @@
 											<tr v-if="send_to == 'guardian'">
 												<td>Guardian</td>
 												<td width="40%">
-													<select class="form-control select2guardian" v-model="selected_guardian_k" required="true">
+													<select class="form-control select2guardian" v-model="selected_guardian_k">
 														<option v-for="(student, k) in Students" v-if="check_no(student.guardian.phone)" :value="k+1">@{{  student.gr_no+' | '+student.name+' | '+student.guardian.phone }}</option>
 													</select>
 												</td>
@@ -96,7 +96,7 @@
 											<tr v-if="send_to == 'teacher'">
 												<td>Teacher</td>
 												<td width="40%">
-												  <select class="form-control select2teacher" v-model="selected_teacher_k" required="true">
+												  <select class="form-control select2teacher" v-model="selected_teacher_k">
 													<option v-for="(teacher, k) in Teachers" v-if="check_no(teacher.phone)" :value="k+1">@{{ teacher.name+' | '+teacher.phone }}</option>
 												  </select>
 												</td>
@@ -105,7 +105,7 @@
 											<tr v-if="send_to == 'employee'">
 												<td>Employee</td>
 												<td width="40%">
-												  <select class="form-control select2employee" v-model="selected_employee_k" required="true">
+												  <select class="form-control select2employee" v-model="selected_employee_k">
 													<option v-for="(employe, k) in Employee" v-if="check_no(employe.phone)" :value="k+1">@{{ employe.name+' | '+employe.phone }}</option>
 												  </select>
 												</td>
@@ -128,8 +128,8 @@
 									<div class="form-group">
 										<label class="col-md-2 control-label"> Message </label>
 										<div class="col-md-6">
-											<textarea class="form-control" name="message" rows="5" maxlength="160" v-model="message" required></textarea>
-											<span class="text-info">@{{ 160-message.length }}</span>
+											<textarea class="form-control" name="message" rows="5" maxlength="300" v-model="message" required></textarea>
+											<span class="text-info">@{{ 300-message.length }} &nbsp; &nbsp; &nbsp; &nbsp; COUNT: @{{ count_msg }}</span>
 										</div>
 									</div>
 
@@ -238,8 +238,8 @@
 									<div class="form-group">
 										<label class="col-md-2 control-label"> Message </label>
 										<div class="col-md-6">
-											<textarea class="form-control" name="message" rows="5" maxlength="160" v-model="message" required></textarea>
-											<span class="text-info">@{{ 160-message.length }}</span>
+											<textarea class="form-control" name="message" rows="5" maxlength="300" v-model="message" required></textarea>
+											<span class="text-info">@{{ 300-message.length }} &nbsp; &nbsp; &nbsp; &nbsp; COUNT: @{{ count_msg }}</span>
 										</div>
 									</div>
 
@@ -566,6 +566,17 @@
 					}
 				});
 				return dta;
+			},
+
+			count_msg: function(){
+				if(this.message.length){
+					let counter =	this.message.length/150;
+					if(counter > parseInt(counter)){
+						return parseInt(counter+1);
+					}
+					return counter;
+				}
+				return 0;
 			}
 
 		}

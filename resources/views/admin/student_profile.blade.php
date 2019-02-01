@@ -277,7 +277,7 @@
 									</tr>
 									<tr>
 										<th>Contact :</th>
-										<td>@{{ student.contact_no }}</td>
+										<td>@{{ student.phone }}</td>
 									</tr>
 									<tr>
 										<th>Fee :</th>

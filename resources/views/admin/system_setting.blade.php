@@ -137,7 +137,7 @@
 																			<div class="form-group">
 																				<label class="col-md-2 control-label">Avaliable SMS</label>
 																				<div class="col-md-6">
-																					<input type="text" value="{{ config('systemInfo.avaliable_sms').' till '.config('systemInfo.sms_validity') }}" readonly="ture" class="form-control"/>
+																					<input type="text" value="{{ config('systemInfo.available_sms').' till '.config('systemInfo.sms_validity') }}" readonly="ture" class="form-control"/>
 																				</div>
 																			</div>
 
