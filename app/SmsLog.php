@@ -11,4 +11,14 @@ class SmsLog extends Model
 	const UPDATED_AT = null;
 
 	protected $fillable = ['phone_info', 'message', 'api_response', 'total_price', 'created_by'];
+
+	protected $casts	=	[
+		'phone_info'	=>	'object',
+		'api_response'	=>	'object'
+	];
+
+	public function User(){
+		return $this->belongsTo('App\User', 'created_by');
+	}
+
 }

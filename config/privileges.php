@@ -207,5 +207,6 @@ return [
 		'default'	=>	0,
 		'send'		=>	1,
 		'send-bulk'	=>	1,
+		'history'	=>	1,
 		],
 ];

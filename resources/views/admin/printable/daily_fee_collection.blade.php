@@ -59,7 +59,7 @@
 	<div class="row">
 	<h3 class="text-center">{{ config('systemInfo.title') }}</h3>
 	<h4>Daily Fee Collection Report</h4>
-	<h4>Between: ( {{ Carbon\Carbon::createFromFormat('Y-m-d', $betweendates['start'])->Format('M-Y') }} TO {{ Carbon\Carbon::createFromFormat('Y-m-d', $betweendates['end'])->Format('M-Y') }} )</h3>
+	<h4>Between: ( {{ Carbon\Carbon::createFromFormat('Y-m-d', $betweendates['start'])->Format('M-Y') }} TO {{ Carbon\Carbon::createFromFormat('Y-m-d', $betweendates['end'])->Format('M-Y') }} )</h4>
 		
 		@foreach($invoice_dates AS $invoice)
 		<hr>

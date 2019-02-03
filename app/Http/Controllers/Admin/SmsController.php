@@ -253,4 +253,20 @@ class SmsController extends Controller
 		return $phoneInfo;
 	}
 
+	public function History(Request $request){
+
+		$this->validate($request, [
+			'start'	=>	'required',
+			'end'	=>	'required',
+		]);
+
+		$history	=	SmsLog::whereBetween('created_at', [$request->input('start'), $request->input('end')])->with(['User'	=>	function($qry){
+			$qry->select('id', 'name');
+		}])->get();
+
+//		return $history;
+		return view('admin.printable.sms_history', ['history'	=>	$history]);
+
+	}
+
 }

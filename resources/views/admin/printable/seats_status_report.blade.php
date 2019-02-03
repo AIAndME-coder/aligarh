@@ -58,7 +58,7 @@
 			  <tr>
 				<th rowspan="2">Class & Sections</th>
 				<th rowspan="2">Capacity </th>
-				<th colspan="4" class="text-center">REGULER STUDENT</th>
+				<th colspan="4" class="text-center">Regular Student</th>
 			  	<th colspan="4" class="text-center">Full/Half Free Ship Student</th>
 			  	<th class="text-center">Net</th>
 			  	<th rowspan="2"> Vacant </th>

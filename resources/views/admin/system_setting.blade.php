@@ -5,6 +5,7 @@
 	@section('head')
 	<!-- HEAD -->
 	<link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ URL::to('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 
 	@endsection
 
@@ -46,7 +47,7 @@
 													<li>
 														<a data-toggle="tab" href="#tab-11"><span class="fa fa-list"></span> Package Info</a>
 													</li>
-													<li class="hidden">
+													<li>
 														<a data-toggle="tab" href="#tab-12"><span class="fa fa-list"></span> SMS Package Info</a>
 													</li>
 												</ul>
@@ -187,10 +188,54 @@
 															</div>
 														</div>
 
-														<div id="tab-12" class="tab-pane fade fade in  hidden">
+														<div id="tab-12" class="tab-pane fade in">
 															<div class="panel-body">
-																<h2> SMS Package <small> Nothing Selected Package </small> </h2>
+																<h2> SMS Package <small> <span class="label label-info">PREMIUM</span> </small> </h2>
 																<div class="hr-line-dashed"></div>
+																<div class="container">
+																	<ul class="list-group">
+																		<li class="list-group-item">
+																			<b>Package Name: </b>PREMIUM
+																		</li>
+																		<li class="list-group-item">
+																			<b>Amount: </b>2700/=
+																		</li>
+																		<li class="list-group-item">
+																			<b>No Of SMS: </b>3030
+																		</li>
+																		<li class="list-group-item">
+																			<b>Package Activation Date: </b>2019-01-19
+																		</li>
+																		<li class="list-group-item">
+																			<b>Validity: </b>{{ config('systemInfo.sms_validity') }}
+																		</li>
+																		<li class="list-group-item">
+																			<b>Remain SMS: </b>{{ config('systemInfo.available_sms') }}
+																		</li>
+																	</ul>
+																</div>
+																<h2> SMS History </h2>
+																<div class="hr-line-dashed"></div>
+																<form id="sms_history_form" method="POST" action="{{ URL('smsnotifications/history') }}" class="form-horizontal" target="_blank">
+																	{{ csrf_field() }}
+
+																	<div class="form-group">
+																		<label class="col-md-2 control-label">From</label>
+																		<div class="col-md-6">
+																			<div class="input-daterange input-group" style="width: 100%" id="datepicker">
+																				<input type="text" class="input-sm form-control" name="start" required="true" readonly="" placeholder="From Date" />
+																				<span class="input-group-addon">to</span>
+																				<input type="text" class="input-sm form-control" name="end" required="true" readonly="" placeholder="To Date" />
+																			</div>
+																		</div>
+																	</div>
+
+																	<div class="form-group">
+																		<div class="col-md-offset-2 col-md-6">
+																			<button class="btn btn-primary btn-block" type="submit"><span class="fa fa-file"></span> Show </button>
+																		</div>
+																	</div>
+																</form>
 															</div>
 														</div>
 
@@ -215,7 +260,10 @@
 		<script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
 
 		<!-- Input Mask-->
-		 <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+		<script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+
+		<!-- Data picker -->
+		<script src="{{ URL::to('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
 
 		<script type="text/javascript">
 		var tbl;
@@ -224,6 +272,28 @@
 			$(document).ready(function(){
 
 				$("[data-toggle='tooltip']").tooltip();
+
+				$("#sms_history_form").validate({
+					rules: {
+						start: {
+							required: true,
+						},
+						end: {
+							required: true,
+						},
+					}
+				});
+
+				$('#datepicker').datepicker({
+
+					format: 'yyyy-mm-dd',
+					keyboardNavigation: false,
+					forceParse: false,
+					autoclose: true,
+
+					minViewMode: 0,
+					todayHighlight: true
+				});
 
 				$("#tchr_rgstr").validate({
 						rules: {
