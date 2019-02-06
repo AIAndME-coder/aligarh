@@ -9,12 +9,12 @@ class AcademicSession extends Model
 {
 
 
-	protected function getFromAttribute($from){
-		return Carbon::createFromFormat('Y-m-d', $from)->format('d/m/Y');
+	protected function getStartAttribute($start){
+		return Carbon::createFromFormat('Y-m-d', $start)->format('d/m/Y');
 	}
 
-	protected function getToAttribute($to){
-		return Carbon::createFromFormat('Y-m-d', $to)->format('d/m/Y');
+	protected function getEndAttribute($end){
+		return Carbon::createFromFormat('Y-m-d', $end)->format('d/m/Y');
 	}
 
 }

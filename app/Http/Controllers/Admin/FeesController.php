@@ -87,8 +87,8 @@ class FeesController extends Controller
 		$this->data['session'] = AcademicSession::find(Auth::user()->academic_session);
 
 		$this->data['betweendates']	=	[
-				'start'	=>	$this->data['session']->getOriginal('from'),
-				'end'	=>	$this->data['session']->getOriginal('to')
+				'start'	=>	$this->data['session']->getOriginal('start'),
+				'end'	=>	$this->data['session']->getOriginal('end')
 			];
 
 		$this->data['payment_months'] = InvoiceMaster::select('payment_month')

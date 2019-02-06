@@ -57,6 +57,7 @@ class StudentAttendanceCtrl extends Controller
 			]);
 		}
 
+
 		$this->data['students'] = Student::select('id', 'name', 'gr_no')
 									->where(['class_id' => $this->Request->input('class')])
 									->where('date_of_admission', '<=', $this->DateRange);

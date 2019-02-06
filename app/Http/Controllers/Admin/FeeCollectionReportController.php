@@ -127,7 +127,7 @@ class FeeCollectionReportController extends Controller
 		$this->data['session'] = AcademicSession::find(Auth::user()->academic_session);
 
 		$this->data['betweendates']	=	[
-				'start'	=>	$this->data['session']->getOriginal('from'),
+				'start'	=>	$this->data['session']->getOriginal('start'),
 				'end'	=>	$request->input('month')
 			];
 
@@ -160,7 +160,7 @@ class FeeCollectionReportController extends Controller
 
 				foreach ($section->Students as $key => $student) {
 
-					if ($student->getOriginal('date_of_admission') > $this->data['session']->getOriginal('from')) {
+					if ($student->getOriginal('date_of_admission') > $this->data['session']->getOriginal('start')) {
 						$month = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_admission'))->startOfMonth()->toDateString();
 					} else {
 						$month = $this->data['betweendates']['start'];
@@ -230,7 +230,7 @@ class FeeCollectionReportController extends Controller
 										->join('invoice_master', 'invoice_details.invoice_id', '=', 'invoice_master.id')
 										->join('students', 'invoice_master.student_id', '=', 'students.id')
 										->where('invoice_details.fee_name', 'LIKE', 'Annual%')
-										->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('from'), $this->data['session']->getOriginal('to')])
+										->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('start'), $this->data['session']->getOriginal('end')])
 										->where('students.class_id', $this->data['class']->id)
 										->where('students.section_id', $this->data['section']->id)
 										->get();
@@ -256,7 +256,7 @@ class FeeCollectionReportController extends Controller
 											SUM(`invoice_master`.`paid_amount`) AS `total_amount`
 										"))
 									->join('invoice_master', 'students.id', '=', 'invoice_master.student_id')
-									->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('from'), $this->data['session']->getOriginal('to')])
+									->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('start'), $this->data['session']->getOriginal('end')])
 									->where('students.class_id', $this->data['class']->id)
 									->where('students.section_id', $this->data['section']->id)
 									->groupBy('students.id')

@@ -69,7 +69,7 @@
 			<tbody>
 				<template v-for="(log, k) in history">
 				<tr>
-					<td>@{{ k+1 }}</td>
+					<td>@{{ log.id }}</td>
 					<td>@{{ log.phone_info.length }}</td>
 					<td>@{{ log.message }}</td>
 					<td>@{{ log.total_price }}</td>
