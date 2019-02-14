@@ -42,12 +42,16 @@ class Student extends Model {
 //		return $query->where('date_of_admission', '<=', '2018-04-01');
 	}
 
+	public function scopeInActiveOnSelectedSession($query, $academic_session){
+		return $query->InActive()->whereBetween('date_of_leaving', [$academic_session->getOriginal('start'), $academic_session->getOriginal('end')]);
+	}
+
 	public function scopeActive($query){
-		return $query->where('active', 1);
+		return $query->where('students.active', 1);
 	}
 
 	public function scopeInActive($query){
-		return $query->where('active', 0);
+		return $query->where('students.active', 0);
 	}
 
 	public function scopeWithOutDiscount($query){

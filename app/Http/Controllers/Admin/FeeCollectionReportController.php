@@ -108,7 +108,7 @@ class FeeCollectionReportController extends Controller
 	public function FreeshipStudents(Request $Request){
 		$this->data['classes'] = Classe::with(['Section'	=>	function($qry){
 			$qry->with(['Students'	=>	function($qry){
-				$qry->WithDiscount()->Active()->CurrentSession()->OrderBy('name');
+				$qry->WithDiscount()->Active()->OrderBy('name');
 			}]);
 		}])->get();
 //		$this->data['session'] = AcademicSession::find(Auth::user()->academic_session);
@@ -216,23 +216,24 @@ class FeeCollectionReportController extends Controller
 
 		$this->validate($request, [
 				'class'	=>	'required',
-				'section'	=>	'required',
+//				'section'	=>	'required',
 			]);
 
 
 		$this->data['session'] = AcademicSession::find(Auth::user()->academic_session);
 
 		$this->data['class'] = Classe::find($request->input('class'));
-		$this->data['section'] = Section::find($request->input('section'));
+//		$this->data['section'] = Section::find($request->input('section'));
 
 		$this->data['annualfeeses']	=	DB::table('invoice_details')
 										->select(DB::raw("`invoice_master`.`student_id`, `invoice_details`.`fee_name`, `invoice_details`.`amount`, `invoice_master`.`payment_month`"))
 										->join('invoice_master', 'invoice_details.invoice_id', '=', 'invoice_master.id')
 										->join('students', 'invoice_master.student_id', '=', 'students.id')
+										->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 										->where('invoice_details.fee_name', 'LIKE', 'Annual%')
 										->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('start'), $this->data['session']->getOriginal('end')])
-										->where('students.class_id', $this->data['class']->id)
-										->where('students.section_id', $this->data['section']->id)
+										->where('academic_session_history.class_id', $this->data['class']->id)
+//										->where('students.section_id', $this->data['section']->id)
 										->get();
 
 		$this->data['statment']	= DB::table('students')
@@ -256,9 +257,10 @@ class FeeCollectionReportController extends Controller
 											SUM(`invoice_master`.`paid_amount`) AS `total_amount`
 										"))
 									->join('invoice_master', 'students.id', '=', 'invoice_master.student_id')
+									->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('start'), $this->data['session']->getOriginal('end')])
-									->where('students.class_id', $this->data['class']->id)
-									->where('students.section_id', $this->data['section']->id)
+									->where('academic_session_history.class_id', $this->data['class']->id)
+//									->where('students.section_id', $this->data['section']->id)
 									->groupBy('students.id')
 									->orderBy('students.name')
 									->get();

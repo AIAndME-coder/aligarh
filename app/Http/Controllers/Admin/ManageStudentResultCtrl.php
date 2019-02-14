@@ -31,7 +31,7 @@ class ManageStudentResultCtrl extends Controller
 	}
 
 	public function Index(){
-		$this->data['exams'] = Exam::Active()->get();
+		$this->data['exams'] = Exam::Active()->CurrentSession()->get();
 		$this->data['classes'] = Classe::select('id', 'name')->get();
 		foreach ($this->data['classes'] as $key => $class) {
 			$this->data['subjects']['class_'.$class->id] = Subject::select('name', 'id')->where(['class_id' => $class->id])->Examinable()->get();
@@ -49,7 +49,18 @@ class ManageStudentResultCtrl extends Controller
 
 //		$dbdate =	Carbon::createFromFormat('d/m/Y', $this->Request->input('date'))->toDateString();
 
-		$this->data['selected_exam'] = Exam::Active()->findOrFail($this->Request->input('exam'));
+		$this->data['selected_exam'] = Exam::Active()->CurrentSession()->where('id', $this->Request->input('exam'))->first();
+
+		if($this->data['selected_exam'] == null){
+			return redirect('manage-result')->withInput()->with([
+				'toastrmsg' => [
+								'type'	=> 'error',
+								'title'	=>  'Student Results',
+								'msg'	=>  'Exam not found in selected session'
+							]
+			]);
+		}
+
 		$this->data['selected_class'] = Classe::find($this->Request->input('class'));
 		$this->data['selected_subject'] = Subject::find($this->Request->input('subject'));
 		$this->data['result_attribute']	=	SubjectResultAttribute::where([
@@ -68,6 +79,16 @@ class ManageStudentResultCtrl extends Controller
 		}
 
 		$this->data['students']	=	$this->data['students']->get();
+
+		if($this->data['students']->isEmpty()){
+			return redirect('manage-result')->withInput()->with([
+				'toastrmsg' => [
+								'type'	=> 'error',
+								'title'	=>  'Student Results',
+								'msg'	=>  'Students not found in selected session'
+							]
+			]);
+		}
 
 		$this->data['input'] = $this->Request->input();
 
@@ -157,7 +178,18 @@ class ManageStudentResultCtrl extends Controller
 		]);
 
 		$this->data['input'] = $this->Request->input();
-		$this->data['selected_exam'] = Exam::Active()->findOrFail($this->Request->input('exam'));
+		$this->data['selected_exam'] = Exam::Active()->CurrentSession()->where('id', $this->Request->input('exam'))->first();
+
+		if($this->data['selected_exam'] == null){
+			return redirect('manage-result')->withInput()->with([
+				'toastrmsg' => [
+								'type'	=> 'error',
+								'title'	=>  'Student Results',
+								'msg'	=>  'Exam not found in selected session'
+							]
+			]);
+		}
+
 		$this->data['selected_class'] = Classe::findOrFail($this->Request->input('class'));
 
 		$this->data['subject_result']	=	SubjectResultAttribute::where(['exam_id' => $this->data['selected_exam']->id, 'class_id' => $this->data['selected_class']->id])->with('Subject')->get();
@@ -173,7 +205,18 @@ class ManageStudentResultCtrl extends Controller
 		]);
 
 		$this->data['input'] = $this->Request->input();
-		$this->data['selected_exam'] = Exam::Active()->findOrFail($this->Request->input('exam'));
+		$this->data['selected_exam'] = Exam::Active()->CurrentSession()->where('id', $this->Request->input('exam'))->first();
+
+		if($this->data['selected_exam'] == null){
+			return redirect('manage-result')->withInput()->with([
+				'toastrmsg' => [
+								'type'	=> 'error',
+								'title'	=>  'Student Results',
+								'msg'	=>  'Exam not found in selected session'
+							]
+			]);
+		}
+
 		$this->data['selected_class'] = Classe::findOrFail($this->Request->input('class'));
 
 		$this->data['transcripts'] = ExamRemark::where([

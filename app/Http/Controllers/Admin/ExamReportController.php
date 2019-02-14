@@ -36,9 +36,15 @@ class ExamReportController extends Controller
 
 	public function FindStudent(){
 		if ($this->Request->ajax()) {
-			$students = Student::where('gr_no', 'LIKE', '%'.$this->Request->input('q').'%')
-								->orwhere('name', 'LIKE', '%'.$this->Request->input('q').'%')
-									->get();
+			$students = Student::select('students.id', 'students.gr_no', 'students.name')
+								->where('students.gr_no', 'LIKE', '%'.$this->Request->input('q').'%')
+								->orwhere('students.name', 'LIKE', '%'.$this->Request->input('q').'%')
+								->join('academic_session_history', function($join)
+									{
+										$join->on('students.id', '=', 'academic_session_history.student_id')
+											->where('academic_session_history.academic_session_id', Auth::user()->academic_session);
+									})
+								->get();
 			foreach ($students as $k=>$student) {
 				$data[$k]['id'] = $student->id;
 				$data[$k]['text'] = $student->gr_no.' | '.$student->name;
@@ -169,6 +175,16 @@ class ExamReportController extends Controller
 		}
 
 		$this->data['selected_exams']	=	Exam::wherein('category_id', $exam_category[$request->input('exam')])->CurrentSession()->with('AcademicSession')->get();
+
+		if($this->data['selected_exams']->count() !== 2){
+			return redirect('exam-reports')->with([
+				'toastrmsg' => [
+					'type' => 'error', 
+					'title'  =>  'Result Reports',
+					'msg' =>  'Combine exam not found'
+				]
+			]);
+		}
 		
 		$this->data['student']			=	Student::findOrFail($request->input('student_id'));
 		$this->data['attendance']['total']		=	StudentAttendance::select('id', 'student_id', 'status', 'date')
@@ -185,6 +201,17 @@ class ExamReportController extends Controller
 														->whereBetween('date', [$this->data['selected_exams'][1]->getOriginal('start_date'), $this->data['selected_exams'][1]->getOriginal('end_date')])
 														->get();
 		$AcademicSessionHistory			=	AcademicSessionHistory::where('student_id', $this->data['student']->id)->CurrentSession()->with('classe')->first();
+
+		if($AcademicSessionHistory == null){
+			return redirect('exam-reports')->with([
+				'toastrmsg' => [
+					'type' => 'error', 
+					'title'  =>  'Result Reports',
+					'msg' =>  'Student not found on Session'
+				]
+			]);
+		}
+
 		$this->data['student_class']	=	$AcademicSessionHistory->classe;
 		foreach ($this->data['selected_exams'] as $key => $value) {
 			$this->data['results'][]			=	ExamRemark::where([

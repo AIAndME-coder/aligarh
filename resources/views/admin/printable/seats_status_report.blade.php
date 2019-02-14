@@ -86,14 +86,14 @@
 
 							<td class="{{ $class->id.'_'.$section->id }}_capacity capacity">{{ $section->capacity }}</td>
 
-							<td class="{{ $class->id.'_'.$section->id }}_p_r_students p_r_students">{{ $section->Students()->WithOutDiscount()->Active()->CurrentSession()->OldAdmission($academic_session)->count() }}</td>
-							<td class="{{ $class->id.'_'.$section->id }}_n_r_students n_r_students">{{ $section->Students()->WithOutDiscount()->Active()->CurrentSession()->NewAdmission($academic_session)->count() }}</td>
-							<td class="{{ $class->id.'_'.$section->id }}_l_r_students l_r_students">{{ $section->Students()->WithOutDiscount()->InActive()->CurrentSession()->count() }}</td>
+							<td class="{{ $class->id.'_'.$section->id }}_p_r_students p_r_students">{{ $section->Students()->WithOutDiscount()->Active()->OldAdmission($academic_session)->count() }}</td>
+							<td class="{{ $class->id.'_'.$section->id }}_n_r_students n_r_students">{{ $section->Students()->WithOutDiscount()->Active()->NewAdmission($academic_session)->count() }}</td>
+							<td class="{{ $class->id.'_'.$section->id }}_l_r_students l_r_students">{{ $section->Students()->WithOutDiscount()->InActiveOnSelectedSession($academic_session)->count() }}</td>
 							<td class="{{ $class->id.'_'.$section->id }}_c_r_students c_r_students">{{ $section->Students()->WithOutDiscount()->Active()->count() }}</td>
 
-							<td class="{{ $class->id.'_'.$section->id }}_p_f_students p_f_students">{{ $section->Students()->WithDiscount()->Active()->CurrentSession()->OldAdmission($academic_session)->count() }}</td>
-							<td class="{{ $class->id.'_'.$section->id }}_n_f_students n_f_students">{{ $section->Students()->WithDiscount()->Active()->CurrentSession()->NewAdmission($academic_session)->count() }}</td>
-							<td class="{{ $class->id.'_'.$section->id }}_l_f_students l_f_students">{{ $section->Students()->WithDiscount()->InActive()->CurrentSession()->count() }}</td>
+							<td class="{{ $class->id.'_'.$section->id }}_p_f_students p_f_students">{{ $section->Students()->WithDiscount()->Active()->OldAdmission($academic_session)->count() }}</td>
+							<td class="{{ $class->id.'_'.$section->id }}_n_f_students n_f_students">{{ $section->Students()->WithDiscount()->Active()->NewAdmission($academic_session)->count() }}</td>
+							<td class="{{ $class->id.'_'.$section->id }}_l_f_students l_f_students">{{ $section->Students()->WithDiscount()->InActiveOnSelectedSession($academic_session)->count() }}</td>
 							<td class="{{ $class->id.'_'.$section->id }}_c_f_students c_f_students">{{ $section->Students()->WithDiscount()->Active()->count() }}</td>
 
 							<td class="{{ $class->id.'_'.$section->id }}_current_students current_students">{{ $section->Students()->Active()->count() }}</td>

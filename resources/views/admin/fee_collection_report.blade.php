@@ -198,7 +198,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div class="form-group hidden">
 										<label class="col-md-2 control-label"> Section </label>
 										<div class="col-md-6">
 										<select class="form-control select2" name="section" required="true">

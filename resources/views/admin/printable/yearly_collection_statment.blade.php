@@ -65,7 +65,7 @@
 		<h3 class="text-center">{{ config('systemInfo.title') }}</h3>
 		<h4>Yearly Collection Statment</h4>
 		<h4>Session: {{ Carbon\Carbon::createFromFormat('Y-m-d', $session->getOriginal('start'))->Format('M-Y') }} TO {{ Carbon\Carbon::createFromFormat('Y-m-d', $session->getOriginal('end'))->Format('M-Y') }} </h4>
-		<h4>Class: {{ $class->name }}-{{ $section->nick_name }}</h4>
+		<h4>Class: {{ $class->name }}</h4>
 
 		<table id="rpt-att" class="table table-bordered">
 			<thead>

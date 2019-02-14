@@ -15,12 +15,13 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Auth;
 use App\Http\Controllers\Controller;
+use App\AcademicSession;
 
 class StudentAttendanceCtrl extends Controller
 {
 
 	//  protected $Routes;
-	protected $data, $Attendance, $Request, $DateRange;
+	protected $data, $Attendance, $Request, $DateRange, $AcademicSession;
 
 	public function __Construct($Routes, $Request){
 		Carbon::setWeekendDays([
@@ -50,33 +51,41 @@ class StudentAttendanceCtrl extends Controller
 		if($dbdate->isWeekend()){
 			return redirect('student-attendance')->withInput()->with([
 				'toastrmsg' => [
-					'type' => 'error', 
+					'type' => 'error',
 					'title'  =>  'Student Attendance',
 					'msg' =>  'Selected Date is weekend'
 					]
 			]);
 		}
 
+		$this->AcademicSession = Auth::user()->AcademicSession()->first();
 
-		$this->data['students'] = Student::select('id', 'name', 'gr_no')
-									->where(['class_id' => $this->Request->input('class')])
-									->where('date_of_admission', '<=', $this->DateRange);
+		if($this->AcademicSession->getOriginal('start') > $this->DateRange || $this->AcademicSession->getOriginal('end') < $this->DateRange){
+			return redirect('student-attendance')->withInput()->with([
+				'toastrmsg' => [
+					'type' => 'error',
+					'title'  =>  'Student Attendance',
+					'msg' =>  'Selected Date is Invalid'
+					]
+			]);
+		}
+
+		$this->data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
+									->where(['academic_session_history.class_id' => $this->Request->input('class')])
+									->where('students.date_of_admission', '<=', $this->DateRange);
 
 		if ($this->Request->has('section')) {
-			$this->data['students']->where(['section_id' => $this->Request->input('section')]);
+			$this->data['students']->where(['students.section_id' => $this->Request->input('section')]);
 			$this->data['section'] = Section::find($this->Request->input('section'));
 		}
 
-		$this->data['students']	=	$this->data['students']->active()->orderBy('name')->with(['StudentAttendanceByDate'	=>	function($qry){
+		$this->data['students']	=	$this->data['students']->active()->orderBy('students.name')->with(['StudentAttendanceByDate'	=>	function($qry){
 			$qry->select('id', 'student_id', 'date', 'status')
 				->where(['date'	=>	$this->DateRange]);
 		}])->get();
 //		dd($this->data['students']);
-/*
-		foreach ($this->data['students'] as $k => $row) {
-			$this->data['attendance'][$row->id] =	StudentAttendance::select('id as attendance_id', 'status')->where(['student_id' => $row->id, 'date' => $dbdate])->first();
-		}
-*/
+
 		$this->data['input'] = $this->Request->input();
 		$this->data['selected_class'] = Classe::find($this->Request->input('class'));
 		$this->data['section_nick'] = empty($this->data['section'])? 'ALL' : $this->data['section']->nick_name;
@@ -128,18 +137,31 @@ class StudentAttendanceCtrl extends Controller
 			'end'	=>	$dbdate->endOfMonth()->toDateString()
 		];
 
-		$qry = Student::select('id', 'name', 'gr_no')
-						->where(['class_id' => $this->Request->input('class')])
-						->where('date_of_admission', '<=', $this->DateRange['end']);
+		$this->AcademicSession = Auth::user()->AcademicSession()->first();
 
-		if ($this->Request->has('section')) {
-			$qry->where(['section_id' => $this->Request->input('section')]);
+		if($this->AcademicSession->getOriginal('start') > $this->DateRange['start'] || $this->AcademicSession->getOriginal('end') < $this->DateRange['end']){
+			return redirect('student-attendance')->withInput()->with([
+				'toastrmsg' => [
+					'type' => 'error',
+					'title'  =>  'Student Attendance',
+					'msg' =>  'Selected Date is Invalid'
+					]
+			]);
 		}
 
-		$this->data['students']	=	$qry->orderBy('name')
+		$this->data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
+									->where(['academic_session_history.class_id' => $this->Request->input('class')])
+									->where('students.date_of_admission', '<=', $this->DateRange['end']);
+
+		if ($this->Request->has('section')) {
+			$this->data['students']->where(['students.section_id' => $this->Request->input('section')]);
+		}
+
+		$this->data['students']	=	$this->data['students']->orderBy('students.name')
 									->where(function($qry){
 										$qry->Active()
-											->orWhere('date_of_leaving', '>=', $this->DateRange['start']);
+											->orWhere('students.date_of_leaving', '>=', $this->DateRange['start']);
 									})
 									->with(['StudentAttendance'	=>	function($qry){
 			$qry->select('id', 'student_id', 'date', 'status')
@@ -155,10 +177,6 @@ class StudentAttendanceCtrl extends Controller
 
 		$loopdate =	CarbonPeriod::create($this->DateRange['start'], $this->DateRange['end']);
 		$this->data['noofdays'] = $loopdate->count();
-		Carbon::setWeekendDays([
-			Carbon::SUNDAY,
-			Carbon::SATURDAY,
-		]);
 
 		foreach ($loopdate as $d) {
 			if($d->isWeekend()){

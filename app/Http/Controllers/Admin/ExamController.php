@@ -68,7 +68,17 @@ class ExamController extends Controller
 	public function AddExam(){
 
 		$this->PostValidate();
+		if($this->IsExamCreated()){
+			return redirect('exam')->withInput()->with([
+				'toastrmsg' => [
+					'type' => 'error',
+					'title'  =>  'Exam',
+					'msg' =>  'Exam "'.config('examcategories.'.$this->Input['exam_category']).'" already created'
+					]
+			]);
+		}
 		$this->Exam = new Exam;
+		$this->Exam->academic_session_id = Auth::user()->academic_session;
 		$this->SetAttributes();
 		$this->Exam->created_by = Auth::user()->id;
 		$this->Exam->save();
@@ -90,6 +100,13 @@ class ExamController extends Controller
 		$this->Exam->description 	=	$this->Input['description'];
 		$this->Exam->start_date 	=	Carbon::createFromFormat('d/m/Y', $this->Input['start_date'])->toDateString();
 		$this->Exam->end_date		=	Carbon::createFromFormat('d/m/Y', $this->Input['end_date'])->toDateString();
+	}
+
+	protected function IsExamCreated(){
+		return Exam::where([
+			'academic_session_id'	=>	Auth::user()->academic_session,
+			'category_id'	=>	$this->Input['exam_category'],
+		])->first();
 	}
 
 }
