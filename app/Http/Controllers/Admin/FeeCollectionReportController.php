@@ -121,6 +121,7 @@ class FeeCollectionReportController extends Controller
 		
 		$this->validate($request, [
 						'month' => 'required',
+						'class' => 'required',
 					]);
 		$this->data = $request->toArray();
 
@@ -130,7 +131,17 @@ class FeeCollectionReportController extends Controller
 				'start'	=>	$this->data['session']->getOriginal('start'),
 				'end'	=>	$request->input('month')
 			];
-
+		
+		if($this->data['session']->getOriginal('end') < $this->data['betweendates']['end'] || $this->data['session']->getOriginal('start') > $this->data['betweendates']['end']){
+			return redirect('student-attendance')->withInput()->with([
+				'toastrmsg' => [
+					'type' => 'error',
+					'title'  =>  'Student Unpaid Statment',
+					'msg' =>  'Selected Date is Invalid'
+					]
+			]);
+		}
+/*
 		$qryClasses = new Classe;
 
 		if ($request->has('class')) {
@@ -143,7 +154,7 @@ class FeeCollectionReportController extends Controller
 			}
 			$qry->with(['Students'	=>	function($qry){
 				$qry->Active();
-				$qry->WithFullDiscount();
+				$qry->WithOutFullDiscount();
 				$qry->with(['Invoices'	=>	function($qry){
 					$qry->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']]);
 				}]);
@@ -152,35 +163,58 @@ class FeeCollectionReportController extends Controller
 				}]);
 			}]);
 		}])->get();
+*/
+		$class = Classe::findOrfail($request->input('class'));
+
+		$Students	=	Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+//									->select('students.id', 'students.name', 'students.father_name', 'students.gr_no', 'students.tuition_fee', 'students.discount', 'students.net_amount', 'students.date_of_enrolled', 'students.date_of_leaving', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
+									->select('students.*', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
+									->where([
+										'academic_session_history.class_id' => $request->input('class'),
+										'academic_session_history.academic_session_id' => Auth::user()->academic_session
+										])
+									->where('students.date_of_enrolled', '<=', $this->data['session']->getOriginal('start'))
+									->Active()
+									->WithOutFullDiscount()
+									->with(['Invoices'	=>	function($qry){
+										$qry->whereBetween('payment_month', [$this->data['betweendates']['start'], $this->data['betweendates']['end']]);
+									}])
+									->with(['AdditionalFee'	=>	function($qry){
+										$qry->Active();
+									}])
+									->get();
 
 		$this->data['unpaid_fee_statment'] = [];
-		foreach ($classes as $key => $class) {
+//		foreach ($classes as $key => $class) {
 
-			foreach ($class->Section as $k => $section) {
+//			foreach ($class->Section as $k => $section) {
 
-				foreach ($section->Students as $key => $student) {
+//				foreach ($section->Students as $key => $student) {
+				foreach ($Students as $key => $student) {
 
-					if ($student->getOriginal('date_of_admission') > $this->data['session']->getOriginal('start')) {
-						$month = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_admission'))->startOfMonth()->toDateString();
+					if ($student->getOriginal('date_of_enrolled') > $this->data['session']->getOriginal('start')) {
+						$month = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_enrolled'))->startOfMonth()->toDateString();
 					} else {
 						$month = $this->data['betweendates']['start'];
 					}
 					$repetStd = false;
-					if($this->data['betweendates']['end'] > $student->getOriginal('date_of_leaving') && $student->getOriginal('date_of_leaving')){
-						$endmonth = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_leaving'))->startOfMonth()->toDateString();
-					} else {
+//					if($this->data['betweendates']['end'] > $student->getOriginal('date_of_leaving') && $student->getOriginal('date_of_leaving')){
+//						$endmonth = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_leaving'))->startOfMonth()->toDateString();
+//					} else {
 						$endmonth = $this->data['betweendates']['end'];
-					}
+//					}
 					while ($month <= $endmonth) {
 
 						$invoice = $student->Invoices->where('payment_month', Carbon::createFromFormat('Y-m-d', $month)->format('M-Y'));
-						if (empty($this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name])) {
-							$this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name] = collect();
+//						if (empty($this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name])) {
+						if (empty($this->data['unpaid_fee_statment'][$class->name])) {
+//							$this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name] = collect();
+							$this->data['unpaid_fee_statment'][$class->name] = collect();
 						}
 						if ($invoice->count()	<=	0) {
 
-
-							$this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name]->push([
+//							$this->data['unpaid_fee_statment'][$class->name.'-'.$section->nick_name]->push([
+							$this->data['unpaid_fee_statment'][$class->name]->push([
 															'id'	=>	$student->id,
 															'gr_no'	=>	$student->gr_no,
 															'name'	=>	$student->name,
@@ -193,8 +227,8 @@ class FeeCollectionReportController extends Controller
 						$month = Carbon::createFromFormat('Y-m-d', $month)->addMonth()->format('Y-m-d');
 					}
 				}
-			}
-		}
+//			}
+//		}
 
 		$this->data['unpaid_fee_statment'] = collect($this->data['unpaid_fee_statment']);
 		return view('admin.printable.unpaid_fee_statment', $this->data);
@@ -232,7 +266,10 @@ class FeeCollectionReportController extends Controller
 										->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 										->where('invoice_details.fee_name', 'LIKE', 'Annual%')
 										->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('start'), $this->data['session']->getOriginal('end')])
-										->where('academic_session_history.class_id', $this->data['class']->id)
+										->where([
+											'academic_session_history.class_id' => $this->data['class']->id,
+											'academic_session_history.academic_session_id' => Auth::user()->academic_session
+											])
 //										->where('students.section_id', $this->data['section']->id)
 										->get();
 
@@ -259,7 +296,10 @@ class FeeCollectionReportController extends Controller
 									->join('invoice_master', 'students.id', '=', 'invoice_master.student_id')
 									->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->whereBetween('invoice_master.payment_month', [$this->data['session']->getOriginal('start'), $this->data['session']->getOriginal('end')])
-									->where('academic_session_history.class_id', $this->data['class']->id)
+									->where([
+											'academic_session_history.class_id' => $this->data['class']->id,
+											'academic_session_history.academic_session_id' => Auth::user()->academic_session
+											])
 //									->where('students.section_id', $this->data['section']->id)
 									->groupBy('students.id')
 									->orderBy('students.name')

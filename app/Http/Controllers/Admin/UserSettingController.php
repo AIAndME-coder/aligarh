@@ -67,15 +67,27 @@ class UserSettingController extends Controller
     }
 
     public function ChangeSession(Request $request){
-      Auth::user()->academic_session = $request->input('current_session');
-      Auth::user()->save();
+
+      if(in_array($request->input('current_session'), Auth::user()->getprivileges->allow_session)){
+        Auth::user()->academic_session = $request->input('current_session');
+        Auth::user()->save();
+        return redirect()->back()->with([
+          'toastrmsg' => [
+            'type' => 'success',
+            'title'  =>  'User Settings',
+            'msg' =>  'Session Changed'
+          ],
+          ]);
+      }
+
       return redirect()->back()->with([
                   'toastrmsg' => [
-                    'type' => 'success',
+                    'type' => 'error',
                     'title'  =>  'User Settings',
-                    'msg' =>  'Session Changed'
+                    'msg' =>  'Session Not Allowed'
                     ],
                   ]);
+
     }
 
     public function SkinCfg(Request $request){

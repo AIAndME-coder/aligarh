@@ -277,6 +277,18 @@
 													</div>
 												</div>
 
+												<div class="form-group{{ ($errors->has('doe'))? ' has-error' : '' }}">
+													<label class="col-md-2 control-label">Date Of Enrolled</label>
+													<div class="col-md-6">
+														<input type="text" id="datetimepicker6" name="doe" placeholder="Date Of Enrolled" value="{{ old('doe', $student->date_of_enrolled) }}" class="form-control"/>
+														@if ($errors->has('doe'))
+																<span class="help-block">
+																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('doe') }}</strong>
+																</span>
+														@endif
+													</div>
+												</div>
+
 												<div class="form-group{{ ($errors->has('receipt_no'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">Receipt No</label>
 													<div class="col-md-6">
@@ -356,6 +368,10 @@
 								 format: 'DD/MM/YYYY'
 					 });
 
+				$('#datetimepicker6').datetimepicker({
+								 format: 'YYYY-MM-DD'
+					 });
+
 				$("#tchr_rgstr").validate({
 						rules: {
 							name: {
@@ -386,6 +402,9 @@
 								required: true,
 							},
 							doa: {
+								required: true,
+							},
+							doe: {
 								required: true,
 							},
 							gr_no: {

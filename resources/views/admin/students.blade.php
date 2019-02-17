@@ -86,6 +86,7 @@
                                           <th>Place Of Birth</th>
                                           <th>Last School</th>
                                           <th>Admission Date</th>
+                                          <th>Enrolled Date</th>
                                           <th>Remove Date</th>
                                           <th>Cause Of Removal</th>
                                           <th>Active</th>
@@ -104,6 +105,7 @@
                                           <th>Place Of Birth</th>
                                           <th>Last School</th>
                                           <th>Admission Date</th>
+                                          <th>Enrolled Date</th>
                                           <th>Remove Date</th>
                                           <th>Cause Of Removal</th>
                                           <th></th>
@@ -361,6 +363,18 @@
                                         </div>
                                       </div>
 
+                                      <div class="form-group{{ ($errors->has('doe'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Date Of Enrolled</label>
+                                        <div class="col-md-6">
+                                          <input type="text" id="datetimepicker6" name="doe" placeholder="Date of Enrolled" value="{{ old('doe') }}" class="form-control" required="true" />
+                                          @if ($errors->has('doe'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('doe') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="form-group{{ ($errors->has('receipt_no'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Receipt No</label>
                                         <div class="col-md-6">
@@ -532,6 +546,10 @@
                  format: 'DD/MM/YYYY'
            });
 
+        $('#datetimepicker6').datetimepicker({
+								 format: 'YYYY-MM-DD'
+           });
+
 /*    For Column Search  */ 
 /*        $('.dataTables-teacher tfoot th').each( function () {
             var title = $('.dataTables-teacher tfoot th').eq( $(this).index() ).text();
@@ -585,6 +603,7 @@
             {data: 'place_of_birth', name: 'students.place_of_birth'},
             {data: 'last_school', name: 'students.last_school'},
             {data: 'date_of_admission', name: 'students.date_of_admission'},
+            {data: 'date_of_enrolled', name: 'students.date_of_enrolled', visible: false},
             {data: 'date_of_leaving', name: 'students.date_of_leaving', visible: false},
             {data: 'cause_of_leaving', name: 'students.cause_of_leaving', visible: false},
             {data: 'active', name: 'students.active', visible: false},
@@ -681,6 +700,9 @@
               },
               doa: {
                 required: true,
+              },
+              doe: {
+                  required: true,
               },
               gr_no: {
                 required: true,

@@ -62,8 +62,8 @@ class Student extends Model {
 		return $query->where('discount', '>', 0);
 	}
 
-	public function scopeWithFullDiscount($query){
-		return $query->where('net_amount', '>', 0);
+	public function scopeWithOutFullDiscount($query){
+		return $query->where('students.net_amount', '>', 0);
 	}
 
 	public function Guardian() {

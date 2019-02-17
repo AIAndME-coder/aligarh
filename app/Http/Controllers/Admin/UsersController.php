@@ -27,6 +27,7 @@ class UsersController extends Controller
           'name'  =>  'sometimes|required|unique:users,name'. (($this->data['root']['option'] !== '')? ','.$this->User->id : ''),
           'email' =>  'sometimes|required|email|unique:users,email'. (($this->data['root']['option'] !== '')? ','.$this->User->id : ''),
           'status'  =>  'required',
+          'allow_session'  =>  'required',
           'password' =>  'sometimes|nullable|between:6,12',
           're_password'  =>  'sometimes|nullable|between:6,12|same:password',
       ]);
@@ -158,7 +159,10 @@ class UsersController extends Controller
 
         UserPrivilege::updateOrCreate(
             ['user_id' => $this->User->id],
-            ['privileges' => $privileges]
+            [
+              'privileges' => $privileges,
+              'allow_session' => $this->Request->input('allow_session')
+            ]
           );
     }
 

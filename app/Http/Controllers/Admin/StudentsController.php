@@ -73,6 +73,8 @@ class StudentsController extends Controller
 //        'email'   =>  ($this->data['root']['job'] == 'edit')? 'email|unique:students,email,'.$this->data['root']['option'] : 'email|unique:students',
 				'tuition_fee'  =>  'sometimes|required|numeric',
 				'dob'       =>  'required',
+				'doa'       =>  'required',
+				'doe'       =>  'required',
 				'img'       =>  'image|mimes:jpeg,png,jpg|max:4096',
 		]);
 	}
@@ -392,6 +394,7 @@ class StudentsController extends Controller
 		$this->Student->seeking_class = $this->Request->input('seeking_class');
 		$this->Student->date_of_birth   = Carbon::createFromFormat('d/m/Y', $this->Request->input('dob'))->toDateString();
 		$this->Student->date_of_admission   = Carbon::createFromFormat('d/m/Y', $this->Request->input('doa'))->toDateString();
+		$this->Student->date_of_enrolled   = $this->Request->input('doe');
 		$this->Student->place_of_birth  = $this->Request->input('place_of_birth');
 		$this->Student->religion  = $this->Request->input('religion');
 		$this->Student->last_school = $this->Request->input('last_school');

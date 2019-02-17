@@ -204,6 +204,22 @@
                                       </div>
  -->
 
+                                      <div class="form-group{{ ($errors->has('allow_session'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Allow Session</label>
+                                        <div class="col-md-6">
+                                          <select class="select2 form-control" multiple="multiple" name="allow_session[]" style="width: 100%">
+                                          @foreach(App\AcademicSession::UserAllowSession()->get() AS $session)
+                                              <option value="{{ $session->id }}">{{ $session->title }}</option>
+                                          @endforeach
+                                          </select>
+                                          @if ($errors->has('allow_session'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('allow_session') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="form-group{{ ($errors->has('status'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Status</label>
                                         <div class="col-md-6">

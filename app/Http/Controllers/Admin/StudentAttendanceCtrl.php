@@ -72,8 +72,11 @@ class StudentAttendanceCtrl extends Controller
 
 		$this->data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
-									->where(['academic_session_history.class_id' => $this->Request->input('class')])
-									->where('students.date_of_admission', '<=', $this->DateRange);
+									->where([
+										'academic_session_history.class_id' => $this->Request->input('class'),
+										'academic_session_history.academic_session_id' => Auth::user()->academic_session
+										])
+									->where('students.date_of_enrolled', '<=', $this->DateRange);
 
 		if ($this->Request->has('section')) {
 			$this->data['students']->where(['students.section_id' => $this->Request->input('section')]);
@@ -151,8 +154,11 @@ class StudentAttendanceCtrl extends Controller
 
 		$this->data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
-									->where(['academic_session_history.class_id' => $this->Request->input('class')])
-									->where('students.date_of_admission', '<=', $this->DateRange['end']);
+									->where([
+										'academic_session_history.class_id' => $this->Request->input('class'),
+										'academic_session_history.academic_session_id' => Auth::user()->academic_session
+										])
+									->where('students.date_of_enrolled', '<=', $this->DateRange['end']);
 
 		if ($this->Request->has('section')) {
 			$this->data['students']->where(['students.section_id' => $this->Request->input('section')]);

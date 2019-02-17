@@ -137,8 +137,7 @@
 									<div class="form-group">
 										<label class="col-md-2 control-label"> Class </label>
 										<div class="col-md-6">
-											<select class="form-control select2" name="class" v-model="classe">
-												<option value="" selected>Class</option>
+											<select class="form-control select2" name="class" v-model="classe" required="true">
 												@foreach($classes AS $class)
 													<option value="{{ $class->id }}">{{ $class->name }}</option>
 												@endforeach
@@ -146,7 +145,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div class="form-group hidden">
 										<label class="col-md-2 control-label"> Section </label>
 										<div class="col-md-6">
 										<select class="form-control select2" name="section">

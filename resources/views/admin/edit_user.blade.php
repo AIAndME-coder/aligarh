@@ -73,6 +73,22 @@
                                         </div>
                                       </div>
 
+                                      <div class="form-group{{ ($errors->has('allow_session'))? ' has-error' : '' }}">
+                                        <label class="col-md-2 control-label">Allow Session</label>
+                                        <div class="col-md-6">
+                                          <select class="select2 form-control" id="allow_session" multiple="multiple" name="allow_session[]" style="width: 100%">
+                                          @foreach(App\AcademicSession::UserAllowSession()->get() AS $session)
+                                              <option value="{{ $session->id }}">{{ $session->title }}</option>
+                                          @endforeach
+                                          </select>
+                                          @if ($errors->has('allow_session'))
+                                              <span class="help-block">
+                                                  <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('allow_session') }}</strong>
+                                              </span>
+                                          @endif
+                                        </div>
+                                      </div>
+
                                       <div class="form-group{{ ($errors->has('status'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Status</label>
                                         <div class="col-md-6">
@@ -186,6 +202,7 @@
 
     <script type="text/javascript">
     var privileges = {!! json_encode($user->getprivileges->privileges) !!};
+    var allow_session = {!! json_encode($user->getprivileges->allow_session) !!};
 
       $(document).ready(function(){
 
@@ -218,6 +235,10 @@
           $.each(val, function(k, v){
             $("#select_"+key+" option[value='"+k+"']").prop("selected", v);
           });
+        });
+
+        $.each(allow_session, function(k, v){
+          $("#allow_session option[value='"+v+"']").prop("selected", v);
         });
 
         $(".select2").select2();

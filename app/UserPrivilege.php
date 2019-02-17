@@ -10,14 +10,15 @@ class UserPrivilege extends Model
 
 	protected $fillable = [
 		'user_id',
-		'privileges'
+		'privileges',
+		'allow_session'
 		];
 
 	public $timestamps = false;
 
 	protected $casts = [
 		'privileges'    =>  'object',
-
+		'allow_session'    =>  'object',
 	];
 
 	public function user() {
