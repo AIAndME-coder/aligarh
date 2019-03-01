@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 //use Illuminate\Http\Request;
 use Request;
-use App\Http\Requests;
 use App\Student;
 use App\Guardian;
 use App\Classe;
@@ -82,14 +81,16 @@ class StudentsController extends Controller
 	public function Index(){
 		//$this->data['teachers'] = Teacher::select('name', 'email', 'address', 'id', 'phone')->get();
 		if (Request::ajax()) {
-			return Datatables::eloquent(Student::query())->make(true);
 	/*
-			return Datatables::queryBuilder(DB::table('students')
-				->join('classes', 'students.class_id', '=', 'classes.id')
-				->join('sections', 'students.section_id', '=', 'sections.id')
-				->select('students.name', 'students.address', 'students.id', 'students.phone', 'students.gr_no', 'classes.name AS class_name', 'sections.name AS section_name', 'sections.nick_name AS section_nick')
-				)->make(true);
+			return Datatables::eloquent(Student::query())->make(true);
 	*/
+			return Datatables::queryBuilder(DB::table('students')
+				->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+				->select('students.*')
+				->where([
+					'academic_session_history.academic_session_id' => Auth::user()->academic_session
+				])
+				)->make(true);
 //      return Datatables::eloquent(Student::query()->CurrentSession())->make(true);
 		}
 		$this->data['guardians'] = Guardian::select('id', 'name', 'email')->get();

@@ -56,17 +56,31 @@
 
 	<div class="row" style="border: 1px solid black; padding: 2px; width: 507px; position: absolute; height: 1000px">
 		<div id="address" style="width: 500px;">
-			<h2 class="text-center text-success">M.W.Academy</h2>
-			<table style="width: 100%">
+			<table style="width: 420px">
 				<tbody>
+					<tr>
+							<td rowspan="3" style="padding: 5px">
+								<img alt="image" width="80px" src="{{ URL('/img/mwlogo.png') }}">
+							</td>
+							<td>
+								<h2 class="text-center text-success">M.W.Academy</h2>
+							</td>
+					</tr>
 					<tr>
 						<td class="text-center">Bungalow No 1/18-A (Big Plot)</td>
 					</tr>
 					<tr>
 						<td class="text-center">Shah Faisal Colony, Karachi. Tel 021-34596866</td>
 					</tr>
+				</tbody>
+			</table>
+			<table style="width: 500px">
+				<tbody>
 					<tr style="border-top:1px solid black">
 						<td>Bank: Bank Islami.</td>
+						<td rowspan="3" style="padding-top: 10px">
+							<img alt="image" src="{{ URL('/img/bankIslamilogo.png') }}" style="width: 43px;">
+						</td>
 					</tr>
 					<tr>
 						<td>Shah Fsisal Colony No 3 Branch.</td>

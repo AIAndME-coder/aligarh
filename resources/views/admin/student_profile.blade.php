@@ -244,6 +244,10 @@
 										<td>@{{ student.date_of_admission }}</td>
 									</tr>
 									<tr>
+										<th>Date Of Enrolled :</th>
+										<td>@{{ student.date_of_enrolled }}</td>
+									</tr>
+									<tr>
 										<th>Place Of Birth :</th>
 										<td>@{{ student.place_of_birth }}</td>
 									</tr>
