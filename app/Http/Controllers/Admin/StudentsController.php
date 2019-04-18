@@ -69,7 +69,7 @@ class StudentsController extends Controller
 				'gr_no'  =>  ($this->data['root']['job'] == 'edit')? 'required|unique:students,gr_no,'.$this->data['root']['option'] : 'required|unique:students',
 				'guardian'    =>  'required',
 				'guardian_relation'  =>  'required',
-//        'email'   =>  ($this->data['root']['job'] == 'edit')? 'email|unique:students,email,'.$this->data['root']['option'] : 'email|unique:students',
+// 		    	'email'   =>  ($this->data['root']['job'] == 'edit')? 'email|unique:students,email,'.$this->data['root']['option'] : 'email|unique:students',
 				'tuition_fee'  =>  'sometimes|required|numeric',
 				'dob'       =>  'required',
 				'doa'       =>  'required',
@@ -80,21 +80,27 @@ class StudentsController extends Controller
 
 	public function Index(){
 		//$this->data['teachers'] = Teacher::select('name', 'email', 'address', 'id', 'phone')->get();
+		$this->data['classes'] = Classe::select('id', 'name')->get();
 		if (Request::ajax()) {
 	/*
 			return Datatables::eloquent(Student::query())->make(true);
 	*/
-			return Datatables::queryBuilder(DB::table('students')
+			return Datatables::of(DB::table('students')
 				->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
-				->select('students.*')
+				->select('students.*', 'academic_session_history.class_id AS class')
 				->where([
 					'academic_session_history.academic_session_id' => Auth::user()->academic_session
 				])
-				)->make(true);
+				)
+				->editColumn('class_name', function($students){
+				$html = ($this->data['classes']->where('id', $students->class)->first())->name;
+				return $html;
+				})
+				->make(true);
 //      return Datatables::eloquent(Student::query()->CurrentSession())->make(true);
 		}
 		$this->data['guardians'] = Guardian::select('id', 'name', 'email')->get();
-		$this->data['classes'] = Classe::select('id', 'name')->get();
+
 		foreach ($this->data['classes'] as $key => $class) {
 			$this->data['sections']['class_'.$class->id] = Section::select('name', 'id')->where(['class_id' => $class->id])->get();
 		}

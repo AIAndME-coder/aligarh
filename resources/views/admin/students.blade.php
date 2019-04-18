@@ -76,6 +76,7 @@
                                     <table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
                                       <thead>
                                         <tr>
+                                          <th>Class</th>
                                           <th>GR No</th>
                                           <th>Name</th>
                                           <th>Father Name</th>
@@ -95,6 +96,14 @@
                                       </thead>
                                       <tfoot>
                                         <tr>
+                                          <th>
+                                            <select id="filterClass">
+                                              <option value="">All</option>
+                                              @foreach($classes AS $class)
+                                              <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                              @endforeach
+                                             </select>
+                                          </th>
                                           <th><input type="text" placeholder="Gr No..." autocomplete="off"></th>
                                           <th><input type="text" placeholder="Name..." autocomplete="off"></th>
                                           <th><input type="text" placeholder="Father Name..." autocomplete="off"></th>
@@ -593,6 +602,7 @@
           serverSide: true,
           ajax: '{{ URL('students') }}',
           columns: [
+            {data: 'class_name', name: 'academic_session_history.class_id'},
             {data: 'gr_no', name: 'students.gr_no'},
             {data: 'name', name: 'students.name'},
             {data: 'father_name', name: 'students.father_name'},
@@ -631,10 +641,11 @@
         });
 
     var search = $.fn.dataTable.util.throttle(
-      function (colIdx, val ) {
+      function (colIdx, val, exactmatch = false ) {
+        regExSearch = '^'+val+'$';
         tbl
         .column( colIdx )
-        .search( val )
+        .search(exactmatch? regExSearch : val , true, false )
         .draw();
       },
       1000
@@ -648,6 +659,10 @@
         });
         $("#filterActive").on('change', function(){
           search((tbl.columns.length-2), this.value);
+        });
+        
+        $("#filterClass").on('change', function(){
+          search(0, this.value, (this.value == '')? false : true);
         });
 
 
