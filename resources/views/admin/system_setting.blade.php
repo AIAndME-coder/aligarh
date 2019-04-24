@@ -207,7 +207,10 @@
 																			<b>Package Activation Date: </b>2019-01-19
 																		</li>
 																		<li class="list-group-item">
-																			<b>Validity: </b>{{ config('systemInfo.sms_validity') }}
+																			<b>Validity: </b>{{ config('systemInfo.sms_validity') }} 
+																			@if((config('systemInfo.sms_validity') >= Carbon\Carbon::now()->todateString()) == false)
+																			<span class="label label-danger">Expired</span>
+																			@endif
 																		</li>
 																		<li class="list-group-item">
 																			<b>Remain SMS: </b>{{ config('systemInfo.available_sms') }}

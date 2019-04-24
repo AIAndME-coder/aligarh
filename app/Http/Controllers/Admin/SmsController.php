@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 use App\Student;
 use App\Guardian;
@@ -48,6 +49,7 @@ class SmsController extends Controller
 		$this->data['Classe']	=	Classe::all();
 		$this->data['availableSms']	=	config('systemInfo.available_sms');
 		$this->data['smsValidity']	=	config('systemInfo.sms_validity');
+		$this->data['ValidateExpireDate']	=	$this->ValidateExpireDate()? 1 : 0;
 	    return view('admin.sms_notifications', $this->data);
 	}
 
@@ -68,6 +70,17 @@ class SmsController extends Controller
 						'type'	=> 'error', 
 						'title'	=>  'Notifications',
 						'msg'	=>  'Something is wrong!'
+					]
+				];
+			}
+
+			if($this->ValidateExpireDate() == false){
+				return [
+					'errors'	=>	true,
+					'toastrmsg'	=>	[
+						'type'	=>	'error',
+						'title'	=>	'Notifications',
+						'msg'	=>	'Package Expired',
 					]
 				];
 			}
@@ -149,6 +162,17 @@ class SmsController extends Controller
 						'type'	=> 'error', 
 						'title'	=>  'Notifications',
 						'msg'	=>  'Something is wrong!'
+					]
+				];
+			}
+
+			if($this->ValidateExpireDate() == false){
+				return [
+					'errors'	=>	true,
+					'toastrmsg'	=>	[
+						'type'	=>	'error',
+						'title'	=>	'Notifications',
+						'msg'	=>	'Package Expired',
 					]
 				];
 			}
@@ -305,5 +329,8 @@ class SmsController extends Controller
 		return config('systemInfo.available_sms') >= COUNT($phoneInfo);
 	}
 
+	protected function ValidateExpireDate(){
+		return config('systemInfo.sms_validity') >= Carbon::now()->todateString();
+	}
 
 }

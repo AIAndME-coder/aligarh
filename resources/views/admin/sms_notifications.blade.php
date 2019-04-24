@@ -53,7 +53,7 @@
 						<div class="tab-content">
 							<div id="tab-10" class="tab-pane fade in active">
 								<div class="panel-body">
-								  <h3> @{{availableSms}} SMS available validity till @{{smsValidity}} </h3>
+								  <h3> @{{availableSms}} SMS available validity till @{{smsValidity}} <small v-if="ValidateExpireDate == false" ><span class="label label-danger">Expired</span></small> </h3>
 								  <div class="hr-line-dashed"></div>
 								  <h2> Send Single SMS Notification </h2>
 								  <div class="hr-line-dashed"></div>
@@ -381,6 +381,7 @@
 
 			availableSms: {{$availableSms}},
 			smsValidity: '{{$smsValidity}}',
+			ValidateExpireDate:	{{$ValidateExpireDate}},
 
 			send_to: '',
 			bulk_to: '',
