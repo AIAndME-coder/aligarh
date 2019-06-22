@@ -27,29 +27,31 @@ class UserController extends Controller {
                    'invalid' => 'You must be Active to login',
                ]);
        }
-    }
+       
+       if($user->user_type == 'employee' || $user->user_type == 'teacher'){
 
-
-    if (Auth::attempt($this->PostLoginData)) {
-//      dd(Auth::user());
-/*		if($user->name == 'demo'){
-			return redirect('students');
-		}
-*/
-//		return redirect('dashboard');
-		return redirect($request->input('redirect', 'dashboard'))->with([
+         if (Auth::attempt($this->PostLoginData)) {
+           //      dd(Auth::user());
+           /*		if($user->name == 'demo'){
+             return redirect('students');
+        }
+        */
+        //		return redirect('dashboard');
+        return redirect($request->input('redirect', 'dashboard'))->with([
           'toastrmsg' => [
             'type' => 'success', 
             'title'  =>  'Welcome to ALIGARH',
             'msg' =>  'School management system'
-            ], 
+          ], 
           'script' => 'http://facebook.com/hashmanagement' 
-        ]);
+          ]);
+        }
+      }
     }
-
-    return redirect()->back()->withInput()
-    ->withErrors([
-              'invalid' => 'Invalid UserID OR Password',
+      
+      return redirect()->back()->withInput()
+      ->withErrors([
+        'invalid' => 'Invalid UserID OR Password',
           ]);
   }
 

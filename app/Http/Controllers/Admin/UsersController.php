@@ -36,7 +36,7 @@ class UsersController extends Controller
     public function GetUsers(){
 
       if ($this->Request->ajax()) {
-        return Datatables::eloquent(User::select('id', 'name', 'email', 'role', 'foreign_id', 'user_type', 'active'))->make(true);
+        return Datatables::eloquent(User::select('id', 'name', 'email', 'role', 'foreign_id', 'user_type', 'active')->Staff())->make(true);
       }
 
       $this->Content();
@@ -45,14 +45,14 @@ class UsersController extends Controller
 
     public function EditUser(){
       $this->Content();
-      $this->data['user'] = User::findOrfail($this->data['root']['option']);
+      $this->data['user'] = User::where('id', $this->data['root']['option'])->Staff()->firstOrFail();
       return view('admin.edit_user', $this->data);
     }
 
     public function PostEditUser(Request $request){
 
       $this->Request = $request;
-      $this->User = User::findOrfail($this->data['root']['option']);
+      $this->User =  User::where('id', $this->data['root']['option'])->Staff()->firstOrFail();;
         if($this->User->created_by == 0 && Auth::user()->id != 1){
         return redirect('users')->with([
         'toastrmsg' => [
