@@ -13,6 +13,32 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'guardian', 'namespace'	=>	'Api\Guardian'], function(){
+
+	Route::post('login', 'UserController@Login')->name('guardian.login');
+
+	Route::group(['middleware'  =>  'auth:api'], function(){
+
+		Route::group(['middleware'  =>  ['scope:guardian', 'auth.active']], function(){
+
+			Route::get('home', 'HomeController@Home');
+			Route::post('student-profile', 'StudentProfileController@GetShortProfile');
+			Route::post('student-invoices', 'StudentFeeController@GetFeeInvoices');
+			Route::post('student-exams', 'ExamController@GetExams');
+			Route::get('routines', 'RoutineController@GetRoutines');
+			Route::get('noticeboard', 'NoticeBoardController@GetNotices');
+
+			Route::get('user', function(Request $request){
+//                return $request->user()->token()->id;
+				return response()->json(['User'	=>	$request->user(), 'Profile'	=>	App\Guardian::find($request->user()->foreign_id)]);
+			});
+
+			Route::get('students/image/{image}', 'StudentProfileController@GetImage');
+
+		});
+
+		Route::post('logout', 'UserController@Logout');
+	});
+
+//		Route::delete('logout/{token_id}', '\Laravel\Passport\Http\Controllers\PersonalAccessTokenController@destroy');
 });

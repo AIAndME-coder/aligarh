@@ -63,7 +63,7 @@
 								<img alt="image" width="80px" src="{{ URL('/img/mwlogo.png') }}">
 							</td>
 							<td>
-								<h2 class="text-center text-success">M.W.Academy</h2>
+								<h2 class="text-center text-success">{{ config('systemInfo.name') }}</h2>
 							</td>
 					</tr>
 					<tr>

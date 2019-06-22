@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "larapack/config-writer": "1.*",
         "laravel/framework": "5.4.*",
+        "laravel/passport": "4.0.*",
         "laravel/tinker": "~1.0",
         "nesbot/carbon": "^1.33",
         "yajra/laravel-datatables-oracle": "~7.0"
