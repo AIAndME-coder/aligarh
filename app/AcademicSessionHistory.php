@@ -22,4 +22,8 @@ class AcademicSessionHistory extends Model
 		return $query->where('academic_session_id', Auth::user()->academic_session);
 	}
 
+	public function AcademicSession(){
+		return $this->belongsTo('App\AcademicSession');
+	}
+
 }

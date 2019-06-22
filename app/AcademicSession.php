@@ -21,4 +21,8 @@ class AcademicSession extends Model
 		return	$query->whereIn('id', $allow_session? $allow_session : Auth::user()->getprivileges->allow_session);
 	}
 
+	public function Exam(){
+		return $this->hasMany('App\Exam');
+	}
+
 }
