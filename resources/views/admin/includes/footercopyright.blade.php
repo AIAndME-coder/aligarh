@@ -4,6 +4,6 @@
 		<strong>All rights reserved</strong>
 	</div>
 	<div>
-		<strong>Copyright</strong> HASHMANAGEMENT © 2018
+		<strong>Copyright</strong> HASHMANAGEMENT © {{ Carbon\Carbon::now()->year }}
 	</div>
 </div>
