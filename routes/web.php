@@ -34,6 +34,8 @@ Route::group(['middleware' => 'guest'], function(){
 
 Route::group(['middleware' => ['auth', 'auth.active']], function(){
 
+    Route::get('id-card/student', "IdcardController@StudentIdcard");
+
 	Route::get('ajax/{ctrl?}/{job?}/{option?}', 'ContentController@AjaxLoadController');
 
 	Route::get('{ctrl?}/{job?}/{option?}', 'ContentController@LoadController');
