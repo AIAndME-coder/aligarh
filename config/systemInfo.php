@@ -1,13 +1,13 @@
 <?php 
 return [
-	'name'	=>	'MW Academy',
-	'title'	=>	'MW Academy (campus III)',
-	'address'	=>	'Bungalow No 1/18-A (Big Plot) Shah Faisal Colony, Karachi.',
-	'student_capacity'	=>	350,
+	'name'	=>	'ABC ',
+	'title'	=>	'ABC  (campus I)',
+	'address'	=>	'ABC Address',
+	'student_capacity'	=>	500,
 	'available_sms'	=>	3042,
-	'sms_validity'	=>	'2019-04-25',
-	'next_chalan_no'	=>	1800142,
+	'sms_validity'	=>	'2030-01-01',
+	'next_chalan_no'	=>	0000001,
 	'contact_no'	=>	null,
 	'email'	=>	null,
-	'validity'	=>	'2020-08-31',
+	'validity'	=>	'2030-01-01',
 ];
