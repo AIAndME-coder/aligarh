@@ -51,7 +51,6 @@
   $(document).ready(function(){
     $('[data-show=0]').addClass('hidden').parents('li').addClass('hidden');
     $('[data-show=1]').parents('li').removeClass('hidden');
-    $('a[data-root="{{ $root['ctrl'] }}"]').parents('li').toggleClass('active');
 //	  $('li.active').parents('li').toggleClass('active');
   });
 </script>

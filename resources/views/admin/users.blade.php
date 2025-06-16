@@ -251,7 +251,7 @@
                                                     {{ $chunk->label }}
                                                   </label>
                                                 </div>
-                                                @if(COUNT($chunk->options) >= 1 )
+                                                @if(collect($chunk->options)->count() >= 1 )
                                                 <b>Option:</b>
                                                 <select class="select2 form-control" multiple="multiple" name="privileges[{{$chunk->id}}][options][]" style="width: 100%">
                                                   @foreach($chunk->options AS $k => $option)
@@ -517,7 +517,7 @@
         $(".select").change();
       });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(collect($errors)->count() >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

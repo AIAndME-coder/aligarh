@@ -1,5 +1,30 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StudentsController;
+use App\Http\Controllers\Admin\IdcardController;
+use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\GuardianController;
+use App\Http\Controllers\Admin\VendorController;
+use App\Http\Controllers\Admin\ItemController;
+use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\RoutineController;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\ExamController;
+use App\Http\Controllers\Admin\ResultController;
+use App\Http\Controllers\Admin\NoticeboardController;
+use App\Http\Controllers\Admin\LibraryController;
+use App\Http\Controllers\Admin\FeeController;
+use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\SystemSettingController;
+use App\Http\Controllers\Admin\FeeScenarioController;
+use App\Http\Controllers\Admin\ExamGradeController;
+use App\Http\Controllers\Admin\StudentAttendanceController;
+use App\Http\Controllers\Admin\TeacherAttendanceController;
+use App\Http\Controllers\Admin\EmployeeAttendanceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,34 +36,50 @@
 |
 */
 
-Route::get('/_debugbar/assets/stylesheets', [
-    'as' => 'debugbar-css',
-    'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@css'
-]);
+Route::get('logout', [UserController::class,'LogOut'])->name('logout');
 
-Route::get('/_debugbar/assets/javascript', [
-    'as' => 'debugbar-js',
-    'uses' => '\Barryvdh\Debugbar\Controllers\AssetController@js'
-]);
-
-Route::get('/_debugbar/open', [
-    'as' => 'debugbar-open',
-    'uses' => '\Barryvdh\Debugbar\Controllers\OpenController@handler'
-]);
-
-Route::get('logout', 'UserController@LogOut');
 Route::group(['middleware' => 'guest'], function(){
-	Route::get('login', 'UserController@GetLogin')->name('login');
-	Route::post('login', 'UserController@PostLogin');
+	Route::get('login', [UserController::class, 'GetLogin'])->name('login');
+	Route::post('login', [UserController::class, 'PostLogin'])->name('login.post');
 });
 
 Route::group(['middleware' => ['auth', 'auth.active']], function(){
 
     Route::get('id-card/student', "IdcardController@StudentIdcard");
 
-	Route::get('ajax/{ctrl?}/{job?}/{option?}', 'ContentController@AjaxLoadController');
+    Route::get('/', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'GetDashboard'])->name('dashboard');
 
-	Route::get('{ctrl?}/{job?}/{option?}', 'ContentController@LoadController');
-	Route::post('{ctrl?}/{job?}/{option?}', 'ContentController@PostLoadController');
+
+    Route::prefix('students')->name('students')->group(function(){
+        Route::get('/', [StudentsController::class, 'Index'])->name('.index');
+        Route::get('/profile/{id}', [StudentsController::class, 'GetProfile'])->name('.profile');
+    });
+
+    Route::get('/teacher', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/teacher', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/employee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/guardian', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/student-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/manage-classes', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/manage-sections', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/vendors', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/items', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/vouchers', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/routines', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/student-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/teacher-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/employee-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/manage-subjects', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/exam', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/manage-result', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/noticeboard', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/library', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/fee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/expense', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/users', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/system-setting', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/fee-scenario', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/exam-grades', [DashboardController::class, 'GetDashboard'])->name('dashboard');
 
 });
