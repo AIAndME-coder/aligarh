@@ -109,7 +109,8 @@
 
                                     </form>
 
-                                    @if($root['job'] == 'make')
+                                    {{--Permission will be applied later on controller --}}
+                                    @if($root)
                                     <div class="row">
                                       <h3>Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h3>
                                       <div class="hr-line-dashed"></div>
@@ -221,8 +222,11 @@
                                       </div>
 
                                     </form>
-
-                                    @if($root['job'] == 'report')
+                                    {{-- disable --}}
+                                    @php
+                                      $job = 0;
+                                    @endphp
+                                    @if($job)
                                     <div class="row">
                                     <h3>Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h3>
                                     <h4>No Of Students: {{ COUNT($students) }}</h3>
@@ -378,13 +382,14 @@
 
             });
 
-      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->make == 0)
-        $('.make-attendance').hide();
-      @endif
+      //Permission will be applied later
+      // 'if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->make == 0)'
+      //   $('.make-attendance').hide();
+      // 'endif'
 
-      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->report == 0)
-        $('.get-attendance').hide();
-      @endif
+      // 'if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->report == 0)'
+      //   $('.get-attendance').hide();
+      // 'endif'
 
       });
     </script>

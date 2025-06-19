@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\VendorsController;
 use App\Http\Controllers\Admin\ItemsController;
 use App\Http\Controllers\Admin\VouchersController;
 use App\Http\Controllers\Admin\ManageRoutine;
+use App\Http\Controllers\Admin\StudentAttendanceCtrl;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\ResultController;
@@ -137,6 +138,13 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/delete', [ManageRoutine::class, 'DeleteRoutine'])->name('.delete');
         Route::post('/add', [ManageRoutine::class, 'AddRoutine'])->name('.add');
         Route::post('/edit/{id}', [ManageRoutine::class, 'PostEditRoutine'])->name('.edit.post');
+    });
+
+    Route::prefix('student-attendance')->name('student-attendance')->group(function(){
+        Route::get('/', [StudentAttendanceCtrl::class, 'Index'])->name('.index');
+        Route::get('/make', [StudentAttendanceCtrl::class, 'MakeAttendance'])->name('.make');
+        Route::get('/report', [StudentAttendanceCtrl::class, 'AttendanceReport'])->name('.report');
+        Route::post('/make', [StudentAttendanceCtrl::class, 'UpdateAttendance'])->name('.make.post');
     });
 
     
