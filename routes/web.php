@@ -176,7 +176,13 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::get('/students', [StudentMigrationsController::class, 'GetStudents'])->name('.create');
         Route::post('/create', [StudentMigrationsController::class, 'PostMigration'])->name('.create.post');
     });
-    // Route::get('/exam', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+
+    Route::prefix('exam')->name('exam')->group(function(){
+        Route::get('/', [ExamController::class, 'Index'])->name('.index');
+        Route::get('/edit/{id}', [ExamController::class, 'EditExam'])->name('.edit');
+        Route::post('/add', [ExamController::class, 'AddExam'])->name('.add');
+        Route::post('/edit/{id}', [ExamController::class, 'PostEditExam'])->name('.edit.post');
+    });
     // Route::get('/manage-result', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/noticeboard', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/library', [DashboardController::class, 'GetDashboard'])->name('dashboard');

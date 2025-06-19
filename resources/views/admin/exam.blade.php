@@ -295,13 +295,14 @@
 			},
 		});
 
-		@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
-		$('.add-exam').hide();
-		@endif
+		//Permission will be applied later
+		//"if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)"
+		// $('.add-exam').hide();
+		//"endif"
 
-		@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
-		$('.edit-exam').hide();
-		@endif
+		//"if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)"
+		// $('.edit-exam').hide();
+		//"endif"
 
 		});
 	</script>
