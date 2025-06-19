@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\ManageRoutine;
 use App\Http\Controllers\Admin\StudentAttendanceCtrl;
 use App\Http\Controllers\Admin\TeacherAttendanceCtrl;
 use App\Http\Controllers\Admin\EmployeeAttendanceCtrl;
-use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\ManageSubjects;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Admin\NoticeboardController;
@@ -162,7 +162,13 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::get('/report', [EmployeeAttendanceCtrl::class, 'AttendanceReport'])->name('.report');
         Route::post('/make', [EmployeeAttendanceCtrl::class, 'UpdateAttendance'])->name('.make.post');
     });
-    // Route::get('/employee-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+
+    Route::prefix('manage-subjects')->name('employee-attendance')->group(function(){
+        Route::get('/', [ManageSubjects::class, 'GetSubject'])->name('.index');
+        Route::get('/edit/{id}', [ManageSubjects::class, 'EditSubject'])->name('.edit');
+        Route::post('/add', [ManageSubjects::class, 'AddSubject'])->name('.add');
+        Route::post('/edit/{id}', [ManageSubjects::class, 'PostEditSubject'])->name('.edit.post');
+    });
     // Route::get('/manage-subjects', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/exam', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/manage-result', [DashboardController::class, 'GetDashboard'])->name('dashboard');
