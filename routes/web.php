@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\VouchersController;
 use App\Http\Controllers\Admin\ManageRoutine;
 use App\Http\Controllers\Admin\StudentAttendanceCtrl;
 use App\Http\Controllers\Admin\TeacherAttendanceCtrl;
+use App\Http\Controllers\Admin\EmployeeAttendanceCtrl;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\ResultController;
@@ -148,16 +149,19 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/make', [StudentAttendanceCtrl::class, 'UpdateAttendance'])->name('.make.post');
     });
 
-    Route::prefix('teacher-attendance')->name('student-attendance')->group(function(){
+    Route::prefix('teacher-attendance')->name('teacher-attendance')->group(function(){
         Route::get('/', [TeacherAttendanceCtrl::class, 'Index'])->name('.index');
         Route::get('/make', [TeacherAttendanceCtrl::class, 'MakeAttendance'])->name('.make');
         Route::get('/report', [TeacherAttendanceCtrl::class, 'AttendanceReport'])->name('.report');
         Route::post('/make', [TeacherAttendanceCtrl::class, 'UpdateAttendance'])->name('.make.post');
     });
 
-    
-    // Route::get('/student-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
-    // Route::get('/teacher-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::prefix('employee-attendance')->name('employee-attendance')->group(function(){
+        Route::get('/', [EmployeeAttendanceCtrl::class, 'Index'])->name('.index');
+        Route::get('/make', [EmployeeAttendanceCtrl::class, 'MakeAttendance'])->name('.make');
+        Route::get('/report', [EmployeeAttendanceCtrl::class, 'AttendanceReport'])->name('.report');
+        Route::post('/make', [EmployeeAttendanceCtrl::class, 'UpdateAttendance'])->name('.make.post');
+    });
     // Route::get('/employee-attendance', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/manage-subjects', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/exam', [DashboardController::class, 'GetDashboard'])->name('dashboard');
