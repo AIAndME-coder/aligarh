@@ -359,17 +359,18 @@
 
 					});
 
-			@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
-				$('.add-expense').hide();
-			@endif
+			//Permission will be applied later
+			// "if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)"
+			// 	$('.add-expense').hide();
+			// "endif"
 
-			@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
-				$('.edit-expense').hide();
-			@endif
+			// "if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)"
+			// 	$('.edit-expense').hide();
+			// "endif"
 
-			@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->summary == 0)
-				$('.summary-expense').hide();
-			@endif
+			// "if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->summary == 0)"
+			// 	$('.summary-expense').hide();
+			// "endif"
 
 			});
 		</script>

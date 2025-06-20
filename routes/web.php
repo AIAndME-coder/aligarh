@@ -205,7 +205,14 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/create', [NoticeBoardCtrl::class, 'CreateNotice'])->name('.create');
         Route::post('/delete', [NoticeBoardCtrl::class, 'DeleteNotice'])->name('.delete');
     });
-    // Route::get('/noticeboard', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+
+    Route::prefix('expense')->name('expense')->group(function(){
+        Route::get('/', [ExpenseController::class, 'Index'])->name('.index');
+        Route::get('/edit/{id}', [ExpenseController::class, 'EditExpense'])->name('.edit');
+        Route::get('/summary', [ExpenseController::class, 'Summary'])->name('.summary');
+        Route::post('/add', [ExpenseController::class, 'AddExpense'])->name('.add');
+        Route::post('/edit/{id}', [ExpenseController::class, 'PostEditExpense'])->name('.edit.post');
+    });
     // Route::get('/fee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/expense', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/users', [DashboardController::class, 'GetDashboard'])->name('dashboard');
