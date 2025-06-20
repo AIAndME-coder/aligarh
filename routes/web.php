@@ -20,9 +20,8 @@ use App\Http\Controllers\Admin\ManageSubjects;
 use App\Http\Controllers\Admin\StudentMigrationsController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\ManageStudentResultCtrl;
-use App\Http\Controllers\Admin\ResultController;
-use App\Http\Controllers\Admin\NoticeboardController;
 use App\Http\Controllers\Admin\LibraryController;
+use App\Http\Controllers\Admin\NoticeboardController;
 use App\Http\Controllers\Admin\FeeController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\SystemSettingController;
@@ -193,8 +192,15 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/maketranscript', [ManageStudentResultCtrl::class, 'SaveTranscript'])->name('.maketranscript.create');
         Route::post('/make', [ManageStudentResultCtrl::class, 'UpdateResult'])->name('.result');
     });
+
+    Route::prefix('library')->name('library')->group(function(){
+        Route::get('/', [LibraryController::class, 'GetLibrary'])->name('.index');
+        Route::get('/edit/{id}', [LibraryController::class, 'EditBook'])->name('.edit');
+        Route::post('/add', [LibraryController::class, 'AddBook'])->name('.add');
+        Route::post('/edit/{id}', [LibraryController::class, 'PostEditBook'])->name('.edit.post');  
+
+    });
     // Route::get('/noticeboard', [DashboardController::class, 'GetDashboard'])->name('dashboard');
-    // Route::get('/library', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/fee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/expense', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/users', [DashboardController::class, 'GetDashboard'])->name('dashboard');
