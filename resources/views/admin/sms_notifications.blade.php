@@ -359,10 +359,10 @@
 			minViewMode: 0,
 			todayHighlight: true
 		});
-
-      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->history == 0)
-        $('.sms-history').hide();
-      @endif
+		//Permission will be applied later
+    //   "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->history == 0)"
+    //     $('.sms-history').hide();
+    //   "endif"
 
 	  });
 	</script>

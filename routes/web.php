@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\LibraryController;
 use App\Http\Controllers\Admin\NoticeBoardCtrl;
 use App\Http\Controllers\Admin\FeeController;
 use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\SmsController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\FeeScenarioController;
 use App\Http\Controllers\Admin\ExamGradeController;
@@ -212,6 +213,13 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::get('/summary', [ExpenseController::class, 'Summary'])->name('.summary');
         Route::post('/add', [ExpenseController::class, 'AddExpense'])->name('.add');
         Route::post('/edit/{id}', [ExpenseController::class, 'PostEditExpense'])->name('.edit.post');
+    });
+
+    Route::prefix('smsnotifications')->name('smsnotifications')->group(function(){
+        Route::get('/', [SmsController::class, 'Index'])->name('.index');
+        Route::post('/send', [SmsController::class, 'SendSms'])->name('.sendsms');
+        Route::post('/send-bulk', [SmsController::class, 'SendBulkSms'])->name('.sendbulksms');
+        Route::post('/history', [SmsController::class, 'History'])->name('.history');
     });
     // Route::get('/fee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/expense', [DashboardController::class, 'GetDashboard'])->name('dashboard');
