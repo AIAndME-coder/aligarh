@@ -48,16 +48,17 @@
 							<li class="make-fee">
 								<a data-toggle="tab" href="#tab-11"><span class="fa fa-edit"></span> Create Invoice</a>
 							</li>
-							@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->collect)
+							{{-- Permission will be applied later --}}
+							{{-- "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->collect)" --}}
 							<li class="collect-invocie">
 								<a data-toggle="tab" href="#tab-12"><span class="fa fa-sticky-note-o"></span> Invoice Collect</a>
 							</li>
-							@endif
-							@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)
+							{{-- "endif" --}}
+							{{-- "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)" --}}
 							<li class="">
 								<a data-toggle="tab" href="#tab-13"><span class="fa fa-edit"></span> Update Fee</a>
 							</li>
-							@endif
+							{{-- "endif" --}}
 						</ul>
 						<div class="tab-content">
 							<div id="tab-10" class="tab-pane fade">
@@ -108,7 +109,7 @@
 
 									</form>
 
-									@if($root['job'] == 'create')
+									@if($root == 'create')
 									<div class="row">
 									<h3>Student Name: <span class="bg-info"> {{ $student->name }} | {{ $student->gr_no }} </span></h3>
 
@@ -210,7 +211,8 @@
 								</div>
 							</div>
 
-							@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->collect)
+							{{-- Permission will be applied later --}}
+							{{-- "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->collect)" --}}
 							<div id="tab-12" class="tab-pane fade make-fee">
 								<div id="collectfeeApp" class="panel-body">
 									<h2> Invoice Collect </h2>
@@ -346,9 +348,9 @@
 
 								</div>
 							</div>
-							@endif
+							{{-- "endif" --}}
 
-							@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)
+							{{-- "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)" --}}
 							<div id="tab-13" class="tab-pane fade">
 								<div id="updatefeeApp" class="panel-body">
 								  <h2> Update Fee </h2>
@@ -468,7 +470,7 @@
 									</form>
 								</div>
 							</div>
-							@endif
+							{{-- "endif" --}}
 						</div>
 					</div>
 				</div>
@@ -518,7 +520,7 @@
 
 	  $(document).ready(function(){
 
-	  @if((COUNT($errors) >= 1 && !$errors->has('toastrmsg')) || $root['job'] == 'create')
+	  @if((COUNT($errors) >= 1 && !$errors->has('toastrmsg')) || $root == 'create')
 		$('a[href="#tab-11"]').tab('show');
 		@if(isset($Input))
 		  $('[name="gr_no"').val('{{ $Input['gr_no'] }}');
@@ -528,9 +530,10 @@
 	  @endif
 
 		opthtm = '<a data-toggle="tooltip" target="_new" title="View" class="btn btn-default btn-circle btn-xs edit-option"><span class="fa fa-file-pdf-o"></span></a>';
-		@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->{'edit-invoice'})
+		//Permission will be applied later
+		// "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->{'edit-invoice'})"
 		opthtm += '<a data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-invoice"><span class="fa fa-edit"></span></a>';
-		@endif
+		// "endif"
 		tbl = $('.dataTables-teacher').DataTable({
 		  dom: '<"html5buttons"B>lTfgitp',
 		  buttons: [
@@ -625,9 +628,10 @@
 		window.open('{{ URL('fee/chalan/'.Session::get('invoice_created')) }}', '_new');
 	  @endif
 
-	  @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->create == 0)
-		$('.make-fee').hide();
-	  @endif
+	//Permission will be applied later
+	//   "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->create == 0)"
+		// $('.make-fee').hide();
+	//   "endif"
 
 
 	  });
@@ -640,7 +644,7 @@
 	<!-- Select2 -->
 	<script src="{{ URL::to('src/js/plugins/select2/select2.full.min.js') }}"></script>
 
-	@if($root['job'] == 'create')
+	@if($root == 'create')
 	<script type="text/javascript">
 	  var app = new Vue({
 		el: '#createfeeApp',
@@ -649,11 +653,11 @@
 			NoOfMonths:0,
 			fee: {
 				additionalfee: {!! json_encode($student->AdditionalFee, JSON_NUMERIC_CHECK) !!},
-				tuition_fee: {{ $student->tuition_fee or 0 }},
-				late_fee: {{ $student->late_fee or 0 }},
-				discount:  {{ $student->discount or 0 }},
+				tuition_fee: {{ $student->tuition_fee ?? 0 }},
+				late_fee: {{ $student->late_fee ?? 0 }},
+				discount:  {{ $student->discount ?? 0 }},
 			},
-			arrears: {{ $arrears or 0 }},
+			arrears: {{ $arrears ?? 0 }},
 			chalan_no: '',
 			payment_type: '',
 			total_tuition_fee: 0,
@@ -715,7 +719,9 @@
 	</script>
 	@endif
 
-	@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)
+	<!--//Permission will be applied later
+	// "@(Auth::user()->getprivileges->privileges->{$root['content']['id']}->update)"
+	-->
 	<script type="text/javascript">
 		var feeApp = new Vue({
 			el: '#updatefeeApp',
@@ -808,9 +814,10 @@
 
 		});
 	</script>
-	@endif
+	// "endif"
 
-	@if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->collect)
+	//Permission will be applied later
+	// "(Auth::user()->getprivileges->privileges->{$root['content']['id']}->collect)"
 		<script type="text/javascript">
 		var feeCollectApp = new Vue({
 			el: '#collectfeeApp',
@@ -866,6 +873,6 @@
 			}
 		});
 		</script>
-	@endif
+	// "endif"
 
 	@endsection
