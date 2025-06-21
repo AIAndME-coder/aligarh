@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\SmsController;
 use App\Http\Controllers\Admin\SeatsReportController;
 use App\Http\Controllers\Admin\FeeCollectionReportController;
+use App\Http\Controllers\Admin\ExamReportController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\FeeScenarioController;
 use App\Http\Controllers\Admin\ExamGradeController;
@@ -235,8 +236,14 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/yearly-collection-statment', [FeeCollectionReportController::class, 'YearlyCollectionStatment'])->name('.yearlycollectionstatment');
     });
 
-    // Route::get('/fee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
-    // Route::get('/expense', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::prefix('exam-reports')->name('exam-reports')->group(function(){
+        Route::get('/', [ExamReportController::class, 'Index'])->name('.index');
+        Route::get('/findstu', [ExamReportController::class, 'FindStudent'])->name('.findstudent');
+        Route::post('/tabulation-sheet', [ExamReportController::class, 'GetExamTabulation'])->name('.tabulationsheet');
+        Route::post('/award-list', [ExamReportController::class, 'AwardList'])->name('.awardlist');
+        Route::post('/average-result', [ExamReportController::class, 'AverageResult'])->name('.averageresult');
+        Route::post('/result-transcript', [ExamReportController::class, 'ResultTranscript'])->name('.resulttranscript');
+    });
     // Route::get('/users', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/system-setting', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/fee-scenario', [DashboardController::class, 'GetDashboard'])->name('dashboard');
