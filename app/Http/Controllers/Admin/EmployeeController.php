@@ -16,8 +16,8 @@ class EmployeeController extends Controller
   public function GetImage($id){
     $Employee  = Employee::findOrFail($id);
     $image = Storage::get($Employee->img_dir);
-//    $image = Storage::disk('public/studnets')->get('1.jpg');
-//    return Response($image, 200);
+    //$image = Storage::disk('public/studnets')->get('1.jpg');
+    //return Response($image, 200);
     return Response($image, 200)->header('Content-Type', 'image');
   }
 
@@ -29,12 +29,12 @@ class EmployeeController extends Controller
   protected function PostValidate($request){
     $this->validate($request, [
         'name'      =>  'required',
-//        'subject'   =>  'required',
+        //'subject'   =>  'required',
         'gender'    =>  'required',
-//        'email' =>  'required|email|unique:employees,email'. (($this->data['root']['option'] !== '')? ','.$this->Employee->id : ''),
-//        'email'     =>  'required|email',
+        //'email' =>  'required|email|unique:employees,email'. (($this->data['root']['option'] !== '')? ','.$this->Employee->id : ''),
+        //'email'     =>  'required|email',
         'role'      =>  'required',
-//        'qualification'  =>  'required',
+        //'qualification'  =>  'required',
         'salary'      =>  'required|numeric',
         'img'         =>  'image|mimes:jpeg,png,jpg|max:4096'
     ]);
@@ -66,7 +66,7 @@ class EmployeeController extends Controller
           $data[$k]['email']  = $employee->email;
           $data[$k]['role']  = $employee->role;
           $data[$k]['name']  = $employee->name;
-  /*        $data[$k]['htm1'] = '<span class="text-danger">';
+          /*$data[$k]['htm1'] = '<span class="text-danger">';
           $data[$k]['htm2'] = '</span>';*/
           $k++;
         }
@@ -170,7 +170,7 @@ class EmployeeController extends Controller
     Storage::delete($Employee->img_dir);
     $extension = $file->getClientOriginalExtension();
     Storage::disk('public')->put('employee/'.$Employee->id.'.'.$extension,  File::get($file));
-//    $file = $this->Request->file('img')->storePubliclyAs('images/employee', $Employee->id.'.'.$file->getClientOriginalExtension(), 'public');
+    //$file = $this->Request->file('img')->storePubliclyAs('images/employee', $Employee->id.'.'.$file->getClientOriginalExtension(), 'public');
     $Employee->img_dir = 'public/employee/'.$Employee->id.'.'.$extension;
     $Employee->img_url = 'employee/image/'.$Employee->id;
   }

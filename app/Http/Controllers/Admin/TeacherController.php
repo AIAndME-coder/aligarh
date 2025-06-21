@@ -17,8 +17,8 @@ class TeacherController extends Controller
   public function GetImage($id){
     $teacher  = Teacher::findorfail($id);
     //$image = Storage::get($teacher->image_dir);
-//    $image = Storage::disk('public/studnets')->get('1.jpg');
-//    return Response($image, 200);
+    //$image = Storage::disk('public/studnets')->get('1.jpg');
+    //return Response($image, 200);
     if(Storage::exists($teacher->image_dir)){
       return Response(Storage::get($teacher->image_dir), 200)->header('Content-Type', 'image');
     }
@@ -35,9 +35,9 @@ class TeacherController extends Controller
   protected function PostValidate($request){
     $this->validate($request, [
         'name'      =>  'required',
-//        'subject'   =>  'required',
+        //'subject'   =>  'required',
         'gender'    =>  'required',
-//        'email'     =>  'required|email',
+        //'email'     =>  'required|email',
         'qualification'  =>  'required',
         'salary'      =>  'required|numeric',
         'img'         =>  'image|mimes:jpeg,png,jpg|max:4096'
@@ -68,8 +68,8 @@ class TeacherController extends Controller
           $data[$k]['email']  = $teacher->email;
           $data[$k]['name']  = $teacher->name;
           $data[$k]['role']  = "Teacher";
-  /*        $data[$k]['htm1'] = '<span class="text-danger">';
-          $data[$k]['htm2'] = '</span>';*/
+          // $data[$k]['htm1'] = '<span class="text-danger">';
+          // $data[$k]['htm2'] = '</span>';
           $k++;
         }
       }
@@ -170,7 +170,7 @@ class TeacherController extends Controller
     Storage::delete($Teacher->image_dir);
     $extension = $file->getClientOriginalExtension();
     Storage::disk('public')->put('teachers/'.$Teacher->id.'.'.$extension,  File::get($file));
-//    $file = $request->file('img')->storePubliclyAs('images/teachers', $Teacher->id.'.'.$file->getClientOriginalExtension(), 'public');
+    //$file = $request->file('img')->storePubliclyAs('images/teachers', $Teacher->id.'.'.$file->getClientOriginalExtension(), 'public');
     $Teacher->image_dir = 'public/teachers/'.$Teacher->id.'.'.$extension;
     $Teacher->image_url = 'teacher/image/'.$Teacher->id;
   }

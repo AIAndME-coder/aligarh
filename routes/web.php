@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
     Route::prefix('teacher')->name('teacher')->group(function(){
         Route::get('/', [TeacherController::class, 'GetTeacher'])->name('.index');
         Route::get('/image/{id}', [TeacherController::class, 'GetImage'])->name('.image');
+        Route::get('/find', [TeacherController::class, 'FindTeacher'])->name('.find');
         Route::get('/profile/{id}', [TeacherController::class, 'GetProfile'])->name('.profile');
         Route::get('/edit/{id}', [TeacherController::class, 'EditTeacher'])->name('.edit');
         Route::post('/add', [TeacherController::class, 'AddTeacher'])->name('.add');
@@ -86,6 +87,7 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
     Route::prefix('employee')->name('employee')->group(function(){
         Route::get('/', [EmployeeController::class, 'GetEmployee'])->name('.index');
         Route::get('/image/{id}', [EmployeeController::class, 'GetImage'])->name('.image');
+        Route::get('/find', [EmployeeController::class, 'FindEmployee'])->name('.find');
         Route::get('/profile/{id}', [EmployeeController::class, 'GetProfile'])->name('.profile');
         Route::get('/edit/{id}', [EmployeeController::class, 'EditEmployee'])->name('.edit');
         Route::post('/add', [EmployeeController::class, 'AddEmployee'])->name('.add');#store should be used instead of add
