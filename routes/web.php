@@ -25,6 +25,8 @@ use App\Http\Controllers\Admin\NoticeBoardCtrl;
 use App\Http\Controllers\Admin\FeeController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\SmsController;
+use App\Http\Controllers\Admin\SeatsReportController;
+use App\Http\Controllers\Admin\FeeCollectionReportController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\FeeScenarioController;
 use App\Http\Controllers\Admin\ExamGradeController;
@@ -221,6 +223,18 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/send-bulk', [SmsController::class, 'SendBulkSms'])->name('.sendbulksms');
         Route::post('/history', [SmsController::class, 'History'])->name('.history');
     });
+
+    Route::get('seats-report', [SeatsReportController::class, 'GetSeatsStatus'])->name('.seatsreport');
+
+    Route::prefix('fee-collection-reports')->name('fee-collection-reports')->group(function(){
+        Route::get('/', [FeeCollectionReportController::class, 'Index'])->name('.feecollectionreports');
+        Route::post('/fee-receipts-statment', [FeeCollectionReportController::class, 'Index'])->name('.feereceiptsstatment');
+        Route::post('/daily-fee-collection', [FeeCollectionReportController::class, 'DailyFeeCollection'])->name('.dailyfeecollection');
+        Route::post('/freeship-students', [FeeCollectionReportController::class, 'FreeshipStudents'])->name('.freeshipstudents');
+        Route::post('/unpaid-fee-statment', [FeeCollectionReportController::class, 'UnpaidFeeStatment'])->name('.unpaidfeestatment');
+        Route::post('/yearly-collection-statment', [FeeCollectionReportController::class, 'YearlyCollectionStatment'])->name('.yearlycollectionstatment');
+    });
+
     // Route::get('/fee', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/expense', [DashboardController::class, 'GetDashboard'])->name('dashboard');
     // Route::get('/users', [DashboardController::class, 'GetDashboard'])->name('dashboard');
