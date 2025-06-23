@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StudentsController;
 use App\Http\Controllers\Admin\ManageClasses;
@@ -55,9 +56,14 @@ Route::group(['middleware' => 'guest'], function(){
 Route::group(['middleware' => ['auth', 'auth.active']], function(){
 
     Route::get('id-card/student', [IdcardController::class, 'StudentIdcard'])->name('student.card');
-    Route::get('/', [DashboardController::class, 'GetDashboard'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'GetDashboard']);
     Route::get('/dashboard', [DashboardController::class, 'GetDashboard'])->name('dashboard');
 
+    Route::prefix('user-settings')->name('user-settings')->group(function(){
+        Route::get('/', [UserSettingController::class, 'GetUserSetting'])->name('.index');
+        Route::post('/changepwd', [UserSettingController::class, 'UpdatePwd'])->name('.password.update');
+        Route::post('/changesession', [UserSettingController::class, 'ChangeSession'])->name('.change.session');
+    });
 
     Route::prefix('students')->name('students')->group(function(){
         Route::get('/', [StudentsController::class, 'Index'])->name('.index');
@@ -243,7 +249,7 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
         Route::post('/history', [SmsController::class, 'History'])->name('.history');
     });
 
-    Route::get('seats-report', [SeatsReportController::class, 'GetSeatsStatus'])->name('.seatsreport');
+    Route::get('seats-report', [SeatsReportController::class, 'GetSeatsStatus'])->name('seatsreport');
 
     Route::prefix('fee-collection-reports')->name('fee-collection-reports')->group(function(){
         Route::get('/', [FeeCollectionReportController::class, 'Index'])->name('.feecollectionreports');
@@ -264,7 +270,8 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
     });
 
     Route::prefix('users')->name('users')->group(function(){
-        Route::get('/', [UsersController::class, 'GetUsers'])->name('.index');
+        Route::get('/', [UsersController::class, 'index'])->name('.index');
+        Route::get('/create', [UsersController::class, 'create'])->name('.create');
     });
 
     Route::prefix('system-setting')->name('system-setting')->group(function(){
