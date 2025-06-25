@@ -88,11 +88,11 @@
                                   <h2> User Registration </h2>
                                   <div class="hr-line-dashed"></div>
 
-                                    <form id="tchr_rgstr" method="post" action="{{ URL('users/add') }}" class="form-horizontal" >
+                                    <form id="tchr_rgstr" method="post" action="{{ URL('users/create') }}" class="form-horizontal" >
                                       {{ csrf_field() }}
 
                                       <div class="form-group">
-                                        <label class="col-md-2 control-label">Select Type</label>
+                                        <label class="col-md-2 control-label">Role</label>
                                         <div class="col-md-6">
                                           <select id="type" name="type" value="{{ old('type') }}" class="form-control" required="true" />
                                             <option></option>
@@ -234,41 +234,6 @@
                                           @endif
                                         </div>
                                       </div>
-
-                                      <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                          Select Options To Allow User
-                                        </div>
-                                        <div class="panel-body">
-
-                                          @foreach(collect($content)->chunk(3) AS $chunks)
-                                            <div class="row">
-                                            @foreach($chunks AS $key => $chunk)
-                                              <div class="col-sm-4 col-md-4">
-                                                <div class="checkbox checkbox-success">
-                                                  <input id="checkbox_{{ $chunk->id }}" name="privileges[{{ $chunk->id }}][default]" value="1" type="checkbox">
-                                                  <label for="checkbox_{{ $chunk->id }}">
-                                                    {{ $chunk->label }}
-                                                  </label>
-                                                </div>
-                                                @if(collect($chunk->options)->count() >= 1 )
-                                                <b>Option:</b>
-                                                <select class="select2 form-control" multiple="multiple" name="privileges[{{$chunk->id}}][options][]" style="width: 100%">
-                                                  @foreach($chunk->options AS $k => $option)
-                                                    @if(Auth::user()->getprivileges->privileges->{$chunk->id}->{$k})
-                                                      <option value="{{ $k }}">{{ $option }}</option>
-                                                    @endif
-                                                  @endforeach
-                                                </select>
-                                                @endif
-                                              </div>
-                                            @endforeach
-                                            </div>
-                                          @endforeach
-
-                                        </div>
-                                      </div>
-
                                       <div class="form-group">
                                           <div class="col-md-offset-2 col-md-6">
                                               <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Register </button>
@@ -346,10 +311,10 @@
         tbl = $('.dataTables-user').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
-//            { extend: 'copy'},
-//            {extend: 'csv'},
-//            {extend: 'excel', title: 'ExampleFile'},
-//            {extend: 'pdf', title: 'ExampleFile'},
+            //{ extend: 'copy'},
+            //{extend: 'csv'},
+            //{extend: 'excel', title: 'ExampleFile'},
+            //{extend: 'pdf', title: 'ExampleFile'},
 
             {extend: 'print',
               customize: function (win){
@@ -375,10 +340,10 @@
           serverSide: true,
           ajax: '{{ URL('users') }}',
           columns: [
-            {data: 'name'},
-            {data: 'email'},
-            {data: 'role'},
-//            {"defaultContent": '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle option" aria-expanded="true">Action <span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#"><span class="fa fa-user"></span> Profile</a></li><li class="divider"></li><li><a data-original-title="Edit" class="edit-option"><span class="fa fa-edit"></span> Edit</a></li><li><a href="#"><span class="fa fa-trash"></span> Delete</a></li></ul></div>', className: 'hidden-print'},
+            { data: 'name' },
+            { data: 'email' },
+            { data: 'roles', name: 'roles.name', orderable: false, searchable: false },
+            // {"defaultContent": '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle option" aria-expanded="true">Action <span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#"><span class="fa fa-user"></span> Profile</a></li><li class="divider"></li><li><a data-original-title="Edit" class="edit-option"><span class="fa fa-edit"></span> Edit</a></li><li><a href="#"><span class="fa fa-trash"></span> Delete</a></li></ul></div>', className: 'hidden-print'},
             {render: loadOptions, className: 'hidden-print', "orderable": false},
           ],
         });
@@ -518,19 +483,19 @@
       });
 
       @if(collect($errors)->count() >= 1 && !$errors->has('toastrmsg'))
-        $('a[href="#tab-11"]').tab('show');
-      @else
         $('a[href="#tab-10"]').tab('show');
+      @else
+        $('a[href="#tab-11"]').tab('show');
       @endif
 
 
-      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)
-        $('.add-user').hide();
-      @endif
+      // "Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)"
+      //   $('.add-user').hide();
+      // "endif"
 
-      @if(Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)
-        $('.edit-user').hide();
-      @endif
+      // "Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)"
+      //   $('.edit-user').hide();
+      // "endif"
 
 
       });

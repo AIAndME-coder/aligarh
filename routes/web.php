@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IdcardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\UserSettingController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -29,11 +30,11 @@ use App\Http\Controllers\Admin\SmsController;
 use App\Http\Controllers\Admin\SeatsReportController;
 use App\Http\Controllers\Admin\FeeCollectionReportController;
 use App\Http\Controllers\Admin\ExamReportController;
-use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\FeeScenarioController;
 use App\Http\Controllers\Admin\ExamGradesController;
-use App\Http\Controllers\IdcardController;
+use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -252,7 +253,7 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
     Route::get('seats-report', [SeatsReportController::class, 'GetSeatsStatus'])->name('seatsreport');
 
     Route::prefix('fee-collection-reports')->name('fee-collection-reports')->group(function(){
-        Route::get('/', [FeeCollectionReportController::class, 'Index'])->name('.feecollectionreports');
+        Route::get('/', [FeeCollectionReportController::class, 'Index'])->name('.index');
         Route::post('/fee-receipts-statment', [FeeCollectionReportController::class, 'Index'])->name('.feereceiptsstatment');
         Route::post('/daily-fee-collection', [FeeCollectionReportController::class, 'DailyFeeCollection'])->name('.dailyfeecollection');
         Route::post('/freeship-students', [FeeCollectionReportController::class, 'FreeshipStudents'])->name('.freeshipstudents');
@@ -271,7 +272,16 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
 
     Route::prefix('users')->name('users')->group(function(){
         Route::get('/', [UsersController::class, 'index'])->name('.index');
-        Route::get('/create', [UsersController::class, 'create'])->name('.create');
+        Route::post('/create', [UsersController::class, 'create'])->name('.create');
+        Route::get('/edit/{id}', [UsersController::class, 'edit'])->name('.edit');
+        Route::post('/edit/{id}', [UsersController::class, 'update'])->name('.update');
+    });
+
+    Route::prefix('roles')->name('roles')->group(function(){
+        Route::get('/', [RoleController::class, 'index'])->name('.index');
+        Route::post('/create', [RoleController::class, 'create'])->name('.create');
+        Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('.edit');
+        Route::post('/update/{id}', [RoleController::class, 'update'])->name('.update');
     });
 
     Route::prefix('system-setting')->name('system-setting')->group(function(){
@@ -287,7 +297,7 @@ Route::group(['middleware' => ['auth', 'auth.active']], function(){
     });
 
     Route::prefix('exam-grades')->name('exam-grades')->group(function(){
-        Route::get('/', [ExamGradesController::class, 'Index'])->name('dashboard');
-        Route::post   ('/update', [ExamGradesController::class, 'UpdateGrade'])->name('dashboard');
+        Route::get('/', [ExamGradesController::class, 'Index'])->name('.index');
+        Route::post('/update', [ExamGradesController::class, 'UpdateGrade'])->name('.update');
     });
 });
