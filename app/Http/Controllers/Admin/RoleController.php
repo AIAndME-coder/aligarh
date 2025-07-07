@@ -127,6 +127,12 @@ class RoleController extends Controller
 		return [
 			'Dashboard & Settings' => [
 				'dashboard' => 'Dashboard',
+				'dashboad.top_content' => 'Show Total Students, Teacher etc..',
+				'dashboad.monthly_attendance' => 'Show Monthly Attendance',
+				'dashboad.fee_Collection' => 'Show Fee Collection',
+				'dashboad.monthly_expenses' => 'Show Monthly Expenses',
+				'dashboad.inventory_summary' => 'Show Inventory Summary',
+				'dashboad.daily_attendance' => 'Show Daily Attendance',
 				'student.card' => 'Student Card',
 				'user-settings.index' => 'User Settings View',
 				'user-settings.password.update' => 'Password Update',
@@ -137,6 +143,7 @@ class RoleController extends Controller
 				'users.create' => 'User Create',
 				'users.edit' => 'User Edit',
 				'users.update' => 'User Update',
+				'users.update.update_password' => 'Update Password (User Update)'
 			],
 			'Roles' => [
 				'roles.index' => 'Role View',
@@ -148,6 +155,7 @@ class RoleController extends Controller
 				'students.index' => 'Students View',
 				'students.add' => 'Students Create',
 				'students.edit' => 'Students Edit',
+				'students.class_edit' => 'Edit Class',
 				'students.edit.post' => 'Students Update',
 				'students.profile' => 'Students Profile',
 				'students.image' => 'Students Image',
