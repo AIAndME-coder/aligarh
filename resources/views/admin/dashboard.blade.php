@@ -138,7 +138,7 @@
 							</div>
 						@endcan
 					</div>
-					@can('dashboad.top_content')
+					@can('dashboard.top_content')
 						<div class="row">
 							<div class="col-md-3 col-sm-6">
 								<div class="stats-card text-center">
@@ -248,7 +248,7 @@
 							</div>
 						</div>
 					@endcan
-					@can('dashboad.monthly_attendance')
+					@can('dashboard.monthly_attendance')
 						<!-- Charts Section -->
 						<div class="row">
 							<div class="col-md-12">
@@ -259,9 +259,9 @@
 							</div>
 						</div>
 					@endcan
-					@canany(['dashboad.fee_Collection','dashboad.monthly_expenses'])
+					@canany(['dashboard.fee_Collection','dashboard.monthly_expenses'])
 						<div class="row">
-							@can('dashboad.fee_Collection')
+							@can('dashboard.fee_Collection')
 								<div class="col-md-6">
 									<div class="chart-container">
 										<h3 class="section-title"><i class="fa fa-bar-chart"></i> Fee Collection Status</h3>
@@ -269,7 +269,7 @@
 									</div>
 								</div>
 							@endcan
-							@can('dashboad.monthly_expenses')
+							@can('dashboard.monthly_expenses')
 								<div class="col-md-6">
 									<div class="chart-container">
 										<h3 class="section-title"><i class="fa fa-area-chart"></i> Monthly Expenses</h3>
@@ -279,7 +279,7 @@
 							@endcan
 
 						</div>
-					@endcan
+					@endcanany
 
 					<!-- Quick Actions -->
 					{{-- <div class="row d-none">
@@ -311,9 +311,9 @@
 					</div> --}}
 
 					<!-- Detailed Stats -->
-					@canany(['dashboad.inventory_summary', 'dashboad.daily_attendance'])
+					@canany(['dashboard.inventory_summary', 'dashboard.daily_attendance'])
 						<div class="row">
-							@can('dashboad.inventory_summary')
+							@can('dashboard.inventory_summary')
 								<div class="col-md-6">
 									<div class="panel panel-default">
 										<div class="panel-heading">
@@ -338,7 +338,7 @@
 									</div>
 								</div>
 							@endcan
-							@can('dashboad.inventory_summary')
+							@can('dashboard.inventory_summary')
 								<div class="col-md-6">
 									<div class="panel panel-default">
 										<div class="panel-heading">
@@ -379,6 +379,8 @@
 	</script>
 	<script>
 		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+		@can('dashboard.monthly_attendance')
         // Attendance Trend Chart
         const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
     	new Chart(attendanceCtx, {
@@ -421,81 +423,87 @@
 				}
 			}
 		});
+		@endcan
 
-        // Fee Collection Chart
-		const feeCtx = document.getElementById('feeChart').getContext('2d');
-		new Chart(feeCtx, {
-		type: 'bar',
-		data: {
-			labels: months,
-			datasets: [{
-				label: 'Collected',
-				data: @json($fee_collections['collected']),
-				backgroundColor: '#28a745'
-			}, {
-				label: 'Pending',
-				data: @json($fee_collections['pending']),
-				backgroundColor: '#dc3545'
-			}]
-		},
-		options: {
-			responsive: true,
-			scales: {
-				x: { stacked: true },
-				y: { stacked: true }
-			}
-		}
-		});
-
-        // Expense Chart
-        const expenseCtx = document.getElementById('expenseChart').getContext('2d');
-		new Chart(expenseCtx, {
-			type: 'line',
-			data: {
-				labels: months,
-				datasets: [
-					{
-						label: 'Salary',
-						data: @json($expense['Salary']),
-						borderColor: '#007bff',
-						backgroundColor: 'rgba(0, 123, 255, 0.1)',
-						fill: true
-					},
-					{
-						label: 'Utilities',
-						data: @json($expense['Utilities']),
-						borderColor: '#28a745',
-						backgroundColor: 'rgba(40, 167, 69, 0.1)',
-						fill: true
-					},
-					{
-						label: 'Maintenance',
-						data: @json($expense['Maintenance']),
-						borderColor: '#ffc107',
-						backgroundColor: 'rgba(255, 193, 7, 0.1)',
-						fill: true
-					},
-					{
-						label: 'Others',
-						data: @json($expense['Others']),
-						borderColor: '#dc3545',
-						backgroundColor: 'rgba(220, 53, 69, 0.1)',
-						fill: true
-					}
-				]
-			},
-			options: {
-				responsive: true,
-				plugins: {
-					legend: { position: 'top' }
+		@canany(['dashboard.fee_Collection','dashboard.monthly_expenses'])
+			@can('dashboard.fee_Collection')
+				// Fee Collection Chart
+				const feeCtx = document.getElementById('feeChart').getContext('2d');
+				new Chart(feeCtx, {
+				type: 'bar',
+				data: {
+					labels: months,
+					datasets: [{
+						label: 'Collected',
+						data: @json($fee_collections['collected']),
+						backgroundColor: '#28a745'
+					}, {
+						label: 'Pending',
+						data: @json($fee_collections['pending']),
+						backgroundColor: '#dc3545'
+					}]
 				},
-				scales: {
-					y: {
-						beginAtZero: true
+				options: {
+					responsive: true,
+					scales: {
+						x: { stacked: true },
+						y: { stacked: true }
 					}
 				}
-			}
-		});
+				});
+			@endcan
+			@can('dashboard.monthly_expenses')
+				// Expense Chart
+				const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+				new Chart(expenseCtx, {
+					type: 'line',
+					data: {
+						labels: months,
+						datasets: [
+							{
+								label: 'Salary',
+								data: @json($expense['Salary']),
+								borderColor: '#007bff',
+								backgroundColor: 'rgba(0, 123, 255, 0.1)',
+								fill: true
+							},
+							{
+								label: 'Utilities',
+								data: @json($expense['Utilities']),
+								borderColor: '#28a745',
+								backgroundColor: 'rgba(40, 167, 69, 0.1)',
+								fill: true
+							},
+							{
+								label: 'Maintenance',
+								data: @json($expense['Maintenance']),
+								borderColor: '#ffc107',
+								backgroundColor: 'rgba(255, 193, 7, 0.1)',
+								fill: true
+							},
+							{
+								label: 'Others',
+								data: @json($expense['Others']),
+								borderColor: '#dc3545',
+								backgroundColor: 'rgba(220, 53, 69, 0.1)',
+								fill: true
+							}
+						]
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: { position: 'top' }
+						},
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
+			@endcan
+		@endcanany
 
         // Sidebar navigation
         $('.sidebar .nav-link').on('click', function(e) {

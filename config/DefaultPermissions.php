@@ -2,12 +2,12 @@
 
 return [
     //dashboad
-    'dashboad.top_content',
-    'dashboad.monthly_attendance ',
-    'dashboad.fee_Collection',
-    'dashboad.monthly_expenses',
-    'dashboad.inventory_summary',
-    'dashboad.daily_attendance',
+    'dashboard.top_content',
+    'dashboard.monthly_attendance',
+    'dashboard.fee_Collection',
+    'dashboard.monthly_expenses',
+    'dashboard.inventory_summary',
+    'dashboard.daily_attendance',
 
     //update Users password
     'users.update.update_password',
