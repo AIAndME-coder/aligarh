@@ -3,6 +3,7 @@
 return [
     //dashboad
     'dashboard.top_content',
+    'dashboard.timeline',
     'dashboard.monthly_attendance',
     'dashboard.fee_Collection',
     'dashboard.monthly_expenses',

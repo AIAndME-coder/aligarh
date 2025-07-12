@@ -119,6 +119,195 @@
 			margin-right: 0;
 		}
 	</style>
+	{{-- notic-board TimeLines --}}
+	<style>
+		.notic-board-container {
+			background: linear-gradient(135deg, #ffffff, #f8f9fa);
+			border-radius: 12px;
+			padding: 30px;
+			margin-bottom: 30px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+		}
+
+		.section-title {
+			font-size: 1.8rem;
+			color: #1a1a1a;
+			margin-bottom: 30px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			font-weight: 600;
+		}
+
+		.timeline-modern {
+			position: relative;
+			display: flex;
+			flex-direction: row;
+			overflow-x: auto;
+			padding: 20px 20px;
+			justify-content: flex-start;
+			white-space: nowrap;
+			scrollbar-width: thin;
+			scrollbar-color: #007bff #f8f9fa;
+		}
+
+		.timeline-modern::-webkit-scrollbar {
+			height: 8px;
+		}
+
+		.timeline-modern::-webkit-scrollbar-thumb {
+			background: #007bff;
+			border-radius: 4px;
+		}
+
+		.timeline-modern::before {
+			content: '';
+			position: absolute;
+			top: 18%;
+			left: 0;
+			height: 6px;
+			width: 100%;
+			background: linear-gradient(to right, #007bff, #00c4ff);
+			z-index: 1;
+		}
+
+		.timeline-node {
+			position: relative;
+			width: 324px;
+			flex-shrink: 0;
+			margin: 20px 30px 0px 0px;
+			text-align: center;
+		}
+
+		.timeline-dot {
+			width: 20px;
+			height: 20px;
+			background: linear-gradient(45deg, #007bff, #00c4ff);
+			border-radius: 50%;
+			z-index: 2;
+			position: absolute;
+			top: 4%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border: 4px solid #fff;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+
+		.timeline-node:hover .timeline-dot {
+			transform: translate(-50%, -50%) scale(1.3);
+			box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+		}
+
+		.timeline-branch {
+			margin-top: 35px;
+		}
+
+		.notice-card {
+			background: #fff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			min-height: 160px;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		.notice-card:hover {
+			transform: translateY(-8px);
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+		}
+
+		.notice-card h4 {
+			font-size: 1.25rem;
+			color: #1a1a1a;
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-weight: 500;
+		}
+
+		.notice-card p {
+			margin: 8px 0;
+			color: #4a4a4a;
+			line-height: 1.5;
+			flex-grow: 1;
+			font-size: 0.95rem;
+			text-wrap: auto;
+		}
+
+		.notice-card small {
+			color: #6c757d;
+			font-size: 0.85rem;
+			font-style: italic;
+		}
+
+		.timeline-date {
+			position: absolute;
+			left: 50%;
+			margin-top: 25px; 
+			transform: translate(-50%, -60px);
+			font-size: 0.9rem;
+			color: #1a1a1a;
+			font-weight: 500;
+			background: #fff;
+			padding: 4px 10px;
+			border-radius: 4px;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+			z-index: 2;
+		}
+
+		@media (max-width: 768px) {
+			.notic-board-container {
+				padding: 20px;
+				/* overflow-x: auto; */
+			}
+
+			.timeline-modern {
+				padding: 20px 10px;
+				overflow-x: auto;
+				min-width: 600px;
+				position: relative;
+			}
+
+			.timeline-modern::before {
+				top: 12%;
+				height: 4px;
+				width: 100%;
+			}
+
+			.timeline-node {
+				width: 220px;
+				margin: 0 15px;
+				overflow: scroll !important;  
+			}
+
+			.notice-card {
+				min-height: 140px;
+				padding: 15px;
+			}
+
+			.timeline-date {
+				font-size: 0.8rem;
+				padding: 3px 8px;
+				transform: translate(-50%, -50px);
+			}
+		}
+
+		@media (max-width: 1024px) {
+
+			.timeline-modern {
+				overflow: scroll;
+			}
+
+			.timeline-modern::before {
+				overflow: scroll;
+				width: 226%;
+			}
+		}
+	</style>
 @endsection
 @section('content')
   	@include('admin.includes.side_navbar')
@@ -243,6 +432,32 @@
 											<div class="stats-number teal">{{$no_of_users}}</div>
 											<div class="stats-label">Total Users</div>
 										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					@endcan
+					@can('dashboard.timeline')
+						<div class="row">
+							<div class="col-md-12">
+								<div class="notic-board-container">
+									<h3 class="section-title">
+										<i class="fa fa-clipboard"></i> Notice Board
+									</h3>
+									<div class="timeline-modern">
+										@foreach ($timelines as $timeline)
+											<div class="timeline-node">
+												<div class="timeline-date">{{ $timeline->timeline_date}}</div>
+												<div class="timeline-dot"></div>
+												<div class="timeline-branch">
+													<div class="notice-card">
+														<h4><i class="fa fa-bullhorn"></i> {{ $timeline->title}}</h4>
+														<p>{{ $timeline->notice }}</p>
+														<small>{{$timeline->till_date_formatted}}</small>
+													</div>
+												</div>
+											</div>
+										@endforeach
 									</div>
 								</div>
 							</div>

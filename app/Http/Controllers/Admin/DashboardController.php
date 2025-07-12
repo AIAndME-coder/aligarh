@@ -22,6 +22,7 @@ use App\Expense;
 use App\InvoiceMaster;
 use App\Vendor;
 use App\Voucher;
+use App\NoticeBoard;
 
 class DashboardController extends Controller
 {
@@ -44,9 +45,8 @@ class DashboardController extends Controller
 		$data['no_of_employees'] 	= Employee::count();
 		$data['no_of_guardians'] 	= Guardian::count();
 		$data['daily_attendance'] 	= $this->getDailyAttendance();
-
+		$data['timelines'] 			= $this->getNoticeBoard();
 		
-
 		$session = Auth::user()->academicSession()->first();
 		if ($session && $session->start && $session->end) {
 			$start = Carbon::createFromFormat('d/m/Y', $session->start)->format('Y-m-d');
@@ -162,6 +162,19 @@ class DashboardController extends Controller
 			'teacher' => $teacherPercent,
 			'employee' => $employeePercent,
 		];
+	}
+
+	protected function getNoticeBoard()
+	{
+		$NoticeBoard = NoticeBoard::limit(5)->get();
+		$NoticeBoard = $NoticeBoard->map(fn($item) => 
+			tap($item, fn($i) => [
+				$i->timeline_date = Carbon::parse($i->till_date)->format('F, D'),
+				$i->till_date_formatted = Carbon::parse($i->till_date)->format('F d, Y'),
+			])
+		);
+
+		return $NoticeBoard;
 	}
 
 }

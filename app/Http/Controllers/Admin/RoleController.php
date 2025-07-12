@@ -128,6 +128,7 @@ class RoleController extends Controller
 			'Dashboard & Settings' => [
 				'dashboard' => 'Dashboard',
 				'dashboard.top_content' => 'Show Total Students, Teacher etc..',
+				'dashboard.timeline' => 'Show TimeLins (Notice Board)',
 				'dashboard.monthly_attendance' => 'Show Monthly Attendance',
 				'dashboard.fee_Collection' => 'Show Fee Collection',
 				'dashboard.monthly_expenses' => 'Show Monthly Expenses',
