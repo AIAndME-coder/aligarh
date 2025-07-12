@@ -216,7 +216,7 @@
       }
 
       .card-body {
-        padding: 25px 20px 20px;
+        padding: 25px 20px 10px;
       }
 
       .student-name {
@@ -349,55 +349,62 @@
                                     </div>
                                     <div class="" style="display: ruby">
                                       <div class="m-2" v-for="student in students" :key="student.id">
-                                        <div class="panel student-card">
-                                            <div class="card-header">
-                                                <div class="profile-image-container">
-                                                    <img :src="student.image_url || 'img/avatar.jpg'" alt="Student Photo" class="profile-image">
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="student-name">@{{ student.name }}</h4>
-                                                <hr class="info-divider">
-                                                <ul class="list-unstyled info-list">
-                                                    <li class="info-item">
-                                                        <div class="info-icon icon-education">
-                                                            <i class="fa fa-graduation-cap"></i>
-                                                        </div>
-                                                        <div class="info-content">
-                                                            <div class="info-label">Class</div>
-                                                            <div class="info-value">@{{ student.std_class.name }}</div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="info-item">
-                                                        <div class="info-icon icon-id">
-                                                            <i class="fa fa-id-card-o"></i>
-                                                        </div>
-                                                        <div class="info-content">
-                                                            <div class="info-label">GR No</div>
-                                                            <div class="info-value">@{{ student.gr_no }}</div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="info-item">
-                                                        <div class="info-icon icon-gender">
-                                                            <i class="fa fa-user"></i>
-                                                        </div>
-                                                        <div class="info-content">
-                                                            <div class="info-label">Gender</div>
-                                                            <div class="info-value">@{{ student.gender }}</div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="info-item">
-                                                        <div class="info-icon icon-fee">
-                                                            <i class="fa fa-money"></i>
-                                                        </div>
-                                                        <div class="info-content">
-                                                            <div class="info-label">Monthly Fee</div>
-                                                            <div class="info-value fee-amount">PKR @{{ student.tuition_fee }}</div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <a :href="'{{ url('students/profile') }}/' + student.id" class="text-decoration-none">
+                                          <div class="panel student-card">
+                                              <div class="card-header">
+                                                  <div class="profile-image-container">
+                                                      <img :src="student.image_url || 'img/avatar.jpg'" alt="Student Photo" class="profile-image">
+                                                  </div>
+                                              </div>
+                                              <div class="card-body">
+                                                  <h4 class="student-name">@{{ student.name }}</h4>
+                                                  <hr class="info-divider">
+                                                  <ul class="list-unstyled info-list">
+                                                      <li class="info-item">
+                                                          <div class="info-icon icon-education">
+                                                              <i class="fa fa-graduation-cap"></i>
+                                                          </div>
+                                                          <div class="info-content">
+                                                              <div class="info-label">Class</div>
+                                                              <div class="info-value">@{{ student.std_class.name }}</div>
+                                                          </div>
+                                                      </li>
+                                                      <li class="info-item">
+                                                          <div class="info-icon icon-id">
+                                                              <i class="fa fa-id-card-o"></i>
+                                                          </div>
+                                                          <div class="info-content">
+                                                              <div class="info-label">GR No</div>
+                                                              <div class="info-value">@{{ student.gr_no }}</div>
+                                                          </div>
+                                                      </li>
+                                                      <li class="info-item">
+                                                          <div class="info-icon icon-gender">
+                                                              <i class="fa fa-user"></i>
+                                                          </div>
+                                                          <div class="info-content">
+                                                              <div class="info-label">Gender</div>
+                                                              <div class="info-value">@{{ student.gender }}</div>
+                                                          </div>
+                                                      </li>
+                                                      <li class="info-item">
+                                                          <div class="info-icon icon-fee">
+                                                              <i class="fa fa-money"></i>
+                                                          </div>
+                                                          <div class="info-content">
+                                                              <div class="info-label">Monthly Fee</div>
+                                                              <div class="info-value fee-amount">PKR @{{ student.tuition_fee }}</div>
+                                                          </div>
+                                                      </li>
+                                                  </ul>
+                                                  <div class="text-end mt-3">
+                                                      <a :href="'{{ url('students/edit') }}/' + student.id" class="btn btn-sm btn-outline-primary">
+                                                          <i class="fa fa-pencil"></i> Edit
+                                                      </a>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                        </a>  
                                       </div>
                                     </div>
                                     <div class="pagination" id="app">
