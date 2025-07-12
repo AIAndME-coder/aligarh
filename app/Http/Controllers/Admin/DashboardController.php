@@ -46,6 +46,7 @@ class DashboardController extends Controller
 		$data['no_of_guardians'] 	= Guardian::count();
 		$data['daily_attendance'] 	= $this->getDailyAttendance();
 		$data['timelines'] 			= $this->getNoticeBoard();
+		$data['student_capacity'] 	= config('systemInfo.student_capacity');
 		
 		$session = Auth::user()->academicSession()->first();
 		if ($session && $session->start && $session->end) {
@@ -158,9 +159,18 @@ class DashboardController extends Controller
 		$employeePercent = $employeeTotal > 0 ? round(($employeePresent / $employeeTotal) * 100) : 0;
 
 		return [
-			'student' => $studentPercent,
-			'teacher' => $teacherPercent,
-			'employee' => $employeePercent,
+			'student' => [
+				'percent' => $studentPercent,
+				'present' => $studentPresent,
+			],
+			'teacher' => [
+				'percent' => $teacherPercent,
+				'present' => $teacherPresent,
+			],
+			'employee' => [
+				'percent' => $employeePercent,
+				'present' => $employeePresent,
+			],
 		];
 	}
 

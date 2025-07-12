@@ -118,6 +118,12 @@
     		border-bottom: 1px solid #eee;
 			margin-right: 0;
 		}
+		.text-lg{
+			font-size: large
+		}
+		.stats-card .panel-heading {
+			padding: 0px;
+		}
 	</style>
 	{{-- notic-board TimeLines --}}
 	<style>
@@ -334,9 +340,11 @@
 									<div class="row">
 										<div class="col-xs-3">
 											<i class="fa fa-users card-icon primary"></i>
+											<span class="text-lg" data-placement="right" data-toggle="tooltip" title="Total Capacity" style="color: #007bff;">{{ $student_capacity }}</span>
+											<span class="text-lg" data-placement="right" data-toggle="tooltip" title="Attendance" style="color: #007bffb5;">{{ $daily_attendance['student']['percent'] }}%</span>
 										</div>
 										<div class="col-xs-9 text-right">
-											<div class="stats-number primary">{{$no_of_students}}</div>
+											<div class="stats-number primary"><span data-placement="top" data-toggle="tooltip" title="Today Presents" style="color: #007bffb5;">{{$daily_attendance['student']['present']}}</span>/{{$no_of_students}}</div>
 											<div class="stats-label">Total Students</div>
 										</div>
 									</div>
@@ -347,9 +355,10 @@
 									<div class="row">
 										<div class="col-xs-3">
 											<i class="fa fa-user-plus card-icon success"></i>
+											<span class="text-lg" data-placement="right" data-toggle="tooltip" title="Attendance" style="color: #28a7458f;">{{ $daily_attendance['teacher']['percent'] }}%</span>
 										</div>
 										<div class="col-xs-9 text-right">
-											<div class="stats-number success">{{$no_of_teachers}}</div>
+											<div class="stats-number success"><span data-placement="top" data-toggle="tooltip" title="Today Presents" style="color: #28a7458f;">{{$daily_attendance['teacher']['present']}}</span>/{{$no_of_teachers}}</div>
 											<div class="stats-label">Total Teachers</div>
 										</div>
 									</div>
@@ -360,9 +369,10 @@
 									<div class="row">
 										<div class="col-xs-3">
 											<i class="fa fa-briefcase card-icon info"></i>
+											<span class="text-lg" data-placement="right" data-toggle="tooltip" title="Attendance" style="color: #17a2b8ad;">{{ $daily_attendance['employee']['percent'] }}%</span>
 										</div>
 										<div class="col-xs-9 text-right">
-											<div class="stats-number info">{{$no_of_employees}}</div>
+											<div class="stats-number info"><span data-placement="top" data-toggle="tooltip" title="Today Presents" style="color: #17a2b8ad;">{{$daily_attendance['employee']['present']}}</span>/{{$no_of_employees}}</div>
 											<div class="stats-label">Total Employees</div>
 										</div>
 									</div>
@@ -397,14 +407,29 @@
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-6">
-								<div class="stats-card text-center">
-									<div class="row">
-										<div class="col-xs-3">
-											<i class="fa fa-cube card-icon purple"></i>
-										</div>
-										<div class="col-xs-9 text-right">
-											<div class="stats-number purple">{{$no_of_items}}</div>
-											<div class="stats-label">Total Inventory</div>
+								<div class="stats-card text-center" style="padding-top:10px !important ">
+									<div class="panel-body" style="padding: 0px 15px 0 15px !important;">
+										<div class="row">
+											<!-- Vendors -->
+											<div class="col-xs-4">
+												<i class="fa fa-users card-icon green"></i>
+												<div class="stats-number green" style="font-size: 16px;">{{$no_of_vendors}}</div>
+												<div class="stats-label">Vendors</div>
+											</div>
+
+											<!-- Items -->
+											<div class="col-xs-4">
+												<i class="fa fa-cube card-icon purple"></i>
+												<div class="stats-number purple" style="font-size: 16px;">{{$no_of_items}}</div>
+												<div class="stats-label">Items</div>
+											</div>
+
+											<!-- Vouchers -->
+											<div class="col-xs-4">
+												<i class="fa fa-ticket card-icon orange"></i>
+												<div class="stats-number orange" style="font-size: 16px;">{{$no_of_vouchers}}</div>
+												<div class="stats-label">Vouchers</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -524,62 +549,6 @@
 							</div>
 						</div>
 					</div> --}}
-
-					<!-- Detailed Stats -->
-					@canany(['dashboard.inventory_summary', 'dashboard.daily_attendance'])
-						<div class="row">
-							@can('dashboard.inventory_summary')
-								<div class="col-md-6">
-									<div class="panel panel-default">
-										<div class="panel-heading">
-											<h3 class="panel-title"><i class="fa fa-list"></i> Inventory Summary</h3>
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-sm-4 text-center">
-													<h4 class="success">{{$no_of_vendors}}</h4>
-													<p>Vendors</p>
-												</div>
-												<div class="col-sm-4 text-center">
-													<h4 class="primary">{{$no_of_items}}</h4>
-													<p>Items</p>
-												</div>
-												<div class="col-sm-4 text-center">
-													<h4 class="warning">{{$no_of_vouchers}}</h4>
-													<p>Vouchers</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							@endcan
-							@can('dashboard.inventory_summary')
-								<div class="col-md-6">
-									<div class="panel panel-default">
-										<div class="panel-heading">
-											<h3 class="panel-title"><i class="fa fa-check-circle"></i> Daily Attendance</h3>
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-sm-4 text-center">
-													<h4 class="success">{{ $daily_attendance['student'] }}%</h4>
-													<p>Students</p>
-												</div>
-												<div class="col-sm-4 text-center">
-													<h4 class="info">{{ $daily_attendance['teacher'] }}%</h4>
-													<p>Teachers</p>
-												</div>
-												<div class="col-sm-4 text-center">
-													<h4 class="primary">{{ $daily_attendance['employee'] }}%</h4>
-													<p>Employees</p>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							@endcan
-						</div>
-					@endcan
 				</div>
 			</div>
 		</div>
@@ -593,6 +562,10 @@
     	const employeeAttendance = @json($employee_attendance);
 	</script>
 	<script>
+
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();
+		});	
 		const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 		@can('dashboard.monthly_attendance')

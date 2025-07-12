@@ -132,8 +132,6 @@ class RoleController extends Controller
 				'dashboard.monthly_attendance' => 'Show Monthly Attendance',
 				'dashboard.fee_Collection' => 'Show Fee Collection',
 				'dashboard.monthly_expenses' => 'Show Monthly Expenses',
-				'dashboard.inventory_summary' => 'Show Inventory Summary',
-				'dashboard.daily_attendance' => 'Show Daily Attendance',
 				'student.card' => 'Student Card',
 				'user-settings.index' => 'User Settings View',
 				'user-settings.password.update' => 'Password Update',
