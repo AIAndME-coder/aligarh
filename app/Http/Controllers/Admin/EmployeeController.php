@@ -56,6 +56,29 @@ class EmployeeController extends Controller
     return view('admin.employee');
   }
 
+
+  public function Grid(Request $request){
+
+    $Employees = Employee::query(); 
+
+		if ($request->filled('search_Employees')) {
+			$search = $request->input('search_Employees');
+
+			$Employees->where(fn($query) => 
+			$query->where('name', 'like', "%{$search}%")
+				->orWhere('email', 'like', "%{$search}%")
+				->orWhere('phone', 'like', "%{$search}%")
+				->orWhere('gender', 'like', "%{$search}%")
+				->orWhere('qualification', 'like', "%{$search}%")
+			);
+		}
+
+		$Employees = $request->filled('per_page') ? $Employees->paginate($request->input('per_page')) : $Employees->get();
+		
+		return response()->json($Employees);
+  }
+
+
   public function FindEmployee(Request $request){
   if ($request->ajax()) {
     $employees = Employee::where('name', 'LIKE', '%'.$request->input('q').'%')

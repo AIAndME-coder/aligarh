@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
 
     Route::prefix('employee')->name('employee')->group(function(){
         Route::get('/', [EmployeeController::class, 'GetEmployee'])->name('.index');
+        Route::get('/grid', [EmployeeController::class, 'Grid'])->name('.grid');
         Route::get('/image/{id}', [EmployeeController::class, 'GetImage'])->name('.image');
         Route::get('/find', [EmployeeController::class, 'FindEmployee'])->name('.find');
         Route::get('/profile/{id}', [EmployeeController::class, 'GetProfile'])->name('.profile');
