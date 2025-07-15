@@ -228,7 +228,7 @@
       }
 
       .m-2{
-        margin: 2rem;
+        margin: 1rem  1rem 0rem 1rem;
       }
       .pagination nav {
           width: 100%;
@@ -306,6 +306,10 @@
         border-bottom: 3px solid transparent;
         border-top: 3px solid #b75862;
       }
+
+      .color-grey-70{
+        color: #b3b3b3 !important;
+      }
     </style>
   @endsection
 
@@ -359,12 +363,20 @@
                                     <div class="col-md-2 col-md-offset-10">
                                       <div class="form-group pull-right">
                                         <div class="clearfix">
-                                          <label data-placement="top" data-toggle="tooltip" title="Grid Layout" class="control-label pull-left" style="margin-right: 10px; line-height: 34px;">
-                                            <span class="fa fa-th"></span>
-                                          </label>
-                                          <label class="switch pull-left" style="margin-top: 5px;">
-                                            <input type="checkbox" v-model="isGrid" @change="handleLayoutChange">
-                                            <span class="slider round"></span>
+                                          <label class="control-label pull-left" style="margin-right: 10px; line-height: 34px;">
+                                              <span 
+                                                :class="['fa', 'fa-th', { 'color-grey-70': layout !== 'grid' }]" 
+                                                style="margin-right: 2px;" 
+                                                data-toggle="tooltip" 
+                                                title="Grid Layout" 
+                                                @click="isGrid('grid')">
+                                              </span>
+                                              <span 
+                                                :class="['fa', 'fa-list', { 'color-grey-70': layout !== 'list' }]" 
+                                                data-toggle="tooltip" 
+                                                title="List Layout" 
+                                                @click="isGrid('list')">
+                                              </span>
                                           </label>
                                         </div>
                                       </div>
@@ -446,9 +458,11 @@
                                                       </li>
                                                   </ul>
                                                   <div class="text-end mt-3">
-                                                      <a :href="'{{ url('guardians/edit') }}/' + guardian.id" class="btn btn-sm btn-outline-primary">
-                                                          <i class="fa fa-pencil"></i> Edit
-                                                      </a>
+                                                      @can('guardian.edit.post')
+                                                        <a :href="'{{ url('guardians/edit') }}/' + guardian.id" class="btn btn-sm btn-outline-primary">
+                                                            <i class="fa fa-pencil"></i> Edit
+                                                        </a>
+                                                      @endcan
                                                   </div>
                                               </div>
                                           </div>
@@ -788,17 +802,9 @@
               const url = new URL(link.url);
               const page = url.searchParams.get('page');
               this.handleLayoutChange(page);
-            }
-          },
-
-          computed: {
-            isGrid: {
-              get() {
-                return this.layout === 'grid';
-              },
-              set(val) {
-                this.layout = val ? 'grid' : 'list';
-              }
+            },
+            isGrid(val='grid'){
+              this.layout =  val === 'grid' ? 'grid' : 'list';
             }
           },
           mounted: function() {
