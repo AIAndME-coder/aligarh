@@ -147,15 +147,15 @@ class DashboardController extends Controller
 		$today = Carbon::today()->toDateString();
 
 		$studentTotal = Student::SessionCurrent()->active()->count();
-		$studentPresent = StudentAttendance::whereDate('date', $today)->AttendenceStateTrue()->count();
+		$studentPresent = StudentAttendance::whereDate('date', $today)->AttendanceStateTrue()->count();
 		$studentPercent = $studentTotal > 0 ? round(($studentPresent / $studentTotal) * 100) : 0;
 
 		$teacherTotal = Teacher::count();
-		$teacherPresent = TeacherAttendance::whereDate('date', $today)->AttendenceStateTrue()->count();
+		$teacherPresent = TeacherAttendance::whereDate('date', $today)->AttendanceStateTrue()->count();
 		$teacherPercent = $teacherTotal > 0 ? round(($teacherPresent / $teacherTotal) * 100) : 0;
 
 		$employeeTotal = Employee::count();
-		$employeePresent = EmployeeAttendance::whereDate('date', $today)->AttendenceStateTrue()->count();
+		$employeePresent = EmployeeAttendance::whereDate('date', $today)->AttendanceStateTrue()->count();
 		$employeePercent = $employeeTotal > 0 ? round(($employeePresent / $employeeTotal) * 100) : 0;
 
 		return [

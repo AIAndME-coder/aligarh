@@ -14,7 +14,7 @@ trait ModelHeper {
         return $query->whereBetween('date', [$start, $end]);
     }
 
-    public function scopeAttendenceStateTrue($query)
+    public function scopeAttendanceStateTrue($query)
     {
         return $query->where('status', 1);
     }
