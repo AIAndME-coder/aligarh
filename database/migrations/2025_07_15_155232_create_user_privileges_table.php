@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAllowSessionColumnToUsersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddAllowSessionColumnToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->json('allow_session')->nullable()->after('allow_content');
+        Schema::create('user_privileges', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->integer('user_id');
+            $table->string('privileges', 2048);
+            $table->string('allow_session', 1024);
         });
     }
 
@@ -25,8 +28,6 @@ class AddAllowSessionColumnToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('allow_session');
-        });
+        Schema::dropIfExists('user_privileges');
     }
-}
+};
