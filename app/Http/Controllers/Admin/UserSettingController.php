@@ -59,7 +59,7 @@ class UserSettingController extends Controller
 
     public function ChangeSession(Request $request){
 
-      if(in_array($request->input('current_session'), Auth::user()->getprivileges->allow_session)){
+      if(in_array($request->input('current_session'), Auth::user()->allow_session)){
         Auth::user()->academic_session = $request->input('current_session');
         Auth::user()->save();
         return redirect()->back()->with([
