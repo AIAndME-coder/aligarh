@@ -7,7 +7,7 @@
     <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
   <script type="text/javascript">
-      var sections = {!! json_encode($sections) !!};
+      var sections = {!! json_encode($sections ?? '') !!};
   </script>
   @endsection
 

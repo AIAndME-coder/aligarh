@@ -351,7 +351,7 @@
 	var attendancerpt;
 	  $(document).ready(function(){
 
-	  var subjects = {!! json_encode($subjects) !!};
+	  var subjects = {!! json_encode($subjects ?? '') !!};
 
 		$('[data-toggle="tooltip"]').tooltip();
 

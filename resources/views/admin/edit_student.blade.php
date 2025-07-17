@@ -8,7 +8,7 @@
 	<link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 	<link href="{{ URL::to('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 	<script type="text/javascript">
-			var sections = {!! json_encode($sections) !!};
+			var sections = {!! json_encode($sections ?? '') !!};
 	</script>
 	@endsection
 

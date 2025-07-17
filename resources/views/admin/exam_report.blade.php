@@ -310,7 +310,7 @@
 				data: {
 					Exams: {!! json_encode($exams) !!},
 					Classes: {!! json_encode($classes) !!},
-					Subjects: {!! json_encode($Subjects) !!},
+					Subjects: {!! json_encode($subjects ?? '') !!},
 					filtered_subjects: [],
 					selected_class: '',
 					selected_exam: '',

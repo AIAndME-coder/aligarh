@@ -10,8 +10,8 @@
   <!-- Sweet Alert -->
   <link href="{{ URL::to('src/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     <script type="text/javascript">
-      var sections = {!! json_encode($sections) !!};
-      var subjects = {!! json_encode($subjects) !!};
+      var sections = {!! json_encode($sections ?? '') !!};
+      var subjects = {!! json_encode($subjects ?? '') !!};
     </script>
   @endsection
 
