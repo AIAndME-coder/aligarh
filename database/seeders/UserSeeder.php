@@ -25,15 +25,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'developer',
                 'email' => 'dev@dev.com',
-                'password' => Hash::make('12345678'),
-                'user_type' => 'employee',
-                'settings' => '{"skin_config":{"nav_collapse":""}}',
-                'created_by' => 1,
-            ],
-            [
-                'name' => 'admin',
-                'email' => 'admin@admin.com',
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('123456'),
                 'user_type' => 'employee',
                 'settings' => '{"skin_config":{"nav_collapse":""}}',
                 'created_by' => 1,
@@ -46,25 +38,16 @@ class UserSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_by' =>  1,
                 'created_at' =>  Carbon::now(),
-            ],
+            ]
+        ]);
+
+
+        DB::table('academic_sessions')->insert([
             [
-                'name' => 'Admin',
-                'guard_name' => 'web',
-                'created_by' =>  1,
-                'created_at' =>  Carbon::now(),
-            ],
-            [
-                'name' => 'Employee',
-                'guard_name' => 'web',
-                'created_by' =>  1,
-                'created_at' =>  Carbon::now(),
-            ],
-            [
-                'name' => 'Teacher',
-                'guard_name' => 'web',
-                'created_by' =>  1,
-                'created_at' =>  Carbon::now(),
-            ],
+                'start' => '2025-01-01',
+                'end'   => '2026-01-01',
+                'title' =>  '2025-2026',
+            ]
         ]);
     }
 }

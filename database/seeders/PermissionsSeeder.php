@@ -29,11 +29,11 @@ class PermissionsSeeder extends Seeder
 
 
         $devUser        = User::find(1);
-        $adminUser      = User::find(2);
+        // $adminUser      = User::find(2);
         // $employeeUser   = User::find(3);
 
         $developerRole  = Role::find(1);
-        $adminRole      = Role::find(2);
+        // $adminRole      = Role::find(2);
         // $employeeRole   = Role::find(3);
 
 
@@ -53,11 +53,11 @@ class PermissionsSeeder extends Seeder
         }
 
         $developerRole->syncPermissions(Permission::all());
-        $adminRole->syncPermissions(Permission::all());
+        // $adminRole->syncPermissions(Permission::all());
         // $employeeRole->syncPermissions(Permission::all());
 
         $devUser->syncRoles($developerRole->id);
-        $adminUser->syncRoles($adminRole->id);
+        // $adminUser->syncRoles($adminRole->id);
         // $employeeUser->syncRoles($employeeRole->id);
 
         $this->command->info('Permissions seeded and synced to roles.');
