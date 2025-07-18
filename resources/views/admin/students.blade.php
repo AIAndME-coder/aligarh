@@ -365,10 +365,27 @@
                             <div id="tab-10" class="tab-pane fade">
                                 <div class="panel-body">
                                   <div class="row" id="app">
-                                    <div class="col-md-2 col-md-offset-10">
-                                      <div class="form-group pull-right">
-                                        <div class="clearfix">
-                                          <label class="control-label pull-left" style="margin-right: 10px; line-height: 34px;">
+                                    <div class="col-md-4" v-show="layout === 'grid'">
+                                      <div class="row">
+                                        <label style="margin-right: 20px; margin-left: 20px;">
+                                          Show
+                                          <select v-model="per_page" class="form-control input-sm" style="width: auto; display: inline-block;" @change="handleLayoutChange">
+                                            <option v-for="option in options" :key="option" :value="option">
+                                              @{{ option }}
+                                            </option>
+                                          </select>
+                                          entries
+                                        </label>
+                                        <label>
+                                          Showing @{{from}} to @{{to}} of @{{total}} entries
+                                        </label>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-4 text-right pull-right">
+                                      <div class="row">
+                                        <input v-show="layout === 'grid'" type="text" v-model="search_students" @input="debouncedSearch" class="form-control input-sm" style="width: 200px; display: inline-block;" placeholder="Search...">
+                                        <div class="form-group pull-right">
+                                          <label class="control-label" style="margin: 0 10px 0 20px; line-height: 34px;">
                                               <span 
                                                 :class="['fa', 'fa-th', { 'color-grey-70': layout !== 'grid' }]" 
                                                 style="margin-right: 2px;" 
@@ -388,29 +405,6 @@
                                     </div>
                                   </div>
                                   <div class="grid" id="gridLayout" v-show="layout === 'grid'">
-                                    <div class="row" style="margin-bottom: 20px;" id="app">
-                                      <div class="col-md-6">
-                                        <label>
-                                          Show
-                                          <select v-model="per_page" class="form-control input-sm" style="width: auto; display: inline-block;" @change="handleLayoutChange">
-                                            <option v-for="option in options" :key="option" :value="option">
-                                              @{{ option }}
-                                            </option>
-                                          </select>
-                                          entries
-                                        </label>
-                                      </div>
-                                      <div class="col-md-6 text-right">
-                                        <input type="text" v-model="search_students" @input="debouncedSearch" class="form-control input-sm" style="width: 200px; display: inline-block;" placeholder="Search...">
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                      <div class="col-md-6">
-                                        <label>
-                                          Showing @{{from}} to @{{to}} of @{{total}} entries
-                                        </label>
-                                      </div>
-                                    </div>
                                     <div class="" style="display: ruby">
                                       <div class="m-2" v-for="student in students" :key="student.id">
                                         <a :href="'{{ url('students/profile') }}/' + student.id" class="text-decoration-none">
