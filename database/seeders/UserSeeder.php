@@ -40,7 +40,25 @@ class UserSeeder extends Seeder
                 'guard_name' => 'web',
                 'created_by' =>  1,
                 'created_at' =>  Carbon::now(),
-            ]
+            ],
+            [
+                'name' => 'Admin',
+                'guard_name' => 'web',
+                'created_by' =>  1,
+                'created_at' =>  Carbon::now(),
+            ],
+            [
+                'name' => 'Employee',
+                'guard_name' => 'web',
+                'created_by' =>  1,
+                'created_at' =>  Carbon::now(),
+            ],
+            [
+                'name' => 'Teacher',
+                'guard_name' => 'web',
+                'created_by' =>  1,
+                'created_at' =>  Carbon::now(),
+            ],
         ]);
 
 

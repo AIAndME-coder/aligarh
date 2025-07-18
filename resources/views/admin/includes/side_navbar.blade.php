@@ -216,7 +216,7 @@
             @endcanany
             @role('Developer')
             <li class="{{ isActiveRoute('academic-sessions.*') }}">
-                <a href="{{ route('academic-sessions.index') }}"><i class="fa fa-paper-plane"></i>
+                <a href="{{ route('academic-sessions.index') }}"><i class="fa fa-clock-o"></i>
                     <span class="nav-label"></span>Academic Session</a>
             </li>
             @endrole

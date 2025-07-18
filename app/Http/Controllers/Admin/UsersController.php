@@ -6,7 +6,9 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\Employee;
+use App\Role;
 use App\Teacher;
 use App\User;
 
@@ -14,8 +16,10 @@ class UsersController extends Controller
 {
     public function index(Request $request)
     {
+      $Roles = Role::notDeveloper()->select('id', 'name')->get();
       if ($request->ajax()) {
-         $query = User::with('roles')->select('id', 'name', 'email', 'foreign_id', 'user_type', 'active')->NotDeveloper()->staff();
+
+        $query = User::with('roles')->select('id', 'name', 'email', 'foreign_id', 'user_type', 'active')->NotDeveloper()->staff();
 
         return DataTables::eloquent($query)
             ->addColumn('roles', function (User $user) {
@@ -23,30 +27,74 @@ class UsersController extends Controller
             })
             ->make(true);
       }
-      return view('admin.users');
+      return view('admin.users', compact('Roles'));
     }
 
 
     public function create(Request $request)
     {
-      $request->validate([
-          'name'            =>  'required|unique:users,name',
-          'email'           =>  'required|email|unique:users,email',
-          'status'          =>  'required',
-          'allow_session'   =>  'required',
-          'password'        =>  'required|between:6,12',
-          're_password'     =>  'required|between:6,12|same:password',
-      ]);
+
+      $validator = Validator::make(
+      $request->all(),
+        [
+          'name' => 'required|unique:users,name',
+          'type' => 'required|in:teacher,employee',
+          'email' => 'required|email|unique:users,email',
+          'status' => 'required|in:0,1',
+          'allow_session' => 'required',
+          'password' => 'required|between:6,12',
+          're_password' => 'required|between:6,12|same:password',
+          'role' => 'required|exists:roles,id',
+        ],
+        [
+          'name.required' => 'The name field is required.',
+          'name.unique' => 'This name is already taken.',
+
+          'type.required' => 'Type is required.',
+          'type.in' => 'Type must be teacher or employee.',
+
+          'email.required' => 'Email is required.',
+          'email.email' => 'Please enter a valid email address.',
+          'email.unique' => 'This email is already registered.',
+
+          'status.required' => 'Status is required.',
+          'status.in' => 'Status must be 0 (inactive) or 1 (active).',
+
+          'allow_session.required' => 'Allow session selection is required.',
+
+          'password.required' => 'Password is required.',
+          'password.between' => 'Password must be between 6 and 12 characters.',
+
+          're_password.required' => 'Re-entering the password is required.',
+          're_password.between' => 'Re-entered password must be between 6 and 12 characters.',
+          're_password.same' => 'Passwords do not match.',
+
+          'role.required' => 'Role is required.',
+          'role.exists' => 'Selected role is invalid.',
+        ]
+
+      );
+
+      if ($validator->fails()){
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput()
+            ->with([
+                'toastrmsg' => [
+                    'type' => 'error', 
+                    'title' => 'Users',
+                    'msg' => 'There was an issue while Creating User'
+                ]
+            ]);
+      }
 
       switch ($request->input('type')) {
         case 'employee':
           $data = Employee::findOrfail($request->input('employee'));
-          $role_id = 3;
           break;
 
         case 'teacher':
           $data = Teacher::findOrfail($request->input('teacher'));
-          $role_id = 4; 
           break;
 
         default:
@@ -68,7 +116,8 @@ class UsersController extends Controller
         'user_type'         =>  $request->input('type'),
       ]);
 
-      $User->assignRole($role_id);
+      $Role = Role::findOrfail($request->input('role'));
+      $User->assignRole($Role->name);
       $data->user_id = $User->id;
       $data->save();
 

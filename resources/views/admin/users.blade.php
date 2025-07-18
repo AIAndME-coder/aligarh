@@ -61,7 +61,7 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Users</a>
+                              <a data-toggle="tab" onClick="drawTable()" href="#tab-10"><span class="fa fa-list"></span> Users</a>
                             </li>
                             @can('users.create')
                               <li class="add-user">
@@ -93,9 +93,9 @@
                                     <h2> User Registration </h2>
                                     <div class="hr-line-dashed"></div>
                                       <form id="tchr_rgstr" method="post" action="{{ URL('users/create') }}" class="form-horizontal" >
-                                        {{ csrf_field() }}
+                                        @csrf
                                         <div class="form-group">
-                                          <label class="col-md-2 control-label">Role</label>
+                                          <label class="col-md-2 control-label">Type</label>
                                           <div class="col-md-6">
                                             <select id="type" name="type" value="{{ old('type') }}" class="form-control" required="true" />
                                               <option></option>
@@ -175,29 +175,6 @@
                                             @endif
                                           </div>
                                         </div>
-                                          <!-- <div class="form-group{{ ($errors->has('contact_no'))? ' has-error' : '' }}">
-                                          <label class="col-md-2 control-label">Contact No</label>
-                                          <div class="col-md-6">
-                                            <input type="text" name="contact_no" value="{{ old('contact_no') }}" placeholder="Contact No" class="form-control" data-mask="(999) 999-9999"/>
-                                            @if ($errors->has('contact_no'))
-                                                <span class="help-block">
-                                                    <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('contact_no') }}</strong>
-                                                </span>
-                                            @endif
-                                          </div>
-                                        </div>
-                                        <div class="form-group{{ ($errors->has('role'))? ' has-error' : '' }}">
-                                          <label class="col-md-2 control-label">User Role</label>
-                                          <div class="col-md-6">
-                                            <input type="text" name="role" placeholder="User Role" value="{{ old('role') }}" class="form-control"/>
-                                            @if ($errors->has('role'))
-                                                <span class="help-block">
-                                                    <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('role') }}</strong>
-                                                </span>
-                                            @endif
-                                          </div>
-                                        </div>
-                                          -->
                                         <div class="form-group{{ ($errors->has('allow_session'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Allow Session</label>
                                           <div class="col-md-6">
@@ -223,6 +200,24 @@
                                             @if ($errors->has('status'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('status') }}</strong>
+                                                </span>
+                                            @endif
+                                          </div>
+                                        </div>
+                                        <div id="role" class="form-group{{ ($errors->has('role'))? ' has-error' : '' }}">
+                                          <label class="col-md-2 control-label">Role</label>
+                                          <div class="col-md-6">
+                                            <select id="role" name="role" value="{{ old('role') }}" class="form-control" required="true">
+                                              <option></option>
+                                              @foreach ($Roles as  $role)
+                                                <option value="{{ $role->id }}" {{ old('role') == $role->id ? 'selected' : '' }}>
+                                                  {{ $role->name }}
+                                                </option>
+                                              @endforeach
+                                            </select>
+                                            @if ($errors->has('role'))
+                                                <span class="help-block">
+                                                    <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('role') }} </strong>
                                                 </span>
                                             @endif
                                           </div>
@@ -266,6 +261,14 @@
     <!-- Select2 -->
     <script src="{{ URL::to('src/js/plugins/select2/select2.full.min.js') }}"></script>
 
+@if ($errors->any())
+    <script>
+        @foreach ($errors->all() as $error)
+            toastr.error("{{ $error }}", "Validation Error");
+        @endforeach
+    </script>
+@endif
+
     <script type="text/javascript">
     var tbl;
 
@@ -306,46 +309,53 @@
         return opthtm;
     }
 
-      $(document).ready(function(){
+    function drawTable() {
+      if (tbl == null)
         tbl = $('.dataTables-user').DataTable({
-          dom: '<"html5buttons"B>lTfgitp',
-          buttons: [
-            //{ extend: 'copy'},
-            //{extend: 'csv'},
-            //{extend: 'excel', title: 'ExampleFile'},
-            //{extend: 'pdf', title: 'ExampleFile'},
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+              {extend: 'print',
+                customize: function (win){
+                  $(win.document.body).addClass('white-bg');
+                  $(win.document.body).css('font-size', '12px');
 
-            {extend: 'print',
-              customize: function (win){
-                $(win.document.body).addClass('white-bg');
-                $(win.document.body).css('font-size', '12px');
+                  $(win.document.body).find('table')
+                  .addClass('print-table')
+                  .removeClass('table')
+                  .removeClass('table-striped')
+                  .removeClass('table-bordered')
+                  .removeClass('table-hover')
+                  .addClass('compact')
+                  .css('font-size', 'inherit');
+                },
+                exportOptions: {
+                  columns: [ 0, 1, 2]
+                },
+                title: "Users | {{ config('systemInfo.title') }}",
+              }
+            ],
+            Processing: true,
+            serverSide: true,
+            ajax: '{{ URL('users') }}',
+            columns: [
+              { data: 'name' },
+              { data: 'email' },
+              { data: 'roles', name: 'roles.name', orderable: false, searchable: false },
+              {render: loadOptions, className: 'hidden-print', "orderable": false},
+            ],
+          });
+      }
 
-                $(win.document.body).find('table')
-                .addClass('print-table')
-                .removeClass('table')
-                .removeClass('table-striped')
-                .removeClass('table-bordered')
-                .removeClass('table-hover')
-                .addClass('compact')
-                .css('font-size', 'inherit');
-              },
-              exportOptions: {
-                columns: [ 0, 1, 2]
-              },
-              title: "Users | {{ config('systemInfo.title') }}",
-            }
-          ],
-          Processing: true,
-          serverSide: true,
-          ajax: '{{ URL('users') }}',
-          columns: [
-            { data: 'name' },
-            { data: 'email' },
-            { data: 'roles', name: 'roles.name', orderable: false, searchable: false },
-            // {"defaultContent": '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle option" aria-expanded="true">Action <span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#"><span class="fa fa-user"></span> Profile</a></li><li class="divider"></li><li><a data-original-title="Edit" class="edit-option"><span class="fa fa-edit"></span> Edit</a></li><li><a href="#"><span class="fa fa-trash"></span> Delete</a></li></ul></div>', className: 'hidden-print'},
-            {render: loadOptions, className: 'hidden-print', "orderable": false},
-          ],
-        });
+      $(document).ready(function(){
+        var tbl = null;
+
+        @if ($errors->any())
+            $('a[href="#tab-11"]').tab('show'); 
+            $('a[href="#tab-10"]').tab('hide');
+        @else    
+            $('a[href="#tab-10"]').tab('show');
+            drawTable();
+        @endif
 
 /*      $('.dataTables-user tbody').on( 'mouseenter', '.edit-option', function () {
         $(this).attr('href','{{ URL('users/edit') }}/'+tbl.row( $(this).parents('tr') ).data().id);
@@ -361,6 +371,9 @@
             ignore:":not(:visible)",
             rules: {
               type: {
+                required: true,
+              },
+              role: {
                 required: true,
               },
               teacher: {
@@ -486,16 +499,6 @@
       @else
         $('a[href="#tab-11"]').tab('show');
       @endif
-
-
-      // "Auth::user()->getprivileges->privileges->{$root['content']['id']}->add == 0)"
-      //   $('.add-user').hide();
-      // "endif"
-
-      // "Auth::user()->getprivileges->privileges->{$root['content']['id']}->edit == 0)"
-      //   $('.edit-user').hide();
-      // "endif"
-
 
       });
     </script>
