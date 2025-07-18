@@ -488,7 +488,7 @@
                                     </div>
                                   </div>
                                   <div class="table-responsive" v-show="layout === 'list'">
-                                    <table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
+                                    <table class="table table-striped table-bordered table-hover dataTables-guardian" width="100%">
                                       <thead>
                                         <tr>
                                           <th>Name</th>
@@ -651,7 +651,7 @@
           opthtm += '<a data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-option eidt-guardian"><span class="fa fa-edit"></span></a>';
         // "endif"
 
-        tbl = $('.dataTables-teacher').DataTable({
+        tbl = $('.dataTables-guardian').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
 //            { extend: 'copy'},
@@ -715,7 +715,7 @@
             });
         });
 
-      $('.dataTables-teacher tbody').on( 'mouseenter', '[data-toggle="tooltip"]', function () {
+      $('.dataTables-guardian tbody').on( 'mouseenter', '[data-toggle="tooltip"]', function () {
         $(this).tooltip('show');
       });
 
@@ -805,6 +805,9 @@
             },
             isGrid(val='grid'){
               this.layout =  val === 'grid' ? 'grid' : 'list';
+              this.$nextTick(() => {
+              $('.dataTables-guardian').DataTable().columns.adjust().draw();
+            });
             }
           },
           mounted: function() {

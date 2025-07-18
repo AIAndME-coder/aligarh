@@ -486,7 +486,7 @@
                                     </div>
                                   </div>
                                   <div class="table-responsive" v-show="layout === 'list'">
-                                    <table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
+                                    <table class="table table-striped table-bordered table-hover dataTables-teacherList" width="100%">
                                       <thead>
                                         <tr>
                                           <th>Name</th>
@@ -733,15 +733,15 @@
       $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
 /*    For Column Search
-        $('.dataTables-teacher thead th').each( function () {
-            var title = $('.dataTables-teacher thead th').eq( $(this).index() ).text();
+        $('.dataTables-teacherList thead th').each( function () {
+            var title = $('.dataTables-teacherList thead th').eq( $(this).index() ).text();
           if (title !== 'Options') {
             $(this).html( '<input class="" type="text" placeholder="'+title+'" />' );
           }
         });
 */
 
-    tbl =   $('.dataTables-teacher').DataTable({
+    tbl =   $('.dataTables-teacherList').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
 //            {extend: 'copy'},
@@ -819,7 +819,7 @@
 */
 
 
-      $(".dataTables-teacher tbody").on('mouseenter', "[data-toggle='tooltip']", function(){
+      $(".dataTables-teacherList tbody").on('mouseenter', "[data-toggle='tooltip']", function(){
           $(this).tooltip('show');
       });
 
@@ -923,6 +923,9 @@
           },
           isGrid(val='grid'){
             this.layout =  val === 'grid' ? 'grid' : 'list';
+            this.$nextTick(() => {
+              $('.dataTables-teacherList').DataTable().columns.adjust().draw();
+            });
           }
         },
         mounted: function() {

@@ -494,7 +494,7 @@
                                   </div>
                                   <div id="listLayout" v-show="layout === 'list'">
                                     <div class="table-responsive">
-                                      <table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
+                                      <table class="table table-striped table-bordered table-hover dataTables-student" width="100%">
                                         <thead>
                                           <tr>
                                             <th>Class</th>
@@ -992,8 +992,8 @@
            });
 
 /*    For Column Search  */ 
-/*        $('.dataTables-teacher tfoot th').each( function () {
-            var title = $('.dataTables-teacher tfoot th').eq( $(this).index() ).text();
+/*        $('.dataTables-student tfoot th').each( function () {
+            var title = $('.dataTables-student tfoot th').eq( $(this).index() ).text();
           if (title !== 'Options') {
             $(this).html( '<input type="text" placeholder="'+title+'" />' );
           }
@@ -1001,7 +1001,7 @@
 */
 
 
-    tbl =   $('.dataTables-teacher').DataTable({
+    tbl =   $('.dataTables-student').DataTable({
           dom: '<"html5buttons"B>lTfgitp',
           buttons: [
           //  {extend: 'copy'},
@@ -1109,7 +1109,7 @@
         });
     });*/
 
-      $('.dataTables-teacher tbody').on('mouseenter', '[data-toggle="tooltip"]', function() {
+      $('.dataTables-student tbody').on('mouseenter', '[data-toggle="tooltip"]', function() {
         $(this).tooltip('show');
       });
 
@@ -1272,6 +1272,9 @@
           },
           isGrid(val='grid'){
             this.layout =  val === 'grid' ? 'grid' : 'list';
+            this.$nextTick(() => {
+              $('.dataTables-student').DataTable().columns.adjust().draw();
+            });
           }
         },
 

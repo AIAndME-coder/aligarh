@@ -873,6 +873,9 @@
           },
           isGrid(val='grid'){
             this.layout =  val === 'grid' ? 'grid' : 'list';
+            this.$nextTick(() => {
+              $('.dataTables-employee').DataTable().columns.adjust().draw();
+            });
           }
         },
         mounted: function() {
