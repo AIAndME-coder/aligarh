@@ -13,13 +13,17 @@ use App\Http\Controllers\Controller;
 
 class EmployeeController extends Controller
 {
-  public function GetImage($id){
-    $Employee  = Employee::findOrFail($id);
+  public function GetImage($id)
+{
+    $Employee = Employee::findOrFail($id);
+    if (!Storage::exists($Employee->img_dir)) {
+        return response()->json(['error' => 'Image not found'], 404);
+    }
     $image = Storage::get($Employee->img_dir);
-    //$image = Storage::disk('public/studnets')->get('1.jpg');
-    //return Response($image, 200);
-    return Response($image, 200)->header('Content-Type', 'image');
-  }
+    $mime = Storage::mimeType($Employee->img_dir);
+
+    return response($image, 200)->header('Content-Type', $mime);
+}
 
   public function GetProfile($id){
     $data['employee']  = Employee::findOrFail($id);

@@ -406,7 +406,7 @@
                                               <div class="card-header">
                                                   <div class="ribbon"><span>employee</span></div>
                                                   <div class="profile-image-container">
-                                                      <img :src="employee.img_url || 'img/avatar.jpg'" alt="employee Photo" class="profile-image">
+                                                      <img @@error="handleImageError" :src="employee.img_url || 'img/avatar.jpg'" alt="employee Photo" class="profile-image">
                                                   </div>
                                               </div>
                                               <div class="card-body">
@@ -870,6 +870,9 @@
             this.$nextTick(() => {
               $('.dataTables-employee').DataTable().columns.adjust().draw();
             });
+          },
+          handleImageError(event) {
+            event.target.src = 'img/avatar.jpg';
           }
         },
         mounted: function() {
