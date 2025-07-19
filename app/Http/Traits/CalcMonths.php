@@ -22,8 +22,8 @@ trait CalcMonths {
 
 	public function getMonthsFromSession($session){
 
-		$this->start = $session->getOriginal('start');
-		$this->end = $session->getOriginal('end');
+		$this->start = $session->getRawOriginal('start');
+		$this->end = $session->getRawOriginal('end');
 		return $this->setDate();
 	}
 

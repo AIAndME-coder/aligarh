@@ -69,7 +69,7 @@ class FeesController extends Controller
 
 		if($invoice){
 
-			if($invoice->getOriginal('due_date') >= Carbon::now()->toDateString()){
+			if($invoice->getRawOriginal('due_date') >= Carbon::now()->toDateString()){
 				return redirect('fee')->withInput()->withErrors(['gr_no' => "Invoice# $invoice->id already created"])->with([
 					'toastrmsg' => [
 						'type' => 'info', 
@@ -79,7 +79,7 @@ class FeesController extends Controller
 				]);
 			}
 
-			if($invoice->getOriginal('data_of_payment') >= $invoice->getOriginal('due_date')){
+			if($invoice->getRawOriginal('data_of_payment') >= $invoice->getRawOriginal('due_date')){
 				$data['arrears']	=	($invoice->net_amount+$invoice->late_fee) - $invoice->paid_amount;
 			} else {
 				$data['arrears']	=	$invoice->net_amount - $invoice->paid_amount;
@@ -113,11 +113,10 @@ class FeesController extends Controller
 		$this->FetchMonths($data);
 
 		foreach ($data['invoice_months'] as $key => $invoice_month) {
-			// dd($invoice_month->getOriginal('month'));
 			$data['months'][] = [
 				'selected' => true,
-				'title' => Carbon::createFromFormat('M-Y', $invoice_month->getOriginal('month'))->format('M-Y'),
-				'value' => Carbon::createFromFormat('M-Y', $invoice_month->getOriginal('month'))->Format('M-Y')
+				'title' => Carbon::createFromFormat('Y-m-d', $invoice_month->getRawOriginal('month'))->format('M-Y'),
+				'value' => Carbon::createFromFormat('Y-m-d', $invoice_month->getRawOriginal('month'))->Format('Y-m-d')
 			];
 		}
 
@@ -145,6 +144,7 @@ class FeesController extends Controller
 		$InvoiceMaster->fill([
 
 			'created_at'	=>	$request->input('issue_date'),
+			'date'			=>	$request->input('issue_date'),
 			'due_date'	=>	$request->input('due_date'),
 
 			'total_amount'	=>	$request->input('total_amount'),
@@ -199,10 +199,10 @@ class FeesController extends Controller
 
 	protected function FetchMonths($data){
 		$data['betweendates']	=	[
-//				'start'	=>	$data['session']->getOriginal('start'),
-//				'start'	=>	$data['student']->getOriginal('date_of_enrolled'),
-				'start'	=>	Carbon::createFromFormat('Y-m-d', $data['student']->getOriginal('date_of_enrolled'))->startOfMonth()->toDateString(),
-//				'end'	=>	$data['session']->getOriginal('end')
+//				'start'	=>	$data['session']->getRawOriginal('start'),
+//				'start'	=>	$data['student']->getRawOriginal('date_of_enrolled'),
+				'start'	=>	Carbon::createFromFormat('Y-m-d', $data['student']->getRawOriginal('date_of_enrolled'))->startOfMonth()->toDateString(),
+//				'end'	=>	$data['session']->getRawOriginal('end')
 				'end'	=> Carbon::now()->addYear()->startOfMonth()->toDateString()
 			];
 
@@ -344,7 +344,7 @@ class FeesController extends Controller
 		$data['invoice_detail'] = $invoice->InvoiceDetail;
 		$data['invoice_months'] = $invoice->InvoiceMonths;
 
-		$data['invoice']	=	$invoice->getOriginal();
+		$data['invoice']	=	$invoice->getRawOriginal();
 
 		$data['student']	= Student::with('StdClass')->find($data['invoice']['student_id']);
 
@@ -463,6 +463,7 @@ class FeesController extends Controller
 
 						'late_fee'	=>	$request->input('late_fee'),
 						'created_at'	=>	$request->input('issue_date'),
+						'date'			=>	$request->input('issue_date'),
 						'due_date'	=>	$request->input('due_date'),
 
 						'total_amount'	=>	($request->input('total_amount') + $request->input('arrears')),

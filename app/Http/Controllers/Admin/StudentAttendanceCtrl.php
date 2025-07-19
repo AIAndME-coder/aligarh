@@ -49,7 +49,7 @@ class StudentAttendanceCtrl extends Controller
 
 		$AcademicSession = Auth::user()->AcademicSession()->first();
 
-		if($AcademicSession->getOriginal('start') > $DateRange || $AcademicSession->getOriginal('end') < $DateRange){
+		if($AcademicSession->getRawOriginal('start') > $DateRange || $AcademicSession->getRawOriginal('end') < $DateRange){
 			return redirect('student-attendance')->withInput()->with([
 				'toastrmsg' => [
 					'type' => 'error',
@@ -130,7 +130,7 @@ class StudentAttendanceCtrl extends Controller
 
 		$AcademicSession = Auth::user()->AcademicSession()->first();
 
-		if($AcademicSession->getOriginal('start') > $DateRange['start'] || $AcademicSession->getOriginal('end') < $DateRange['end']){
+		if($AcademicSession->getRawOriginal('start') > $DateRange['start'] || $AcademicSession->getRawOriginal('end') < $DateRange['end']){
 			return redirect('student-attendance')->withInput()->with([
 				'toastrmsg' => [
 					'type' => 'error',

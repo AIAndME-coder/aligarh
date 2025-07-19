@@ -181,16 +181,16 @@ class ExamReportController extends Controller
 		$data['student']			=	Student::findOrFail($request->input('student_id'));
 		$data['attendance']['total']		=	StudentAttendance::select('id', 'student_id', 'status', 'date')
 												->where('student_id', $data['student']->id)
-												->whereBetween('date', [$data['selected_exams'][0]->getOriginal('start_date'), $data['selected_exams'][1]->getOriginal('end_date')])
+												->whereBetween('date', [$data['selected_exams'][0]->getRawOriginal('start_date'), $data['selected_exams'][1]->getRawOriginal('end_date')])
 //												->whereBetween('date', ['2018-04-01', '2019-03-31'])
 												->get();
 		$data['attendance']['first_exam']	=	StudentAttendance::select('id', 'student_id', 'status', 'date')
 													->where('student_id', $data['student']->id)
-													->whereBetween('date', [$data['selected_exams'][0]->getOriginal('start_date'), $data['selected_exams'][0]->getOriginal('end_date')])
+													->whereBetween('date', [$data['selected_exams'][0]->getRawOriginal('start_date'), $data['selected_exams'][0]->getRawOriginal('end_date')])
 													->get();
 		$data['attendance']['second_exam']	=	StudentAttendance::select('id', 'student_id', 'status', 'date')
 														->where('student_id', $data['student']->id)
-														->whereBetween('date', [$data['selected_exams'][1]->getOriginal('start_date'), $data['selected_exams'][1]->getOriginal('end_date')])
+														->whereBetween('date', [$data['selected_exams'][1]->getRawOriginal('start_date'), $data['selected_exams'][1]->getRawOriginal('end_date')])
 														->get();
 		$AcademicSessionHistory			=	AcademicSessionHistory::where('student_id', $data['student']->id)->CurrentSession()->with('classe')->first();
 

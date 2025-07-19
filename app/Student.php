@@ -30,20 +30,20 @@ class Student extends Model {
 
 	public function scopeNewAdmission($query, $academic_session){
 //		return $query->where('date_of_admission', '>=', Carbon::now()->toDateString());
-//		return $query->where('date_of_admission', '>=', AcademicSession::find(Auth::user()->academic_session)->getOriginal('start'));
-		return $query->where('date_of_admission', '>=', $academic_session->getOriginal('start'));
+//		return $query->where('date_of_admission', '>=', AcademicSession::find(Auth::user()->academic_session)->getRawOriginal('start'));
+		return $query->where('date_of_admission', '>=', $academic_session->getRawOriginal('start'));
 //		return $query->where('date_of_admission', '>=', '2018-04-01');
 	}
 
 	public function scopeOldAdmission($query, $academic_session){
 //		return $query->where('date_of_admission', '<=', Carbon::now()->toDateString());
-//		return $query->where('date_of_admission', '<=', AcademicSession::find(Auth::user()->academic_session)->getOriginal('start'));
-		return $query->where('date_of_admission', '<=', $academic_session->getOriginal('start'));
+//		return $query->where('date_of_admission', '<=', AcademicSession::find(Auth::user()->academic_session)->getRawOriginal('start'));
+		return $query->where('date_of_admission', '<=', $academic_session->getRawOriginal('start'));
 //		return $query->where('date_of_admission', '<=', '2018-04-01');
 	}
 
 	public function scopeInActiveOnSelectedSession($query, $academic_session){
-		return $query->InActive()->whereBetween('date_of_leaving', [$academic_session->getOriginal('start'), $academic_session->getOriginal('end')]);
+		return $query->InActive()->whereBetween('date_of_leaving', [$academic_session->getRawOriginal('start'), $academic_session->getRawOriginal('end')]);
 	}
 
 	public function scopeActive($query){

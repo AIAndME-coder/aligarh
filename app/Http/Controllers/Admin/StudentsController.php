@@ -288,7 +288,7 @@ class StudentsController extends Controller
 
 	private function CompileStudentForCertificate($student_id){
 		$data['student']	= Student::findorfail($student_id);
-		$data['student']->date_of_birth_inwords = $data['student']->getOriginal('date_of_birth');
+		$data['student']->date_of_birth_inwords = $data['student']->getRawOriginal('date_of_birth');
 		$data['student']['class_name']	=	Classe::select('name')->findorfail($data['student']->class_id)->name;
 
 		return $data['student'];

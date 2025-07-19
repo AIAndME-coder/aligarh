@@ -121,12 +121,12 @@ class FeeCollectionReportController extends Controller
 		$data['session'] = AcademicSession::find(Auth::user()->academic_session);
 
 		$data['betweendates']	=	[
-				'start'	=>	$data['session']->getOriginal('start'),
+				'start'	=>	$data['session']->getRawOriginal('start'),
 //				'end'	=>	$request->input('month')
 				'end'	=>	Carbon::createFromFormat('Y-m-d', $request->input('month'))->endOfMonth()->toDateString()
 			];
 		
-		if($data['session']->getOriginal('end') < $data['betweendates']['end'] || $data['session']->getOriginal('start') > $data['betweendates']['end']){
+		if($data['session']->getRawOriginal('end') < $data['betweendates']['end'] || $data['session']->getRawOriginal('start') > $data['betweendates']['end']){
 			return redirect('student-attendance')->withInput()->with([
 				'toastrmsg' => [
 					'type' => 'error',
@@ -167,7 +167,7 @@ class FeeCollectionReportController extends Controller
 										'academic_session_history.class_id' => $request->input('class'),
 										'academic_session_history.academic_session_id' => Auth::user()->academic_session
 										])
-									->where('students.date_of_enrolled', '<=', Carbon::parse($data['session']->getOriginal('start'))->endOfMonth()->toDateString())
+									->where('students.date_of_enrolled', '<=', Carbon::parse($data['session']->getRawOriginal('start'))->endOfMonth()->toDateString())
 									->Active()
 									->WithOutFullDiscount()
 									->with(['InvoiceMonths'	=>	function($qry) use ($data){
@@ -186,14 +186,14 @@ class FeeCollectionReportController extends Controller
 //				foreach ($section->Students as $key => $student) {
 				foreach ($Students as $key => $student) {
 
-					if ($student->getOriginal('date_of_enrolled') > $data['session']->getOriginal('start')) {
-						$month = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_enrolled'))->startOfMonth()->toDateString();
+					if ($student->getRawOriginal('date_of_enrolled') > $data['session']->getRawOriginal('start')) {
+						$month = Carbon::createFromFormat('Y-m-d', $student->getRawOriginal('date_of_enrolled'))->startOfMonth()->toDateString();
 					} else {
 						$month = $data['betweendates']['start'];
 					}
 					$repetStd = false;
-//					if($data['betweendates']['end'] > $student->getOriginal('date_of_leaving') && $student->getOriginal('date_of_leaving')){
-//						$endmonth = Carbon::createFromFormat('Y-m-d', $student->getOriginal('date_of_leaving'))->startOfMonth()->toDateString();
+//					if($data['betweendates']['end'] > $student->getRawOriginal('date_of_leaving') && $student->getRawOriginal('date_of_leaving')){
+//						$endmonth = Carbon::createFromFormat('Y-m-d', $student->getRawOriginal('date_of_leaving'))->startOfMonth()->toDateString();
 //					} else {
 						$endmonth = $data['betweendates']['end'];
 //					}
@@ -259,7 +259,7 @@ class FeeCollectionReportController extends Controller
 										->join('students', 'invoice_master.student_id', '=', 'students.id')
 										->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 										->where('invoice_details.fee_name', 'LIKE', 'Annual%')
-										->whereBetween('invoice_master.payment_month', [$data['session']->getOriginal('start'), $data['session']->getOriginal('end')])
+										->whereBetween('invoice_master.payment_month', [$data['session']->getRawOriginal('start'), $data['session']->getRawOriginal('end')])
 										->where([
 											'academic_session_history.class_id' => $data['class']->id,
 											'academic_session_history.academic_session_id' => Auth::user()->academic_session
@@ -289,7 +289,7 @@ class FeeCollectionReportController extends Controller
 										"))
 									->join('invoice_master', 'students.id', '=', 'invoice_master.student_id')
 									->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
-									->whereBetween('invoice_master.due_date', [$data['session']->getOriginal('start'), $data['session']->getOriginal('end')])
+									->whereBetween('invoice_master.due_date', [$data['session']->getRawOriginal('start'), $data['session']->getRawOriginal('end')])
 									->where([
 											'academic_session_history.class_id' => $data['class']->id,
 											'academic_session_history.academic_session_id' => Auth::user()->academic_session

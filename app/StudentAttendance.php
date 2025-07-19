@@ -23,7 +23,7 @@ class StudentAttendance extends Model
 	];
 
 	public function scopeGetAttendanceForExam($query, Exam $exam){
-		return	$query->whereBetween('date', [$exam->getOriginal('start_date'), $exam->getOriginal('end_date')]);
+		return	$query->whereBetween('date', [$exam->getRawOriginal('start_date'), $exam->getRawOriginal('end_date')]);
 	}
 
 	public function scopeGroupByMonth($query)
