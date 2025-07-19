@@ -22,7 +22,7 @@ class FeesController extends Controller
 {
 	protected $mons = [], $InvoiceMaster;
 
-	public function Index(array $data = [], $job = '', Request $request){
+	public function Index(Request $request, array $data = [], $job = ''){
 
 		if ($request->ajax()) {
 			return DataTables::eloquent(InvoiceMaster::query())
@@ -92,7 +92,7 @@ class FeesController extends Controller
 
 		$data =	$this->FetchMonths($data);
 		$job = 'create';
-		return $this->Index($data, $job, $request);
+		return $this->Index($request, $data, $job);
 	}
 
 	public function GetEditInvoice(Request $request){
