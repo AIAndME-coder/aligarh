@@ -152,6 +152,7 @@ class RoleController extends Controller
 			],
 			'Students' => [
 				'students.index' => 'Students View',
+				'students.grid' => 'Students Gird View',
 				'students.add' => 'Students Create',
 				'students.edit' => 'Students Edit',
 				'students.class_edit' => 'Edit Class',
