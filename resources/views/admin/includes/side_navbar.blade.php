@@ -220,7 +220,7 @@
                     <span class="nav-label"></span>Academic Session</a>
             </li>
             @endrole
-            @canany(['users.index', 'roles.index', 'system-setting.index', 'roles.index', 'system-setting.index'])
+            @canany(['users.index', 'roles.index', 'system-setting.index', 'roles.index', 'system-setting.index', 'exam-grades.index'])
                 <li class="{{ isActiveRoute(['users.*', 'roles.*', 'system-setting.*', 'fee-scenario.*', 'exam-grades.*']) }}">
                     <a><i class="fa fa-gear fa-spin"></i> <span class="nav-label"></span><span
                             class="fa arrow"></span>Administrative Tools</a>

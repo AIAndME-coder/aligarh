@@ -34,7 +34,65 @@ class PermissionsSeeder extends Seeder
 
         $developerRole  = Role::find(1);
         $adminRole      = Role::find(2);
-        // $employeeRole   = Role::find(3);
+        $employeeRole   = Role::find(3);
+        $teacherRole    = Role::find(4);
+
+
+        $employeePermissions = [
+            'dashboard',
+            'dashboard.timeline',
+            'user-settings.index',
+            'user-settings.password.update',
+            'vendors.index',
+            'vendors.add',
+            'vendors.edit',
+            'vendors.edit.post',
+            'items.index',
+            'items.add' ,
+            'items.edit',
+            'items.edit.post',
+            'vouchers.index',
+            'vouchers.add',
+            'vouchers.edit',
+            'vouchers.edit.post',
+            'vouchers.detail',
+            'expense.index',
+            'expense.add',
+            'expense.edit',
+            'expense.edit.post',
+            'expense.summary',
+        ];
+
+        $teacherPermissions = [
+            'dashboard',
+            'dashboard.timeline',
+            'user-settings.password.update',
+            'routines.index',
+            'routines.add',
+            'routines.edit',
+            'routines.edit.post',
+            'routines.delete',
+            'manage-subjects.index',
+            'manage-subjects.add',
+            'manage-subjects.edit',
+            'manage-subjects.edit.post',
+            'exam.index',
+            'exam.add',
+            'exam.edit',
+            'exam.edit.post',
+            'manage-result.index',
+            'manage-result.make',
+            'manage-result.attributes',
+            'manage-result.maketranscript',
+            'manage-result.maketranscript.create',
+            'manage-result.result',
+            'library.index',
+            'library.add',
+            'library.edit',
+            'library.edit.post',
+            'exam-grades.index',
+            'exam-grades.update',
+        ];
 
 
         $ignored = config('permission.ignore_routes', []);
@@ -52,10 +110,13 @@ class PermissionsSeeder extends Seeder
             Permission::updateOrCreate(['name' => $permission], ['guard_name' => 'web']);
         }
 
+        //Sync roles
         $developerRole->syncPermissions(Permission::all());
         $adminRole->syncPermissions(Permission::all());
-        // $employeeRole->syncPermissions(Permission::all());
+        $employeeRole->syncPermissions($employeePermissions);
+        $teacherRole->syncPermissions($teacherPermissions);
 
+        //Sync users
         $devUser->syncRoles($developerRole->id);
         $adminUser->syncRoles($adminRole->id);
         // $employeeUser->syncRoles($employeeRole->id);
