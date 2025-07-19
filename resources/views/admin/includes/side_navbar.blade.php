@@ -214,14 +214,8 @@
                     </ul>
                 </li>
             @endcanany
-            @role('Developer')
-            <li class="{{ isActiveRoute('academic-sessions.*') }}">
-                <a href="{{ route('academic-sessions.index') }}"><i class="fa fa-clock-o"></i>
-                    <span class="nav-label"></span>Academic Session</a>
-            </li>
-            @endrole
-            @canany(['users.index', 'roles.index', 'system-setting.index', 'roles.index', 'system-setting.index', 'exam-grades.index'])
-                <li class="{{ isActiveRoute(['users.*', 'roles.*', 'system-setting.*', 'fee-scenario.*', 'exam-grades.*']) }}">
+            @canany(['users.index', 'roles.index', 'system-setting.index', 'roles.index', 'system-setting.index', 'exam-grades.index', 'academic-sessions.index'])
+                <li class="{{ isActiveRoute(['users.*', 'roles.*', 'system-setting.*', 'fee-scenario.*', 'exam-grades.*', 'academic-sessions.*']) }}">
                     <a><i class="fa fa-gear fa-spin"></i> <span class="nav-label"></span><span
                             class="fa arrow"></span>Administrative Tools</a>
                     <ul class="nav nav-second-level collapse">
@@ -240,6 +234,12 @@
                             <a href="{{ route('system-setting.index') }}">System Setting</a>
                         </li>
                         @endcan
+                        @role('Developer')
+                            <li class="{{ isActiveRoute('academic-sessions.*') }}">
+                                <a href="{{ route('academic-sessions.index') }}">
+                                    <span class="nav-label"></span>Academic Session</a>
+                            </li>
+                        @endrole
                         @can('fee-scenario.index')
                         <li class="{{ isActiveRoute('fee-scenario.*') }}">
                             <a href="{{ route('fee-scenario.index') }}">Fee Scenario</a>
