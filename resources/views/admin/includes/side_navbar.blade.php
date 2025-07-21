@@ -130,15 +130,8 @@
                         class="nav-label"></span>Subjects</a>
             </li>
             @endcan
-            @can('student-migrations.create')
-            <li class="{{ isActiveRoute('student-migrations.*') }}">
-                <a href="{{ route('student-migrations.index') }}"><i
-                        class="glyphicon glyphicon-transfer"></i> <span class="nav-label"></span>Student
-                    Migrations</a>
-            </li>
-            @endcan
-            @canany(['exam.index', 'manage-result.index'])
-                <li class="{{ isActiveRoute(['exam.*','manage-result.*']) }}">
+            @canany(['exam.index', 'manage-result.index', 'student-migrations.index'])
+                <li class="{{ isActiveRoute(['exam.*','manage-result.*','student-migrations.*']) }}">
                     <a><i class="fa fa-graduation-cap"></i> <span class="nav-label"></span><span
                             class="fa arrow"></span>Exam</a>
                     <ul class="nav nav-second-level collapse">
@@ -151,6 +144,13 @@
                         <li class="{{ isActiveRoute('manage-result.*') }}" data-show="">
                             <a href="{{ route('manage-result.index') }}">Manage Result</a>
                         </li>
+                        @endcan
+                        @can('student-migrations.create')
+                            <li class="{{ isActiveRoute('student-migrations.*') }}">
+                                <a href="{{ route('student-migrations.index') }}">
+                                    Student Migrations
+                                </a>
+                            </li>
                         @endcan
                     </ul>
                 </li>
