@@ -67,7 +67,7 @@ class StudentAttendanceCtrl extends Controller
 										])
 									->where('students.date_of_enrolled', '<=', $DateRange);
 
-		if ($request->has('section')) {
+		if ($request->filled('section')) {
 			$data['students']->where(['students.section_id' => $request->input('section')]);
 			$data['section'] = Section::find($request->input('section'));
 		}
