@@ -25,4 +25,13 @@ class Classe extends Model
     return $this->belongsTo('App\Teacher');
   }
 */
+	public function scopeIdOrderAsc($query){
+		return $this->scopeNumericOrderAsc(
+			$query->orderBy('id', 'asc')
+		);
+	}
+	
+	public function scopeNumericOrderAsc($query){
+        return $query->orderBy('numeric_name', 'asc');
+    }
 }
