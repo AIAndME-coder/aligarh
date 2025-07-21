@@ -348,10 +348,12 @@
         $('.nav-tabs a[href="#tab-10"]').tab('show');
 
         $('#datetimepicker4').datetimepicker({
-                 format: 'DD/MM/YYYY'
+                 format: 'DD/MM/YYYY',
+                 defaultDate: moment(),
            });
         $('#datetimepicker4r').datetimepicker({
                  format: 'MM/YYYY',
+                 defaultDate: moment(),
            });
 
         $('table#rpt-att').DataTable({
