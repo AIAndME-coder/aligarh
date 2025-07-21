@@ -111,11 +111,11 @@
 										{{ csrf_field() }}
 										<input type="hidden" name="id" v-model="student.id">
 										<div class="alert alert-warning ">
-											<h4><span class="fa fa-exclamation-triangle"></span> Carefully! </h4>
+											<h4><span class="fa fa-exclamation-triangle"></span> Important </h4>
 											<p>
-												Once Set Date of Leaving its means the student is leave or Inactive,
+												Once the Date of Leaving is set, the student becomes inactive and cannot be reactivated.
 												<br>
-												<b>Remember</b> IT will not rechange to active again.
+												<b>To rejoin,</b> a new registration form is required.
 											</p>
 										</div>
 										<div class="form-group">
