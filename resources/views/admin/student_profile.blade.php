@@ -153,10 +153,10 @@
 									<th>Name</th>
 								</thead>
 								<tbody>
-									<tr v-for="(std, k) in siblings">
-										<td>@{{k+1}}</td>
-										<td>@{{std.gr_no}}</td>
-										<td>@{{std.name}}</td>
+									<tr v-for="(std, k) in siblings" :key="std.id">
+										<td><a :href="'/students/profile/' + std.id">@{{ k + 1 }}</a></td>
+										<td><a :href="'/students/profile/' + std.id">@{{ std.gr_no }}</a></td>
+										<td><a :href="'/students/profile/' + std.id">@{{ std.name }}</a></td>
 									</tr>
 								</tbody>
 								
