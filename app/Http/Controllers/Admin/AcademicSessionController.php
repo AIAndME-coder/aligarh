@@ -8,6 +8,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Carbon\Carbon;
 use App\AcademicSession;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AcademicSessionController extends Controller
 {
@@ -65,7 +66,11 @@ class AcademicSessionController extends Controller
             ]);
     }
 
-    AcademicSession::create($data);
+    $AcademicSession =  AcademicSession::create($data);
+    if(Auth::user()->hasRole('Developer')) {
+      $user = Auth::user();
+      $user->update(['allow_session' => collect($user->allow_session)->push((string) $AcademicSession->id)->unique()->values()->toArray()]);
+    }
     return redirect()->back()->with([
         'toastrmsg' => [
             'type' => 'success', 
