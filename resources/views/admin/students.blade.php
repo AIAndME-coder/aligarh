@@ -165,7 +165,7 @@
     .icon-id { background: linear-gradient(135deg, #00cec9, #55a3ff); }
     .icon-gender { background: linear-gradient(135deg, #fd79a8, #fdcb6e); }
     .icon-fee { background: linear-gradient(135deg, #00b894, #55efc4); }
-    .icon-guardian { background: linear-gradient(135deg, #f093fb, #f5576c);; }
+    .icon-guardian { background: linear-gradient(135deg, #f093fb, #f5576c); }
 
     .info-content {
         flex: 1;
@@ -473,7 +473,7 @@
                                                         <a :href="'{{ url('guardians/profile') }}/' + student.guardian.id" class="text-decoration-none">
                                                           <li class="info-item">
                                                               <div class="info-icon icon-guardian">
-                                                                  <i class="fa fa-money"></i>
+                                                                  <i class="fa fa-users"></i>
                                                               </div>
                                                               <div class="info-content">
                                                                   <div class="info-label">Guardian</div>
