@@ -41,13 +41,11 @@ class User extends Authenticatable
 
         static::creating(function ($model) {
             $model->created_by 			= Auth::user()->id??2;
-            $model->academic_session  	=   Auth::user()->academic_session?? null;
             $model->settings  			=   Auth::user()->settings?? '{"skin_config":{"nav_collapse":""}}';
 
         });
         static::updating(function ($model) {
             $model->updated_by  		=   Auth::user()->id??2;
-            $model->academic_session  	=   Auth::user()->academic_session?? null;
             $model->settings  			=   Auth::user()->settings?? '{"skin_config":{"nav_collapse":""}}';
         });
     }

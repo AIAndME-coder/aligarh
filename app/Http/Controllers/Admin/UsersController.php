@@ -140,7 +140,7 @@ class UsersController extends Controller
       $User =  User::where('id', $id)->Staff()->NotDeveloper()->firstOrFail();
       $validatedData  = $request->validate([
           'active'            =>  'required',
-          'allow_session'     =>  'sometimes|required',
+          'allow_session'     =>  'required|array',
           'password'          =>  'nullable|between:6,12',
           're_password'       =>  'nullable|between:6,12|same:password',
       ]);
@@ -149,6 +149,8 @@ class UsersController extends Controller
       } else {
         unset($validatedData['password']);
       }
+
+      $validatedData['academic_session'] = (int) collect($request->input('allow_session', []))->last();
 
       $User->update($validatedData);
 
