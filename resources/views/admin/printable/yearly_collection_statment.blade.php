@@ -62,7 +62,7 @@
 <div class="container-fluid">
 
 	<div class="row">
-		<h3 class="text-center">{{ config('systemInfo.title') }}</h3>
+		<h3 class="text-center">{{ config('systemInfo.general.title') }}</h3>
 		<h4>Yearly Collection Statment</h4>
 		<h4>Session: 
 			{{ \Carbon\Carbon::createFromFormat('d/m/Y', $session->getRawOriginal('start'))->format('M-Y') }} 

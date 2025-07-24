@@ -670,7 +670,7 @@
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
               },
-              title: "Guardians | {{ config('systemInfo.title') }}",
+              title: "Guardians | {{ config('systemInfo.general.title') }}",
             }
           ],
           Processing: true,

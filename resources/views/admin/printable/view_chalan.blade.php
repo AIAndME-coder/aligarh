@@ -63,27 +63,27 @@
                                 <img alt="image" width="80px" src="{{ URL('/img/logo-1.png') }}">
                             </td>
                             <td>
-                                <h2 class="text-center text-success">{{ config('systemInfo.name') }}</h2>
+                                <h2 class="text-center text-success">{{ config('systemInfo.general.name') }}</h2>
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-center">{{ config('systemInfo.address')}}. Tel {{ config('systemInfo.contact_no')}}</td>
+                            <td class="text-center">{{ config('systemInfo.general.address')}}. Tel {{ config('systemInfo.general.contact_no')}}</td>
                         </tr>
                     </tbody>
                 </table>
                 <table style="width: 500px">
                     <tbody>
                         <tr style="border-top:1px solid black">
-                            <td>{{ config('systemInfo.bank_name') }}</td>
+                            <td>{{ config('systemInfo.general.bank_name') }}</td>
                             <td rowspan="3" style="padding-top: 10px">
                                 <img alt="image" src="{{ URL('/img/bank.png') }}" style="width: 43px;">
                             </td>
                         </tr>
                         <tr>
-                            <td>{{ config('systemInfo.bank_address') }}</td>
+                            <td>{{ config('systemInfo.general.bank_address') }}</td>
                         </tr>
                         <tr>
-                            <td>Account No. {{ config('systemInfo.bank_account_no') }}</td>
+                            <td>Account No. {{ config('systemInfo.general.bank_account_no') }}</td>
                         </tr>
                     </tbody>
                 </table>

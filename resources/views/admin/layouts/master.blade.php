@@ -30,7 +30,7 @@
   </head>
 
 <body class="pace-done md-skin {{ Auth::user()->settings->skin_config->nav_collapse }}">
-	@if( config('systemInfo.validity') < Carbon\Carbon::now()->toDateString())
+	@if( config('systemInfo.general.validity') < Carbon\Carbon::now()->toDateString())
 	<div class="alert alert-danger" role="alert"> <span class="glyphicon glyphicon-warning-sign" ></span> <b> The System Is Expired!</b></div>
 	@endif
   <div id="wrapper">

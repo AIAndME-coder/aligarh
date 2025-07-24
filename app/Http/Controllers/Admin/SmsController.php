@@ -43,8 +43,8 @@ class SmsController extends Controller
 		$data['Teachers']	=	Teacher::HaveCellNo()->get();
 		$data['Employee']	=	Employee::HaveCellNo()->get();
 		$data['Classe']	=	Classe::all();
-		$data['availableSms']	=	config('systemInfo.available_sms');
-		$data['smsValidity']	=	config('systemInfo.sms_validity');
+		$data['availableSms']	=	config('systemInfo.general.available_sms');
+		$data['smsValidity']	=	config('systemInfo.general.sms_validity');
 		$data['ValidateExpireDate']	=	$this->ValidateExpireDate()? 1 : 0;
 	    return view('admin.sms_notifications', $data);
 	}
@@ -96,7 +96,7 @@ class SmsController extends Controller
 			$totalprice = 0;
 			if(array_has($responseApi, 'totalprice')){
 				$totalprice = $responseApi->totalprice;
-				$this->UpdateAvailableSms(config('systemInfo.available_sms') - $totalprice);
+				$this->UpdateAvailableSms(config('systemInfo.general.available_sms') - $totalprice);
 			}
 
 			SmsLog::create([
@@ -127,7 +127,7 @@ class SmsController extends Controller
 					'title'	=>  'Notifications',
 					'msg'	=>  'Query Submitted'
 				],
-				'availableSms' => config('systemInfo.available_sms') - $totalprice,
+				'availableSms' => config('systemInfo.general.available_sms') - $totalprice,
 			];
 		}
 
@@ -139,6 +139,7 @@ class SmsController extends Controller
 									]
 								]);
 	}
+
 
 	public function SendBulkSms(Request $request){
 
@@ -191,7 +192,7 @@ class SmsController extends Controller
 			$totalprice = 0;
 			if(array_has($responseApi, 'totalprice')){
 				$totalprice = $responseApi->totalprice;
-				$this->UpdateAvailableSms(config('systemInfo.available_sms') - $totalprice);
+				$this->UpdateAvailableSms(config('systemInfo.general.available_sms') - $totalprice);
 			}
 
 			SmsLog::create([
@@ -223,7 +224,7 @@ class SmsController extends Controller
 					'title'	=>  'Notifications',
 					'msg'	=>  'Query Submitted'
 				],
-				'availableSms' => config('systemInfo.available_sms') - $totalprice,
+				'availableSms' => config('systemInfo.general.available_sms') - $totalprice,
 				//[implode(',', $request->input($request->input('bulk_to')))]
 				//[$request->all()]
 			];
@@ -286,7 +287,7 @@ class SmsController extends Controller
 	}
 
 	protected function UpdateAvailableSms($no){
-		$ConfigWriter = new ConfigWriter('systemInfo');
+		$ConfigWriter = new ConfigWriter('systemInfo.general');
 		$ConfigWriter->set([
 				'available_sms' => $no,
 			]);
@@ -322,11 +323,11 @@ class SmsController extends Controller
 	}
 
 	protected function ValidateBalance($phoneInfo){
-		return config('systemInfo.available_sms') >= COUNT($phoneInfo);
+		return config('systemInfo.general.available_sms') >= COUNT($phoneInfo);
 	}
 
 	protected function ValidateExpireDate(){
-		return config('systemInfo.sms_validity') >= Carbon::now()->todateString();
+		return config('systemInfo.general.sms_validity') >= Carbon::now()->todateString();
 	}
 
 }

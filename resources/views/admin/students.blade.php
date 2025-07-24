@@ -1103,7 +1103,7 @@
               exportOptions: {
                 columns: ":visible"
               },
-              title: "Student Register | {{ config('systemInfo.title') }}",
+              title: "Student Register | {{ config('systemInfo.general.title') }}",
             },
             'colvis'
           ],
@@ -1286,7 +1286,7 @@
             discount:  {{ old('discount', 0) }},
           },
           no_of_active_students:{{ $no_of_active_students }},
-          student_capacity:{{ config('systemInfo.student_capacity') }},
+          student_capacity:{{ config('systemInfo.general.student_capacity') }},
           layout: 'grid',
           options: [5,10, 25, 50, 100],
           per_page: 10,

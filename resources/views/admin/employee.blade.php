@@ -735,7 +735,7 @@
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
               },
-              title: "Employees | {{ config('systemInfo.title') }}",
+              title: "Employees | {{ config('systemInfo.general.title') }}",
             }
           ],
           Processing: true,

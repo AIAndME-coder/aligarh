@@ -331,7 +331,7 @@
                 exportOptions: {
                   columns: [ 0, 1, 2]
                 },
-                title: "Users | {{ config('systemInfo.title') }}",
+                title: "Users | {{ config('systemInfo.general.title') }}",
               }
             ],
             Processing: true,

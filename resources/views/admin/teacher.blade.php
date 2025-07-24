@@ -760,7 +760,7 @@
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
               },
-              title: "Teachers | {{ config('systemInfo.title') }}",
+              title: "Teachers | {{ config('systemInfo.general.title') }}",
             }
           ],
           Processing: true,

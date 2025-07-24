@@ -140,7 +140,7 @@ class StudentsController extends Controller
 
 		$this->PostValidate($request);
 
-		if(Student::active()->count() >= config('systemInfo.student_capacity')){
+		if(Student::active()->count() >= config('systemInfo.general.student_capacity')){
 			return redirect('students')->with([
 									'toastrmsg' => [
 										'type'	=> 'error', 

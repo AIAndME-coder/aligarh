@@ -229,11 +229,6 @@
                             <a href="{{ route('roles.index') }}">Roles</a>
                         </li>
                         @endcan
-                        @can('system-setting.index')
-                        <li class="{{ isActiveRoute('system-setting.*') }}">
-                            <a href="{{ route('system-setting.index') }}">System Setting</a>
-                        </li>
-                        @endcan
                         @role('Developer')
                             <li class="{{ isActiveRoute('academic-sessions.*') }}">
                                 <a href="{{ route('academic-sessions.index') }}">
@@ -248,6 +243,11 @@
                         @can('exam-grades.index')
                         <li class="{{ isActiveRoute('exam-grades.*') }}">
                             <a href="{{ route('exam-grades.index') }}">Exam Grades</a>
+                        </li>
+                        @endcan
+                        @can('system-setting.index')
+                        <li class="{{ isActiveRoute('system-setting.*') }}">
+                            <a href="{{ route('system-setting.index') }}">System Setting</a>
                         </li>
                         @endcan
                     </ul>
