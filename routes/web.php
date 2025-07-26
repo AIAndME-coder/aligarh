@@ -278,7 +278,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
     Route::prefix('notifications')->name('notifications')->group(function(){
         Route::get('/', [NotificationsController::class, 'index'])->name('.index');
         Route::post('/get/data', [NotificationsController::class, 'getData'])->name('.get.data');
-        Route::post('/messsage-send', [NotificationsController::class, 'create'])->name('.send');
+        Route::post('/messsage-send', [NotificationsController::class, 'send'])->name('.send');
     });
 
     Route::middleware('role:Developer')->group(function(){
