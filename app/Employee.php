@@ -8,13 +8,19 @@ class Employee extends Model
 {
 
 
-	public function User(){
+	public function User()
+	{
 		return $this->belongsTo('App\User');
 	}
 
 
-	public function scopeHaveCellNo($query){
+	public function scopeHaveCellNo($query)
+	{
 		return $query->where('phone', 'NOT LIKE', '21%')->whereRaw('LENGTH(phone) = 10');
 	}
 
+	public function scopeNotDeveloper($query)
+	{
+		return $query->whereKeyNot(1);
+	}
 }

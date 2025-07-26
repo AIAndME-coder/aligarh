@@ -7,6 +7,24 @@
     <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+
+    <style>
+        .label-student-token {
+            background: linear-gradient(#0f73d1 0%, #1c5b97 100%);
+        }
+
+        .label-teacher-token {
+            background: linear-gradient(#12d10f 0%, #14cb1191 100%);
+        }
+
+        .label-employee-token {
+            background: linear-gradient(#ed5565 0%, #b75862 100%);
+        }
+
+        .label-guardian-token {
+            background: linear-gradient(#f8ac59 0%, #f39229c7 100%);
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -73,42 +91,32 @@
                                     </div>
                                 </div>
 
-                                <div v-if="type == 'guardians'" class="form-group">
-                                    <label class="col-sm-2 control-label" for="type">Guardian</label>
+                                <div v-if="selectConfig[type]" class="form-group">
+                                    <label class="col-sm-2 control-label">@{{ selectConfig[type].label }}</label>
                                     <div class="col-sm-8">
-                                        <select name="selected_guardian_id" v-model="selectedGuardianId" id="guardians"
-                                            class="form-control" required>
-                                            <option selected value="">-- Select --</option>
-                                            <option value="all">-- All --</option>
-                                            <option v-for="guardian in guardians" :value="guardian.id">
-                                                @{{ guardian.name }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div v-if="type == 'teachers'" class="form-group">
-                                    <label class="col-sm-2 control-label" for="type">Teachers</label>
-                                    <div class="col-sm-8">
-                                        <select name="type" id="teachers" class="form-control" v-model="type" required>
+                                        <select class="form-control" :name="selectConfig[type].name"
+                                            v-model="dynamicSelectModel" required>
                                             <option value="">-- Select --</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div v-if="type == 'employees'" class="form-group">
-                                    <label class="col-sm-2 control-label" for="type">Employees</label>
-                                    <div class="col-sm-8">
-                                        <select name="type" id="employees" class="form-control" v-model="type" required>
-                                            <option value="">-- Select --</option>
+                                            <option v-if="selectConfig[type].showAllOption" value="all">-- All --
+                                            </option>
+                                            <option v-for="item in getOptions(type)" :value="item.id">
+                                                @{{ item.name }}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-8" style="margin-bottom: 10px;">
-                                        <template v-if="tokenMap[type]">
-                                            <span class="label label-info" style="cursor:pointer;"
-                                                @click="insertToken(tokenMap[type])">
-                                                @{{ tokenMap[type] }}
+                                        <template v-if="tokenMap[type] && tokenMap[type].length">
+                                            <small class="text-muted">
+                                                Click a token to insert it into the message.
+                                            </small>
+                                            <span v-for="token in tokenMap[type]" :key="token.token" class="label"
+                                                :class="'label-' + token.color"
+                                                style="cursor:pointer; margin-right: 5px; margin-bottom: 5px; display: inline-block;color: white;font-size: small;"
+                                                @click="insertToken(token.token)">
+                                                @{{ token.label }}
                                             </span>
                                         </template>
                                     </div>
@@ -119,18 +127,18 @@
                                     <div class="col-sm-8">
                                         <textarea name="message" class="form-control" v-model="message" rows="4" required ref="messageBox"></textarea>
                                         <small class="text-muted">
-                                            You can use <code>{name}</code> in your message. It will be replaced
+                                            You can use <code>{variable}</code> in your message. It will be replaced
                                             automatically.
                                         </small>
                                     </div>
-                                    <input type="hidden" v-model="type" name="type" />
-                                    <input v-if="type === 'students'" type="hidden" v-model="selectedStudentId"
-                                        name="selected_student_id" />
-                                    <input v-if="type === 'students'"type="hidden" v-model="selectedClassId"
-                                        name="selected_class_id" />
-                                    <input type="hidden" v-model="message" name="message" />
-
                                 </div>
+
+                                <input type="hidden" v-model="type" name="type" />
+                                <input v-if="type === 'students'" type="hidden" v-model="selectedStudentId"
+                                    name="selected_student_id" />
+                                <input v-if="type === 'students'"type="hidden" v-model="selectedClassId"
+                                    name="selected_class_id" />
+                                <input type="hidden" v-model="message" name="message" />
 
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-6">
@@ -191,19 +199,175 @@
                     selectedClassId: '',
                     selectedStudentId: '',
                     selectedGuardianId: '',
+                    selectedTeacherId: '',
+                    selectedEmployeeId: '',
+                    selectConfig: {
+                        guardians: {
+                            label: 'Guardian',
+                            optionsKey: 'guardians',
+                            model: 'selectedGuardianId',
+                            name: 'selected_guardian_id',
+                            showAllOption: true,
+                        },
+                        teachers: {
+                            label: 'Teacher',
+                            optionsKey: 'teachers',
+                            model: 'selectedTeacherId',
+                            name: 'selected_teacher_id',
+                            showAllOption: true,
+                        },
+                        employees: {
+                            label: 'Employee',
+                            optionsKey: 'employees',
+                            model: 'selectedEmployeeId',
+                            name: 'selected_employee_id',
+                            showAllOption: true,
+                        }
+                    },
 
                     // tokens
                     tokenMap: {
-                        students: '{student_name}',
-                        teachers: '{teacher_name}',
-                        guardians: '{guardian_name}',
-                        employees: '{employee_name}',
-                    },
+                        students: [{
+                                token: '{student_name}',
+                                label: 'Student Name',
+                                color: 'student-token'
+                            },
+                            {
+                                token: '{class_name}',
+                                label: 'Class Name',
+                                color: 'student-token'
+                            },
+                            {
+                                token: '{gr_no}',
+                                label: 'Gr No',
+                                color: 'student-token'
+                            },
+                            {
+                                token: '{section_name}',
+                                label: 'Section Name',
+                                color: 'student-token'
+                            },
+                            {
+                                token: '{father_name}',
+                                label: 'Father Name',
+                                color: 'student-token'
+                            },
+                            {
+                                token: '{address}',
+                                label: 'Address',
+                                color: 'student-token'
+                            },
+                            {
+                                token: '{gender}',
+                                label: 'Gender',
+                                color: 'student-token'
+                            },
+                        ],
+                        teachers: [{
+                                token: '{teacher_name}',
+                                label: 'Teacher Name',
+                                color: 'teacher-token'
+                            },
+                            {
+                                token: '{qualification}',
+                                label: 'Qualification',
+                                color: 'teacher-token'
+                            },
+                            {
+                                token: '{gender}',
+                                label: 'Gender',
+                                color: 'teacher-token'
+                            },
+                            {
+                                token: '{address}',
+                                label: 'Address',
+                                color: 'teacher-token'
+                            },
+                            {
+                                token: '{phone}',
+                                label: 'Phone',
+                                color: 'teacher-token'
+                            },
+                            {
+                                token: '{subject}',
+                                label: 'Subject',
+                                color: 'teacher-token'
+                            },
+                        ],
+                        guardians: [{
+                                token: '{guardian_name}',
+                                label: 'Guardian Name',
+                                color: 'guardian-token'
+                            },
+                            {
+                                token: '{email}',
+                                label: 'Email',
+                                color: 'guardian-token'
+                            },
+                            {
+                                token: '{phone}',
+                                label: 'Phone',
+                                color: 'guardian-token'
+                            },
+                            {
+                                token: '{address}',
+                                label: 'Address',
+                                color: 'guardian-token'
+                            },
+                            {
+                                token: '{profession}',
+                                label: 'Profession',
+                                color: 'guardian-token'
+                            },
+                            {
+                                token: '{income}',
+                                label: 'Income',
+                                color: 'guardian-token'
+                            },
+                        ],
+                        employees: [{
+                                token: '{employee_name}',
+                                label: 'Employee Name',
+                                color: 'employee-token'
+                            },
+                            {
+                                token: '{qualification}',
+                                label: 'Qualification',
+                                color: 'employee-token'
+                            },
+                            {
+                                token: '{gender}',
+                                label: 'Gender',
+                                color: 'employee-token'
+                            },
+                            {
+                                token: '{address}',
+                                label: 'Address',
+                                color: 'employee-token'
+                            },
+                            {
+                                token: '{email}',
+                                label: 'Email',
+                                color: 'employee-token'
+                            },
+                            {
+                                token: '{role}',
+                                label: 'Role',
+                                color: 'employee-token'
+                            },
+                            {
+                                token: '{phone}',
+                                label: 'Phone',
+                                color: 'employee-token'
+                            },
+                        ],
+                    }
 
                 };
             },
             methods: {
                 handleTypeChange() {
+                    this.message = '';
                     this.getData();
                     console.log("Selected type changed to:", this.type);
                 },
@@ -281,6 +445,22 @@
                             textarea.focus();
                             textarea.selectionStart = textarea.selectionEnd = start + token.length;
                         });
+                    }
+                },
+                getModelBinding(type) {
+                    return this[this.selectConfig[type].model];
+                },
+                getOptions(type) {
+                    return this[this.selectConfig[type].optionsKey] || [];
+                }
+            },
+            computed: {
+                dynamicSelectModel: {
+                    get() {
+                        return this[this.selectConfig[this.type]?.model];
+                    },
+                    set(val) {
+                        this[this.selectConfig[this.type]?.model] = val;
                     }
                 }
             }

@@ -15,14 +15,8 @@ use Illuminate\Support\Facades\Validator;
 
 class NotificationsController extends Controller
 {
-    protected $noficationType = [
-        'Mail' => 'mail',
-        'Sms' => 'sms',
-        'Whatsapp' => 'whatsapp'
-    ];
     public function index(Request $request)
     {
-
 
         return view('admin.notifications');
     }
@@ -51,7 +45,7 @@ class NotificationsController extends Controller
                 $data = Guardian::all();
                 break;
             case 'employees':
-                $data = Employee::all();
+                $data = Employee::NotDeveloper()->get();
                 break;
             default:
                 return response()->json(['error' => 'Invalid type provided.'], 400);
@@ -63,6 +57,7 @@ class NotificationsController extends Controller
     public  function send(Request $request)
     {
 
+
         $validator = Validator::make($request->all(), [
             'message' => 'required',
             'type' => 'required|in:students,teachers,guardians,employees',
@@ -71,7 +66,19 @@ class NotificationsController extends Controller
             'selected_guardian_id' => [
                 'nullable',
                 fn($attribute, $value, $fail) => $value !== null && $value !== 'all' && !Guardian::where('id', $value)->exists()
-                    ? $fail('The selected guardian ID is invalid.')
+                    ? $fail('The selected Guardian ID is invalid.')
+                    : null,
+            ],
+            'selected_employee_id' => [
+                'nullable',
+                fn($attribute, $value, $fail) => $value !== null && $value !== 'all' && !Employee::where('id', $value)->exists()
+                    ? $fail('The selected Employee ID is invalid.')
+                    : null,
+            ],
+            'selected_teacher_id' => [
+                'nullable',
+                fn($attribute, $value, $fail) => $value !== null && $value !== 'all' && !Teacher::where('id', $value)->exists()
+                    ? $fail('The selected Teacher ID is invalid.')
                     : null,
             ],
         ]);
@@ -84,70 +91,114 @@ class NotificationsController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        // dd($request->all());
 
-        $message = $request->input('message');
+
         $type = $request->input('type');
+        $message = $request->input('message');
         $classId = $request->input('selected_class_id');
         $studentId = $request->input('selected_student_id');
         $guardianId = $request->input('selected_guardian_id');
+        $teacherId = $request->input('selected_teacher_id');
+        $employeeId = $request->input('selected_employee_id');
 
         switch ($type) {
-            case 'students':
-                if ($studentId) {
-                    $student = Student::with('Guardian:id,email')->find($studentId);
-                    if ($student) {
-                        $personalMessage = str_replace('{student_name}', $student->name, $message);
 
-                        //NotificationSendMsgJob 
-                        NotificationSendMsgJob::dispatch($student->Guardian->email, $student->Guardian->phone, $student->Guardian->phone, $personalMessage);
-                        return $this->returnNotifications();
+            case 'students':
+                $students = collect();
+
+                if ($studentId) {
+                    $student = Student::with(['Guardian:id,email,phone', 'StdClass:id,name', 'section:id,name'])->find($studentId);
+                    if ($student) {
+                        $students->push($student);
                     }
                 } elseif ($classId) {
-                    $students = Student::with('Guardian:id,email')->where('class_id', $classId)->get();
-
-                    if ($students) {
-                        foreach ($students as $student) {
-                            $personalMessage = str_replace('{student_name}', $student->name, $message);
-
-                            //NotificationSendMsgJob
-                            NotificationSendMsgJob::dispatch($student->Guardian->email, $student->Guardian->phone, $student->Guardian->phone, $personalMessage);
-                        }
-                        return $this->returnNotifications();
-                    }
+                    $students = Student::with(['Guardian:id,email,phone', 'StdClass:id,name', 'section:id,name'])
+                        ->where('class_id', $classId)
+                        ->get();
                 }
 
-                break;
-            case 'teachers':
-                $teachers = Teacher::all();
-                foreach ($teachers as $teacher) {
-                    // Send $message to $teacher
-                }
-                break;
-            case 'guardians':
-                if ($guardianId === 'all') {
-                    $guardians = Guardian::all();
-                    foreach ($guardians as $guardian) {
-                        $personalMessage = str_replace('{guardian_name}', $guardian->name, $message);
-                        // e.g. NotificationSendMsgJob 
-                        NotificationSendMsgJob::dispatch($guardian->Guardian->email, $guardian->phone, $guardian->phone, $personalMessage);
-                    }
+                foreach ($students as $student) {
+                    $tokens = $this->buildStudentTokens($student);
+                    $personalMessage = $this->replaceTokens($message, $tokens);
 
+                    NotificationSendMsgJob::dispatch(
+                        optional($student->Guardian)->email,
+                        optional($student->Guardian)->phone,
+                        optional($student->Guardian)->phone,
+                        $personalMessage
+                    );
+                }
+
+                if ($students->isNotEmpty()) {
                     return $this->returnNotifications();
-                } else {
-                    $guardian = Guardian::find($guardianId);
-                    $personalMessage = str_replace('{guardian_name}', $guardian->name, $message);
+                }
 
-                    // e.g. NotificationSendMsgJob 
-                    NotificationSendMsgJob::dispatch($guardian->Guardian->email, $guardian->phone, $guardian->phone, $personalMessage);
+                break;
+
+            case 'guardians':
+                $guardians = $guardianId === 'all'
+                    ? Guardian::all()
+                    : Guardian::where('id', $guardianId)->get();
+
+                foreach ($guardians as $guardian) {
+                    $tokens = $this->buildGuardianTokens($guardian);
+                    $personalMessage = $this->replaceTokens($message, $tokens);
+
+                    NotificationSendMsgJob::dispatch(
+                        $guardian->email,
+                        $guardian->phone,
+                        $guardian->phone,
+                        $personalMessage
+                    );
+                }
+
+                if ($guardians->isNotEmpty()) {
+                    return $this->returnNotifications();
+                }
+                break;
+
+            case 'teachers':
+                $teachers = $teacherId === 'all'
+                    ? Teacher::all()
+                    : Teacher::where('id', $teacherId)->get();
+
+                foreach ($teachers as $teacher) {
+                    $tokens = $this->buildTeacherTokens($teacher);
+                    $personalMessage = $this->replaceTokens($message, $tokens);
+
+                    NotificationSendMsgJob::dispatch(
+                        $teacher->email,
+                        $teacher->phone,
+                        $teacher->phone,
+                        $personalMessage
+                    );
+                }
+
+                if ($teachers->isNotEmpty()) {
                     return $this->returnNotifications();
                 }
                 break;
             case 'employees':
-                $employees = Employee::all();
+                $employees = $employeeId === 'all'
+                    ? Employee::all()
+                    : Employee::where('id', $employeeId)->get();
+
                 foreach ($employees as $employee) {
-                    // Send $message to $employee
+                    $tokens = $this->buildEmployeeTokens($employee);
+                    $personalMessage = $this->replaceTokens($message, $tokens);
+
+                    NotificationSendMsgJob::dispatch(
+                        $employee->email,
+                        $employee->phone,
+                        $employee->phone,
+                        $personalMessage
+                    );
                 }
 
+                if ($employees->isNotEmpty()) {
+                    return $this->returnNotifications();
+                }
                 break;
             default:
                 return redirect()->back()
@@ -156,7 +207,7 @@ class NotificationsController extends Controller
                         'toastrmsg' => [
                             'type' => 'error',
                             'title' => 'Error',
-                            'msg' => 'There was an issue while Sending Notification'
+                            'msg' => 'There was an issue while Sending message'
                         ]
                     ]);
         }
@@ -172,5 +223,63 @@ class NotificationsController extends Controller
                 'msg' =>  'Messages sent to successfully'
             ]
         ]);
+    }
+
+    private function replaceTokens(string $message, array $tokens): string
+    {
+        foreach ($tokens as $key => $value) {
+            $message = str_replace("{{$key}}", $value ?? '', $message);
+        }
+        return $message;
+    }
+
+    private function buildStudentTokens($student): array
+    {
+        return [
+            'student_name' => $student->name,
+            'class_name'   => optional($student->StdClass)->name,
+            'section_name' => optional($student->section)->name,
+            'father_name'  => $student->father_name,
+            'address'      => $student->address,
+            'gender'       => $student->gender,
+            'gr_no'        => $student->gr_no,
+        ];
+    }
+
+    private function buildGuardianTokens($guardian): array
+    {
+        return [
+            'guardian_name' => $guardian->name,
+            'email'         => $guardian->email,
+            'phone'         => $guardian->phone,
+            'address'       => $guardian->address,
+            'profession'    => $guardian->profession,
+            'income'        => $guardian->income,
+        ];
+    }
+
+    private function buildTeacherTokens($teacher): array
+    {
+        return [
+            'teacher_name'  => $teacher->name,
+            'qualification' => $teacher->qualification,
+            'gender'        => $teacher->gender,
+            'address'       => $teacher->address,
+            'phone'         => $teacher->phone,
+            'subject'       => $teacher->subject,
+        ];
+    }
+
+    private function buildEmployeeTokens($employee): array
+    {
+        return [
+            'employee_name'  => $employee->name,
+            'qualification'  => $employee->qualification,
+            'gender'         => $employee->gender,
+            'address'        => $employee->address,
+            'email'          => $employee->email,
+            'role'           => $employee->role,
+            'phone'          => $employee->phone,
+        ];
     }
 }
