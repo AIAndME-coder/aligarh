@@ -181,7 +181,7 @@ class NotificationsController extends Controller
                 break;
             case 'employees':
                 $employees = $employeeId === 'all'
-                    ? Employee::all()
+                    ? Employee::NotDeveloper()->get()
                     : Employee::where('id', $employeeId)->get();
 
                 foreach ($employees as $employee) {

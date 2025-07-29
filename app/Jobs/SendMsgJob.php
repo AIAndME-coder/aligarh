@@ -13,27 +13,36 @@ use Illuminate\Queue\SerializesModels;
 
 class SendMsgJob implements ShouldQueue
 {
-    public $type = 'mail';
+    public $emailSubject, $notificationsSettings;
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(public $email, public $sms_number, public $whatsapp_number, public $message)
     {
-       
+       $this->emailSubject = 'Email from '.config('systemInfo.general.name');
+       $this->notificationsSettings = collect([
+        'sms' => 1,
+        'mail' => 1,
+        'whatsapp' => 1,
+       ]);
     }
 
     public function handle()
     {
-        \Illuminate\Support\Facades\Log::info('Notification sent');
-        switch ($this->type) {
-            case 'mail':
-                SendMailJob::dispatch($this->email, $this->message);
-                break;
-            case 'sms':
-                SendSmsJob::dispatch($this->sms_number, $this->message);
-                break;
-            case 'whatsapp':
-                SendWhatsAppJob::dispatch($this->whatsapp_number, $this->message);
-                break;
+        if ($this->sendOn('mail'))
+        {
+            SendMailJob::dispatch($this->email, $this->message, $this->emailSubject);
         }
+        if ($this->sendOn('sms'))
+        {
+            SendSmsJob::dispatch($this->sms_number, $this->message);
+        }
+            // case 'whatsapp':
+            //     SendWhatsAppJob::dispatch($this->whatsapp_number, $this->message);
+            //     break;
+    }
+
+    private function sendOn($type)
+    {
+        return $this->notificationsSettings[$type];
     }
 }
