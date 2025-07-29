@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
 use App\SystemInvoice;
 use PDF;
-use Illuminate\Support\Facades\Mail;
+use App\NotificationsSetting;
 
 class SystemSettingController extends Controller
 {
 	public function GetSetting()
 	{
 		$data['system_invoices']	=	SystemInvoice::all();
+		$data['notifications_setting']	=	NotificationsSetting::all();
 		return view('admin.system_setting', $data);
 	}
 
@@ -112,18 +113,35 @@ class SystemSettingController extends Controller
 
 		$ConfigWriter->save();
 
-		// Mail::raw('This is a test email from your system configuration.', function ($message) {
-		//         $message->to(config('mail.from.address') ?? 'test@example.com')
-		//                 ->subject('Test Mail from System');
-		//     });
-		// dd(1);
-
 		return redirect('system-setting')->with([
 			'toastrmsg' => [
 				'type'  => 'success',
 				'title' => 'System Settings',
 				'msg'   => 'Settings Updated Successfully'
 			]
+		]);
+	}
+
+	public function NotificationSettings(Request $request, $id)
+	{
+		$notificationSetting = NotificationsSetting::findOrFail($id);
+
+		$field = $request->input('field');
+		$value = $request->input('value');
+
+		if (!in_array($field, ['mail', 'sms', 'whatsapp'])) {
+			return response()->json([
+				'message' => 'Invalid field name.'
+			], 422);
+		}
+
+		$notificationSetting->$field = $value;
+		$notificationSetting->save();
+
+		return response()->json([
+			'message' => 'Notification setting updated successfully.',
+			'field'   => $field,
+			'value'   => $value
 		]);
 	}
 }

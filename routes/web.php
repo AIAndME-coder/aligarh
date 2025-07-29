@@ -310,6 +310,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::post('/update', [SystemSettingController::class, 'UpdateSetting'])->name('.update');
         Route::get('/print-invoice-history', [SystemSettingController::class, 'PrintInvoiceHistory'])->name('.print.invoice.history');
         Route::post('/history', [SystemSettingController::class, 'History'])->name('.history');
+        Route::post('/notification-settings/{id}', [SystemSettingController::class, 'NotificationSettings'])->name('.notification.settings');
     });
 
     Route::prefix('fee-scenario')->name('fee-scenario')->group(function(){

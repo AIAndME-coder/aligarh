@@ -94,6 +94,12 @@
                                     <a data-toggle="tab" href="#tab-12"><span class="fa fa-list"></span> SMS Package Info</a>
                                 </li>
                             @endcan
+                            @can('system-setting.notification.settings')
+                                <li>
+                                    <a data-toggle="tab" href="#tab-13"><span class="fa fa-list"></span> Notification
+                                        Settings</a>
+                                </li>
+                            @endcan
                         </ul>
                         <div class="tab-content">
                             @can('system-setting.update')
@@ -501,7 +507,8 @@
                                                                                 Token</label>
                                                                             <div class="col-md-6">
                                                                                 <input type="text" name="sms_api_token"
-                                                                                    placeholder="API Token" class="form-control"
+                                                                                    placeholder="API Token"
+                                                                                    class="form-control"
                                                                                     value="{{ old('sms_api_token', config('systemInfo.sms.api_token')) }}" />
                                                                                 @if ($errors->has('sms_api_token'))
                                                                                     <span class="help-block">
@@ -534,7 +541,8 @@
 
                                                                         <div
                                                                             class="form-group{{ $errors->has('sms_sender') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Sender</label>
+                                                                            <label
+                                                                                class="col-md-2 control-label">Sender</label>
                                                                             <div class="col-md-6">
                                                                                 <input type="text" name="sms_sender"
                                                                                     placeholder="Sender Name"
@@ -580,8 +588,7 @@
                                                                             <label class="col-md-2 control-label">URL</label>
                                                                             <div class="col-md-6">
                                                                                 <input type="text" name="whatsapp_url"
-                                                                                    placeholder="URL"
-                                                                                    class="form-control"
+                                                                                    placeholder="URL" class="form-control"
                                                                                     value="{{ old('whatsapp_url', config('systemInfo.whatsapp.url')) }}" />
                                                                                 @if ($errors->has('whatsapp_url'))
                                                                                     <span class="help-block">
@@ -631,7 +638,8 @@
                                                                         </div>
                                                                         <div
                                                                             class="form-group{{ $errors->has('whatsapp_mgs_type') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Message Type</label>
+                                                                            <label class="col-md-2 control-label">Message
+                                                                                Type</label>
                                                                             <div class="col-md-6">
                                                                                 <select name="whatsapp_mgs_type"
                                                                                     class="form-control">
@@ -784,17 +792,44 @@
                                     </div>
                                 </div>
                             @endcan
+                            @can('system-setting.print.invoice.history')
+                                <div id="tab-13" class="tab-pane fade fade in ">
+                                    <div id= "app" class="panel-body">
+                                        <h2> Notifications Configuration</h2>
+                                        <div class="hr-line-dashed"></div>
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Mail</th>
+                                                    <th>SMS</th>
+                                                    <th>Whatsapp</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(notification, index) in notifications" :key="notification.id">
+                                                    <td>@{{ index + 1 }}</td>
+                                                    <td>@{{ formatName(notification.name) }}</td>
+                                                    <td><input type="checkbox" v-model="notification.mail"
+                                                            @change="updateSetting(notification, 'mail')"></td>
+                                                    <td><input type="checkbox" v-model="notification.sms"
+                                                            @change="updateSetting(notification, 'sms')"></td>
+                                                    <td><input type="checkbox" v-model="notification.whatsapp"
+                                                            @change="updateSetting(notification, 'whatsapp')"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endcan
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-
-
-
     </div>
-
 @endsection
 
 @section('script')
@@ -809,6 +844,8 @@
 
     <!-- Data picker -->
     <script src="{{ URL::to('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+    <script src="{{ URL::to('src/js/plugins/loadash-4.17.15/min.js') }}"></script>
 
     <script type="text/javascript">
         var tbl;
@@ -875,7 +912,27 @@
             el: "#app",
             data: {
                 system_invoices: {!! json_encode($system_invoices, JSON_NUMERIC_CHECK) !!},
+                notifications: {!! json_encode($notifications_setting) !!}
             },
-        })
+            methods: {
+                formatName(name) {
+                    return name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                },
+
+                updateSetting: _.debounce(function (notification, field) {
+                    axios.post(`/system-setting/notification-settings/${notification.id}`, {
+                        field: field,
+                        value: notification[field]
+                    })
+                    .then(response => {
+                        toastr.success("Setting updated successfully", "Notification");
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Update failed. Please try again.", "Error");
+                    });
+                }, 300) // 300ms debounce
+            }
+        });
     </script>
 @endsection
