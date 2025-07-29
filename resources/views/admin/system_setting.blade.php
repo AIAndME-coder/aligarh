@@ -9,7 +9,6 @@
 
     <style>
         .general-nav-pills-vertical {
-            border-right: 1px solid #ddd;
             list-style: none;
             padding-left: 0;
             /* Optional: removes default indent */
@@ -24,16 +23,10 @@
             margin-top: 2px;
         }
 
-        .general-hr-line-dashed {
-            border-top: 1px dashed #e7eaec;
-            background-color: #ffffff;
-            height: 1px;
-            margin: 20px 0;
-        }
 
         .general-nav-pills-vertical>li>a {
-            background: linear-gradient(135deg, #009486 0%, #1ab394 100%);
-            color: white;
+            background: white;
+            color: #555;
             display: block;
             padding: 10px 15px;
             border-radius: 4px;
@@ -42,7 +35,8 @@
 
         .general-nav-pills-vertical>li.active>a {
             font-weight: bold;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #009486 0%, #1ab394 100%);
+            color: white;
         }
 
         .general-nav-pills-vertical>li>a:hover {
@@ -106,591 +100,589 @@
                                 <div id="tab-10" class="tab-pane fade fade in active add-guardian">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <ul class="general-nav-pills-vertical">
-                                                                <li class="active">
-                                                                    <a href="#general" data-toggle="tab">
-                                                                        <i class="fa fa-cog"></i> General
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#smtp" data-toggle="tab">
-                                                                        <i class="fa fa-envelope"></i> SMTP
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#sms" data-toggle="tab">
-                                                                        <i class="fa fa-mobile"></i> SMS
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#whatsapp" data-toggle="tab">
-                                                                        <i class="fa fa-whatsapp"></i> WhatsApp
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="col-md-10">
-                                                            <form id="tchr_rgstr" method="POST"
-                                                                action="{{ URL('system-setting/update') }}"
-                                                                class="form-horizontal">
-                                                                {{ csrf_field() }}
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <ul class="general-nav-pills-vertical">
+                                                            <li class="active">
+                                                                <a href="#general" data-toggle="tab">
+                                                                    <i class="fa fa-cog"></i> General
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#smtp" data-toggle="tab">
+                                                                    <i class="fa fa-envelope"></i> SMTP
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#sms" data-toggle="tab">
+                                                                    <i class="fa fa-mobile"></i> SMS
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#whatsapp" data-toggle="tab">
+                                                                    <i class="fa fa-whatsapp"></i> WhatsApp
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <form id="tchr_rgstr" method="POST"
+                                                            action="{{ URL('system-setting/update') }}"
+                                                            class="form-horizontal">
+                                                            {{ csrf_field() }}
 
-                                                                <div class="tab-content">
-                                                                    <!-- General Tab -->
-                                                                    <div id="general" class="tab-pane fade in active">
-                                                                        {{-- <h2>General</h2>
-                                                                        <div class="hr-line-dashed"></div> --}}
+                                                            <div class="tab-content">
+                                                                <!-- General Tab -->
+                                                                <div id="general" class="tab-pane fade in active">
+                                                                    {{-- <h2>General</h2>
+                                                                    <div class="hr-line-dashed"></div> --}}
 
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">System
-                                                                                Name</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="name"
-                                                                                    placeholder="Name"
-                                                                                    value="{{ old('name', config('systemInfo.general.name')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('name'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('name') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">System
-                                                                                Title</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="title"
-                                                                                    placeholder="Title"
-                                                                                    value="{{ old('name', config('systemInfo.general.title')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('title'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('title') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">E-Mail</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="email"
-                                                                                    placeholder="E-Mail"
-                                                                                    value="{{ old('email', config('systemInfo.general.email')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('email'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('email') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                                                            <label
-                                                                                class="col-md-2 control-label">Address</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="address"
-                                                                                    placeholder="Address"
-                                                                                    value="{{ old('address', config('systemInfo.general.address')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('address'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('address') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('contact_no') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Contact
-                                                                                No</label>
-                                                                            <div class="col-md-6">
-                                                                                <div class="input-group m-b">
-                                                                                    <span class="input-group-addon">+92</span>
-                                                                                    <input type="text" name="contact_no"
-                                                                                        value="{{ old('contact_no', config('systemInfo.general.contact_no')) }}"
-                                                                                        placeholder="Contact No"
-                                                                                        class="form-control"
-                                                                                        data-mask="9999999999" />
-                                                                                </div>
-                                                                                @if ($errors->has('contact_no'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('contact_no') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('bank_name') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Bank</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="bank_name"
-                                                                                    placeholder="Name"
-                                                                                    value="{{ old('bank_name', config('systemInfo.general.bank.name')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('bank_name'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('bank_name') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('bank_address') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Bank
-                                                                                Address</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="bank_address"
-                                                                                    placeholder="Address"
-                                                                                    value="{{ old('bank_address', config('systemInfo.general.bank.address')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('bank_address'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('bank_address') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Bank
-                                                                                Account No</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="bank_account_no"
-                                                                                    placeholder="Account no"
-                                                                                    value="{{ old('bank_account_no', config('systemInfo.general.bank.account_no')) }}"
-                                                                                    class="form-control" />
-                                                                                @if ($errors->has('bank_account_no'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('bank_account_no') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('student_capacity') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Student
-                                                                                Capacity</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="student_capacity"
-                                                                                    value="{{ config('systemInfo.general.student_capacity') }}"
-                                                                                    readonly="true" class="form-control" />
-                                                                                @if ($errors->has('student_capacity'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('student_capacity') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group">
-                                                                            <label class="col-md-2 control-label">Available
-                                                                                SMS</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text"
-                                                                                    value="{{ config('systemInfo.general.available_sms') . ' till ' . config('systemInfo.general.sms_validity') }}"
-                                                                                    readonly="true" class="form-control" />
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="form-group">
-                                                                            <label class="col-md-2 control-label">Next
-                                                                                Chalan No</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text"
-                                                                                    value="{{ config('systemInfo.general.next_chalan_no') }}"
-                                                                                    readonly="true" class="form-control" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- SMTP Tab -->
-                                                                    <div id="smtp" class="tab-pane fade">
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('smtp_mailer') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">SMTP
-                                                                                Mailer</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="smtp_mailer"
-                                                                                    placeholder="smtp.gmail.com"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('smtp_mailer', config('systemInfo.smtp.mailer')) }}" />
-                                                                                @if ($errors->has('smtp_mailer'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('smtp_mailer') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('smtp_host') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">SMTP
-                                                                                Host</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="smtp_host"
-                                                                                    placeholder="smtp.gmail.com"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('smtp_host', config('systemInfo.smtp.host')) }}" />
-                                                                                @if ($errors->has('smtp_host'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('smtp_host') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('smtp_port') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">SMTP
-                                                                                Port</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="smtp_port"
-                                                                                    placeholder="587" class="form-control"
-                                                                                    value="{{ old('smtp_port', config('systemInfo.smtp.port')) }}" />
-                                                                                @if ($errors->has('smtp_port'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('smtp_port') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('smtp_username') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">SMTP
-                                                                                Username</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="smtp_username"
-                                                                                    placeholder="Username"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('smtp_username', config('systemInfo.smtp.username')) }}" />
-                                                                                @if ($errors->has('smtp_username'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('smtp_username') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('smtp_password') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">SMTP
-                                                                                Password</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="password" name="smtp_password"
-                                                                                    placeholder="Password"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('smtp_password', config('systemInfo.smtp.password')) }}" />
-                                                                                @if ($errors->has('smtp_password'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('smtp_password') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('smtp_encryption') ? ' has-error' : '' }}">
-                                                                            <label
-                                                                                class="col-md-2 control-label">Encryption</label>
-                                                                            <div class="col-md-6">
-                                                                                <select name="smtp_encryption"
-                                                                                    class="form-control">
-                                                                                    <option value="">Select Encryption
-                                                                                    </option>
-                                                                                    <option value="tls"
-                                                                                        {{ old('smtp_encryption', config('systemInfo.smtp.encryption')) == 'tls' ? 'selected' : '' }}>
-                                                                                        TLS</option>
-                                                                                    <option value="ssl"
-                                                                                        {{ old('smtp_encryption', config('systemInfo.smtp.encryption')) == 'ssl' ? 'selected' : '' }}>
-                                                                                        SSL</option>
-                                                                                </select>
-                                                                                @if ($errors->has('smtp_encryption'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('smtp_encryption') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- SMS Tab -->
-                                                                    <div id="sms" class="tab-pane fade">
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('sms_provider') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">SMS
-                                                                                Provider</label>
-                                                                            <div class="col-md-6">
-                                                                                <select name="sms_provider"
-                                                                                    class="form-control">
-                                                                                    <option value="">Select Provider
-                                                                                    </option>
-                                                                                    <option value="lifetimesms"
-                                                                                        {{ old('sms_provider', config('systemInfo.sms.provider')) == 'lifetimesms' ? 'selected' : '' }}>
-                                                                                        Lifetime SMS
-                                                                                    </option>
-                                                                                </select>
-                                                                                @if ($errors->has('sms_provider'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('sms_provider') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('sms_url') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">URL</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="sms_url"
-                                                                                    placeholder="API Key" class="form-control"
-                                                                                    value="{{ old('sms_url', config('systemInfo.sms.url')) }}" />
-                                                                                @if ($errors->has('sms_url'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('sms_url') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('sms_api_token') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">API
-                                                                                Token</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="sms_api_token"
-                                                                                    placeholder="API Token"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('sms_api_token', config('systemInfo.sms.api_token')) }}" />
-                                                                                @if ($errors->has('sms_api_token'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('sms_api_token') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('sms_api_secret') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">API
-                                                                                Secret</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="password" name="sms_api_secret"
-                                                                                    placeholder="API Secret"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('sms_api_secret', config('systemInfo.sms.api_secret')) }}" />
-                                                                                @if ($errors->has('sms_api_secret'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('sms_api_secret') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('sms_sender') ? ' has-error' : '' }}">
-                                                                            <label
-                                                                                class="col-md-2 control-label">Sender</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="sms_sender"
-                                                                                    placeholder="Sender Name"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('sms_sender', config('systemInfo.sms.sender')) }}" />
-                                                                                @if ($errors->has('sms_sender'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('sms_sender') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">System
+                                                                            Name</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="name"
+                                                                                placeholder="Name"
+                                                                                value="{{ old('name', config('systemInfo.general.name')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('name'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('name') }}</strong>
+                                                                                </span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
 
-                                                                    <!-- WhatsApp Tab -->
-                                                                    <div id="whatsapp" class="tab-pane fade">
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('whatsapp_provider') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">WhatsApp
-                                                                                Provider</label>
-                                                                            <div class="col-md-6">
-                                                                                <select name="whatsapp_provider"
-                                                                                    class="form-control">
-                                                                                    <option value="">Select Provider
-                                                                                    </option>
-                                                                                    <option value="whatsapp business"
-                                                                                        {{ old('whatsapp_provider', config('systemInfo.whatsapp.provider')) == 'whatsapp business' ? 'selected' : '' }}>
-                                                                                        WhatsApp Business</option>
-                                                                                </select>
-                                                                                @if ($errors->has('whatsapp_provider'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('whatsapp_provider') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">System
+                                                                            Title</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="title"
+                                                                                placeholder="Title"
+                                                                                value="{{ old('name', config('systemInfo.general.title')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('title'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('title') }}</strong>
+                                                                                </span>
+                                                                            @endif
                                                                         </div>
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('whatsapp_url') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">URL</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="whatsapp_url"
-                                                                                    placeholder="URL" class="form-control"
-                                                                                    value="{{ old('whatsapp_url', config('systemInfo.whatsapp.url')) }}" />
-                                                                                @if ($errors->has('whatsapp_url'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('whatsapp_url') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('whatsapp_token') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">API
-                                                                                Token</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="whatsapp_token"
-                                                                                    placeholder="API Token"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('whatsapp_token', config('systemInfo.whatsapp.api_token')) }}" />
-                                                                                @if ($errors->has('whatsapp_token'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('whatsapp_token') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
+                                                                    </div>
 
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('whatsapp_phone_id') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Phone Number
-                                                                                ID</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="whatsapp_phone_id"
-                                                                                    placeholder="Phone Number ID"
-                                                                                    class="form-control"
-                                                                                    value="{{ old('whatsapp_phone_id', config('systemInfo.whatsapp.phone_id')) }}" />
-                                                                                @if ($errors->has('whatsapp_phone_id'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('whatsapp_phone_id') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">E-Mail</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="email"
+                                                                                placeholder="E-Mail"
+                                                                                value="{{ old('email', config('systemInfo.general.email')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('email'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('email') }}</strong>
+                                                                                </span>
+                                                                            @endif
                                                                         </div>
-                                                                        <div
-                                                                            class="form-group{{ $errors->has('whatsapp_mgs_type') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Message
-                                                                                Type</label>
-                                                                            <div class="col-md-6">
-                                                                                <select name="whatsapp_mgs_type"
-                                                                                    class="form-control">
-                                                                                    <option value="">Select Type
-                                                                                    </option>
-                                                                                    <option value="text"
-                                                                                        {{ old('whatsapp_mgs_type', config('systemInfo.whatsapp.type')) == 'text' ? 'selected' : '' }}>
-                                                                                        Text</option>
-                                                                                </select>
-                                                                                @if ($errors->has('whatsapp_mgs_type'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('whatsapp_mgs_type') }}</strong>
-                                                                                    </span>
-                                                                                @endif
-                                                                            </div>
-                                                                        </div>
+                                                                    </div>
 
-                                                                        {{-- <div
-                                                                            class="form-group{{ $errors->has('whatsapp_webhook') ? ' has-error' : '' }}">
-                                                                            <label class="col-md-2 control-label">Webhook
-                                                                                URL</label>
-                                                                            <div class="col-md-6">
-                                                                                <input type="text" name="whatsapp_webhook"
-                                                                                    placeholder="Webhook URL"
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
+                                                                        <label
+                                                                            class="col-md-2 control-label">Address</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="address"
+                                                                                placeholder="Address"
+                                                                                value="{{ old('address', config('systemInfo.general.address')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('address'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('address') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('contact_no') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Contact
+                                                                            No</label>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group m-b">
+                                                                                <span class="input-group-addon">+92</span>
+                                                                                <input type="text" name="contact_no"
+                                                                                    value="{{ old('contact_no', config('systemInfo.general.contact_no')) }}"
+                                                                                    placeholder="Contact No"
                                                                                     class="form-control"
-                                                                                    value="{{ old('whatsapp_webhook', config('systemInfo.general.whatsapp.webhook_url')) }}" />
-                                                                                @if ($errors->has('whatsapp_webhook'))
-                                                                                    <span class="help-block">
-                                                                                        <strong><span
-                                                                                                class="fa fa-exclamation-triangle"></span>
-                                                                                            {{ $errors->first('whatsapp_webhook') }}</strong>
-                                                                                    </span>
-                                                                                @endif
+                                                                                    data-mask="9999999999" />
                                                                             </div>
-                                                                        </div> --}}
+                                                                            @if ($errors->has('contact_no'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('contact_no') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_name') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Bank</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="bank_name"
+                                                                                placeholder="Name"
+                                                                                value="{{ old('bank_name', config('systemInfo.general.bank.name')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('bank_name'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('bank_name') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_address') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Bank
+                                                                            Address</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="bank_address"
+                                                                                placeholder="Address"
+                                                                                value="{{ old('bank_address', config('systemInfo.general.bank.address')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('bank_address'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('bank_address') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Bank
+                                                                            Account No</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="bank_account_no"
+                                                                                placeholder="Account no"
+                                                                                value="{{ old('bank_account_no', config('systemInfo.general.bank.account_no')) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('bank_account_no'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('bank_account_no') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('student_capacity') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Student
+                                                                            Capacity</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="student_capacity"
+                                                                                value="{{ config('systemInfo.general.student_capacity') }}"
+                                                                                readonly="true" class="form-control" />
+                                                                            @if ($errors->has('student_capacity'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('student_capacity') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label">Available
+                                                                            SMS</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text"
+                                                                                value="{{ config('systemInfo.general.available_sms') . ' till ' . config('systemInfo.general.sms_validity') }}"
+                                                                                readonly="true" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label">Next
+                                                                            Chalan No</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text"
+                                                                                value="{{ config('systemInfo.general.next_chalan_no') }}"
+                                                                                readonly="true" class="form-control" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- SMTP Tab -->
+                                                                <div id="smtp" class="tab-pane fade">
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('smtp_mailer') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">SMTP
+                                                                            Mailer</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="smtp_mailer"
+                                                                                placeholder="smtp.gmail.com"
+                                                                                class="form-control"
+                                                                                value="{{ old('smtp_mailer', config('systemInfo.smtp.mailer')) }}" />
+                                                                            @if ($errors->has('smtp_mailer'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('smtp_mailer') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('smtp_host') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">SMTP
+                                                                            Host</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="smtp_host"
+                                                                                placeholder="smtp.gmail.com"
+                                                                                class="form-control"
+                                                                                value="{{ old('smtp_host', config('systemInfo.smtp.host')) }}" />
+                                                                            @if ($errors->has('smtp_host'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('smtp_host') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('smtp_port') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">SMTP
+                                                                            Port</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="smtp_port"
+                                                                                placeholder="587" class="form-control"
+                                                                                value="{{ old('smtp_port', config('systemInfo.smtp.port')) }}" />
+                                                                            @if ($errors->has('smtp_port'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('smtp_port') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('smtp_username') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">SMTP
+                                                                            Username</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="smtp_username"
+                                                                                placeholder="Username"
+                                                                                class="form-control"
+                                                                                value="{{ old('smtp_username', config('systemInfo.smtp.username')) }}" />
+                                                                            @if ($errors->has('smtp_username'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('smtp_username') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('smtp_password') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">SMTP
+                                                                            Password</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="password" name="smtp_password"
+                                                                                placeholder="Password"
+                                                                                class="form-control"
+                                                                                value="{{ old('smtp_password', config('systemInfo.smtp.password')) }}" />
+                                                                            @if ($errors->has('smtp_password'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('smtp_password') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('smtp_encryption') ? ' has-error' : '' }}">
+                                                                        <label
+                                                                            class="col-md-2 control-label">Encryption</label>
+                                                                        <div class="col-md-6">
+                                                                            <select name="smtp_encryption"
+                                                                                class="form-control">
+                                                                                <option value="">Select Encryption
+                                                                                </option>
+                                                                                <option value="tls"
+                                                                                    {{ old('smtp_encryption', config('systemInfo.smtp.encryption')) == 'tls' ? 'selected' : '' }}>
+                                                                                    TLS</option>
+                                                                                <option value="ssl"
+                                                                                    {{ old('smtp_encryption', config('systemInfo.smtp.encryption')) == 'ssl' ? 'selected' : '' }}>
+                                                                                    SSL</option>
+                                                                            </select>
+                                                                            @if ($errors->has('smtp_encryption'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('smtp_encryption') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- SMS Tab -->
+                                                                <div id="sms" class="tab-pane fade">
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('sms_provider') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">SMS
+                                                                            Provider</label>
+                                                                        <div class="col-md-6">
+                                                                            <select name="sms_provider"
+                                                                                class="form-control">
+                                                                                <option value="">Select Provider
+                                                                                </option>
+                                                                                <option value="lifetimesms"
+                                                                                    {{ old('sms_provider', config('systemInfo.sms.provider')) == 'lifetimesms' ? 'selected' : '' }}>
+                                                                                    Lifetime SMS
+                                                                                </option>
+                                                                            </select>
+                                                                            @if ($errors->has('sms_provider'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('sms_provider') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('sms_url') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">URL</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="sms_url"
+                                                                                placeholder="API Key" class="form-control"
+                                                                                value="{{ old('sms_url', config('systemInfo.sms.url')) }}" />
+                                                                            @if ($errors->has('sms_url'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('sms_url') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('sms_api_token') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">API
+                                                                            Token</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="sms_api_token"
+                                                                                placeholder="API Token"
+                                                                                class="form-control"
+                                                                                value="{{ old('sms_api_token', config('systemInfo.sms.api_token')) }}" />
+                                                                            @if ($errors->has('sms_api_token'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('sms_api_token') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('sms_api_secret') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">API
+                                                                            Secret</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="password" name="sms_api_secret"
+                                                                                placeholder="API Secret"
+                                                                                class="form-control"
+                                                                                value="{{ old('sms_api_secret', config('systemInfo.sms.api_secret')) }}" />
+                                                                            @if ($errors->has('sms_api_secret'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('sms_api_secret') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('sms_sender') ? ' has-error' : '' }}">
+                                                                        <label
+                                                                            class="col-md-2 control-label">Sender</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="sms_sender"
+                                                                                placeholder="Sender Name"
+                                                                                class="form-control"
+                                                                                value="{{ old('sms_sender', config('systemInfo.sms.sender')) }}" />
+                                                                            @if ($errors->has('sms_sender'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('sms_sender') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
-                                                                <!-- Submit Button -->
-                                                                <div class="form-group">
-                                                                    <div class="col-md-offset-2 col-md-6">
-                                                                        <button class="btn btn-primary" type="submit">
-                                                                            <span class="glyphicon glyphicon-save"></span>
-                                                                            Update
-                                                                        </button>
+                                                                <!-- WhatsApp Tab -->
+                                                                <div id="whatsapp" class="tab-pane fade">
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('whatsapp_provider') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">WhatsApp
+                                                                            Provider</label>
+                                                                        <div class="col-md-6">
+                                                                            <select name="whatsapp_provider"
+                                                                                class="form-control">
+                                                                                <option value="">Select Provider
+                                                                                </option>
+                                                                                <option value="whatsapp business"
+                                                                                    {{ old('whatsapp_provider', config('systemInfo.whatsapp.provider')) == 'whatsapp business' ? 'selected' : '' }}>
+                                                                                    WhatsApp Business</option>
+                                                                            </select>
+                                                                            @if ($errors->has('whatsapp_provider'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('whatsapp_provider') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
                                                                     </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('whatsapp_url') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">URL</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="whatsapp_url"
+                                                                                placeholder="URL" class="form-control"
+                                                                                value="{{ old('whatsapp_url', config('systemInfo.whatsapp.url')) }}" />
+                                                                            @if ($errors->has('whatsapp_url'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('whatsapp_url') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('whatsapp_token') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">API
+                                                                            Token</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="whatsapp_token"
+                                                                                placeholder="API Token"
+                                                                                class="form-control"
+                                                                                value="{{ old('whatsapp_token', config('systemInfo.whatsapp.api_token')) }}" />
+                                                                            @if ($errors->has('whatsapp_token'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('whatsapp_token') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('whatsapp_phone_id') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Phone Number
+                                                                            ID</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="whatsapp_phone_id"
+                                                                                placeholder="Phone Number ID"
+                                                                                class="form-control"
+                                                                                value="{{ old('whatsapp_phone_id', config('systemInfo.whatsapp.phone_id')) }}" />
+                                                                            @if ($errors->has('whatsapp_phone_id'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('whatsapp_phone_id') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('whatsapp_mgs_type') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Message
+                                                                            Type</label>
+                                                                        <div class="col-md-6">
+                                                                            <select name="whatsapp_mgs_type"
+                                                                                class="form-control">
+                                                                                <option value="">Select Type
+                                                                                </option>
+                                                                                <option value="text"
+                                                                                    {{ old('whatsapp_mgs_type', config('systemInfo.whatsapp.type')) == 'text' ? 'selected' : '' }}>
+                                                                                    Text</option>
+                                                                            </select>
+                                                                            @if ($errors->has('whatsapp_mgs_type'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('whatsapp_mgs_type') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {{-- <div
+                                                                        class="form-group{{ $errors->has('whatsapp_webhook') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Webhook
+                                                                            URL</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="whatsapp_webhook"
+                                                                                placeholder="Webhook URL"
+                                                                                class="form-control"
+                                                                                value="{{ old('whatsapp_webhook', config('systemInfo.general.whatsapp.webhook_url')) }}" />
+                                                                            @if ($errors->has('whatsapp_webhook'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('whatsapp_webhook') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div> --}}
                                                                 </div>
-                                                            </form>
-                                                        </div>
+                                                            </div>
+
+                                                            <!-- Submit Button -->
+                                                            <div class="form-group">
+                                                                <div class="col-md-offset-2 col-md-6">
+                                                                    <button class="btn btn-primary" type="submit">
+                                                                        <span class="glyphicon glyphicon-save"></span>
+                                                                        Update
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
