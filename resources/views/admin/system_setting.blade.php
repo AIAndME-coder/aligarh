@@ -3,7 +3,6 @@
 @section('title', 'System Settings |')
 
 @section('head')
-    <!-- HEAD -->
     <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 
@@ -11,7 +10,6 @@
         .general-nav-pills-vertical {
             list-style: none;
             padding-left: 0;
-            /* Optional: removes default indent */
             margin: 0;
         }
 
@@ -23,7 +21,6 @@
             margin-top: 2px;
         }
 
-
         .general-nav-pills-vertical>li>a {
             background: white;
             color: #555;
@@ -31,17 +28,29 @@
             padding: 10px 15px;
             border-radius: 4px;
             text-decoration: none;
-        }
-
-        .general-nav-pills-vertical>li.active>a {
-            font-weight: bold;
-            background: linear-gradient(135deg, #009486 0%, #1ab394 100%);
-            color: white;
+            position: relative;
         }
 
         .general-nav-pills-vertical>li>a:hover {
             opacity: 0.9;
             text-decoration: none;
+        }
+
+        .general-nav-pills-vertical>li.active>a {
+            font-weight: bold;
+            background: #009486;
+            color: white;
+        }
+
+        .general-nav-pills-vertical>li.active>a::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -10px;
+            transform: translateY(-50%);
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid #009486;
         }
     </style>
 @endsection
@@ -128,8 +137,7 @@
                                                     </div>
                                                     <div class="col-md-10">
                                                         <form id="tchr_rgstr" method="POST"
-                                                            action="{{ URL('system-setting/update') }}"
-                                                            class="form-horizontal">
+                                                            action="{{ URL('system-setting/update') }}" class="form-horizontal">
                                                             {{ csrf_field() }}
 
                                                             <div class="tab-content">
@@ -196,8 +204,7 @@
 
                                                                     <div
                                                                         class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                                                        <label
-                                                                            class="col-md-2 control-label">Address</label>
+                                                                        <label class="col-md-2 control-label">Address</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="address"
                                                                                 placeholder="Address"
@@ -393,8 +400,7 @@
                                                                             Username</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="smtp_username"
-                                                                                placeholder="Username"
-                                                                                class="form-control"
+                                                                                placeholder="Username" class="form-control"
                                                                                 value="{{ old('smtp_username', config('systemInfo.smtp.username')) }}" />
                                                                             @if ($errors->has('smtp_username'))
                                                                                 <span class="help-block">
@@ -412,8 +418,7 @@
                                                                             Password</label>
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="smtp_password"
-                                                                                placeholder="Password"
-                                                                                class="form-control"
+                                                                                placeholder="Password" class="form-control"
                                                                                 value="{{ old('smtp_password', config('systemInfo.smtp.password')) }}" />
                                                                             @if ($errors->has('smtp_password'))
                                                                                 <span class="help-block">
@@ -458,8 +463,7 @@
                                                                         <label class="col-md-2 control-label">SMS
                                                                             Provider</label>
                                                                         <div class="col-md-6">
-                                                                            <select name="sms_provider"
-                                                                                class="form-control">
+                                                                            <select name="sms_provider" class="form-control">
                                                                                 <option value="">Select Provider
                                                                                 </option>
                                                                                 <option value="lifetimesms"
@@ -500,8 +504,7 @@
                                                                             Token</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_api_token"
-                                                                                placeholder="API Token"
-                                                                                class="form-control"
+                                                                                placeholder="API Token" class="form-control"
                                                                                 value="{{ old('sms_api_token', config('systemInfo.sms.api_token')) }}" />
                                                                             @if ($errors->has('sms_api_token'))
                                                                                 <span class="help-block">
@@ -519,8 +522,7 @@
                                                                             Secret</label>
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="sms_api_secret"
-                                                                                placeholder="API Secret"
-                                                                                class="form-control"
+                                                                                placeholder="API Secret" class="form-control"
                                                                                 value="{{ old('sms_api_secret', config('systemInfo.sms.api_secret')) }}" />
                                                                             @if ($errors->has('sms_api_secret'))
                                                                                 <span class="help-block">
@@ -534,12 +536,10 @@
 
                                                                     <div
                                                                         class="form-group{{ $errors->has('sms_sender') ? ' has-error' : '' }}">
-                                                                        <label
-                                                                            class="col-md-2 control-label">Sender</label>
+                                                                        <label class="col-md-2 control-label">Sender</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_sender"
-                                                                                placeholder="Sender Name"
-                                                                                class="form-control"
+                                                                                placeholder="Sender Name" class="form-control"
                                                                                 value="{{ old('sms_sender', config('systemInfo.sms.sender')) }}" />
                                                                             @if ($errors->has('sms_sender'))
                                                                                 <span class="help-block">
@@ -598,8 +598,7 @@
                                                                             Token</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="whatsapp_token"
-                                                                                placeholder="API Token"
-                                                                                class="form-control"
+                                                                                placeholder="API Token" class="form-control"
                                                                                 value="{{ old('whatsapp_token', config('systemInfo.whatsapp.api_token')) }}" />
                                                                             @if ($errors->has('whatsapp_token'))
                                                                                 <span class="help-block">
@@ -911,18 +910,18 @@
                     return name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
                 },
 
-                updateSetting: _.debounce(function (notification, field) {
+                updateSetting: _.debounce(function(notification, field) {
                     axios.post(`/system-setting/notification-settings/${notification.id}`, {
-                        field: field,
-                        value: notification[field]
-                    })
-                    .then(response => {
-                        toastr.success("Setting updated successfully", "Notification");
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        toastr.error("Update failed. Please try again.", "Error");
-                    });
+                            field: field,
+                            value: notification[field]
+                        })
+                        .then(response => {
+                            toastr.success("Setting updated successfully", "Notification");
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            toastr.error("Update failed. Please try again.", "Error");
+                        });
                 }, 300) // 300ms debounce
             }
         });
