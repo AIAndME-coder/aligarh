@@ -24,7 +24,12 @@ class TeacherAttendanceCtrl extends Controller
 	        'date'  	=>  'required',
     	]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'))->toDateString();
-		$data['teachers']	=	Teacher::all();
+		$data['teachers'] = Teacher::with([
+			'leaveOnDate' => fn($query) => $query
+				->where('from_date', '<=', $dbdate)
+				->where('to_date', '>=', $dbdate)
+		])->get();
+
 		foreach ($data['teachers'] as $k => $row) {
 			$data['attendance'][$row->id] =	TeacherAttendance::select('id as attendance_id', 'status')->where(['teacher_id' => $row->id, 'date' => $dbdate])->first();
 		}
@@ -38,7 +43,8 @@ class TeacherAttendanceCtrl extends Controller
 			'date'  	=>  'required',
 		]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'))->toDateString();
-		foreach($request->input('teacher_id') as $teacher_id) {
+		$leave_ids = $request->input('teacher_leave');
+		foreach($request->input('teacher_id') as $index => $teacher_id) {
 			$TeacherAttendance = new TeacherAttendance;
 			$att = $TeacherAttendance->where([
 												'date' => $dbdate,
@@ -51,6 +57,7 @@ class TeacherAttendanceCtrl extends Controller
 				$TeacherAttendance->date = $dbdate;
 				$TeacherAttendance->status = ($request->input('attendance'.$teacher_id) !== null)? 1 : 0;
 				$TeacherAttendance->user_id	=	Auth::user()->id;
+        		$TeacherAttendance->leave_id = $leave_ids[$index] ?? null;
 				$TeacherAttendance->save();
 
 			} else {

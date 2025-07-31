@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\AcademicSession;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\HasLeave;
 
 class Student extends Model {
+	use HasLeave;
 
 /*
 	protected static function boot() {

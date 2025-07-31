@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Traits\HasLeave;
 
 class Employee extends Model
 {
+	use HasLeave;
 
 
 	public function User()

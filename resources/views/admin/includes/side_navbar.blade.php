@@ -101,26 +101,31 @@
                         class="nav-label"></span>Class Routine</a>
             </li>
             @endcan
-            @canany(['student-attendance.make.post', 'teacher-attendance.make.post', 'employee-attendance.make.post'])
-                <li class="{{ isActiveRoute(['student-attendance.*','teacher-attendance.*','employee-attendance.*']) }}">
+            @canany(['student-attendance.make.post', 'teacher-attendance.make.post', 'employee-attendance.make.post', 'attendance-leave.index'])
+                <li class="{{ isActiveRoute(['student-attendance.*','teacher-attendance.*','employee-attendance.*', 'attendance-leave.index']) }}">
                     <a><i class="fa fa-bar-chart"></i> <span class="nav-label"></span><span
                             class="fa arrow"></span>Daily Attendance</a>
                     <ul class="nav nav-second-level collapse">
                         @can('student-attendance.make.post')
-                        <li class="{{ isActiveRoute('student-attendance.*') }}" data-show="">
-                            <a href="{{ route('student-attendance.index') }}">Student Attendance</a>
-                        </li>
+                            <li class="{{ isActiveRoute('student-attendance.*') }}">
+                                <a href="{{ route('student-attendance.index') }}">Student Attendance</a>
+                            </li>
                         @endcan
                         @can('teacher-attendance.make.post')
-                        <li class="{{ isActiveRoute('teacher-attendance.*') }}" data-show="">
-                            <a href="{{ route('teacher-attendance.index') }}">Teacher Attendance</a>
-                        </li>
+                            <li class="{{ isActiveRoute('teacher-attendance.*') }}">
+                                <a href="{{ route('teacher-attendance.index') }}">Teacher Attendance</a>
+                            </li>
                         @endcan
                         @can('employee-attendance.make.post')
-                        <li class="{{ isActiveRoute('employee-attendance.*') }}" data-show="">
-                            <a href="{{ route('employee-attendance.index') }}">Employee Attendance</a>
-                        </li>
+                            <li class="{{ isActiveRoute('employee-attendance.*') }}">
+                                <a href="{{ route('employee-attendance.index') }}">Employee Attendance</a>
+                            </li>
                         @endcan
+                        {{-- @can('employee-attendance.make.post') --}}
+                            <li class="{{ isActiveRoute('attendance-leave.index') }}">
+                                <a href="{{ route('attendance-leave.index') }}">Attendance Leave</a>
+                            </li>
+                        {{-- @endcan --}}
                     </ul>
                 </li>
             @endcanany

@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AcademicSessionController;
 use App\Http\Controllers\Admin\NotificationsController;
+use App\Http\Controllers\Admin\AttendanceLeaveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +181,11 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/make', [EmployeeAttendanceCtrl::class, 'MakeAttendance'])->name('.make');
         Route::get('/report', [EmployeeAttendanceCtrl::class, 'AttendanceReport'])->name('.report');
         Route::post('/make', [EmployeeAttendanceCtrl::class, 'UpdateAttendance'])->name('.make.post');
+    });
+
+    Route::prefix('attendance-leave')->name('attendance-leave')->group(function(){
+        Route::get('/', [AttendanceLeaveController::class, 'Index'])->name('.index');
+        Route::post('/make', [AttendanceLeaveController::class, 'MakeLeave'])->name('.make');
     });
 
     Route::prefix('manage-subjects')->name('manage-subjects')->group(function(){

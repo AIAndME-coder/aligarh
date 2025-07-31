@@ -9,7 +9,7 @@ class TeacherAttendance extends Model
 {
 	use ModelHeper;
 	
-	protected $fillable = ['date', 'teacher_id', 'status'];
+	protected $fillable = ['date', 'teacher_id', 'leave_id', 'status'];
 
 	protected $casts = [
 		'status'		=>	'boolean'
