@@ -22,22 +22,32 @@ class AttendanceLeaveController extends Controller
 	{
 		if ($request->ajax()) {
 			return DataTables::eloquent(
-				AttendanceLeave::select('person_type', 'from_date', 'to_date', 'remarks')
+				AttendanceLeave::with('person')->select('person_type', 'person_id' , 'from_date', 'to_date', 'remarks')
 			)
+			->addColumn('name', function ($row) {
+				$person = $row->person;
+				return $person?->name ?? '-';
+			})
 			->editColumn('person_type', function ($row) {
 				return class_basename($row->person_type);
 			})
 			->make(true);
 		}
 
-		$data['classes'] = Classe::select('id', 'name')->get();
+		
+		$data['classStudents'] = Classe::with('Students')->get()->map(fn($classe) => [
+			'id' => $classe->id,
+			'class_name' => $classe->name,
+			'students' => $classe->students->map(fn($student) => [
+				'id' => $student->id,
+				'name' => $student->name,
+				'gr_no' => $student->gr_no
+			])
+		]);
 		$data['teachers'] = Teacher::select('id', 'name')->get();
 		$data['employees'] = Employee::NotDeveloper()->select('id', 'name')->get();
-		$data['students'] = Student::select('id', 'name', 'class_id', 'session_id')->get();
-		foreach ($data['classes'] as $key => $class) {
-			$data['sections']['class_' . $class->id] = Section::select('name', 'id')->where(['class_id' => $class->id])->get();
-		}
 
+		
 		return view('admin.attendance_leave', $data);
 	}
 

@@ -59,7 +59,7 @@ class StudentAttendanceCtrl extends Controller
 			]);
 		}
 
-		$data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+		$data['students'] = Student::withLeaveOn($dbdate->toDateString())->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
 									->where([
 										'academic_session_history.class_id' => $request->input('class'),
@@ -89,8 +89,10 @@ class StudentAttendanceCtrl extends Controller
 			'date'  	=>  'required',
 		]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'))->toDateString();
+		$leave_ids = $request->input('student_leave');
+
 		if($request->has('student_id')){
-			foreach($request->input('student_id') as $student_id) {
+			foreach($request->input('student_id') as $index =>  $student_id) {
 				StudentAttendance::updateOrCreate(
 					[
 						'date'		 => $dbdate,
@@ -98,6 +100,7 @@ class StudentAttendanceCtrl extends Controller
 					],
 					[
 						'status'	=>	($request->input('attendance'.$student_id) !== null)? 1 : 0,
+						'leave_id'	=>	$leave_ids[$index] ?? null,
 					]
 				);
 			}

@@ -9,10 +9,6 @@
     <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
-    <script type="text/javascript">
-        var sections = {!! json_encode($sections ?? '') !!};
-        var students = {!! json_encode($students ?? '') !!};
-    </script>
     <style type="text/css">
         .print-table {
             width: 100%;
@@ -78,6 +74,7 @@
                                         <table class="table table-striped table-bordered table-hover dataTables-role">
                                             <thead>
                                                 <tr>
+                                                    <th>Name</th>
                                                     <th>Type</th>
                                                     <th>From Date</th>
                                                     <th>To Date</th>
@@ -115,56 +112,31 @@
                                                 </div>
                                             </div>
                                             <div v-show="type == 'student'"
-                                                class="form-group{{ $errors->has('class') ? ' has-error' : '' }}">
-                                                <label class="col-md-2 control-label"> Class </label>
+                                                class="form-group{{ $errors->has('person_id') ? ' has-error' : '' }}">
+                                                <label class="col-md-2 control-label"> Student </label>
                                                 <div class="col-md-6">
-                                                    <select class="form-control select2" name="class"
+                                                    <select class="form-control select2" name="person_id"
                                                         :required="type === 'student'">
-                                                        <option value="" disabled selected>Class</option>
-                                                        @foreach ($classes as $class)
-                                                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                                        <option value="" disabled selected>-- Select Student --</option>
+                                                        @foreach ($classStudents as $classStudent)
+                                                            <optgroup label="{{ $classStudent['class_name'] }}">
+                                                                @foreach ($classStudent['students'] as $student)
+                                                                    <option value="{{ $student['id'] }}">
+                                                                        {{ $student['name'] }} | {{ $student['gr_no'] }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </optgroup>
                                                         @endforeach
                                                     </select>
-                                                    @if ($errors->has('class'))
+                                                    @if ($errors->has('person_id'))
                                                         <span class="help-block">
                                                             <strong><span class="fa fa-exclamation-triangle"></span>
-                                                                {{ $errors->first('class') }}</strong>
+                                                                {{ $errors->first('person_id') }}</strong>
                                                         </span>
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div v-show="type == 'student'"
-                                                class="form-group{{ $errors->has('section') ? ' has-error' : '' }}">
-                                                <label class="col-md-2 control-label">Section</label>
-                                                <div class="col-md-6">
-                                                    <select class="form-control select2" name="section">
-                                                        <option value="" :required="type === 'student'" disabled
-                                                            selected>Select Section</option>
-                                                    </select>
-                                                    @if ($errors->has('section'))
-                                                        <span class="help-block">
-                                                            <strong><span class="fa fa-exclamation-triangle"></span>
-                                                                {{ $errors->first('section') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            <div v-show="type == 'student'"
-                                                class="form-group{{ $errors->has('class') ? ' has-error' : '' }}">
-                                                <label class="col-md-2 control-label"> Students </label>
-                                                <div class="col-md-6">
-                                                    <select class="form-control select2" name="student"
-                                                        :required="type === 'student'">
-                                                        <option value="" disabled selected>--Select--</option>
-                                                    </select>
-                                                    @if ($errors->has('student'))
-                                                        <span class="help-block">
-                                                            <strong><span class="fa fa-exclamation-triangle"></span>
-                                                                {{ $errors->first('class') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
+
 
                                             <div v-if="type == 'teacher'"
                                                 class="form-group{{ $errors->has('person_id') ? ' has-error' : '' }}">
@@ -309,7 +281,7 @@
 
         $(document).ready(function() {
 
-            
+
 
 
             tbl = $('.dataTables-role').DataTable({
@@ -329,7 +301,7 @@
                             .css('font-size', 'inherit');
                     },
                     exportOptions: {
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3, 4]
                     },
                     title: "roles | {{ config('systemInfo.general.title') }}",
                 }],
@@ -337,6 +309,9 @@
                 serverSide: true,
                 ajax: '{{ URL('attendance-leave') }}',
                 columns: [{
+                        data: 'name'
+                    },
+                    {
                         data: 'person_type'
                     },
                     {
@@ -360,52 +335,6 @@
                 $(this).tooltip('show');
             });
 
-            // $('[name="class"]').on('change', function(){
-            //     console.log(454);
-            //     clsid = $(this).val();
-            //     $('[name="class"]').val(clsid);
-            //     $('[name="section"]').html('<option></option>');
-            //     if(sections['class_'+clsid].length > 0 && clsid > 0){          
-            //         $.each(sections['class_'+clsid], function(k, v){
-            //         $('[name="section"]').append('<option value="'+v['id']+'">'+v['name']+'</option>');
-            //         });
-            //     }
-            // });
-
-            $('[name="class"]').on('change', function() {
-                var clsid = $(this).val();
-                $('[name="class"]').val(clsid);
-                $('[name="section"]').html('<option value="" disabled selected>Select Section</option>');
-                $('[name="student"]').html(
-                    '<option value="" disabled selected>--Select--</option>'
-                    ); // Clear students on class change
-
-                if (sections['class_' + clsid] && sections['class_' + clsid].length > 0) {
-                    $.each(sections['class_' + clsid], function(k, v) {
-                        $('[name="section"]').append('<option value="' + v['id'] + '">' + v[
-                            'name'] + '</option>');
-                    });
-                }
-            });
-
-            // When section is selected, filter and show students
-            $('[name="section"]').on('change', function() {
-                var clsid = $('[name="class"]').val();
-                var sectionId = $(this).val();
-
-                $('[name="student"]').html(
-                    '<option value="" disabled selected>--Select--</option>'); // Clear students first
-
-                if (clsid && sectionId) {
-                    $.each(students, function(k, v) {
-                        if (v.class_id == clsid && v.section_id == sectionId) {
-                            $('[name="student"]').append('<option value="' + v.id + '">' + v.name +
-                                '</option>');
-                        }
-                    });
-                }
-            });
-
             $('#to_datetimepicker').datetimepicker({
                 format: 'DD/MM/YYYY',
                 defaultDate: moment(),
@@ -426,18 +355,6 @@
                     }
                 }
             });
-
-            @if (COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
-                $('#mk_att_frm [name="class"]').val("{{ old('class') }}");
-                $('[name="class"]').change();
-                $('[name="section"]').val('{{ old('section') }}');
-            @elseif (isset($input) && $input !== null)
-                $('#mk_att_frm [name="class"]').val("{{ $input['class'] }}");
-                $('[name="class"]').change();
-                $('[name="section"]').val("{{ $input['section'] }}");
-
-                $('#mk_att_frm [name="date"]').val("{{ $input['date'] }}");
-            @endif
 
             @if (collect($errors)->count() >= 1 && !$errors->has('toastrmsg'))
                 $('a[href="#tab-10"]').tab('show');

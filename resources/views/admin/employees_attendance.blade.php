@@ -108,9 +108,13 @@
                                               <td>{{ $employee->name }}</td>
                                               <td>
                                                 <input type="hidden" name="employee_id[{{ $employee->id }}]" value="{{ $employee->id }}">
+                                                <input type="hidden" name="employee_leave[{{ $employee->id }}]" value="{{ $employee->leaveOnDate->id??null }}">
                                                 <div class="checkbox checkbox-success">
                                                   <input id="checkbox{{ $employee->id }}" class="selectAtt" type="checkbox" name="attendance{{ $employee->id }}" value="1" {{ (isset($attendance[$employee->id]->status) && $attendance[$employee->id]->status)? 'checked' : '' }} />
                                                   <label for="checkbox{{ $employee->id }}">
+                                                    @if($employee->leaveOnDate ?? false)
+                                                        <span title="Leave" style="color:rgb(243, 8, 0)"><b>L</b></span>
+                                                    @endif
                                                   </label>
                                                 </div>
                                               </td>

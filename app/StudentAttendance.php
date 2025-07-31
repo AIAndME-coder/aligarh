@@ -16,7 +16,7 @@ class StudentAttendance extends Model
 {
 	use ModelHeper;
 
-	protected $fillable = ['date', 'student_id', 'status'];
+	protected $fillable = ['date', 'student_id', 'leave_id', 'status'];
 
 	protected $casts = [
 		'status'		=>	'boolean'

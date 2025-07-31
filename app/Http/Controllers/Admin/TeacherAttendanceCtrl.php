@@ -24,11 +24,7 @@ class TeacherAttendanceCtrl extends Controller
 	        'date'  	=>  'required',
     	]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'))->toDateString();
-		$data['teachers'] = Teacher::with([
-			'leaveOnDate' => fn($query) => $query
-				->where('from_date', '<=', $dbdate)
-				->where('to_date', '>=', $dbdate)
-		])->get();
+		$data['teachers'] = Teacher::withLeaveOn($dbdate)->get();
 
 		foreach ($data['teachers'] as $k => $row) {
 			$data['attendance'][$row->id] =	TeacherAttendance::select('id as attendance_id', 'status')->where(['teacher_id' => $row->id, 'date' => $dbdate])->first();

@@ -22,7 +22,7 @@ class EmployeeAttendanceCtrl extends Controller
 	        'date'  	=>  'required',
     	]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'))->toDateString();
-		$data['employees']	=	Employee::all();
+		$data['employees']	=	Employee::withLeaveOn($dbdate)->NotDeveloper()->get();
 		foreach ($data['employees'] as $k => $row) {
 			$data['attendance'][$row->id] =	EmployeeAttendance::select('id as attendance_id', 'status')->where(['employee_id' => $row->id, 'date' => $dbdate])->first();
 		}
@@ -36,7 +36,9 @@ class EmployeeAttendanceCtrl extends Controller
 			'date'  	=>  'required',
 		]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'))->toDateString();
-		foreach($request->input('employee_id') as $employee_id) {
+		$leave_ids = $request->input('employee_leave');
+
+		foreach($request->input('employee_id') as $index => $employee_id) {
 			$EmployeeAttendance = new EmployeeAttendance;
 			$att = $EmployeeAttendance->where([
 												'date' => $dbdate,
@@ -49,6 +51,7 @@ class EmployeeAttendanceCtrl extends Controller
 				$EmployeeAttendance->date = $dbdate;
 				$EmployeeAttendance->status = ($request->input('attendance'.$employee_id) !== null)? 1 : 0;
 				$EmployeeAttendance->user_id	=	Auth::user()->id;
+        		$EmployeeAttendance->leave_id = $leave_ids[$index] ?? null;
 				$EmployeeAttendance->save();
 
 			} else {

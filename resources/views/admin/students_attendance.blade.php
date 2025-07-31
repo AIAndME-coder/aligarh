@@ -142,9 +142,13 @@
                                               <td>{{ $student->name }}</td>
                                               <td>
                                                 <input type="hidden" name="student_id[{{ $student->id }}]" value="{{ $student->id }}">
+                                                <input type="hidden" name="student_leave[{{ $student->id }}]" value="{{ $student->leaveOnDate->id??null }}">
                                                 <div class="pull-left checkbox checkbox-success">
                                                   <input id="checkbox{{ $student->id }}" class="selectAtt" type="checkbox" name="attendance{{ $student->id }}" value="1" {{ (isset($student->StudentAttendanceByDate->status) && $student->StudentAttendanceByDate->status)? 'checked' : '' }} />
                                                   <label for="checkbox{{ $student->id }}">
+                                                    @if($student->leaveOnDate ?? false)
+                                                        <span title="Leave" style="color:rgb(243, 8, 0)"><b>L</b></span>
+                                                    @endif
                                                   </label>
                                                 </div>
                                                 <div class="pull-right">
