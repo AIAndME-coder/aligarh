@@ -19,4 +19,8 @@ class Teacher extends Model
 		return $query->where('phone', 'NOT LIKE', '21%')->whereRaw('LENGTH(phone) = 10');
 	}
 
+	public function attendances()
+	{
+		return $this->hasMany(TeacherAttendance::class);
+	}
 }

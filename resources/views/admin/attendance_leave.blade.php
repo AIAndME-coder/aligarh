@@ -9,6 +9,7 @@
     <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::to('src/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     <style type="text/css">
         .print-table {
             width: 100%;
@@ -99,9 +100,9 @@
                                                 <div class="col-md-6">
                                                     <select class="form-control select2" v-model="type"
                                                         @change="handleTypeChange" name="type" required="true">
-                                                        <option value="{{ 'student' }}">{{ 'Student' }}</option>
-                                                        <option value="{{ 'teacher' }}">{{ 'Teacher' }}</option>
-                                                        <option value="{{ 'employee' }}">{{ 'Employee' }}</option>
+                                                        <option value="{{ 'Student' }}">{{ 'Student' }}</option>
+                                                        <option value="{{ 'Teacher' }}">{{ 'Teacher' }}</option>
+                                                        <option value="{{ 'Employee' }}">{{ 'Employee' }}</option>
                                                     </select>
                                                     @if ($errors->has('class'))
                                                         <span class="help-block">
@@ -111,12 +112,12 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div v-show="type == 'student'"
+                                            <div v-show="type == 'Student'"
                                                 class="form-group{{ $errors->has('person_id') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Student </label>
                                                 <div class="col-md-6">
                                                     <select class="form-control select2" name="person_id"
-                                                        :required="type === 'student'">
+                                                        :required="type === 'Student'">
                                                         <option value="" disabled selected>-- Select Student --</option>
                                                         @foreach ($classStudents as $classStudent)
                                                             <optgroup label="{{ $classStudent['class_name'] }}">
@@ -138,12 +139,12 @@
                                             </div>
 
 
-                                            <div v-if="type == 'teacher'"
+                                            <div v-if="type == 'Teacher'"
                                                 class="form-group{{ $errors->has('person_id') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Teacher </label>
                                                 <div class="col-md-6">
                                                     <select class="form-control select2" name="person_id"
-                                                        :required="type === 'teacher'">
+                                                        :required="type === 'Teacher'">
                                                         <option value="" disabled selected>--Select--</option>
                                                         @foreach ($teachers as $teacher)
                                                             <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
@@ -158,12 +159,12 @@
                                                 </div>
                                             </div>
 
-                                            <div v-if="type == 'employee'"
+                                            <div v-if="type == 'Employee'"
                                                 class="form-group{{ $errors->has('person_id') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Employee </label>
                                                 <div class="col-md-6">
                                                     <select class="form-control select2" name="person_id"
-                                                        :required="type === 'employee'">
+                                                        :required="type === 'Employee'">
                                                         <option value="" disabled selected>--Select--</option>
                                                         @foreach ($employees as $employee)
                                                             <option value="{{ $employee->id }}">{{ $employee->name }}</option>
@@ -224,7 +225,7 @@
                                                 <div class="col-md-offset-2 col-md-6">
                                                     <button class="btn btn-primary" type="submit">
                                                         <span class="glyphicon glyphicon-save"></span>
-                                                        Make Attendance
+                                                        Make Attendance Leave
                                                     </button>
                                                 </div>
                                             </div>
@@ -248,6 +249,7 @@
     <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ URL::to('src/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     @if ($errors->any())
         <script>
             @foreach ($errors->all() as $error)
@@ -263,51 +265,46 @@
             if (!data.id) {
                 return data.text;
             }
-            var $data = $(
-                data.htm1 + data.text + data.htm2
-            );
+            var $data = $(data.htm1 + data.text + data.htm2);
             return $data;
-        };
+        }
 
         function loadOptions(data, type, full, meta) {
-            opthtm = '';
-            @can('roles.update')
-                opthtm = '<a href="{{ URL('roles/edit') }}/' + full.id +
-                    '" data-toggle="tooltip" title="Edit" class="btn btn-';
-                opthtm += ' btn-circle btn-xs edit-option"><span class="fa fa-edit"></span></a>';
+            let opthtm = '';
+            @can('attendance-leave.update')
+                opthtm += '<a href="{{ url('attendance-leave/edit') }}/' + full.id + '"';
+                opthtm += ' data-toggle="tooltip" title="Edit"';
+                opthtm += ' class="btn btn-primary btn-circle btn-xs edit-option">';
+                opthtm += '<span class="fa fa-edit"></span></a>';
+            @endcan
+            @can('attendance-leave.delete')
+                opthtm += '<button type="button" class="btn btn-danger btn-circle btn-xs delete-btn"';
+                opthtm += ' data-toggle="tooltip" title="Delete" data-id="' + full.id + '">';
+                opthtm += '<span class="fa fa-trash"></span></button>';
             @endcan
             return opthtm;
         }
 
         $(document).ready(function() {
-
-
-
-
             tbl = $('.dataTables-role').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [{
                     extend: 'print',
-                    customize: function(win) {
-                        $(win.document.body).addClass('white-bg');
-                        $(win.document.body).css('font-size', '12px');
-                        $(win.document.body).find('table')
-                            .addClass('print-table')
-                            .removeClass('table')
-                            .removeClass('table-striped')
-                            .removeClass('table-bordered')
-                            .removeClass('table-hover')
-                            .addClass('compact')
-                            .css('font-size', 'inherit');
-                    },
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
-                    },
                     title: "roles | {{ config('systemInfo.general.title') }}",
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5]
+                    },
+                    customize: function(win) {
+                        $(win.document.body).addClass('white-bg').css('font-size', '12px');
+                        $(win.document.body).find('table')
+                            .addClass('print-table compact')
+                            .removeClass('table table-striped table-bordered table-hover')
+                            .css('font-size', 'inherit');
+                    }
                 }],
-                Processing: true,
+                processing: true,
                 serverSide: true,
-                ajax: '{{ URL('attendance-leave') }}',
+                ajax: '{{ url('attendance-leave') }}',
                 columns: [{
                         data: 'name'
                     },
@@ -325,33 +322,78 @@
                     },
                     {
                         render: loadOptions,
-                        className: 'hidden-print',
-                        "orderable": false
-                    },
-                ],
+                        className: 'hidden-print text-center',
+                        orderable: false
+                    }
+                ]
             });
+
+
+            $('.dataTables-role tbody').on('click', '.delete-btn', function() {
+                var deleteId = $(this).data('id');
+
+                swal({
+                        title: "Are you sure?",
+                        text: "You are about to delete this entry.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function(isConfirm) {
+                        if (isConfirm) {
+                            swal({
+                                title: "Deleting...",
+                                text: "<i class='fa fa-spinner fa-pulse fa-4x'></i>",
+                                html: true,
+                                showConfirmButton: false
+                            });
+
+                            $.post("{{ url('attendance-leave/delete') }}", {
+                                    id: deleteId,
+                                    _token: "{{ csrf_token() }}"
+                                })
+                                .done(function(data) {
+                                    tbl.ajax.reload(null, false); // Reload table data without reset
+                                    swal("Deleted!", "Record has been deleted.", "success");
+                                })
+                                .fail(function() {
+                                    swal("Error!", "Something went wrong. Please try again.",
+                                        "error");
+                                });
+
+                        } else {
+                            swal("Cancelled", "The record is safe :)", "error");
+                        }
+                    });
+            });
+
+
+
 
             $(".dataTables-role tbody").on('mouseenter', "[data-toggle='tooltip']", function() {
                 $(this).tooltip('show');
             });
 
-            $('#to_datetimepicker').datetimepicker({
-                format: 'DD/MM/YYYY',
-                defaultDate: moment(),
-            });
-            $('#from_datetimepicker').datetimepicker({
-                format: 'DD/MM/YYYY',
-                defaultDate: moment(),
+            $('#to_datetimepicker, #from_datetimepicker').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: moment()
             });
 
-            $("#tchr_rgstr").validate({
+            $("#mk_att_frm").validate({
                 ignore: ":not(:visible)",
                 rules: {
-                    name: {
-                        required: true,
+                    type: {
+                        required: true
                     },
-                    teacher: {
-                        required: true,
+                    to_date: {
+                        required: true
+                    },
+                    from_date: {
+                        required: true
                     }
                 }
             });

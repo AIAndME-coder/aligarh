@@ -25,4 +25,9 @@ class Employee extends Model
 	{
 		return $query->whereKeyNot(1);
 	}
+
+	public function attendances()
+	{
+		return $this->hasMany(EmployeeAttendance::class);
+	}
 }

@@ -141,4 +141,9 @@ class Student extends Model {
 	{
 		return $this->hasOne('App\InvoiceMaster')->orderBy('id', 'desc');
 	}
+
+	public function attendances()
+	{
+		return $this->hasMany(StudentAttendance::class);
+	}
 }

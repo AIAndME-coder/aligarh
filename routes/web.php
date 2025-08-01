@@ -186,6 +186,9 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
     Route::prefix('attendance-leave')->name('attendance-leave')->group(function(){
         Route::get('/', [AttendanceLeaveController::class, 'Index'])->name('.index');
         Route::post('/make', [AttendanceLeaveController::class, 'MakeLeave'])->name('.make');
+        Route::get('/edit/{id}', [AttendanceLeaveController::class, 'Edit'])->name('.edit');
+        Route::post('/update/{id}', [AttendanceLeaveController::class, 'Update'])->name('.update');
+        Route::post('/delete', [AttendanceLeaveController::class, 'Delete'])->name('.delete');
     });
 
     Route::prefix('manage-subjects')->name('manage-subjects')->group(function(){
