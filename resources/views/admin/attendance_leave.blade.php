@@ -98,8 +98,8 @@
                                             <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Type </label>
                                                 <div class="col-md-6">
-                                                    <select class="form-control select2" v-model="type"
-                                                        @change="handleTypeChange" name="type" required="true">
+                                                    <select class="form-control select2" v-model="type" name="type" required="true">
+                                                        <option value="">{{ '--- Select Type ---' }}</option>
                                                         <option value="{{ 'Student' }}">{{ 'Student' }}</option>
                                                         <option value="{{ 'Teacher' }}">{{ 'Teacher' }}</option>
                                                         <option value="{{ 'Employee' }}">{{ 'Employee' }}</option>
@@ -211,8 +211,7 @@
                                             <div class="form-group{{ $errors->has('remarks') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Remarks </label>
                                                 <div class="col-md-6">
-                                                    <textarea name="remarks" required="true" class="form-control" rows="4" value="{{ old('remarks') }}" required
-                                                        ref="messageBox"></textarea>
+                                                    <textarea name="remarks" required class="form-control" rows="4" ref="messageBox">{{ old('remarks') }}</textarea>
                                                     @if ($errors->has('remarks'))
                                                         <span class="help-block">
                                                             <strong><span class="fa fa-exclamation-triangle"></span>
@@ -398,12 +397,12 @@
                 }
             });
 
-            @if (collect($errors)->count() >= 1 && !$errors->has('toastrmsg'))
-                $('a[href="#tab-10"]').tab('show');
-            @else
+            @if ($errors->any())
                 $('a[href="#tab-11"]').tab('show');
+            @else
+                $('a[href="#tab-10"]').tab('show');
             @endif
-        });
+            });
     </script>
 @endsection
 
@@ -417,13 +416,9 @@
                 };
             },
             methods: {
-                handleTypeChange() {
-                    console.log("Selected type changed to:", this.type);
-                },
             },
 
             computed: {
-
             }
         });
     </script>
