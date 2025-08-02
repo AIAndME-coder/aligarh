@@ -161,7 +161,7 @@ class StudentAttendanceCtrl extends Controller
 											->orWhere('students.date_of_leaving', '>=', $DateRange['start']);
 									})
 									->with(['StudentAttendance'	=>	function($qry) use ($DateRange) {
-			$qry->select('id', 'student_id', 'date', 'status')
+			$qry->select('id', 'student_id', 'date', 'status', 'leave_id')
 				->whereBetween('date', $DateRange)
 				->orderby('date');
 		}])->get();
