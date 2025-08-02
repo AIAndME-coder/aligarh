@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AcademicSessionController;
 use App\Http\Controllers\Admin\NotificationsController;
 use App\Http\Controllers\Admin\AttendanceLeaveController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,26 @@ use App\Http\Controllers\Admin\AttendanceLeaveController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/cmd', function () {
+    // if (!app()->isLocal()) {
+    //     abort(403, 'Forbidden');
+    // }
+
+    require_once base_path('database/migrations/2025_07_30_111023_create_attendance_leaves_table.php');
+    (new \CreateAttendanceLeavesTable)->up();
+
+    require_once base_path('database/migrations/2025_07_31_103642_add_leave_id_to_multiple_tables.php');
+    (new \AddLeaveIdToMultipleTables)->up();
+
+    Artisan::call('db:seed', [
+        '--class' => 'PermissionsUpdateSeeder',
+        '--force' => true,
+    ]);
+    return response('<h2> Done: Fresh migration, 2 specific migrations, and PermissionsUpdateSeeder ran successfully.</h2>');
+});
+
+
 
 Route::get('logout', [UserController::class,'LogOut'])->name('logout');
 
