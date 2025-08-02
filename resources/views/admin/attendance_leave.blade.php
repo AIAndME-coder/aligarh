@@ -5,7 +5,6 @@
 
 @section('head')
     <link href="{{ URL::to('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
@@ -27,6 +26,189 @@
 
         .print-table>thead>tr>th {
             padding: 3px;
+        }
+    </style>
+    <style>
+        .leave-card {
+            background: #ffffff;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            margin-bottom: 30px;
+            width: 350px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .leave-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .leave-card-header {
+            background: rgb(255, 255, 255);
+            height: 70px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+        }
+
+        .leave-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.15"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .leave-title {
+            color: #2d3436;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .leave-date-badge {
+            background: rgb(234 234 234);
+            color: #2d3436;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+
+
+        .leave-card-body {
+            padding: 25px 25px 25px;
+            text-align: center;
+        }
+
+        .leave-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .leave-info-list {
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .leave-info-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .leave-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .leave-info-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .leave-info-content {
+            flex: 1;
+        }
+
+        .leave-info-label {
+            font-size: 12px;
+            color: #74b9ff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .leave-info-value {
+            font-size: 12px;
+            color: #2d3436;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        /* .leave-date-range {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    color: grey;
+                    font-weight: 700;
+                } */
+
+        .leave-date-range {
+            flex: 1;
+            text-align: center;
+        }
+
+        .leave-date-range:first-child {
+            text-align: left;
+        }
+
+        .leave-date-range:last-child {
+            text-align: right;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .m-2 {
+            margin: 3.375rem 1rem 1rem 1rem;
+        }
+
+        .font-small {
+            font-size: 0.8rem;
+        }
+
+        .pagination nav {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination {
+            display: inline !important;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
         }
     </style>
 @endsection
@@ -71,19 +253,100 @@
                         <div class="tab-content">
                             <div id="tab-10" class="tab-pane fade">
                                 <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-hover dataTables-role">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Type</th>
-                                                    <th>From Date</th>
-                                                    <th>To Date</th>
-                                                    <th>Remarks</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                    <div class="row" id="app">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <label style="margin-right: 20px; margin-left: 20px;">
+                                                    Show
+                                                    <select v-model="per_page" class="form-control input-sm"
+                                                        style="width: auto; display: inline-block;"
+                                                        @change="handleLayoutChange">
+                                                        <option v-for="option in options" :key="option"
+                                                            :value="option">
+                                                            @{{ option }}
+                                                        </option>
+                                                    </select>
+                                                    entries
+                                                </label>
+                                                <label>
+                                                    Showing @{{ from }} to @{{ to }} of
+                                                    @{{ total }} entries
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 text-right pull-right">
+                                            <div class="row">
+                                                <input type="text" v-model="search_attendance_leaves"
+                                                    @input="triggerSearch" class="form-control input-sm"
+                                                    style="width: 200px; display: inline-block; margin-right: 35px;"
+                                                    title="Search" placeholder="Search...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="display: ruby">
+                                        <div class="m-2" v-for="attendance_leave in attendance_leaves"
+                                            :key="attendance_leave.id">
+                                            <div class="leave-panel leave-card">
+                                                <div class="leave-card-header">
+                                                    <div class="leave-title">
+                                                        <span class="font-small">@{{ attendance_leave.person_type }} <br></span>
+                                                        @{{ attendance_leave.person.name }}
+                                                    </div>
+                                                    <div class="leave-date-badge">@{{ attendance_leave.date }}</div>
+                                                </div>
+                                                <div class="leave-card-body">
+                                                    <ul class="leave-info-list">
+                                                        <li class="leave-info-item">
+                                                            <div class="leave-info-content">
+                                                                <div class="leave-info-label">Reason</div>
+                                                                <div class="leave-info-value">@{{ attendance_leave.remarks }}</div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="leave-info-item">
+                                                            <div class="leave-info-content">
+                                                                <div class="leave-info-value">
+                                                                    <div class="leave-date-range">
+                                                                        @{{ attendance_leave.from_date }}
+                                                                    </div>
+                                                                    <div class="leave-date-range">
+                                                                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                                                    </div>
+                                                                    <div class="leave-date-range">
+                                                                        @{{ attendance_leave.to_date }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="text-end mt-3">
+                                                        @can('attendance-leave.update')
+                                                            <a :href="'{{ url('attendance-leave/edit') }}/' + attendance_leave.id"
+                                                                class="btn btn-sm btn-outline-primary">
+                                                                <i class="fa fa-pencil"></i> Edit
+                                                            </a>
+                                                        @endcan
+                                                        @can('attendance-leave.delete')
+                                                            <a data-placement="top" data-toggle="tooltip" title="Delete"
+                                                                @click.prevent="deleteAttendanceLeave(attendance_leave.id)"
+                                                                href="#" class="btn btn-sm btn-outline-danger">
+                                                                <i class="fa fa-trash"></i> Delete
+                                                            </a>
+                                                        @endcan
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pagination" id="app">
+                                        <nav class="text-center">
+                                            <ul class="pagination">
+                                                <li v-for="(link, index) in pagination_links" :key="index"
+                                                    :class="['page-item', { active: link.active, disabled: !link.url }]">
+                                                    <a class="page-link" href="#" @click.prevent="goToPage(link)"
+                                                        v-html="link.label"></a>
+                                                </li>
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +361,8 @@
                                             <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Type </label>
                                                 <div class="col-md-6">
-                                                    <select class="form-control select2" v-model="type" name="type" required="true">
+                                                    <select class="form-control select2" v-model="type" name="type"
+                                                        required="true">
                                                         <option value="">{{ '--- Select Type ---' }}</option>
                                                         <option value="{{ 'Student' }}">{{ 'Student' }}</option>
                                                         <option value="{{ 'Teacher' }}">{{ 'Teacher' }}</option>
@@ -167,7 +431,8 @@
                                                         :required="type === 'Employee'">
                                                         <option value="" disabled selected>--Select--</option>
                                                         @foreach ($employees as $employee)
-                                                            <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                                                            <option value="{{ $employee->id }}">{{ $employee->name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                     @if ($errors->has('person_id'))
@@ -243,12 +508,10 @@
 
     <!-- Mainly scripts -->
     <script src="{{ URL::to('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
     <script src="{{ URL::to('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
     @if ($errors->any())
         <script>
             @foreach ($errors->all() as $error)
@@ -258,124 +521,7 @@
     @endif
 
     <script type="text/javascript">
-        var tbl;
-
-        function select2template(data) {
-            if (!data.id) {
-                return data.text;
-            }
-            var $data = $(data.htm1 + data.text + data.htm2);
-            return $data;
-        }
-
-        function loadOptions(data, type, full, meta) {
-            let opthtm = '';
-            @can('attendance-leave.update')
-                opthtm += '<a href="{{ url('attendance-leave/edit') }}/' + full.id + '"';
-                opthtm += ' data-toggle="tooltip" title="Edit"';
-                opthtm += ' class="btn btn-primary btn-circle btn-xs edit-option">';
-                opthtm += '<span class="fa fa-edit"></span></a>';
-            @endcan
-            @can('attendance-leave.delete')
-                opthtm += '<button type="button" class="btn btn-danger btn-circle btn-xs delete-btn"';
-                opthtm += ' data-toggle="tooltip" title="Delete" data-id="' + full.id + '">';
-                opthtm += '<span class="fa fa-trash"></span></button>';
-            @endcan
-            return opthtm;
-        }
-
         $(document).ready(function() {
-            tbl = $('.dataTables-role').DataTable({
-                dom: '<"html5buttons"B>lTfgitp',
-                buttons: [{
-                    extend: 'print',
-                    title: "roles | {{ config('systemInfo.general.title') }}",
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
-                    },
-                    customize: function(win) {
-                        $(win.document.body).addClass('white-bg').css('font-size', '12px');
-                        $(win.document.body).find('table')
-                            .addClass('print-table compact')
-                            .removeClass('table table-striped table-bordered table-hover')
-                            .css('font-size', 'inherit');
-                    }
-                }],
-                processing: true,
-                serverSide: true,
-                ajax: '{{ url('attendance-leave') }}',
-                columns: [{
-                        data: 'name'
-                    },
-                    {
-                        data: 'person_type'
-                    },
-                    {
-                        data: 'from_date'
-                    },
-                    {
-                        data: 'to_date'
-                    },
-                    {
-                        data: 'remarks'
-                    },
-                    {
-                        render: loadOptions,
-                        className: 'hidden-print text-center',
-                        orderable: false
-                    }
-                ]
-            });
-
-
-            $('.dataTables-role tbody').on('click', '.delete-btn', function() {
-                var deleteId = $(this).data('id');
-
-                swal({
-                        title: "Are you sure?",
-                        text: "You are about to delete this entry.",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "No, cancel!",
-                        closeOnConfirm: false,
-                        closeOnCancel: false
-                    },
-                    function(isConfirm) {
-                        if (isConfirm) {
-                            swal({
-                                title: "Deleting...",
-                                text: "<i class='fa fa-spinner fa-pulse fa-4x'></i>",
-                                html: true,
-                                showConfirmButton: false
-                            });
-
-                            $.post("{{ url('attendance-leave/delete') }}", {
-                                    id: deleteId,
-                                    _token: "{{ csrf_token() }}"
-                                })
-                                .done(function(data) {
-                                    tbl.ajax.reload(null, false); // Reload table data without reset
-                                    swal("Deleted!", "Record has been deleted.", "success");
-                                })
-                                .fail(function() {
-                                    swal("Error!", "Something went wrong. Please try again.",
-                                        "error");
-                                });
-
-                        } else {
-                            swal("Cancelled", "The record is safe :)", "error");
-                        }
-                    });
-            });
-
-
-
-
-            $(".dataTables-role tbody").on('mouseenter', "[data-toggle='tooltip']", function() {
-                $(this).tooltip('show');
-            });
 
             $('#to_datetimepicker, #from_datetimepicker').datetimepicker({
                 format: 'YYYY-MM-DD',
@@ -402,24 +548,115 @@
             @else
                 $('a[href="#tab-10"]').tab('show');
             @endif
-            });
-    </script>
-@endsection
-
-@section('vue')
-    <script type="text/javascript">
-        var app = new Vue({
-            el: "#app",
-            data() {
-                return {
-                    type: '',
-                };
-            },
-            methods: {
-            },
-
-            computed: {
-            }
         });
     </script>
+@endsection
+@section('vue')
+<script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+<script src="{{ URL::to('src/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+<script src="{{ URL::to('src/js/plugins/lodash-4.17.15/min.js') }}"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            type: '',
+            options: [5, 10, 25, 50, 100],
+            search_attendance_leaves: '',
+            per_page: 10,
+            page: 1,
+            attendance_leaves: [],
+            current_page: 1,
+            last_page: 1,
+            to: 0,
+            from: 0,
+            total: 0,
+            pagination_links: []
+        },
+        created() {
+            this.debouncedSearch = _.debounce(() => {
+                this.handleLayoutChange(this.page);
+            }, 300);
+        },
+        methods: {
+            triggerSearch(page = 1) {
+                this.page = page;
+                this.debouncedSearch(); 
+            },
+
+            handleLayoutChange(page = 1) {
+                this.page = page;
+
+                axios.get('/attendance-leave/getData', {
+                    params: {
+                        per_page: this.per_page,
+                        page: page,
+                        search_attendance_leaves: this.search_attendance_leaves,
+                    }
+                })
+                .then(response => {
+                    const res = response.data;
+                    this.attendance_leaves = res.data;
+                    this.current_page = res.current_page;
+                    this.last_page = res.last_page;
+                    this.to = res.to;
+                    this.from = res.from;
+                    this.total = res.total;
+                    this.pagination_links = res.links;
+                })
+                .catch(error => {
+                    console.error('Failed to fetch records:', error);
+                });
+            },
+
+            goToPage(link) {
+                if (!link.url) return;
+                const url = new URL(link.url);
+                const page = url.searchParams.get('page');
+                this.handleLayoutChange(page);
+            },
+            deleteAttendanceLeave(deleteId) {
+                swal({
+                    title: "Are you sure?",
+                    text: "You are about to delete this entry.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!"
+                }, (isConfirm) => {
+                    if (isConfirm) {
+                        swal({
+                            title: "Deleting...",
+                            text: "<i class='fa fa-spinner fa-pulse fa-4x'></i>",
+                            html: true,
+                            showConfirmButton: false,
+                            allowOutsideClick: false
+                        });
+
+                        axios.post("{{ url('attendance-leave/delete') }}", {
+                            id: deleteId,
+                            _token: "{{ csrf_token() }}"
+                        })
+                        .then(() => {
+                            swal("Deleted!", "Record has been deleted.", "success");
+                            this.handleLayoutChange();
+                        })
+                        .catch(() => {
+                            swal("Error!", "Something went wrong. Please try again.", "error");
+                        });
+
+                    } else {
+                        swal("Cancelled", "The record is safe :)", "error");
+                    }
+                });
+            }
+            },
+
+            computed: {},
+            mounted: function() {
+                this.handleLayoutChange();
+        }
+    });
+</script>
 @endsection

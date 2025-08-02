@@ -20,20 +20,6 @@ class AttendanceLeaveController extends Controller
 {
 	public function Index(Request $request)
 	{
-		if ($request->ajax()) {
-			return DataTables::eloquent(
-				AttendanceLeave::with('person')->select('id', 'person_type', 'person_id', 'from_date', 'to_date', 'remarks')
-			)
-				->addColumn('name', function ($row) {
-					$person = $row->person;
-					return $person?->name ?? '-';
-				})
-				->editColumn('person_type', function ($row) {
-					return class_basename($row->person_type);
-				})
-				->make(true);
-		}
-
 
 		$data['classStudents'] = Classe::with('Students')->get()->map(fn($classe) => [
 			'id' => $classe->id,
@@ -51,6 +37,34 @@ class AttendanceLeaveController extends Controller
 		return view('admin.attendance_leave', $data);
 	}
 
+
+	public function GetData(Request $request)
+	{	
+		$attendanceLeaves = AttendanceLeave::with('person');
+
+		if ($request->filled('search_attendance_leaves')) {
+			$search = $request->input('search_attendance_leaves');
+
+			$attendanceLeaves->where(fn($query) => 
+			$query->where('remarks', 'like', "%{$search}%")
+				->orWhere('from_date', 'like', "%{$search}%")
+				->orWhere('to_date', 'like', "%{$search}%")
+				->orWhereHas('person', fn($q) => 
+					$q->where('name', 'like', "%{$search}%")
+				)
+			);
+		}
+
+		$attendanceLeaves = $request->filled('per_page') ? $attendanceLeaves->paginate($request->input('per_page')) : $attendanceLeaves->get();
+
+		$attendanceLeaves->transform(function ($leave) {
+			$leave->person_type = class_basename($leave->person_type);
+			$leave->date = Carbon::parse($leave->created_at)->format('M Y');
+			return $leave;
+		});
+		
+		return response()->json($attendanceLeaves);
+	}
 
 	public function MakeLeave(Request $request)
 	{

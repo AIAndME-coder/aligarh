@@ -596,7 +596,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h4 class="guardian-name">Ahmed Hassan</h4>
+                    <h4 class="guardian-name">{{ $guardian->name }}</h4>
                     <span class="status-badge status-active">Active Guardian</span>
                     <hr class="info-divider">
                     <div class="info-container">
@@ -648,7 +648,7 @@
                                     </div>
                                     <div class="info-content">
                                         <div class="info-label">Email</div>
-                                        <div class="info-value">ahmed.hassan@email.com</div>
+                                        <div class="info-value">{{ $guardian->email?? '-' }}</div>
                                     </div>
                                 </li>
 
@@ -660,7 +660,7 @@
                                     <div class="info-content">
                                         <div class="info-label">Address</div>
                                         <div class="info-value address-text">
-                                            House 123, Block A, Gulshan-e-Iqbal, Karachi
+                                            {{ $guardian->address?? '-' }}
                                         </div>
                                     </div>
                                 </li>
