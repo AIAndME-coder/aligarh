@@ -78,7 +78,7 @@ class TeacherAttendanceCtrl extends Controller
 
 		$data['teachers']	=	Teacher::all();
 		foreach ($data['teachers'] as $k => $row) {
-			$data['attendance'][$row->id] =	TeacherAttendance::select('id as attendance_id', 'date', 'status')
+			$data['attendance'][$row->id] =	TeacherAttendance::select('id as attendance_id', 'date', 'status', 'leave_id')
 												->where(['teacher_id' => $row->id])
 												->where('date', '>=', $dbdate->startOfMonth()->toDateString())
 												->where('date', '<=', $dbdate->endOfMonth()->toDateString())
