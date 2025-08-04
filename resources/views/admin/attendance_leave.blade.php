@@ -39,6 +39,7 @@
             position: relative;
             margin-bottom: 30px;
             width: 350px;
+            height: 254px;
             animation: fadeInUp 0.6s ease-out;
         }
 
@@ -92,7 +93,7 @@
 
 
         .leave-card-body {
-            padding: 25px 25px 25px;
+            padding: 0 25px 25px 25px;
             text-align: center;
         }
 
@@ -109,6 +110,7 @@
             margin: 0;
             padding: 0;
             list-style: none;
+            height: 150px;
         }
 
         .leave-info-item {
@@ -117,6 +119,16 @@
             padding: 12px 0;
             border-bottom: 1px solid #f8f9fa;
             transition: all 0.3s ease;
+        }
+
+
+        .leave-info-item-remark{
+            display: flex;
+            align-items: center;
+            padding: 0 0 12px 0;
+            border-bottom: 1px solid #f8f9fa;
+            transition: all 0.3s ease;
+            height: 110px;
         }
 
         .leave-info-item:last-child {
@@ -296,7 +308,7 @@
                                                 </div>
                                                 <div class="leave-card-body">
                                                     <ul class="leave-info-list">
-                                                        <li class="leave-info-item">
+                                                        <li class="leave-info-item-remark">
                                                             <div class="leave-info-content">
                                                                 <div class="leave-info-label">Reason</div>
                                                                 <div class="leave-info-value">@{{ attendance_leave.remarks }}</div>

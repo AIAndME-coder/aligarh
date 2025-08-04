@@ -166,7 +166,7 @@ class AttendanceLeaveController extends Controller
 
 		$attendanceLeave = AttendanceLeave::findOrFail($id);
 
-		if ($attendanceLeave->from_date !== $request->input('from_date') && $attendanceLeave->to_date !== $request->input('to_date')) {
+		if ($attendanceLeave->from_date !== $request->input('from_date') || $attendanceLeave->to_date !== $request->input('to_date')) {
 
 			$personModel = $attendanceLeave->person;
 
