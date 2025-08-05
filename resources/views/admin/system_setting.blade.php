@@ -793,9 +793,24 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
-                                                    <th>Mail</th>
-                                                    <th>SMS</th>
-                                                    <th>Whatsapp</th>
+                                                    <th>
+                                                        <input id="select-all-mail" type="checkbox" @change="toggleSelectAll('mail', $event)">
+                                                        <label for="select-all-mail" data-toggle="tooltip" title="select all">
+                                                            <b>Mail</b>
+                                                        </label>
+                                                    </th>
+                                                    <th>
+                                                        <input id="select-all-sms" type="checkbox" @change="toggleSelectAll('sms', $event)">
+                                                        <label for="select-all-sms" data-toggle="tooltip" title="select all">
+                                                            <b>SMS</b>
+                                                        </label>
+                                                    </th>
+                                                    <th>
+                                                        <input id="select-all-whatsapp" type="checkbox" @change="toggleSelectAll('whatsapp', $event)">
+                                                        <label for="select-all-whatsapp" data-toggle="tooltip" title="select all">
+                                                            <b>WhatsApp</b>
+                                                        </label>
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -922,7 +937,30 @@
                             console.error(error);
                             toastr.error("Update failed. Please try again.", "Error");
                         });
-                }, 300) // 300ms debounce
+                }, 300),
+
+                toggleSelectAll(type, event) {
+                    const isChecked = event.target.checked;
+                    
+                    this.notifications.forEach(notification => {
+                        notification[type] = isChecked;
+                    });
+
+                    axios.post(`/system-setting/notification-settings/all`, {
+                            field: type,
+                            value: isChecked
+                        })
+                        .then(response => {
+                            toastr.success(`All ${type} settings updated successfully`, "Notification");
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            toastr.error("Update failed. Please try again.", "Error");
+                            this.notifications.forEach(notification => {
+                                notification[type] = !isChecked;
+                            });
+                        });
+                }
             }
         });
     </script>

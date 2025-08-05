@@ -124,8 +124,6 @@ class SystemSettingController extends Controller
 
 	public function NotificationSettings(Request $request, $id)
 	{
-		$notificationSetting = NotificationsSetting::findOrFail($id);
-
 		$field = $request->input('field');
 		$value = $request->input('value');
 
@@ -135,6 +133,19 @@ class SystemSettingController extends Controller
 			], 422);
 		}
 
+		// Check if ID is "all" - update all records
+		if ($id === 'all') {
+			NotificationsSetting::query()->update([$field => $value]);
+
+			return response()->json([
+				'message' => "All {$field} settings updated successfully.",
+				'field' => $field,
+				'value' => $value
+			]);
+		}
+
+		// Regular single update
+		$notificationSetting = NotificationsSetting::findOrFail($id);
 		$notificationSetting->$field = $value;
 		$notificationSetting->save();
 
