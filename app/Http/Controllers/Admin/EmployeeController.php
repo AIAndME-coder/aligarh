@@ -64,7 +64,7 @@ class EmployeeController extends Controller
 
   public function Grid(Request $request){
 
-    $Employees = Employee::query(); 
+    $Employees = Employee::query()->NotDeveloper(); 
 
 		if ($request->filled('search_employees')) {
 			$search = $request->input('search_employees');
