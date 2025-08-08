@@ -104,8 +104,24 @@ class Student extends Model {
 		return Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y');
 	}
 
-	public function setDateOfBirthInwordsAttribute($date){
-		$this->attributes['date_of_birth_inwords'] = Carbon::createFromFormat('d/m/Y', $date)->format('l jS \\of F Y');
+	public function setDateOfBirthInwordsAttribute($date)
+	{
+		try {
+			// Try Y-m-d (raw DB format)
+			$parsed = Carbon::createFromFormat('Y-m-d', $date);
+		} catch (\Exception $e1) {
+			try {
+				// Try d/m/Y (formatted version)
+				$parsed = Carbon::createFromFormat('d/m/Y', $date);
+			} catch (\Exception $e2) {
+				// If both fail, fallback or throw
+				$parsed = null;
+			}
+		}
+
+		$this->attributes['date_of_birth_inwords'] = $parsed
+			? $parsed->format('l jS \\of F Y')
+			: null;
 	}
 
 	public function AdditionalFee(){
