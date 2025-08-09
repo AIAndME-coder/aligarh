@@ -110,6 +110,10 @@ class GuardiansController extends Controller
       $Guardian->created_by = Auth::user()->id;
       $Guardian->save();
 
+      if($request->ajax()){
+        return response()->json('Guardian Registration Successfull', 200);
+      }
+
       return redirect('guardians')->with([
         'toastrmsg' => [
           'type' => 'success', 

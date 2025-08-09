@@ -98,6 +98,12 @@ class StudentsController extends Controller
 		return view('admin.students', $data);
 		}
 
+	public function getGuardians(Request $request)
+	{
+		$guardians = Guardian::select('id', 'name', 'email')->get();
+    	return response()->json($guardians);	
+	}	
+
 	public function Grid(Request $request)
 	{	
 		$Students = Student::with([
