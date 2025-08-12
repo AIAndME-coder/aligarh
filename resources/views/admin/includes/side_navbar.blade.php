@@ -224,21 +224,21 @@
                     <a data-root="notifications"><i class="fa fa-bell"></i> <span class="nav-label">Notifications</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        {{-- @can('notifications.log') --}}
-                            <li class="{{ isActiveRoute('notifications.log') }}" data-show="">
-                                <a href="{{ route('notifications.log') }}">Log</a>
-                            </li>
-                        {{-- @endcan --}}
                         @can('notifications.send')
                             <li class="{{ isActiveRoute('notifications.index') }}" data-show="">
                                 <a href="{{ route('notifications.index') }}">Send Message</a>
                             </li>
                         @endcan
-                        {{-- @can('notifications.msg.log') --}}
+                        @can('notifications.log')
+                            <li class="{{ isActiveRoute('notifications.log') }}" data-show="">
+                                <a href="{{ route('notifications.log') }}">Log</a>
+                            </li>
+                        @endcan
+                        @can('notifications.msg.log')
                             <li class="{{ isActiveRoute('notifications.msg.log') }}" data-show="">
                                 <a href="{{ route('notifications.msg.log') }}"> Message Log</a>
                             </li>
-                        {{-- @endcan --}}
+                        @endcan
                     </ul>
                 </li>
             @endcanany

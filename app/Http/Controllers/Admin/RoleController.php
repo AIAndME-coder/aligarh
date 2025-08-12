@@ -313,6 +313,7 @@ class RoleController extends Controller
 				'notifications.get.data' => 'Get Data',
 				'notifications.send' => 'Messsage Send',
 				'notifications.log' => 'View Logs',
+				'notifications.msg.log' => 'View Message Logs',
 			],
 			'Reports' => [
 				'seatsreport' => 'Seats Report',
