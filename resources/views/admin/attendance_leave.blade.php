@@ -255,7 +255,7 @@
                             <li class="">
                                 <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Attendance Leave</a>
                             </li>
-                            @can('roles.create')
+                            @can('attendance-leave.make')
                                 <li class="add-role">
                                     <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Make Attendance
                                         Leave</a>
@@ -362,7 +362,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @can('roles.create')
+                            @can('attendance-leave.create')
                                 <div id="tab-11" class="tab-pane fade make-attendance">
                                     <div class="panel-body" style="min-height: 400px">
                                         <h2> Make Attendance </h2>
