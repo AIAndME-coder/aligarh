@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AcademicSessionController;
 use App\Http\Controllers\Admin\NotificationsController;
 use App\Http\Controllers\Admin\AttendanceLeaveController;
+use App\Http\Controllers\Admin\QuizController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -222,6 +223,15 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/edit/{id}', [ExamController::class, 'EditExam'])->name('.edit');
         Route::post('/add', [ExamController::class, 'AddExam'])->name('.add');
         Route::post('/edit/{id}', [ExamController::class, 'PostEditExam'])->name('.edit.post');
+    });
+
+    Route::prefix('quizzes')->name('quizzes')->group(function(){
+        Route::get('/', [QuizController::class, 'Index'])->name('.index');
+        Route::get('/getData', [QuizController::class, 'GetData'])->name('.get.data');
+        Route::post('/create', [QuizController::class, 'Create'])->name('.create');
+        Route::get('/edit/{id}', [QuizController::class, 'Edit'])->name('.edit');
+        Route::post('/update/{id}', [QuizController::class, 'Update'])->name('.update');
+        Route::post('/delete', [QuizController::class, 'Delete'])->name('.delete');
     });
 
     Route::prefix('manage-result')->name('manage-result')->group(function(){

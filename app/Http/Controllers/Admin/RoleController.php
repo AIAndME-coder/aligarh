@@ -269,6 +269,16 @@ class RoleController extends Controller
 				'manage-result.maketranscript.create' => 'Create Transcript',
 				'manage-result.result' => 'View Result',
 			],
+
+			'Quizzes' => [
+				'quizzes.index' => 'Quizzess View',
+				'quizzes.get.data' => 'Get Data',
+				'quizzes.create' => 'Quiz Create',
+				'quizzes.edit' => 'Quiz Edit',
+				'quizzes.update' => 'Quiz Update',
+				'quizzes.delete' => 'Quiz Delete',
+				// .....
+			],
 			'Library' => [
 				'library.index' => 'Library View',
 				'library.add' => 'Library Create',

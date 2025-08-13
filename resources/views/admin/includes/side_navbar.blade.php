@@ -160,6 +160,12 @@
                     </ul>
                 </li>
             @endcanany
+            @can('quizzes.index')
+                <li class="{{ isActiveRoute('quizzes.*') }}">
+                    <a href="{{ route('quizzes.index') }}" data-root="quizzes"><i class="fa fa-question-circle"></i> <span
+                            class="nav-label">Quizzes</span></a>
+                </li>
+            @endcan
             @can('library.index')
             <li class="{{ isActiveRoute('library.*') }}">
                 <a href="{{ route('library.index') }}" data-root="library"><i class="fa fa-book"></i> <span
