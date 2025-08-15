@@ -830,12 +830,13 @@
                             tableBody.append(quizIdMarkInput);
 
                             students.forEach(student => {
+                                const isChecked = student.present ? 'checked' : '';
                                 const row = `
                                 <tr>
                                     <td>${student.name}</td>
                                     <td>${student.gr_no}</td>
-                                    <td><input type="number" class="form-control" name="marks[${student.id}]" value="" id="marks-${student.id}" /></td>
-                                    <td><input type="checkbox" class="form-check-input" name="present[${student.id}]" id="present-${student.id}" /></td>
+                                    <td><input type="number" class="form-control" name="marks[${student.student_id}]" value="${student.obtain_marks}" id="marks-${student.student_id}" /></td>
+                                    <td><input type="checkbox" class="form-check-input" name="present[${student.student_id}]" id="present-${student.student_id}" ${isChecked} /></td>
                                 </tr>
                             `;
                                 tableBody.append(row);
