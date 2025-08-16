@@ -132,7 +132,24 @@
                                         </small>
                                     </div>
                                 </div>
-
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-8" style="margin-bottom: 10px;">
+                                        <small class="text-muted d-block mb-2 font-weight-bold">
+                                            Notification Settings
+                                        </small>
+                                        <div class="d-flex flex-wrap gap-3">
+                                            <label class="radio-inline" style="margin-right: 15px;">
+                                                <input disabled type="checkbox" {{$notificationSettings['mail'] == 1 ? 'checked' : '' }}> Mail
+                                            </label>
+                                            <label class="radio-inline" style="margin-right: 15px;">
+                                                <input disabled type="checkbox" {{$notificationSettings['sms'] == 1 ? 'checked' : '' }}> SMS
+                                            </label>
+                                            <label class="radio-inline" style="margin-right: 15px;">
+                                                <input disabled type="checkbox" {{$notificationSettings['whatsapp'] == 1 ? 'checked' : '' }}> WhatsApp
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <input type="hidden" v-model="type" name="type" />
                                 <input v-if="type === 'students'" type="hidden" v-model="selectedStudentId"
                                     name="selected_student_id" />

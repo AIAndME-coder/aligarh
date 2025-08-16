@@ -202,6 +202,24 @@
                     <span class="nav-label">SMS Notifications</span></a>
             </li>
             @endcan
+            @canany(['notifications.send', 'notifications.msg.log'])
+                <li class="{{ isActiveRoute(['notifications.index', 'notifications.msg.log']) }}">
+                    <a data-root="notifications"><i class="fa fa-comment"></i> <span class="nav-label">SMS Notifications</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        @can('notifications.send')
+                            <li class="{{ isActiveRoute('notifications.index') }}" data-show="">
+                                <a href="{{ route('notifications.index') }}">Send Message</a>
+                            </li>
+                        @endcan
+                        @can('notifications.msg.log')
+                            <li class="{{ isActiveRoute('notifications.msg.log') }}" data-show="">
+                                <a href="{{ route('notifications.msg.log') }}"> Message Log</a>
+                            </li>
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
             @canany(['seatsreport', 'fee-collection-reports.index', 'exam-reports.index'])
                 <li class="{{ isActiveRoute(['seatsreport', 'fee-collection-reports.*','exam-reports.*']) }}">
                     <a data-root="reports"><i class="fa fa-file"></i> <span class="nav-label">Report</span><span
@@ -225,29 +243,12 @@
                     </ul>
                 </li>
             @endcanany
-            @canany(['notifications.send', 'notifications.log', 'notifications.msg.log'])
-                <li class="{{ isActiveRoute(['notifications.index', 'notifications.log', 'notifications.msg.log']) }}">
-                    <a data-root="notifications"><i class="fa fa-bell"></i> <span class="nav-label">Notifications</span><span
-                            class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        @can('notifications.send')
-                            <li class="{{ isActiveRoute('notifications.index') }}" data-show="">
-                                <a href="{{ route('notifications.index') }}">Send Message</a>
-                            </li>
-                        @endcan
-                        @can('notifications.log')
-                            <li class="{{ isActiveRoute('notifications.log') }}" data-show="">
-                                <a href="{{ route('notifications.log') }}">Log</a>
-                            </li>
-                        @endcan
-                        @can('notifications.msg.log')
-                            <li class="{{ isActiveRoute('notifications.msg.log') }}" data-show="">
-                                <a href="{{ route('notifications.msg.log') }}"> Message Log</a>
-                            </li>
-                        @endcan
-                    </ul>
+            @can('notifications.log')
+                <li class="{{ isActiveRoute('notifications.log') }}">
+                    <a href="{{ route('notifications.log') }}" data-root="sms"><i class="fa fa-bell"></i>
+                        <span class="nav-label">Log</span></a>
                 </li>
-            @endcanany
+            @endcan
             @canany(['users.index', 'roles.index', 'system-setting.index', 'roles.index', 'system-setting.index', 'exam-grades.index', 'academic-sessions.index'])
                 <li class="{{ isActiveRoute(['users.*', 'roles.*', 'system-setting.*', 'fee-scenario.*', 'exam-grades.*', 'academic-sessions.*']) }}">
                     <a data-root="admin"><i class="fa fa-gear fa-spin"></i> <span class="nav-label">Administrative Tools</span><span

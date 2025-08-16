@@ -10,6 +10,7 @@ use App\Employee;
 use App\Guardian;
 use App\Notification;
 use App\NotificationLog;
+use App\NotificationsSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendMsgJob;
@@ -20,8 +21,8 @@ class NotificationsController extends Controller
 {
     public function index(Request $request)
     {
-
-        return view('admin.notifications');
+        $data['notificationSettings'] = NotificationsSetting::where('name', 'send_msg')->first();
+        return view('admin.notifications', $data);
     }
 
     public function getData(Request $request)
