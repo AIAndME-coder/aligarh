@@ -344,7 +344,7 @@
         }
 
         .scrollable-table-wrapper {
-            max-height: 58vh;
+            max-height: 54vh;
             overflow-y: auto;
             overflow-x: auto;
         }
@@ -637,7 +637,7 @@
                                                                         <th>Name</th>
                                                                         <th>GR Number</th>
                                                                         <th>Obtained Marks</th>
-                                                                        <th>Present</th>
+                                                                        <th id="togglePresentHeader" style="cursor: pointer;">Present</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="studentResultsTable">
@@ -726,6 +726,38 @@
             @else
                 $('a[href="#tab-10"]').tab('show');
             @endif
+        });
+
+        // For model
+        let allPresentChecked = false;
+        $(document).on('click', '#togglePresentHeader', function () {
+            allPresentChecked = !allPresentChecked;
+            $('[id^=present-]').prop('checked', allPresentChecked).trigger('change');
+        });
+
+        $(document).on('change', '[id^=present-]', function () {
+            const studentId = $(this).attr('id').split('-')[1];
+            const marksInput = $(`#marks-${studentId}`);
+            const totalMarks = parseInt($('#totalMarks').text()) || 0;
+
+            if ($(this).is(':checked')) {
+                marksInput.prop('disabled', false);
+                marksInput.attr('max', totalMarks);
+            } else {
+                marksInput.val('');
+                marksInput.prop('disabled', true);
+            }
+        });
+
+        $(document).on('input', '[id^=marks-]', function () {
+            const totalMarks = parseInt($('#totalMarks').text()) || 0;
+            let val = parseFloat($(this).val());
+
+            if (val > totalMarks) {
+                $(this).val(totalMarks);
+            } else if (val < 0) {
+                $(this).val(0);
+            }
         });
     </script>
 @endsection

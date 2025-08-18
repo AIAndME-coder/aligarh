@@ -55,11 +55,11 @@ class QuizResultController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'quiz_id'                   => 'required|uuid|exists:quizzes,id',
-            'results'                   => 'required|array|min:1',
-            'results.*.student_id'      => 'required|exists:students,id',
-            'results.*.obtain_marks'    => 'required|numeric|between:0,200',
-            'results.*.present'         => 'required|boolean|in:0,1',
+            'quiz_id'              => 'required|uuid|exists:quizzes,id',
+            'results'              => 'required|array|min:1',
+            'results.*.student_id' => 'required|exists:students,id',
+            'results.*.present'    => 'required|boolean|in:0,1',
+            'results.*.obtain_marks' => 'nullable|numeric|min:0|max:200',
         ]);
 
         if ($validator->fails()) {
@@ -72,12 +72,29 @@ class QuizResultController extends Controller
         $quiz = Quiz::select('id', 'total_marks')->findOrFail($quizId);
 
         foreach ($results as $index => $result) {
-            if ($result['obtain_marks'] > $quiz->total_marks) {
-                return response()->json([
-                    'errors' => [
-                        "results.$index.obtain_marks" => ["Obtained marks cannot exceed total marks ({$quiz->total_marks})."]
-                    ]
-                ], 422);
+            $isPresent = (bool) $result['present'];
+            $marks = $result['obtain_marks'];
+
+            // If student is present, obtain_marks must be provided and within range
+            if ($isPresent) {
+                if (!is_numeric($marks)) {
+                    return response()->json([
+                        'errors' => [
+                            "results.$index.obtain_marks" => ["Obtained marks are required for present students."]
+                        ]
+                    ], 422);
+                }
+
+                if ($marks > $quiz->total_marks) {
+                    return response()->json([
+                        'errors' => [
+                            "results.$index.obtain_marks" => ["Obtained marks cannot exceed total marks ({$quiz->total_marks})."]
+                        ]
+                    ], 422);
+                }
+            } else {
+                // If absent, marks must be null
+                $results[$index]['obtain_marks'] = null;
             }
         }
 
@@ -98,11 +115,9 @@ class QuizResultController extends Controller
             ];
 
             if ($existing->has($studentId)) {
-                // It's an update
                 $record['id'] = $existing[$studentId];
                 $toUpdate[] = $record;
             } else {
-                // It's a new insert
                 $record['id'] = (string) Str::uuid();
                 $record['created_at'] = now();
                 $toInsert[] = $record;
@@ -110,12 +125,10 @@ class QuizResultController extends Controller
         }
 
         DB::transaction(function () use ($toInsert, $toUpdate) {
-            // Insert new ones
             collect($toInsert)->chunk(200)->each(function ($chunk) {
                 QuizResult::insert($chunk->toArray());
             });
 
-            // Update existing ones
             collect($toUpdate)->chunk(200)->each(function ($chunk) {
                 foreach ($chunk as $data) {
                     QuizResult::where('id', $data['id'])->update([
