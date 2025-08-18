@@ -52,6 +52,11 @@
             border-bottom: 10px solid transparent;
             border-left: 10px solid #009486;
         }
+
+        .d-none {
+            display: none !important;
+        }
+
     </style>
 @endsection
 @section('content')
@@ -794,19 +799,19 @@
                                                     <th>#</th>
                                                     <th>Name</th>
                                                     <th>
-                                                        <input id="select-all-mail" type="checkbox" @change="toggleSelectAll('mail', $event)">
+                                                        <input id="select-all-mail" class="d-none"  type="checkbox" @change="toggleSelectAll('mail', $event)" @click.stop>
                                                         <label for="select-all-mail" data-toggle="tooltip" title="select all">
                                                             <b>Mail</b>
                                                         </label>
                                                     </th>
                                                     <th>
-                                                        <input id="select-all-sms" type="checkbox" @change="toggleSelectAll('sms', $event)">
+                                                        <input id="select-all-sms" class="d-none" type="checkbox" @change="toggleSelectAll('sms', $event)" @click.stop>
                                                         <label for="select-all-sms" data-toggle="tooltip" title="select all">
                                                             <b>SMS</b>
                                                         </label>
                                                     </th>
                                                     <th>
-                                                        <input id="select-all-whatsapp" type="checkbox" @change="toggleSelectAll('whatsapp', $event)">
+                                                        <input id="select-all-whatsapp" class="d-none" type="checkbox" @change="toggleSelectAll('whatsapp', $event)" @click.stop>
                                                         <label for="select-all-whatsapp" data-toggle="tooltip" title="select all">
                                                             <b>WhatsApp</b>
                                                         </label>
@@ -814,15 +819,15 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="(notification, index) in notifications" :key="notification.id">
+                                                <tr v-for="(notification, index) in notifications" :key="notification.id" @click="selectRow(notification)">
                                                     <td>@{{ index + 1 }}</td>
                                                     <td>@{{ formatName(notification.name) }}</td>
                                                     <td><input type="checkbox" v-model="notification.mail"
-                                                            @change="updateSetting(notification, 'mail')"></td>
+                                                            @change="updateSetting(notification, 'mail')" @click.stop></td>
                                                     <td><input type="checkbox" v-model="notification.sms"
-                                                            @change="updateSetting(notification, 'sms')"></td>
+                                                            @change="updateSetting(notification, 'sms')" @click.stop></td>
                                                     <td><input type="checkbox" v-model="notification.whatsapp"
-                                                            @change="updateSetting(notification, 'whatsapp')"></td>
+                                                            @change="updateSetting(notification, 'whatsapp')" @click.stop></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -938,6 +943,27 @@
                             toastr.error("Update failed. Please try again.", "Error");
                         });
                 }, 300),
+                selectRow(notification) {
+                    const anySelected = notification.mail || notification.sms || notification.whatsapp;
+                    const newValue = !anySelected;
+                    notification.mail = newValue;
+                    notification.sms = newValue;
+                    notification.whatsapp = newValue;
+
+                    axios.post(`/system-setting/notification-settings/row`, {
+                        id: notification.id,
+                        mail: newValue,
+                        sms: newValue,
+                        whatsapp: newValue
+                    })
+                    .then(response => {
+                        toastr.success("Row settings updated", "Notification");
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        toastr.error("Failed to update row", "Error");
+                    });
+                },
 
                 toggleSelectAll(type, event) {
                     const isChecked = event.target.checked;

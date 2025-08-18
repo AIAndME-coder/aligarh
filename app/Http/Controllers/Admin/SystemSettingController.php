@@ -124,6 +124,25 @@ class SystemSettingController extends Controller
 
 	public function NotificationSettings(Request $request, $id)
 	{
+		// Check if ID is "row" - update a specific record
+		if ($id === 'row') {
+			$notificationId = $request->input('id');
+			$mail = $request->input('mail');
+			$sms = $request->input('sms');
+			$whatsapp = $request->input('whatsapp');
+
+			$notification = NotificationsSetting::findOrFail($notificationId);
+
+			$notification->mail = $mail;
+			$notification->sms = $sms;
+			$notification->whatsapp = $whatsapp;
+			$notification->save();
+
+			return response()->json([
+				'message' => "Row settings updated successfully.",
+			]);
+		}
+
 		$field = $request->input('field');
 		$value = $request->input('value');
 
