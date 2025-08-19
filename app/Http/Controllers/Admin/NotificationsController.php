@@ -223,7 +223,7 @@ class NotificationsController extends Controller
         $perPage = 10;
         $page = $request->input('page', 1);
 
-        if ($request->wantsJson()) {
+        if ($request->ajax()) {
             $notifications = Notification::with('user:id,name')
                 ->latest()
                 ->paginate($perPage, ['*'], 'page', $page);

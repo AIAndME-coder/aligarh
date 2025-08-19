@@ -172,31 +172,19 @@
             <li>
                 <span class="m-r-sm text-muted welcome-message">Welcome to Aligarh Management System.</span>
             </li>
-            {{-- <li class="dropdown" id="notification-app">
+            <li class="dropdown" id="notification-bell">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                     <i class="fa fa-bell"></i>
-                    <span class="label label-primary" v-if="unreadCount > 0">@{{ unreadCount }}</span>
+                    <span class="label label-primary" id="unread-count"></span>
                 </a>
 
                 <div class="notification-dropdown dropdown-menu">
-                    <div v-for="notification in notifications.slice(0, 5)" :key="notification.id"
-                        class="notification-mini-card">
-                        <div class="notification-mini-content">
-                            <div class="notification-mini-message">
-                                @{{ truncate(notification.notification, 40) }}
-                            </div>
-                            <div class="notification-mini-meta">
-                                @{{ notification.user ? notification.user.name : 'System' }} • @{{ formatTime(notification.created_at) }}
-                                <span v-if="!notification.is_read" class="notification-mini-status">New</span>
-                            </div>
-                        </div>
-                    </div>
-
+                    <div id="notification-list"></div> <!-- Notifications will be appended here -->
                     <div class="notification-mini-footer">
                         <a href="/notifications/logs">See all notifications</a>
                     </div>
                 </div>
-            </li> --}}
+            </li>
 
             <li>
                 <a href="{{ URL('logout') }}">
@@ -210,78 +198,108 @@
     <!-- <script type="text/javascript">
         /*  $(document).ready(function(){
 
-                $("#nav_collapse").click(function(){
+                                            $("#nav_collapse").click(function(){
 
-                    $.post('{{ URL('user-settings/skincfg') }}', { _token: "{{ csrf_token() }}", nav_collapse: "mini-navbar" })
-                    .done(function(data) {
-                            toastr.options = {
-                                closeButton: true,
-                                progressBar: true,
-                                showMethod: 'slideDown',
-                                timeOut: 8000
-                            };
-                            toastr.success(data.toastrmsg.msg, data.toastrmsg.title);
-                      }
-                    )
-                    .fail(function () {
-                        alert("Fail");
-                    });
+                                                $.post('{{ URL('user-settings/skincfg') }}', { _token: "{{ csrf_token() }}", nav_collapse: "mini-navbar" })
+                                                .done(function(data) {
+                                                        toastr.options = {
+                                                            closeButton: true,
+                                                            progressBar: true,
+                                                            showMethod: 'slideDown',
+                                                            timeOut: 8000
+                                                        };
+                                                        toastr.success(data.toastrmsg.msg, data.toastrmsg.title);
+                                                  }
+                                                )
+                                                .fail(function () {
+                                                    alert("Fail");
+                                                });
 
-                });
+                                            });
 
-              });*/
+                                          });*/
     </script> -->
 </div>
 <script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
 <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
-{{-- <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
-        new Vue({
-            el: '#notification-app',
-            data: {
-                notifications: [],
-                per_page: 5,
-                isLoading: false
-            },
-            computed: {
-                unreadCount() {
-                    return this.notifications.filter(n => n && !n.is_read)
-                    .length; // Ensuring `n` is not null or undefined
-                }
-            },
-            methods: {
-                truncate(text, length) {
-                    if (!text) return ''; // Handle null or undefined text
-                    return text.length <= length ? text : text.substring(0, length) + '...';
-                },
-                formatTime(date) {
-                    if (!date || !moment(date).isValid())
-                return 'Invalid date'; // Handle null, undefined, or invalid dates
-                    return moment(date).fromNow();
-                },
-                loadNotifications() {
-                    this.isLoading = true;
-                    axios.get('/notifications/logs', {
-                            params: {
-                                per_page: this.per_page
-                            }
-                        })
-                        .then((response) => {
-                            // Ensure notifications exists and is an array
-                            this.notifications = Array.isArray(response.data.notifications) ?
-                                response.data.notifications : [];
-                        })
-                        .catch(() => {
-                            console.error('Failed to load navbar notifications');
-                        })
-                        .finally(() => {
-                            this.isLoading = false;
-                        });
-                }
-            },
-            mounted() {
-                this.loadNotifications();
+        if ($('#notification-bell').length) {
+            // console.log("Notification bell exists, initializing...");
+
+            // Load notifications from the server
+            function loadNotifications() {
+                $.ajax({
+                    url: '/notifications/logs',
+                    method: 'GET',
+                    data: {
+                        per_page: 5
+                    },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        // console.log(response); // Log the full response to inspect its structure
+
+                        if (response.notifications && Array.isArray(response.notifications)) {
+                            const notifications = response.notifications;
+
+                            const unreadCount = notifications.filter(n => !n.is_read).length;
+                            $('#unread-count').text(unreadCount > 0 ? unreadCount : '').toggle(
+                                unreadCount > 0);
+
+                            const notificationList = $('#notification-list');
+                            notificationList.empty(); // Clear existing notifications
+
+                            notifications.slice(0, 5).forEach(notification => {
+                                const notificationText = notification.notification || 'No message available';
+                                const notificationUser = notification.user ? notification.user.name : 'System';
+                                const notificationTime = formatTime(notification.created_at || '');
+                                
+                                let notificationStatusHtml = '';
+
+                                if (notification.is_read === 0) {
+                                    notificationStatusHtml = `<span class="notification-mini-status">New</span>`;
+                                }
+
+                                const notificationHtml = `
+                                    <div class="notification-mini-card">
+                                        <div class="notification-mini-content">
+                                            <div class="notification-mini-message">
+                                                ${truncate(notificationText, 40)}
+                                            </div>
+                                            <div class="notification-mini-meta">
+                                                ${notificationUser} • ${notificationTime}
+                                                ${notificationStatusHtml}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                                notificationList.append(notificationHtml);
+                            });
+                        } else {
+                            console.error('Invalid notification format', response);
+                        }
+                    },
+                    error: function() {
+                        console.error('Failed to load notifications');
+                    }
+                });
             }
-        });
+
+            function truncate(text, length) {
+                if (!text) return '';
+                return text.length <= length ? text : text.substring(0, length) + '...';
+            }
+
+            function formatTime(date) {
+                if (!date || !moment(date).isValid()) return 'Invalid date';
+                return moment(date).fromNow();
+            }
+
+            loadNotifications();
+        } else {
+            console.log("Notification bell not found.");
+        }
     });
-</script> --}}
+</script>
