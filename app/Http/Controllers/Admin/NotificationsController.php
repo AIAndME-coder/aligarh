@@ -254,6 +254,15 @@ class NotificationsController extends Controller
         ]);
     }
 
+    public function logRead($id)
+    {
+        $notification = Notification::find($id);
+        if ($notification->is_read == 0) {
+            $notification->is_read = 1;
+            $notification->save();
+        }
+        return 200;
+    }
 
     public function msgLog(Request $request)
     {
