@@ -66,8 +66,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if ($('#nb-bell').length) {
-            // console.log("Notification bell exists, initializing...");
-
             // Load notifications from the server
             function loadNotifications() {
                 $.ajax({
@@ -80,45 +78,49 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     success: function(response) {
-                        // console.log(response); // Log the full response to inspect its structure
-
                         if (response.notifications && Array.isArray(response.notifications)) {
                             const notifications = response.notifications;
 
                             const unreadCount = notifications.filter(n => !n.is_read).length;
-                            $('#nb-unread-count').text(unreadCount > 0 ? unreadCount : '').toggle(
-                                unreadCount > 0);
+                            $('#nb-unread-count').text(unreadCount > 0 ? unreadCount : '').toggle(unreadCount > 0);
 
-                            const notificationList = $('#notification-list');
+                            const notificationList = $('#nb-list');
                             notificationList.empty(); // Clear existing notifications
                             notifications.slice(0, 5).forEach(notification => {
-                            const notificationText = notification.notification || 'No message available';
-                            const notificationUser = notification.user ? notification.user.name : 'System';
-                            const notificationTime = formatTime(notification.created_at || '');
+                                const notificationText = notification.notification || 'No message available';
+                                const notificationUser = notification.user ? notification.user.name : 'System';
+                                const notificationTime = formatTime(notification.created_at || '');
 
-                            let notificationStatusHtml = '';
+                                let notificationStatusHtml = '';
 
-                            if (notification.is_read === 0) {
-                                notificationStatusHtml = `<span class="nb-mini-status">New</span>`;
-                            }
+                                if (notification.is_read === 0) {
+                                    notificationStatusHtml = `<span class="nb-mini-status">New</span>`;
+                                }
 
-                            const notificationHtml = `
-                                <div class="nb-mini-card">
-                                    <div class="nb-mini-content">
-                                        <div class="nb-mini-message">
-                                            ${truncate(notificationText, 40)}
-                                        </div>
-                                        <div class="nb-mini-meta">
-                                            ${notificationUser} • ${notificationTime}
-                                            ${notificationStatusHtml}
+                                const notificationHtml = `
+                                    <div class="nb-mini-card" data-id="${notification.id}" data-link="${notification.link}">
+                                        <div class="nb-mini-content">
+                                            <div class="nb-mini-message">
+                                                ${truncate(notificationText, 40)}
+                                            </div>
+                                            <div class="nb-mini-meta">
+                                                ${notificationUser} • ${notificationTime}
+                                                ${notificationStatusHtml}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            `;
+                                `;
 
-                            // Append to the container with id 'nb-list'
-                            document.getElementById('nb-list').insertAdjacentHTML('beforeend', notificationHtml);
-                        });
+                                // Append to the container with id 'nb-list'
+                                notificationList.append(notificationHtml);
+                            });
+
+                            // Add click event listener for each notification card
+                            $('.nb-mini-card').click(function() {
+                                const notificationId = $(this).data('id');
+                                const notificationLink = $(this).data('link');
+                                markAsRead(notificationId, notificationLink);
+                            });
                         } else {
                             console.error('Invalid notification format', response);
                         }
@@ -129,16 +131,39 @@
                 });
             }
 
+            // Truncate function to shorten text
             function truncate(text, length) {
                 if (!text) return '';
                 return text.length <= length ? text : text.substring(0, length) + '...';
             }
 
+            // Format time using moment.js
             function formatTime(date) {
                 if (!date || !moment(date).isValid()) return 'Invalid date';
                 return moment(date).fromNow();
             }
 
+            // Function to mark the notification as read
+            function markAsRead(notificationId, notificationLink) {
+                $.ajax({
+                    url: `/notifications/${notificationId}`,
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function() {
+                        // Mark as read and open the link in a new tab
+                        window.open(notificationLink, '_blank');
+                        loadNotifications();
+                    },
+                    error: function(error) {
+                        console.error('Mark as read failed:', error);
+                        toastr.error("Failed to open notification.");
+                    }
+                });
+            }
+
+            // Initial loading of notifications
             loadNotifications();
         } else {
             console.log("Notification bell not found.");
