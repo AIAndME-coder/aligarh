@@ -1,6 +1,19 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Api\Guardian\UserController as GuardianUserController;
+use App\Http\Controllers\Api\Guardian\HomeController;
+use App\Http\Controllers\Api\Guardian\StudentProfileController;
+use App\Http\Controllers\Api\Guardian\StudentFeeController;
+use App\Http\Controllers\Api\Guardian\ExamController;
+use App\Http\Controllers\Api\Guardian\RoutineController;
+use App\Http\Controllers\Api\Guardian\NoticeBoardController;
+use App\Http\Controllers\Api\Guardian\QuizController;
+
+use App\Http\Controllers\Api\TMS\UserController as TMSUserController;
+use App\Http\Controllers\Api\TMS\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,59 +25,53 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// FOR GUARdian APP Portal API
-Route::group(['prefix' => 'guardian', 'namespace'	=>	'Api\Guardian'], function(){
+Route::prefix('guardian')->group(function () {
 
-	Route::post('login', 'UserController@Login')->name('guardian.login');
+    Route::post('login', [GuardianUserController::class, 'Login'])->name('guardian.login');
 
-	Route::group(['middleware'  =>  'auth:api'], function(){
+    Route::middleware('auth:api')->group(function () {
 
-		Route::group(['middleware'  =>  ['scope:guardian', 'auth.active']], function(){
+        Route::middleware(['scope:guardian', 'auth.active'])->group(function () {
 
-			Route::get('home', 'HomeController@Home');
-			Route::post('student-profile', 'StudentProfileController@GetShortProfile');
-			Route::post('student-invoices', 'StudentFeeController@GetFeeInvoices');
-			Route::post('student-exams', 'ExamController@GetExams');
-			Route::get('routines', 'RoutineController@GetRoutines');
-			Route::get('noticeboard', 'NoticeBoardController@GetNotices');
-			Route::get('quiz/{student_id}', 'QuizController@GetQuiz');
+            Route::get('home', [HomeController::class, 'Home']);
+            Route::post('student-profile', [StudentProfileController::class, 'GetShortProfile']);
+            Route::post('student-invoices', [StudentFeeController::class, 'GetFeeInvoices']);
+            Route::post('student-exams', [ExamController::class, 'GetExams']);
+            Route::get('routines', [RoutineController::class, 'GetRoutines']);
+            Route::get('noticeboard', [NoticeBoardController::class, 'GetNotices']);
+            Route::get('quiz/{student_id}', [QuizController::class, 'GetQuiz']);
 
-			Route::get('user', function(Request $request){
-//                return $request->user()->token()->id;
-				return response()->json(['User'	=>	$request->user(), 'Profile'	=>	App\Guardian::find($request->user()->foreign_id)]);
-			});
+            Route::get('user', function (Request $request) {
+                return response()->json([
+                    'User' => $request->user(),
+                    'Profile' => \App\Guardian::find($request->user()->foreign_id),
+                ]);
+            });
 
-			Route::get('students/image/{image}', 'StudentProfileController@GetImage');
+            Route::get('students/image/{image}', [StudentProfileController::class, 'GetImage']);
+        });
 
-		});
-
-		Route::post('logout', 'UserController@Logout');
-	});
-
-//		Route::delete('logout/{token_id}', '\Laravel\Passport\Http\Controllers\PersonalAccessTokenController@destroy');
+        Route::post('logout', [GuardianUserController::class, 'Logout']);
+    });
 });
 
-// FOR TMS APP API
-Route::group(['prefix'	=>	'tms', 'namespace'	=>	'Api\TMS'],	function(){
 
-	Route::post('login', 'UserController@Login')->name('tms.login');
+Route::prefix('tms')->group(function () {
 
-	Route::group(['middleware'  =>  'auth:api'], function(){
+    Route::post('login', [TMSUserController::class, 'Login'])->name('tms.login');
 
-		Route::group(['middleware'  =>  ['scope:tms', 'auth.active']], function(){
+    Route::middleware('auth:api')->group(function () {
 
-			Route::get('user', function(Request $request){
-				return response()->json(['User' => $request->user()]);
-			});
+        Route::middleware(['scope:tms', 'auth.active'])->group(function () {
 
-			Route::post('attendance', 'AttendanceController@Attendance');
+            Route::get('user', function (Request $request) {
+                return response()->json(['User' => $request->user()]);
+            });
 
-			Route::post('cachedata', 'AttendanceController@CacheData');
+            Route::post('attendance', [AttendanceController::class, 'Attendance']);
+            Route::post('cachedata', [AttendanceController::class, 'CacheData']);
+        });
 
-		});
-
-		Route::post('logout', 'UserController@Logout');
-
-	});
-
+        Route::post('logout', [TMSUserController::class, 'Logout']);
+    });
 });
