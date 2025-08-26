@@ -1628,10 +1628,11 @@
                             <span style="font-size: 180%; margin-left: 8.5%;">3-April-2018</span>
                         </div>
                     </div>
-                    <div class="col span-2-of-5">
+                    {{-- QR Code --}}
+                    {{-- <div class="col span-2-of-5">
                         <img src="http://chart.googleapis.com/chart?chs=200&cht=qr&chl=student-{{ $student->id }}"
                             style="width: 100px; height: 100px; margin: 0px 0 0;">
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="span-2-of-2" style="margin: 2% 0;">
