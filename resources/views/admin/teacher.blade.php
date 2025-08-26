@@ -345,9 +345,11 @@
                 <div class="col-lg-12">
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
-                            <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Teachers</a>
-                            </li>
+                            @canany(['teacher.index','teacher.grid'])
+                              <li class="">
+                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Teachers</a>
+                              </li>
+                            @endcanany
                             @can('teacher.add')
                               <li class="add-teacher">
                                 <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Teachers</a>

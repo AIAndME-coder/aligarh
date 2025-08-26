@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         
         // Artisan::call('migrate', ['--force' => true]);
         // Artisan::call('db:seed', ['--class' => 'PermissionsUpdateSeeder', '--force' => true, ]);
+        // Artisan::call('db:seed', ['--class' => 'NotificationsSettingsSeeder', '--force' => true, ]);
         // return response('<h2>✅ Done: Migrations and PermissionsUpdateSeeder ran successfully.</h2>');
     });
 

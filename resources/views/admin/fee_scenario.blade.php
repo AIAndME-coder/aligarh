@@ -42,13 +42,13 @@
 										<div class="tabs-container">
 												<ul class="nav nav-tabs">
 													<li class="active">
-														@can('fee-scenario.update.scenario')
+														@can('fee-scenario.index')
 															<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Fee Scenario</a>
 														@endcan
 													</li>
 												</ul>
 												<div class="tab-content">
-													@can('fee-scenario.update.scenario')
+													@can('fee-scenario.index')
 														<div id="tab-10" class="tab-pane fade fade in active add-guardian">
 																<div class="panel-body">
 																	
@@ -133,12 +133,15 @@
 																			</div>
 																		</div>
 
-																		<div class="form-group">
-																			<div class="col-md-offset-2 col-md-6">
-																					<button class="btn btn-primary" name="type" value="1" type="submit"><span class="glyphicon glyphicon-save"></span> Only For New Student </button>
-																					<button class="btn btn-primary" name="type" value="2" type="submit"><span class="glyphicon glyphicon-save"></span> Apply All Student </button>
+
+																		@can('fee-scenario.update.scenario')
+																			<div class="form-group">
+																				<div class="col-md-offset-2 col-md-6">
+																						<button class="btn btn-primary" name="type" value="1" type="submit"><span class="glyphicon glyphicon-save"></span> Only For New Student </button>
+																						<button class="btn btn-primary" name="type" value="2" type="submit"><span class="glyphicon glyphicon-save"></span> Apply All Student </button>
+																				</div>
 																			</div>
-																		</div>
+																		@endcan
 																	</form>
 
 																</div>

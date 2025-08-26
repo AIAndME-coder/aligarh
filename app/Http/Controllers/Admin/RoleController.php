@@ -167,6 +167,7 @@ class RoleController extends Controller
 			],
 			'Teachers' => [
 				'teacher.index' => 'Teachers View',
+				'teacher.grid' => 'Teachers Gird View',
 				'teacher.add' => 'Teachers Create',
 				'teacher.edit' => 'Teachers Edit',
 				'teacher.edit.post' => 'Teachers Update',
@@ -176,6 +177,7 @@ class RoleController extends Controller
 			],
 			'Employees' => [
 				'employee.index' => 'Employees View',
+				'employee.grid' => 'Employees Gird View',
 				'employee.add' => 'Employees Create',
 				'employee.edit' => 'Employees Edit',
 				'employee.edit.post' => 'Employees Update',
@@ -185,6 +187,7 @@ class RoleController extends Controller
 			],
 			'Guardians' => [
 				'guardian.index' => 'Guardians View',
+				'guardian.grid' => 'Guardians Gird View',
 				'guardian.add' => 'Guardians Create',
 				'guardian.edit' => 'Guardians Edit',
 				'guardian.edit.post' => 'Guardians Update',

@@ -530,10 +530,11 @@
                 <div class="col-lg-12">
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
-                            <li class="">
-                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Students</a>
-                            </li>
-
+                            @canany(['students.index','students.grid'])
+                                <li class="">
+                                    <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Students</a>
+                                </li>
+                            @endcanany
                             @can('students.add')
                                 <li class="add-student">
                                     <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Admit Students</a>
