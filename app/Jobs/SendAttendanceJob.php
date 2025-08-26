@@ -57,16 +57,16 @@ class SendAttendanceJob implements ShouldQueue
         }
 
         try {
-            if ($this->shouldSend('mail')) {
+            if ($this->shouldSend('mail') && !empty($this->message)){
                 SendMailJob::dispatch($this->email, $this->message, $this->emailSubject);
             }
 
-            if ($this->shouldSend('sms')) {
+            if ($this->shouldSend('sms') && !empty($this->message)) {
                 SendSmsJob::dispatch($this->sms_number, $this->message);
             }
 
             // Uncomment when WhatsApp support is ready
-            // if ($this->shouldSend('whatsapp')) {
+            // if ($this->shouldSend('whatsapp') && !empty($this->message)) {
             //     SendWhatsAppJob::dispatch($this->whatsapp_number, $this->message);
             // }
 
