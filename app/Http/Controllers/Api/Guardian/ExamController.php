@@ -57,6 +57,9 @@ class ExamController extends Controller
 				$total_obtain_marks += $obtain;
 				$total_full_marks += $full;
 
+				$result->percentage = $full > 0 ? round(($obtain / $full) * 100, 2) : 0;
+				$result->grade = $this->getExamGrade($result->percentage);
+
 				return $result;
 			});
 
