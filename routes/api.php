@@ -37,11 +37,11 @@ Route::prefix('guardian')->group(function () {
 
             Route::post('/students', [StudentController::class, 'getStudents']);
             Route::get('/attendance/{student_id}', [GuardianAttendanceController::class, 'getAttendance']);
+            Route::post('/exams', [ExamController::class, 'getExams']);
 
             Route::get('home', [HomeController::class, 'Home']);
             Route::post('student-profile', [StudentProfileController::class, 'GetShortProfile']);
             Route::post('student-invoices', [StudentFeeController::class, 'GetFeeInvoices']);
-            Route::post('student-exams', [ExamController::class, 'GetExams']);
             Route::get('routines', [RoutineController::class, 'GetRoutines']);
             Route::get('noticeboard', [NoticeBoardController::class, 'GetNotices']);
             Route::get('quiz/{student_id}', [QuizController::class, 'GetQuiz']);

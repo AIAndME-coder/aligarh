@@ -232,7 +232,7 @@ class Student extends Model
 
 	public function getLastExamGradeAttribute()
 	{
-		$lastExamId = Exam::latest('id')->value('id');
+		$lastExamId = Exam::latest('id')->where('academic_session_id', $this->session_id)->value('id');
 
 		if (!$lastExamId) {
 			return null;
