@@ -326,13 +326,11 @@
 												</div>
 											</div>
 
-											<div class="form-group">
-												<label class="col-md-2 control-label">Payment Mode</label>
+											<div class="form-group{{ ($errors->has('payment_type'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label"> Payment Mode </label>
 												<div class="col-md-6">
-													<select class="form-control" name="payment_type" required="true">
-														<option>Chalan</option>
-														<option>Cash</option>
-													</select>
+													<div class="i-checks"><label> <input type="radio" checked value="Cash" name="payment_type" required> <i></i>Cash</label></div>
+													<div class="i-checks"><label> <input type="radio" value="Chalan" name="payment_type"  required> <i></i>Chalan</label></div>
 												</div>
 											</div>
 
