@@ -12,11 +12,13 @@ use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class TenancyServiceProvider extends ServiceProvider
 {
     // By default, no namespace is used to support the callable array syntax.
-    public static string $controllerNamespace = '';
+    public static string $controllerNamespace = 'App\Http\Controllers\Admin';
 
     public function events()
     {
@@ -120,10 +122,17 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function mapRoutes()
     {
-        if (file_exists(base_path('routes/tenant.php'))) {
-            Route::namespace(static::$controllerNamespace)
-                ->group(base_path('routes/tenant.php'));
-        }
+        // if (file_exists(base_path('routes/tenant_web.php'))) {
+        //     Route::namespace(static::$controllerNamespace)
+        //         ->group(base_path('routes/tenant_web.php'));
+        // }
+        Route::middleware([
+			'web',
+			InitializeTenancyByDomain::class,
+			PreventAccessFromCentralDomains::class,
+		])
+		->namespace(static::$controllerNamespace)
+		->group(base_path('routes/tenant_web.php'));
     }
 
     protected function makeTenancyMiddlewareHighestPriority()

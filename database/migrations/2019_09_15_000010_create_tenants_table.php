@@ -17,11 +17,12 @@ class CreateTenantsTable extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->string('id')->primary();
-
-            // your custom columns may go here
-
-            $table->timestamps();
+            $table->string('name')->unique();
+            $table->string('address', 255)->nullable();
+            $table->string('contact_name');
+            $table->string('contact_number', 255);
             $table->json('data')->nullable();
+            $table->timestamps();	
         });
     }
 
