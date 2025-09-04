@@ -130,6 +130,7 @@ class TenancyServiceProvider extends ServiceProvider
 			'web',
 			InitializeTenancyByDomain::class,
 			PreventAccessFromCentralDomains::class,
+            'tenant.active',
 		])
 		->namespace(static::$controllerNamespace)
 		->group(base_path('routes/tenant_web.php'));
@@ -138,6 +139,7 @@ class TenancyServiceProvider extends ServiceProvider
 			'api',
 			InitializeTenancyByDomain::class,
 			PreventAccessFromCentralDomains::class,
+            'tenant.active',
 		])
 		->namespace(static::$controllerNamespace)
 		->group(base_path('routes/tenant_api.php'));

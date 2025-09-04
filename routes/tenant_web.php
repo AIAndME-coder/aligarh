@@ -54,6 +54,9 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
+Route::get('/inactive-tenant', function () {
+    return view('tenant.inactive');
+})->name('tenant.inactive');
 
 Route::post('/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 Route::get('/password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
