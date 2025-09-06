@@ -3,8 +3,8 @@
 @section('title', 'Message Logs |')
 
 @section('head')
-    <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <style type="text/css">
         .print-table {
             width: 100%;
@@ -78,8 +78,8 @@
 @endsection
 
 @section('script')
-    <script src="{{ URL::to('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/dataTables/datatables.min.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {

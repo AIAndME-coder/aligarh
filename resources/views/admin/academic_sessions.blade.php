@@ -3,9 +3,9 @@
 @section('title', 'Academic Session |')
 
 @section('head')
-    <link href="{{ URL::to('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
-		<link href="{{ URL::to('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -141,11 +141,11 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::to('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/dataTables/datatables.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
-	<script src="{{ URL::to('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+	<script src="{{ asset('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
 
 
     <script type="text/javascript">

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureTenantIsActive
@@ -35,6 +36,8 @@ class EnsureTenantIsActive
 
     protected function denyAccess(Request $request, string $message): Response
     {
+        Auth::logout();
+
         if ($request->expectsJson() || $request->is('api/*')) {
             return response()->json([
                 'message' => $message,

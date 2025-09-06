@@ -8,27 +8,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>@yield('title') Aligarh School Management System</title>
-    <link rel="icon" href="{{ URL::to('src/icon/favicon.png') }}">
+    <link rel="icon" href="{{ asset('src/icon/favicon.png') }}">
 
-    <link href="{{ URL::to('src/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/entypo/entypo.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/entypo/entypo.css') }}" rel="stylesheet">
 
     <!-- Toastr style -->
-    <link href="{{ URL::to('src/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
 
     <!-- Gritter -->
-    <link href="{{ URL::to('src/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/js/plugins/gritter/jquery.gritter.css') }}" rel="stylesheet">
 
-    <link href="{{ URL::to('src/css/animate.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/style.css') }}" rel="stylesheet">
 	
     {{-- Notification Bell --}}
-    <link href="{{ URL::to('/src/css/notification-bell.css') }}" rel="stylesheet">
+    <link href="{{ asset('/src/css/notification-bell.css') }}" rel="stylesheet">
     
     @yield('head')
 
-    <script src="{{ URL::to('src/js/jquery-2.1.1.js') }}"></script>
+    <script src="{{ asset('src/js/jquery-2.1.1.js') }}"></script>
 
 </head>
 
@@ -44,26 +44,26 @@
     </div>
 
     <!-- Mainly scripts -->
-    <script src="{{ URL::to('src/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="{{ URL::to('src/js/custom.js') }}"></script>
+    <script src="{{ asset('src/js/custom.js') }}"></script>
 
 
     <!-- Toastr -->
-    <script src="{{ URL::to('src/js/plugins/toastr/toastr.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/toastr/toastr.min.js') }}"></script>
 
 
     <!-- Lodash version 4.17.10 -->
-    <script src="{{ URL::to('src/lodash.min.js') }}"></script>
+    <script src="{{ asset('src/lodash.min.js') }}"></script>
 
 	@if(env('APP_DEBUG'))
         <!-- Vue dev version -->
-        <script src="{{ URL::to('src/vue.js') }}"></script>
+        <script src="{{ asset('src/vue.js') }}"></script>
     @else
         <!-- Vue -->
-        <script src="{{ URL::to('src/vue.min-2.5.15.js') }}"></script>
+        <script src="{{ asset('src/vue.min-2.5.15.js') }}"></script>
     @endif
 
     @yield('vue')
@@ -108,7 +108,7 @@
 
     </script>
 
-    <script src="{{ URL::to('src/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('src/js/bootstrap.min.js') }}"></script>
 
     {{--    @include('admin.includes.skin_config')  --}}
 

@@ -3,8 +3,8 @@
 @section('title', 'System Settings |')
 
 @section('head')
-    <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
 
     <style>
         .general-nav-pills-vertical {
@@ -846,17 +846,17 @@
 @section('script')
 
     <!-- Mainly scripts -->
-    <script src="{{ URL::to('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
 
-    <script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
 
     <!-- Input Mask-->
-    <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
 
     <!-- Data picker -->
-    <script src="{{ URL::to('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/loadash-4.17.15/min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/loadash-4.17.15/min.js') }}"></script>
 
     <script type="text/javascript">
         var tbl;

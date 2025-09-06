@@ -2,7 +2,7 @@
 @section('title', 'Fee Receipts Statment | ')
 
 @section('head')
-	<script src="{{ URL::to('src/moment-develop/min/moment.min.js') }}"></script>
+	<script src="{{ asset('src/moment-develop/min/moment.min.js') }}"></script>
 
 	<style type="text/css">
 		.invoice-title h2, .invoice-title h3 {

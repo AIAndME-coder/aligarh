@@ -5,7 +5,7 @@
                 <div class="dropdown profile-element">
                     <span>
                         <img alt="image" width="48px" height="48px" class="img-circle"
-                            src="{{ URL::to('img/avatar.jpg') }}" />
+                            src="{{ asset('img/avatar.jpg') }}" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> <span class="block m-t-xs"> <strong

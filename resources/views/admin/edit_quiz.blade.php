@@ -4,8 +4,8 @@
 @section('title', 'Edit Quiz |')
 
 @section('head')
-    <link href="{{ URL::to('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <style type="text/css">
         .print-table {
             width: 100%;
@@ -182,12 +182,12 @@
 @section('script')
 
     <!-- Mainly scripts -->
-    <script src="{{ URL::to('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/dataTables/datatables.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
     @if ($errors->any())
         <script>
             @foreach ($errors->all() as $error)

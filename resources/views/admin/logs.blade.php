@@ -3,7 +3,7 @@
 @section('title', 'Logs |')
 
 @section('head')
-    <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <style>
         .notification-card {
             background: #ffffff;
@@ -201,8 +201,8 @@
     </div>
 @endsection
 @section('vue')
-    <script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             new Vue({

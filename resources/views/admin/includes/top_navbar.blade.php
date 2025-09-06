@@ -61,8 +61,8 @@
                                                                       });*/
     </script> -->
 </div>
-<script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
-<script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+<script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if ($('#nb-bell').length) {

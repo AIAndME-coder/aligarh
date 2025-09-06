@@ -15,6 +15,7 @@ use App\Observers\InvoiceMasterObserver;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Load custom system configuration
         $this->loadSystemConfiguration();
+
+        if (config('app.ssl')) { 
+            URL::forceScheme('https');
+        }
     }
 
     /**

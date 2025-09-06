@@ -4,11 +4,11 @@
 @section('title', 'Quizzes |')
 
 @section('head')
-    <link href="{{ URL::to('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::to('src/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     <script type="text/javascript">
         var sections = {!! json_encode($sections ?? '') !!};
     </script>
@@ -668,11 +668,11 @@
 @section('script')
 
     <!-- Mainly scripts -->
-    <script src="{{ URL::to('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/moment/moment.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jeditable/jquery.jeditable.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
 
     @if ($errors->any())
         <script>
@@ -762,9 +762,9 @@
     </script>
 @endsection
 @section('vue')
-    <script src="{{ URL::to('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
-    <script src="{{ URL::to('src/js/plugins/lodash-4.17.15/min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/lodash-4.17.15/min.js') }}"></script>
     <script>
         new Vue({
             el: '#app',
