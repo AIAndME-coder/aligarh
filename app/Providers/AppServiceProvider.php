@@ -56,8 +56,13 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function loadSystemConfiguration()
     {
+
+        // this should use tenancy var maybe this method load any other place b/c in here tenancy is null
         $smtp = config('systemInfo.general.smtp');
         $general = config('systemInfo.general');
+
+        // $smtp = tenancy()->tenant->system_info['general']['smtp'];
+        // $general = tenancy()->tenant->system_info['general'];
 
         if (!empty($smtp['host'])) {
             Config::set('mail.driver', 'smtp');
@@ -68,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
             Config::set('mail.username', $smtp['username']);
             Config::set('mail.password', $smtp['password']);
 
-            Config::set('mail.from.address', $general['email']);
+            Config::set('mail.from.address', $general['contact_email']);
             Config::set('mail.from.name', $general['name']);
         }
     }

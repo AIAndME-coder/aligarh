@@ -29,7 +29,8 @@ class SendWhatsAppJob implements ShouldQueue
             return;
         }
 
-        $config = config('systemInfo.whatsapp');
+        // this settings should also pass form trigger in construct
+        $config = tenancy()->tenant->system_info['whatsapp'];
         $url = rtrim($config['url'], '/') . "/{$config['phone_id']}/messages";
 
         $response = Http::withToken($config['api_token'])

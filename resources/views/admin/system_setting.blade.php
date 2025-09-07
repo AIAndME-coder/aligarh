@@ -158,7 +158,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="name"
                                                                                 placeholder="Name"
-                                                                                value="{{ old('name', config('systemInfo.general.name')) }}"
+                                                                                value="{{ old('name', $system_info['general']['name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('name'))
                                                                                 <span class="help-block">
@@ -177,7 +177,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="title"
                                                                                 placeholder="Title"
-                                                                                value="{{ old('name', config('systemInfo.general.title')) }}"
+                                                                                value="{{ old('name', $system_info['general']['title']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('title'))
                                                                                 <span class="help-block">
@@ -195,7 +195,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="email"
                                                                                 placeholder="E-Mail"
-                                                                                value="{{ old('email', config('systemInfo.general.email')) }}"
+                                                                                value="{{ old('email', $system_info['general']['contact_email']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('email'))
                                                                                 <span class="help-block">
@@ -213,7 +213,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="address"
                                                                                 placeholder="Address"
-                                                                                value="{{ old('address', config('systemInfo.general.address')) }}"
+                                                                                value="{{ old('address', $system_info['general']['address']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('address'))
                                                                                 <span class="help-block">
@@ -233,7 +233,7 @@
                                                                             <div class="input-group m-b">
                                                                                 <span class="input-group-addon">+92</span>
                                                                                 <input type="text" name="contact_no"
-                                                                                    value="{{ old('contact_no', config('systemInfo.general.contact_no')) }}"
+                                                                                    value="{{ old('contact_no', $system_info['general']['contact_no']) }}"
                                                                                     placeholder="Contact No"
                                                                                     class="form-control"
                                                                                     data-mask="9999999999" />
@@ -254,7 +254,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_name"
                                                                                 placeholder="Name"
-                                                                                value="{{ old('bank_name', config('systemInfo.general.bank.name')) }}"
+                                                                                value="{{ old('bank_name', $system_info['general']['bank']['name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_name'))
                                                                                 <span class="help-block">
@@ -273,7 +273,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_address"
                                                                                 placeholder="Address"
-                                                                                value="{{ old('bank_address', config('systemInfo.general.bank.address')) }}"
+                                                                                value="{{ old('bank_address', $system_info['general']['bank']['address']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_address'))
                                                                                 <span class="help-block">
@@ -292,7 +292,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_account_no"
                                                                                 placeholder="Account no"
-                                                                                value="{{ old('bank_account_no', config('systemInfo.general.bank.account_no')) }}"
+                                                                                value="{{ old('bank_account_no', $system_info['general']['bank']['account_no']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_account_no'))
                                                                                 <span class="help-block">
@@ -310,7 +310,7 @@
                                                                             Capacity</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="student_capacity"
-                                                                                value="{{ config('systemInfo.general.student_capacity') }}"
+                                                                                value="{{ $system_info['general']['student_capacity'] }}"
                                                                                 readonly="true" class="form-control" />
                                                                             @if ($errors->has('student_capacity'))
                                                                                 <span class="help-block">
@@ -327,7 +327,7 @@
                                                                             SMS</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text"
-                                                                                value="{{ config('systemInfo.general.available_sms') . ' till ' . config('systemInfo.general.sms_validity') }}"
+                                                                                value="{{ $system_info['general']['available_sms'] . ' till ' . $system_info['general']['sms_validity']}}"
                                                                                 readonly="true" class="form-control" />
                                                                         </div>
                                                                     </div>
@@ -337,7 +337,7 @@
                                                                             Chalan No</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text"
-                                                                                value="{{ config('systemInfo.general.next_chalan_no') }}"
+                                                                                value="{{ $system_info['general']['next_chalan_no']}}"
                                                                                 readonly="true" class="form-control" />
                                                                         </div>
                                                                     </div>
@@ -352,7 +352,7 @@
                                                                             <input type="text" name="smtp_mailer"
                                                                                 placeholder="smtp.gmail.com"
                                                                                 class="form-control"
-                                                                                value="{{ old('smtp_mailer', config('systemInfo.smtp.mailer')) }}" />
+                                                                                value="{{ old('smtp_mailer', $system_info['smtp']['mailer']) }}" />
                                                                             @if ($errors->has('smtp_mailer'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -370,7 +370,7 @@
                                                                             <input type="text" name="smtp_host"
                                                                                 placeholder="smtp.gmail.com"
                                                                                 class="form-control"
-                                                                                value="{{ old('smtp_host', config('systemInfo.smtp.host')) }}" />
+                                                                                value="{{ old('smtp_host', $system_info['smtp']['host']) }}" />
                                                                             @if ($errors->has('smtp_host'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -388,7 +388,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="smtp_port"
                                                                                 placeholder="587" class="form-control"
-                                                                                value="{{ old('smtp_port', config('systemInfo.smtp.port')) }}" />
+                                                                                value="{{ old('smtp_port', $system_info['smtp']['port']) }}" />
                                                                             @if ($errors->has('smtp_port'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -406,7 +406,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="smtp_username"
                                                                                 placeholder="Username" class="form-control"
-                                                                                value="{{ old('smtp_username', config('systemInfo.smtp.username')) }}" />
+                                                                                value="{{ old('smtp_username', $system_info['smtp']['username']) }}" />
                                                                             @if ($errors->has('smtp_username'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -424,7 +424,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="smtp_password"
                                                                                 placeholder="Password" class="form-control"
-                                                                                value="{{ old('smtp_password', config('systemInfo.smtp.password')) }}" />
+                                                                                value="{{ old('smtp_password', $system_info['smtp']['password']) }}" />
                                                                             @if ($errors->has('smtp_password'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -445,10 +445,10 @@
                                                                                 <option value="">Select Encryption
                                                                                 </option>
                                                                                 <option value="tls"
-                                                                                    {{ old('smtp_encryption', config('systemInfo.smtp.encryption')) == 'tls' ? 'selected' : '' }}>
+                                                                                    {{ old('smtp_encryption', $system_info['smtp']['encryption'] == 'tls' ? 'selected' : '') }}>
                                                                                     TLS</option>
                                                                                 <option value="ssl"
-                                                                                    {{ old('smtp_encryption', config('systemInfo.smtp.encryption')) == 'ssl' ? 'selected' : '' }}>
+                                                                                    {{ old('smtp_encryption', $system_info['smtp']['encryption'] == 'ssl' ? 'selected' : '') }}>
                                                                                     SSL</option>
                                                                             </select>
                                                                             @if ($errors->has('smtp_encryption'))
@@ -472,7 +472,7 @@
                                                                                 <option value="">Select Provider
                                                                                 </option>
                                                                                 <option value="lifetimesms"
-                                                                                    {{ old('sms_provider', config('systemInfo.sms.provider')) == 'lifetimesms' ? 'selected' : '' }}>
+                                                                                    {{ old('sms_provider', $system_info['sms']['provider'] == 'lifetimesms' ? 'selected' : '') }}>
                                                                                     Lifetime SMS
                                                                                 </option>
                                                                             </select>
@@ -492,7 +492,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_url"
                                                                                 placeholder="API Key" class="form-control"
-                                                                                value="{{ old('sms_url', config('systemInfo.sms.url')) }}" />
+                                                                                value="{{ old('sms_url', $system_info['sms']['url']) }}" />
                                                                             @if ($errors->has('sms_url'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -510,7 +510,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_api_token"
                                                                                 placeholder="API Token" class="form-control"
-                                                                                value="{{ old('sms_api_token', config('systemInfo.sms.api_token')) }}" />
+                                                                                value="{{ old('sms_api_token', $system_info['sms']['api_token']) }}" />
                                                                             @if ($errors->has('sms_api_token'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -528,7 +528,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="sms_api_secret"
                                                                                 placeholder="API Secret" class="form-control"
-                                                                                value="{{ old('sms_api_secret', config('systemInfo.sms.api_secret')) }}" />
+                                                                                value="{{ old('sms_api_secret', $system_info['sms']['api_secret']) }}" />
                                                                             @if ($errors->has('sms_api_secret'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -545,7 +545,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_sender"
                                                                                 placeholder="Sender Name" class="form-control"
-                                                                                value="{{ old('sms_sender', config('systemInfo.sms.sender')) }}" />
+                                                                                value="{{ old('sms_sender', $system_info['sms']['sender']) }}" />
                                                                             @if ($errors->has('sms_sender'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -569,7 +569,7 @@
                                                                                 <option value="">Select Provider
                                                                                 </option>
                                                                                 <option value="whatsapp business"
-                                                                                    {{ old('whatsapp_provider', config('systemInfo.whatsapp.provider')) == 'whatsapp business' ? 'selected' : '' }}>
+                                                                                    {{ old('whatsapp_provider', $system_info['whatsapp']['provider'] == 'whatsapp business' ? 'selected' : '') }}>
                                                                                     WhatsApp Business</option>
                                                                             </select>
                                                                             @if ($errors->has('whatsapp_provider'))
@@ -587,7 +587,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="whatsapp_url"
                                                                                 placeholder="URL" class="form-control"
-                                                                                value="{{ old('whatsapp_url', config('systemInfo.whatsapp.url')) }}" />
+                                                                                value="{{ old('whatsapp_url', $system_info['whatsapp']['url']) }}" />
                                                                             @if ($errors->has('whatsapp_url'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -604,7 +604,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="whatsapp_token"
                                                                                 placeholder="API Token" class="form-control"
-                                                                                value="{{ old('whatsapp_token', config('systemInfo.whatsapp.api_token')) }}" />
+                                                                                value="{{ old('whatsapp_token', $system_info['whatsapp']['api_token']) }}" />
                                                                             @if ($errors->has('whatsapp_token'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -623,7 +623,7 @@
                                                                             <input type="text" name="whatsapp_phone_id"
                                                                                 placeholder="Phone Number ID"
                                                                                 class="form-control"
-                                                                                value="{{ old('whatsapp_phone_id', config('systemInfo.whatsapp.phone_id')) }}" />
+                                                                                value="{{ old('whatsapp_phone_id', $system_info['whatsapp']['phone_id']) }}" />
                                                                             @if ($errors->has('whatsapp_phone_id'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -643,7 +643,7 @@
                                                                                 <option value="">Select Type
                                                                                 </option>
                                                                                 <option value="text"
-                                                                                    {{ old('whatsapp_mgs_type', config('systemInfo.whatsapp.type')) == 'text' ? 'selected' : '' }}>
+                                                                                    {{ old('whatsapp_mgs_type', $system_info['whatsapp']['type'] == 'text' ? 'selected' : '') }}>
                                                                                     Text</option>
                                                                             </select>
                                                                             @if ($errors->has('whatsapp_mgs_type'))
@@ -664,7 +664,7 @@
                                                                             <input type="text" name="whatsapp_webhook"
                                                                                 placeholder="Webhook URL"
                                                                                 class="form-control"
-                                                                                value="{{ old('whatsapp_webhook', config('systemInfo.general.whatsapp.webhook_url')) }}" />
+                                                                                value="{{ old('whatsapp_webhook', $system_info['general']['whatsappbhook_url']) }}" />
                                                                             @if ($errors->has('whatsapp_webhook'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -747,13 +747,13 @@
                                                     <b>Package Activation Date: </b>2019-01-19
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <b>Validity: </b>{{ config('systemInfo.general.sms_validity') }}
-                                                    @if (config('systemInfo.general.sms_validity') >= Carbon\Carbon::now()->todateString() == false)
+                                                    <b>Validity: </b>{{ $system_info['general']['sms_validity'] }}
+                                                    @if ($system_info['general']['sms_validity'] >= Carbon\Carbon::now()->todateString() == false)
                                                         <span class="label label-danger">Expired</span>
                                                     @endif
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <b>Remain SMS: </b>{{ config('systemInfo.general.available_sms') }}
+                                                    <b>Remain SMS: </b>{{ $system_info['general']['available_sms']}}
                                                 </li>
                                             </ul>
                                         </div>

@@ -48,7 +48,7 @@
 
 <body>
   <div id="app">
-  	@if( config('systemInfo.general.validity') < Carbon\Carbon::now()->toDateString())
+  	@if( tenancy()->tenant->system_info['general']['validity'] < now()->toDateString())
       <img src="{{ asset('img/expired-stamp.png') }}" style="opacity: 0.5; width: -webkit-fill-available; position: absolute" id="expired-stamp" >
     @endif
   
@@ -76,7 +76,7 @@
 
     <script src="{{ asset('src/js/bootstrap.min.js') }}"></script>
 
-  	@if( config('systemInfo.general.validity') < Carbon\Carbon::now()->toDateString())
+  	@if( tenancy()->tenant->system_info['general']['validity'] < now()->toDateString())
     <script>
       $( document ).ready(function() {
         const expiredStampsHeight = ($("#expired-stamp").height());

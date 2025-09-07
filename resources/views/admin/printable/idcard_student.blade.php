@@ -1563,15 +1563,15 @@
                         <img alt="image" width="55px" src="{{ URL('/img/logo-1.png') }}">
                     </div>
                     <div class="col span-3-of-4" style="margin-top: -5px;">
-                        <div class="span-2-of-2 text-1">{{ config('systemInfo.general.title') }}</div>
+                        <div class="span-2-of-2 text-1">{{ tenancy()->tenant->system_info['general']['title'] }}</div>
                         <div class="span-2-of-2 text-2">montessori to matric</div>
                     </div>
 
                 </div>
                 <div class="span-2-of-2">
                     <div class="text-3" style="font-size: 130%; text-align: center; margin: -9px auto 0; display: block;">
-                        <span>{{ config('systemInfo.general.title') }} : {{ config('systemInfo.general.address') }}. Tel :
-                            {{ config('systemInfo.general.contact_no') }}</span>
+                        <span>{{ tenancy()->tenant->system_info['general']['title'] }} : {{ tenancy()->tenant->system_info['general']['address'] }}. Tel :
+                            {{ tenancy()->tenant->system_info['general']['contact_no'] }}</span>
                     </div>
                 </div>
                 <div class="col span-2-of-2" style="margin: 1% 0 1%;">

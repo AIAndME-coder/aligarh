@@ -33,7 +33,8 @@ class SendSmsJob implements ShouldQueue
         }
 
 
-        $config = config('systemInfo.sms');
+        // this settings should also pass form trigger in construct
+        $config = tenancy()->tenant->system_info['sms'];
         if (strlen($config['sender']) < 3 || strlen($config['sender']) > 11 || str_contains($config['sender'], ' ')) {
             Log::error('Invalid Sender ID: Must be 3-11 characters with no spaces.', [
                 'sender' => $config['sender']

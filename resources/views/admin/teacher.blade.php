@@ -762,7 +762,7 @@
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
               },
-              title: "Teachers | {{ config('systemInfo.general.title') }}",
+              title: "Teachers | {{ tenancy()->tenant->system_info['general']['title'] }}",
             }
           ],
           Processing: true,

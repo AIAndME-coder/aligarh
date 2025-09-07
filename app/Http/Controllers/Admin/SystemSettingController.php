@@ -15,6 +15,7 @@ class SystemSettingController extends Controller
 	{
 		$data['system_invoices']	=	SystemInvoice::all();
 		$data['notifications_setting']	=	NotificationsSetting::all();
+		$data['system_info']	=	(tenancy()->tenant->system_info);
 		return view('admin.system_setting', $data);
 	}
 
@@ -62,56 +63,58 @@ class SystemSettingController extends Controller
 			'whatsapp_phone_id' => 'nullable|string',
 		]);
 
+		$tenant = tenancy()->tenant;
+		$updateData = [
+				// General
+				'general' => [
+					'name'				=> $request->input('name'),
+					'address'         	=> $request->input('address'),
+					'contact_name'      	=> $request->input('contact_name'),
+					'contact_no'      	=> $request->input('contact_no'),
+					'contact_email'           	=> $request->input('contact_email'),
+					'title'           	=> $request->input('title'),
+					'bank' => [
+						'name'       	=> $request->input('bank_name'),
+						'address'    	=> $request->input('bank_address'),
+						'account_no' 	=> $request->input('bank_account_no'),
+					]
+				],
 
-		// dd($request->all());
-		$ConfigWriter = new ConfigWriter('systemInfo');
+				// SMTP as nested array
+				'smtp' => [
+					'mailer'		=> $request->input('smtp_mailer'),
+					'host'       	=> $request->input('smtp_host'),
+					'port'       	=> $request->input('smtp_port'),
+					'username'   	=> $request->input('smtp_username'),
+					'password'   	=> $request->input('smtp_password'),
+					'encryption' 	=> $request->input('smtp_encryption'),
+				],
 
-		$ConfigWriter->set([
-			// General
-			'general' => [
-				'name'				=> $request->input('name'),
-				'title'           	=> $request->input('title'),
-				'email'           	=> $request->input('email'),
-				'address'         	=> $request->input('address'),
-				'contact_no'      	=> $request->input('contact_no'),
-				'bank' => [
-					'name'       	=> $request->input('bank_name'),
-					'address'    	=> $request->input('bank_address'),
-					'account_no' 	=> $request->input('bank_account_no'),
-				]
-			],
+				// SMS as nested array
+				'sms' => [
+					'provider'   => $request->input('sms_provider'),
+					'url'    => $request->input('sms_url'),
+					'api_token'    => $request->input('sms_api_token'),
+					'api_secret' => $request->input('sms_api_secret'),
+					'sender'  => $request->input('sms_sender'),
+				],
 
+				// WhatsApp as nested array
+				'whatsapp' => [
+					'provider'    		=> $request->input('whatsapp_provider'),
+					'url' 				=> $request->input('whatsapp_url'),
+					'api_token'   		=> $request->input('whatsapp_token'),
+					'phone_id' 	=> $request->input('whatsapp_phone_id'),
+					'type' 				=> $request->input('whatsapp_mgs_type'),
+				],
+		];
 
-			// SMTP as nested array
-			'smtp' => [
-				'mailer'		=> $request->input('smtp_mailer'),
-				'host'       	=> $request->input('smtp_host'),
-				'port'       	=> $request->input('smtp_port'),
-				'username'   	=> $request->input('smtp_username'),
-				'password'   	=> $request->input('smtp_password'),
-				'encryption' 	=> $request->input('smtp_encryption'),
-			],
-
-			// SMS as nested array
-			'sms' => [
-				'provider'   => $request->input('sms_provider'),
-				'url'    => $request->input('sms_url'),
-				'api_token'    => $request->input('sms_api_token'),
-				'api_secret' => $request->input('sms_api_secret'),
-				'sender'  => $request->input('sms_sender'),
-			],
-
-			// WhatsApp as nested array
-			'whatsapp' => [
-				'provider'    		=> $request->input('whatsapp_provider'),
-				'url' 				=> $request->input('whatsapp_url'),
-				'api_token'   		=> $request->input('whatsapp_token'),
-				'phone_id' 	=> $request->input('whatsapp_phone_id'),
-				'type' 				=> $request->input('whatsapp_mgs_type'),
-			],
+		$currentSystemInfo = $tenant->system_info ?? [];
+		$tenant->fill([
+			'system_info' => array_merge_recursive_distinct($currentSystemInfo, $updateData)
 		]);
 
-		$ConfigWriter->save();
+		$tenant->save();
 
 		return redirect('system-setting')->with([
 			'toastrmsg' => [

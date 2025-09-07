@@ -335,7 +335,7 @@
                 exportOptions: {
                   columns: [ 0, 1, 2]
                 },
-                title: "Users | {{ config('systemInfo.general.title') }}",
+                title: "Users | {{ tenancy()->tenant->system_info['general']['title'] }}",
               }
             ],
             Processing: true,

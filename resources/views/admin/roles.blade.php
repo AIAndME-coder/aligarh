@@ -243,7 +243,7 @@
                     exportOptions: {
                         columns: [0, 1, 2]
                     },
-                    title: "roles | {{ config('systemInfo.general.title') }}",
+                    title: "roles | {{ tenancy()->tenant->system_info['general']['title'] }}",
                 }],
                 Processing: true,
                 serverSide: true,

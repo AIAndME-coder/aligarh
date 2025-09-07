@@ -672,7 +672,7 @@
               exportOptions: {
                 columns: [ 0, 1, 2, 3]
               },
-              title: "Guardians | {{ config('systemInfo.general.title') }}",
+              title: "Guardians | {{ tenancy()->tenant->system_info['general']['title'] }}",
             }
           ],
           Processing: true,

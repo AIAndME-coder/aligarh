@@ -104,7 +104,7 @@
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5, 6] 
                         },
-                        title: "Notifications | {{ config('systemInfo.general.title') }}"
+                        title: "Notifications | {{ tenancy()->tenant->system_info['general']['title'] }}"
                     }
                 ],
                 processing: true,

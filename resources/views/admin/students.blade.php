@@ -1473,7 +1473,7 @@
                         exportOptions: {
                             columns: ":visible"
                         },
-                        title: "Student Register | {{ config('systemInfo.general.title') }}",
+                        title: "Student Register | {{ tenancy()->tenant->system_info['general']['title'] }}",
                     },
                     'colvis'
                 ],
@@ -1711,7 +1711,7 @@
                     discount: {{ old('discount', 0) }},
                 },
                 no_of_active_students: {{ $no_of_active_students }},
-                student_capacity: {{ config('systemInfo.general.student_capacity') }},
+                student_capacity: {{ tenancy()->tenant->system_info['general']['student_capacity'] }},
                 layout: 'grid',
                 options: [5, 10, 25, 50, 100],
                 per_page: 10,
