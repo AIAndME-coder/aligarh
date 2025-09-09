@@ -197,21 +197,19 @@
 															@endif
 														</div>
 													</div>
-												@endcan
-
-												<div class="form-group{{ ($errors->has('section'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Section</label>
-													<div class="col-md-6 select2-div">
-														<select class="form-control select2" name="section">
-														</select>
-														@if ($errors->has('section'))
-																<span class="help-block">
-																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('section') }}</strong>
-																</span>
-														@endif
+													<div class="form-group{{ ($errors->has('section'))? ' has-error' : '' }}">
+														<label class="col-md-2 control-label">Section</label>
+														<div class="col-md-6 select2-div">
+															<select class="form-control select2" name="section">
+															</select>
+															@if ($errors->has('section'))
+																	<span class="help-block">
+																			<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('section') }}</strong>
+																	</span>
+															@endif
+														</div>
 													</div>
-												</div>
-												{{-- @endif --}}
+												@endcan
 
 												<div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">GR No</label>
