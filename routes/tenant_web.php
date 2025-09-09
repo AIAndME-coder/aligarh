@@ -73,6 +73,10 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
 
     Route::get('/cmd', function () {
         
+        // when run cmd on landloard end the tenancy
+        // tenancy()->end();
+
+        // Artisan::call('migrate', ['--force' => true]);
         // Artisan::call('migrate', ['--force' => true]);
         // Artisan::call('db:seed', ['--class' => 'UserSeeder', '--force' => true, ]);
         // Artisan::call('db:seed', ['--class' => 'PermissionsSeeder', '--force' => true, ]);
