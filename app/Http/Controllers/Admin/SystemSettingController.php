@@ -225,7 +225,7 @@ class SystemSettingController extends Controller
 		}
 		$systemInfo = $tenant->system_info ?? [];
 		if (isset($systemInfo['general'])) {
-			unset($systemInfo['general']['logo']);
+			$systemInfo['general']['logo'] = null;
 		}
 		$tenant->system_info = $systemInfo;
 	}

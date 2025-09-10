@@ -1560,7 +1560,7 @@
                 <div class="col span-2-of-2">
 
                     <div class="col span-1-of-4">
-                        <img alt="image" width="55px" src="{{ URL('/img/logo-1.png') }}">
+                        <img alt="image" width="55px" src="{{ tenancy()->tenant->system_info['general']['logo'] ? route('system-setting.logo') : URL('/img/logo-1.png')}}">
                     </div>
                     <div class="col span-3-of-4" style="margin-top: -5px;">
                         <div class="span-2-of-2 text-1">{{ tenancy()->tenant->system_info['general']['title'] }}</div>
