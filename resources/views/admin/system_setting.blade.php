@@ -350,12 +350,12 @@
                                                                         </div>
                                                                         <div class="col-md-6"> 
                                                                             <img id="logo" 
-                                                                                src="{{ config('systemInfo.general.logo_url') ?? '' }}" 
+                                                                                src="{{ route('system-setting.logo') }}" 
                                                                                 alt="Logo Preview" 
                                                                                 class="img-responsive img-thumbnail"
-                                                                                style="{{ config('systemInfo.general.logo') ? 'display: block;' : 'display: none;' }}" />
-                                                                            
-                                                                            @if(config('systemInfo.general.logo'))
+                                                                                style="max-width:50% !important; {{ isset($system_info['general']['logo']) && $system_info['general']['logo'] ? 'display: block;' : 'display: none;' }}" />
+                                                                                
+                                                                            @if(isset($system_info['general']['logo']) && $system_info['general']['logo'])
                                                                                 <div class="mt-2" id="deleteLogoContainer">
                                                                                     <button type="button" class="btn btn-danger btn-sm" id="deleteLogo">
                                                                                         <span class="fa fa-trash"></span>

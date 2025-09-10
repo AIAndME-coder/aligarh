@@ -41,8 +41,6 @@ use App\Http\Controllers\Admin\AttendanceLeaveController;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizResultController;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
-
 /*
 |--------------------------------------------------------------------------
 | Tenant Routes
@@ -368,6 +366,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
 
     Route::prefix('system-setting')->name('system-setting')->group(function(){
         Route::get('/', [SystemSettingController::class, 'GetSetting'])->name('.index');
+        Route::get('/logo', [SystemSettingController::class, 'GetLog'])->name('.logo');
         Route::post('/update', [SystemSettingController::class, 'UpdateSetting'])->name('.update');
         Route::get('/print-invoice-history', [SystemSettingController::class, 'PrintInvoiceHistory'])->name('.print.invoice.history');
         Route::post('/history', [SystemSettingController::class, 'History'])->name('.history');
@@ -383,17 +382,4 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/', [ExamGradesController::class, 'Index'])->name('.index');
         Route::post('/update', [ExamGradesController::class, 'UpdateGrade'])->name('.update');
     });
-
-    //route for public access //need improvement on tenants
-    Route::get('/storage/{path}', function ($path) {
-        $file = storage_path('app/public/' . $path);
-
-        if (!File::exists($file)) {
-            abort(404);
-        }
-        $fileContents = File::get($file);
-        $mimeType = File::mimeType($file);
-
-        return response($fileContents)->header('Content-Type', $mimeType);
-    })->where('path', '.*');
 });

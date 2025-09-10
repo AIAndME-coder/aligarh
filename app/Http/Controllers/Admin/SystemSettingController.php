@@ -14,7 +14,17 @@ use Illuminate\Support\Facades\Storage;
 
 class SystemSettingController extends Controller
 {
-	protected $ConfigWriter;
+	public function GetLog()
+	{
+		$logo = tenancy()->tenant->system_info['general']['logo'] ?? '';
+
+		if (!Storage::exists($logo)) {
+			abort(404, 'Image not found.');
+		}
+		$image = Storage::get($logo);
+		$mime = Storage::mimeType($logo);
+		return response($image, 200)->header('Content-Type', $mime ?? 'image/jpeg');
+	}
 	public function GetSetting()
 	{
 		$data['system_invoices']	=	SystemInvoice::all();
@@ -121,13 +131,12 @@ class SystemSettingController extends Controller
 		]);
 
 
-		#need improvement for tenants
-		// if ($request->input('removeImage')) {
-		// 	$this->DeleteImage();
-		// } elseif ($request->hasFile('logo')) {
-		// 	$this->SaveImage($request);
-		// }
-
+		// Handle logo upload or removal
+		if ($request->input('removeImage')) {
+			$this->DeleteImage($tenant);
+		} elseif ($request->hasFile('logo')) {
+			$this->SaveImage($tenant, $request);
+		}
 		$tenant->save();
 
 		return redirect('system-setting')->with([
@@ -192,31 +201,33 @@ class SystemSettingController extends Controller
 		]);
 	}
 
-	#need improvement for tenants
-	protected function SaveImage($request)
+
+	protected function SaveImage($tenant, $request)
 	{
 		$file = $request->file('logo');
-		$config = $this->ConfigWriter->all();
-		if (!empty($config['general']['logo'])) {
-			Storage::disk('public')->delete($config['general']['logo']);
+
+		if (isset($tenant->system_info['general']['logo']) && Storage::disk('public')->exists($tenant->system_info['general']['logo'])) {
+			Storage::disk('public')->delete($tenant->system_info['general']['logo']);
 		}
 		$extension = $file->getClientOriginalExtension();
-		$randomName = Str::random(20) . '.' . $extension;
-		$path = 'tenants/' . $randomName;
+		$filename = 'logo_' . $tenant->id . '.' . $extension;
+		$path = 'tenants/' . $filename;
 		Storage::disk('public')->put($path, File::get($file));
-		$config['general']['logo'] = $path;
-		$config['general']['logo_url'] = asset('storage/' . $path);
-		$this->ConfigWriter->set($config);
+		$systemInfo = $tenant->system_info ?? [];
+		$systemInfo['general']['logo'] = $path; // Store as: tenants/logo_demo.jpg
+		$tenant->system_info = $systemInfo;
 	}
 
-	protected function DeleteImage()
+	protected function DeleteImage($tenant)
 	{
-		$config = $this->ConfigWriter->all();
-		if (!empty($config['general']['logo'])) {
-			Storage::disk('public')->delete($config['general']['logo']);
+		if (isset($tenant->system_info['general']['logo']) && Storage::disk('public')->exists($tenant->system_info['general']['logo'])) {
+			Storage::disk('public')->delete($tenant->system_info['general']['logo']);
 		}
-		$config['general']['logo'] = null;
-		$config['general']['logo_url'] = null;
-		$this->ConfigWriter->set($config);
+		$systemInfo = $tenant->system_info ?? [];
+		if (isset($systemInfo['general'])) {
+			unset($systemInfo['general']['logo']);
+		}
+		$tenant->system_info = $systemInfo;
 	}
+
 }
