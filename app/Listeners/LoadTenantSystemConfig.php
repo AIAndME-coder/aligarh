@@ -53,13 +53,6 @@ class LoadTenantSystemConfig
         Config::set('mail.from.address', $general['contact_email']);
         Config::set('mail.from.name', $general['name']);
 
-        if($tenant->id){
-            config([
-                'cache.prefix'	=>	$tenant->id?? env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
-                'cache.stores.file.path' => storage_path('framework/cache/data'.($tenant->id? '/'.$tenant->id : '')),
-            ]);
-        }
-
     }
 
 
