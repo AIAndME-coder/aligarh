@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Http\Controllers\Landlord\Api;
+
+use App\Tenant;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+
+class NinjaClientWebHookController extends Controller
+{
+    public function create(Request $request)
+    {
+        // Log the incoming webhook
+        Log::info('Ninja Webhook Received', $request->all());
+
+        // Manual validation
+        $validator = Validator::make($request->all(), [
+            'name'          => 'required|string',
+            'address1'      => 'required|string',
+            'phone'         => 'required|string',
+            'custom_value1' => 'required|string',
+            'custom_value2' => 'required|string',
+            'custom_value3' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation Error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $data = $request->all();
+        if ($data['custom_value1'] !== 'Aligarh') {
+            return response()->json([
+                'message' => 'Invalid custom_value1. Expected: Aligarh',
+            ], 422);
+        }
+
+
+        // Get tenant_id from custom_value2
+        $tenantId = $data['custom_value2'] ?? null;
+
+        if (!$tenantId) {
+            return response()->json([
+                'message' => 'custom_value2 is required and will be used as tenant_id.',
+            ], 422);
+        }
+
+        // Decode custom_value3 (tenant config)
+        $customValue3 = $data['custom_value3'] ?? '{}';
+        $customData = is_array($customValue3)
+            ? $customValue3
+            : json_decode($customValue3, true);
+
+        if (!is_array($customData)) {
+            $customData = [];
+        }
+
+        // custom data 
+        $customData['systemInfo'] = array_merge($customData['systemInfo']?? [], config('systemInfo'));
+
+        // Check if tenant already exists
+        $existingTenant = Tenant::find($tenantId);
+        if ($existingTenant) {
+            return response()->json([
+                'message' => 'Tenant already exists.',
+                'tenant' => $existingTenant->load('domains'),
+            ], 200); // Changed from 409 to 200 since it's not really an error
+        }
+
+        // try {
+        // Create Tenant - separate dedicated columns from JSON data
+        $fullAddress = ($data['address1'] . $data['address2']) ?? 'N/A';
+        $fullAddress = ($data['address1'] . $data['address2']) ?? 'N/A';
+
+        $tenant = Tenant::create([
+            'id'                => $tenantId,
+            'name'              => $tenantId,
+            'contact_name'      => $data['name'] ?? 'N/A',
+            'contact_number'    => $data['phone'] ?? 'N/A',
+            'address'           => $fullAddress, 
+            'data'              => $customData,
+        ]);
+
+        // Parse domain from website
+        $domainName = parse_url($data['website'] ?? '', PHP_URL_HOST);
+
+        if ($domainName) {
+            $tenant->domains()->create([
+                'domain' => $domainName,
+                'config' => json_encode([
+                    'tenancy_db_name' => $customData['tenancy_db_name'] ?? null,
+                ]),
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Tenant and domain created successfully.',
+            'tenant' => $tenant->load('domains'),
+        ], 201);
+        // } catch (QueryException $e) {
+        //     Log::error('Failed to create tenant or domain', ['error' => $e->getMessage()]);
+
+        //     return response()->json([
+        //         'message' => 'Failed to create tenant or domain.',
+        //         'error' => $e->getMessage(),
+        //     ], 422);
+        // }
+    }
+}

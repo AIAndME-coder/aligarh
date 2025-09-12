@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Landlord\Api\NinjaClientWebHookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function(){
 	return "welcome Landlord API";
 });
+
+// need middleware for validation Peronsal Access 
+Route::post('client/create', [NinjaClientWebHookController::class, 'create']);
