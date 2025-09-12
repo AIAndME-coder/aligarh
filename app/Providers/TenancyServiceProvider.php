@@ -20,6 +20,7 @@ class TenancyServiceProvider extends ServiceProvider
 {
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = 'App\Http\Controllers\Admin';
+    public static string $apiControllerNamespace = 'App\Http\Controllers\Api';
 
     public function events()
     {
@@ -143,8 +144,8 @@ class TenancyServiceProvider extends ServiceProvider
 			InitializeTenancyByDomain::class,
 			PreventAccessFromCentralDomains::class,
             'tenant.active',
-		])
-		->namespace(static::$controllerNamespace)
+		])->prefix('api')
+		->namespace(static::$apiControllerNamespace)
 		->group(base_path('routes/tenant_api.php'));
     }
 

@@ -27,6 +27,12 @@ use App\Http\Controllers\Api\TMS\AttendanceController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+
+Route::get('/', function(){
+	return "welcome Tenants ... API";
+});
+
 Route::prefix('guardian')->group(function () {
 
     Route::post('login', [GuardianUserController::class, 'Login'])->name('guardian.login');
