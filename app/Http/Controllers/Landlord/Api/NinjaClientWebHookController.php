@@ -48,8 +48,10 @@ class NinjaClientWebHookController extends Controller
         $tenant = Tenant::create([
             'id'                => $tenantId,
             'name'              => $tenantId,
-            'contact_name'      => $data['name'] ?? 'N/A',
-            'contact_number'    => $data['phone'] ?? 'N/A',
+            'ninja_id'          => $data['id'],
+            'active'            => ($data['archived_at'] ?? 1) == 0 ? 1 : 0,
+            'contact_name'      => $data['name'] ?? null,
+            'contact_number'    => $data['phone'] ?? null,
             'address'           => $fullAddress,
             'data'              => $customData,
         ]);
