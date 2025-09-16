@@ -35,7 +35,7 @@ class PermissionsUpdateSeeder extends Seeder
 
         // Sync roles
         Role::find(1)?->syncPermissions(Permission::all()); // Developer
-        Role::find(2)?->syncPermissions(Permission::all()); // Admin
+        // Role::find(2)?->syncPermissions(Permission::all()); // Admin
         // Role::find(3)?->syncPermissions(Permission::all()); // Employee
 
         $this->command->info('Permissions update seeded and synced to roles.');
