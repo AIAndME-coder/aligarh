@@ -50,8 +50,8 @@ class LoadTenantSystemConfig
         Config::set('mail.encryption', $smtp['encryption']);
         Config::set('mail.username', $smtp['username']);
         Config::set('mail.password', $smtp['password']);
-        Config::set('mail.from.address', $general['contact_email']);
-        Config::set('mail.from.name', $general['name']);
+        Config::set('mail.from.address', $smtp['username']);
+        Config::set('mail.from.name', $general['title']);
 
     }
 
