@@ -211,10 +211,9 @@ class SystemSettingController extends Controller
 		}
 		$extension = $file->getClientOriginalExtension();
 		$filename = 'logo_' . $tenant->id . '.' . $extension;
-		$path = 'tenants/' . $filename;
-		Storage::disk('public')->put($path, File::get($file));
+		Storage::disk('public')->put($filename, File::get($file));
 		$systemInfo = $tenant->system_info ?? [];
-		$systemInfo['general']['logo'] = $path; // Store as: tenants/logo_demo.jpg
+		$systemInfo['general']['logo'] = $filename; // Store as: /logo_demo.jpg
 		$tenant->system_info = $systemInfo;
 	}
 
