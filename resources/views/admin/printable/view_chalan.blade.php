@@ -60,7 +60,7 @@
                     <tbody>
                         <tr>
                             <td rowspan="3" style="padding: 5px">
-                                <img alt="image" width="80px" src="{{ URL('/img/logo-1.png') }}">
+                                <img alt="image" width="80px" src="{{ tenancy()->tenant->system_info['general']['logo'] ? route('system-setting.logo') : URL('/img/logo-1.png')}}">
                             </td>
                             <td>
                                 <h2 class="text-center text-success">{{ tenancy()->tenant->system_info['general']['name'] }}</h2>
