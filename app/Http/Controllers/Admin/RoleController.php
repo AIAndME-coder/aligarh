@@ -88,6 +88,16 @@ class RoleController extends Controller
 		try {
 			$Role = Role::NotDeveloper()->findOrFail($id);
 			$Role->syncPermissions($request->input('permissions'));
+
+			if (filled($request->sync_permissions)) {
+				$rolesToSync = Role::NotDeveloper()
+					// ->where('id', '!=', $Role->id)
+					->get();
+				foreach ($rolesToSync as $role) {
+					$role->syncPermissions($request->input('permissions'));
+				}
+			}
+
 			DB::commit();
 		} catch (\Exception $e) {
 			DB::rollBack();
