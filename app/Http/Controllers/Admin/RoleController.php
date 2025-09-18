@@ -317,6 +317,7 @@ class RoleController extends Controller
 				'fee.get.student.fee' 	=> 'Get Student Fee',
 				'fee.update' 			=> 'Student Fee Update',
 				'fee.chalan.print' 		=> 'Chalan Print',
+				'fee.group.chalan.print'=> 'Group Chalan Print',
 				'fee.invoice.print' 	=> 'Invoice Print',
 				//lnk with create and update invoice
 				'fee.findstu' 			=> 'Find Student Fee',
