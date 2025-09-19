@@ -18,7 +18,7 @@ class VistorStudentController extends Controller
         foreach ($data['classes'] as $key => $class) {
             $data['sections']['class_' . $class->id] = Section::select('name', 'id')->where(['class_id' => $class->id])->get();
         }
-        return view('admin.vistor_students', $data);
+        return view('admin.visitor_students', $data);
     }
 
     public function grid(Request $request)
@@ -58,7 +58,7 @@ class VistorStudentController extends Controller
     }
 
 
-    public function create(Request $request )
+    public function create(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -117,6 +117,93 @@ class VistorStudentController extends Controller
                 'msg' => 'Visitor Student created successfully',
             ],
         ]);
+    }
+    public function edit(Request $request, $id)
+    {
+        $data['classes'] = Classe::select('id', 'name')->get();
+        foreach ($data['classes'] as $key => $class) {
+            $data['sections']['class_' . $class->id] = Section::select('name', 'id')->where(['class_id' => $class->id])->get();
+        }
 
+        $data['visitorStudents'] = VisitorStudent::findorFail($id);
+
+        return view('admin.edit_visitor_student', $data);
+    }
+
+
+    public function update(Request $request, $id)
+    {
+        $visitorStudents = VisitorStudent::findOrFail($id);
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name'              => 'sometimes|required|string|max:255',
+                'father_name'       => 'sometimes|required|string',
+                'class'             => 'sometimes|required|exists:classes,id',
+                'email'             => 'sometimes|required|email|unique:visitor_students,email,' . $id,
+                'section'           => 'nullable|exists:sections,id',
+                'phone'             => 'sometimes|required|string',
+                'gender'            => 'sometimes|required|string|in:Male,Female',
+                'address'           => 'sometimes|required|string',
+                'seeking_class'     => 'sometimes|required|string',
+                'place_of_birth'    => 'sometimes|required|string',
+                'guardian_relation' => 'sometimes|required|string',
+                'last_school'       => 'sometimes|required|string',
+                // 'date_of_birth'     => 'sometimes|required|date|date_format:Y-m-d',
+                // 'date_of_visiting'  => 'required|date|date_format:Y-m-d',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with([
+                    'toastrmsg' => [
+                        'type' => 'Visitor Student',
+                        'title' => 'Visitor Student',
+                        'msg' => 'There was an issue while Updating Visitor Student',
+                    ],
+                ]);
+        }
+
+        $visitorStudents->update([
+            'name'              => $request->input('name'),
+            'father_name'       => $request->input('father_name'),
+            'class_id'          => $request->input('class'),
+            'section_id'        => $request->input('section'),
+            'phone'             => $request->input('phone'),
+            'email'             => $request->input('email'),
+            'gender'            => $request->input('gender'),
+            'seeking_class'     => $request->input('seeking_class'),
+            'address'           => $request->input('address'),
+            'place_of_birth'    => $request->input('place_of_birth'),
+            'guardian_relation' => $request->input('guardian_relation'),
+            'date_of_birth'     => $request->input('date_of_birth'),
+            'last_school'       => $request->input('last_school'),
+            'date_of_visiting'  => $request->input('date_of_visiting'),
+        ]);
+
+        return redirect('visitors')->with([
+            'toastrmsg' => [
+                'type' => 'success',
+                'title' => 'Visitor Student',
+                'msg' => 'Visitor Student updated successfully',
+            ],
+        ]);
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->input('id');
+        VisitorStudent::findorFail($id)->delete();
+        return redirect('visitors')->with([
+            'toastrmsg' => [
+                'type' => 'success',
+                'title' => 'Visitor Student',
+                'msg' => 'Visitor Student deleted successfully',
+            ],
+        ]);
     }
 }

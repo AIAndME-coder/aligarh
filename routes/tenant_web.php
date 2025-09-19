@@ -153,6 +153,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::post('/create', [VistorStudentController::class, 'create'])->name('.create');
         Route::get('/edit/{id}', [VistorStudentController::class, 'edit'])->name('.edit');
         Route::post('/update/{id}', [VistorStudentController::class, 'update'])->name('.update');
+        Route::post('/delete', [VistorStudentController::class, 'delete'])->name('.delete');
     });
     
     Route::prefix('manage-classes')->name('manage-classes')->group(function(){

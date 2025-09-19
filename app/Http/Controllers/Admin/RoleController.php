@@ -183,6 +183,7 @@ class RoleController extends Controller
 				'visitors.create' => 'Visitors Create',	
 				'visitors.edit' => 'Visitors Edit',
 				'visitors.update' => 'Visitors Update',	
+				'visitors.delete' => 'Visitors Delete',
 			],
 			
 			'Teachers' => [

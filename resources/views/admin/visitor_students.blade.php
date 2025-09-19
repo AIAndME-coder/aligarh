@@ -5,6 +5,7 @@
     <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('src/css/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     <script type="text/javascript">
         var sections = {!! json_encode($sections ?? '') !!};
     </script>
@@ -178,21 +179,25 @@
             background: linear-gradient(135deg, #00b894, #55efc4);
         }
 
-      .icon-father-name {
-    background: linear-gradient(135deg, #ff6a00, #ee0979); /* Vibrant orange to pink */
-}
+        .icon-father-name {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            /* Vibrant orange to pink */
+        }
 
-.icon-guardian {
-    background: linear-gradient(135deg, #43cea2, #185a9d); /* Aqua green to deep blue */
-}
+        .icon-guardian {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            /* Aqua green to deep blue */
+        }
 
-.icon-email {
-    background: linear-gradient(135deg, #f7971e, #ffd200); /* Bright orange to yellow */
-}
+        .icon-email {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            /* Bright orange to yellow */
+        }
 
-.icon-phone {
-    background: linear-gradient(135deg, #00c6ff, #0072ff); /* Fresh light blue to royal blue */
-}
+        .icon-phone {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            /* Fresh light blue to royal blue */
+        }
 
         .info-content {
             flex: 1;
@@ -434,8 +439,8 @@
                                         </div>
                                         <div class="col-md-4 text-right pull-right">
                                             <div class="row">
-                                                <input type="text" v-model="search_visitors"
-                                                    @input="debouncedSearch" class="form-control input-sm"
+                                                <input type="text" v-model="search_visitors" @input="debouncedSearch"
+                                                    class="form-control input-sm"
                                                     style="width: 200px; display: inline-block;" placeholder="Search...">
                                                 <div class="form-group pull-right">
                                                     <label class="control-label"
@@ -528,7 +533,15 @@
                                                                         <i class="fa fa-pencil"></i> Edit
                                                                     </a>
                                                                 @endcan
+                                                                {{-- @can('visitors.delete') --}}
+                                                                    <a data-placement="top" data-toggle="tooltip" title="Delete"
+                                                                        @click.prevent="deleteQuiz(visitor.id)" href="#"
+                                                                        class="btn btn-sm btn-outline-danger">
+                                                                        <i class="fa fa-trash"></i> Delete
+                                                                    </a>
+                                                                {{-- @endcan --}}
                                                             </div>
+                                                           
                                                         </div>
                                                     </div>
                                                 </a>
@@ -553,8 +566,8 @@
                                     <div class="panel-body">
                                         <h2> Create Visitor Student </h2>
                                         <div class="hr-line-dashed"></div>
-                                        <form id="tchr_rgstr" method="post"
-                                            action="{{ route('visitors.create') }}" class="form-horizontal">
+                                        <form id="tchr_rgstr" method="post" action="{{ route('visitors.create') }}"
+                                            class="form-horizontal">
                                             {{ csrf_field() }}
 
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -689,7 +702,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                            
+
                                             <div class="form-group{{ $errors->has('class') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label">Class</label>
                                                 <div class="col-md-6 select2-div">
@@ -802,8 +815,8 @@
     <script src="{{ asset('src/js/plugins/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
-    
-    
+
+
     @if ($errors->any())
         <script>
             @foreach ($errors->all() as $error)
@@ -812,10 +825,11 @@
         </script>
     @endif
 
-    
+
     <script type="text/javascript">
         var tbl;
         var tr;
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -828,7 +842,7 @@
 
         $(document).ready(function() {
 
-            
+
             @if ($errors->any())
                 $('a[href="#tab-11"]').tab('show');
             @else
@@ -887,7 +901,6 @@
                     phone: {
                         required: true,
                     }
-
                 },
             });
 
@@ -931,16 +944,12 @@
 
 @section('vue')
     <script src="{{ asset('src/js/plugins/axios-1.11.0/axios.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/sweetalert/sweetalert.min.js') }}"></script>
+
     <script type="text/javascript">
         var app = new Vue({
             el: '#app',
             data: {
-                fee: {
-                    additionalfee: {!! old('fee', config('feeses.additional_fee')) !!},
-                    tuition_fee: {{ old('tuition_fee', config('feeses.compulsory.tuition_fee')) }},
-                    late_fee: {{ old('late_fee', config('feeses.compulsory.late_fee')) }},
-                    discount: {{ old('discount', 0) }},
-                },
                 visitor_capacity: {{ tenancy()->tenant->system_info['general']['student_capacity'] }},
                 layout: 'grid',
                 options: [5, 10, 25, 50, 100],
@@ -956,18 +965,6 @@
             },
 
             methods: {
-                addAdditionalFee: function() {
-                    this.fee.additionalfee.push({
-                        id: 0,
-                        fee_name: '',
-                        amount: 0,
-                        active: 1,
-                        onetime: 1
-                    });
-                },
-                removeAdditionalFee: function(k) {
-                    this.fee.additionalfee.splice(k, 1);
-                },
                 handleLayoutChange(page = 1) {
                     axios.get('/visitors/grid', {
                             params: {
@@ -989,6 +986,42 @@
                         .catch(error => {
                             console.error('Failed to fetch visitors:', error);
                         });
+                },
+                deleteQuiz(deleteId) {
+                    swal({
+                        title: "Are you sure?",
+                        text: "You are about to delete this entry.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel!"
+                    }, (isConfirm) => {
+                        if (isConfirm) {
+                            swal({
+                                title: "Deleting...",
+                                text: "<i class='fa fa-spinner fa-pulse fa-4x'></i>",
+                                html: true,
+                                showConfirmButton: false,
+                                allowOutsideClick: false
+                            });
+
+                            axios.post("{{ url('visitors/delete') }}", {
+                                    id: deleteId,
+                                    _token: "{{ csrf_token() }}"
+                                })
+                                .then(() => {
+                                    swal("Deleted!", "Record has been deleted.", "success");
+                                    this.handleLayoutChange();
+                                })
+                                .catch(() => {
+                                    swal("Error!", "Something went wrong. Please try again.", "error");
+                                });
+
+                        } else {
+                            swal("Cancelled", "The record is safe :)", "error");
+                        }
+                    });
                 },
                 debouncedSearch(page = 1) {
                     clearTimeout(this.debounceTimeout);
