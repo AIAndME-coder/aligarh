@@ -12,7 +12,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     use HasDatabase, HasDomains;
 
     protected $connection = 'mysql_landlord';
-    public $timestamps = false;
+    // public $timestamps = false;
 
     protected $casts = [
         'active' => 'boolean',
