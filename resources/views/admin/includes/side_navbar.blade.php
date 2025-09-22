@@ -127,11 +127,11 @@
                                 <a href="{{ route('employee-attendance.index') }}">Employee Attendance</a>
                             </li>
                         @endcan
-                        {{-- @can('employee-attendance.make.post') --}}
+                        @canany(['attendance-leave.index', 'attendance-leave.make'])
                             <li class="{{ isActiveRoute('attendance-leave.index') }}">
                                 <a href="{{ route('attendance-leave.index') }}">Attendance Leave</a>
                             </li>
-                        {{-- @endcan --}}
+                        @endcanany
                     </ul>
                 </li>
             @endcanany
