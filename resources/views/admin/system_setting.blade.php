@@ -138,6 +138,22 @@
                                                                     <i class="fa fa-whatsapp"></i> WhatsApp
                                                                 </a>
                                                             </li>
+                                                            <li>
+                                                                <a href="#contact" data-toggle="tab">
+                                                                    <i class="fa fa-user"></i> Contact
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#bank" data-toggle="tab">
+                                                                     <i class="fa fa-bank"></i> Bank Info
+
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#miscellaneous" data-toggle="tab">
+                                                                    <i class="fa fa-cogs"></i> Miscellaneous
+                                                                </a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                     <div class="col-md-10">
@@ -190,24 +206,6 @@
                                                                     </div>
 
                                                                     <div
-                                                                        class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">E-Mail</label>
-                                                                        <div class="col-md-6">
-                                                                            <input type="text" name="email"
-                                                                                placeholder="E-Mail"
-                                                                                value="{{ old('email', $system_info['general']['contact_email']) }}"
-                                                                                class="form-control" />
-                                                                            @if ($errors->has('email'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('email') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div
                                                                         class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                                                                         <label class="col-md-2 control-label">Address</label>
                                                                         <div class="col-md-6">
@@ -220,103 +218,6 @@
                                                                                     <strong><span
                                                                                             class="fa fa-exclamation-triangle"></span>
                                                                                         {{ $errors->first('address') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="form-group{{ $errors->has('contact_name') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">Contact Name</label>
-                                                                        <div class="col-md-6">
-                                                                            <input type="text" name="contact_name"
-                                                                                placeholder="Contact Name"
-                                                                                value="{{ old('contact_name', $system_info['general']['contact_name']) }}"
-                                                                                class="form-control" />
-                                                                            @if ($errors->has('contact_name'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('contact_name') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="form-group{{ $errors->has('contact_no') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">Contact
-                                                                            No</label>
-                                                                        <div class="col-md-6">
-                                                                            <div class="input-group m-b">
-                                                                                <span class="input-group-addon">+92</span>
-                                                                                <input type="text" name="contact_no"
-                                                                                    value="{{ old('contact_no', $system_info['general']['contact_no']) }}"
-                                                                                    placeholder="Contact No"
-                                                                                    class="form-control"
-                                                                                    data-mask="9999999999" />
-                                                                            </div>
-                                                                            @if ($errors->has('contact_no'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('contact_no') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="form-group{{ $errors->has('bank_name') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">Bank</label>
-                                                                        <div class="col-md-6">
-                                                                            <input type="text" name="bank_name"
-                                                                                placeholder="Name"
-                                                                                value="{{ old('bank_name', $system_info['general']['bank']['name']) }}"
-                                                                                class="form-control" />
-                                                                            @if ($errors->has('bank_name'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('bank_name') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="form-group{{ $errors->has('bank_address') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">Bank
-                                                                            Address</label>
-                                                                        <div class="col-md-6">
-                                                                            <input type="text" name="bank_address"
-                                                                                placeholder="Address"
-                                                                                value="{{ old('bank_address', $system_info['general']['bank']['address']) }}"
-                                                                                class="form-control" />
-                                                                            @if ($errors->has('bank_address'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('bank_address') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">Bank
-                                                                            Account No</label>
-                                                                        <div class="col-md-6">
-                                                                            <input type="text" name="bank_account_no"
-                                                                                placeholder="Account no"
-                                                                                value="{{ old('bank_account_no', $system_info['general']['bank']['account_no']) }}"
-                                                                                class="form-control" />
-                                                                            @if ($errors->has('bank_account_no'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('bank_account_no') }}</strong>
                                                                                 </span>
                                                                             @endif
                                                                         </div>
@@ -350,7 +251,7 @@
                                                                         </div>
                                                                     </div> --}}
 
-                                                                    <div class="form-group">
+                                                                    {{-- <div class="form-group">
                                                                         <label class="col-md-2 control-label">Next
                                                                             Chalan No</label>
                                                                         <div class="col-md-6">
@@ -358,22 +259,7 @@
                                                                                 value="{{ $system_info['general']['next_chalan_no']}}"
                                                                                 readonly="true" class="form-control" />
                                                                         </div>
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
-                                                                        <label title="Term and Condition of Fee Chalan" class="col-md-2 control-label">Term and Condition</label>
-                                                                        <div class="col-md-6">
-                                                                            <textarea type="text" name="chalan_term_and_Condition" placeholder="Term and Condition" class="form-control">{{ old('chalan_term_and_Condition', $system_info['general']['chalan_term_and_Condition']) }}</textarea>
-                                                                            @if ($errors->has('chalan_term_and_Condition'))
-                                                                                <span class="help-block">
-                                                                                    <strong><span
-                                                                                            class="fa fa-exclamation-triangle"></span>
-                                                                                        {{ $errors->first('chalan_term_and_Condition') }}</strong>
-                                                                                </span>
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
+                                                                    </div> --}}
 
                                                                     <div class="form-group{{ $errors->has('logo') ? ' has-error' : '' }}">
                                                                         <div class="col-md-2"> 
@@ -759,6 +645,154 @@
                                                                         </div>
                                                                     </div> --}}
                                                                 </div>
+
+
+                                                                <!-- Contact Tab -->
+                                                                <div id="contact" class="tab-pane fade">
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('contact_name') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Contact Name</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="contact_name"
+                                                                                placeholder="Contact Name"
+                                                                                value="{{ old('contact_name', $system_info['general']['contact_name']) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('contact_name'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('contact_name') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('contact_no') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Contact
+                                                                            No</label>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group m-b">
+                                                                                <span class="input-group-addon">+92</span>
+                                                                                <input type="text" name="contact_no"
+                                                                                    value="{{ old('contact_no', $system_info['general']['contact_no']) }}"
+                                                                                    placeholder="Contact No"
+                                                                                    class="form-control"
+                                                                                    data-mask="9999999999" />
+                                                                            </div>
+                                                                            @if ($errors->has('contact_no'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('contact_no') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">E-Mail</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="email"
+                                                                                placeholder="E-Mail"
+                                                                                value="{{ old('email', $system_info['general']['contact_email']) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('email'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('email') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <!-- Bank Info Tab -->
+                                                                <div id="bank" class="tab-pane fade">
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_name') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Bank Name</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="bank_name"
+                                                                                placeholder="Name"
+                                                                                value="{{ old('bank_name', $system_info['general']['bank']['name']) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('bank_name'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('bank_name') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_address') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Bank
+                                                                            Address</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="bank_address"
+                                                                                placeholder="Address"
+                                                                                value="{{ old('bank_address', $system_info['general']['bank']['address']) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('bank_address'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('bank_address') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
+                                                                        <label class="col-md-2 control-label">Bank
+                                                                            Account No</label>
+                                                                        <div class="col-md-6">
+                                                                            <input type="text" name="bank_account_no"
+                                                                                placeholder="Account no"
+                                                                                value="{{ old('bank_account_no', $system_info['general']['bank']['account_no']) }}"
+                                                                                class="form-control" />
+                                                                            @if ($errors->has('bank_account_no'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('bank_account_no') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <!-- Misc Info Tab -->
+                                                                <div id="miscellaneous" class="tab-pane fade">
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
+                                                                        <label title="Term and Condition of Fee Chalan" class="col-md-2 control-label">
+                                                                            Term and Condition 
+                                                                            <span class="text-info" data-toggle="tooltip" title="Term and Condition of Fee Chalan">
+                                                                                <i class="fa fa-info-circle"></i>
+                                                                            </span>
+                                                                        </label>
+                                                                        <div class="col-md-6">
+                                                                            <textarea type="text" rows="10" name="chalan_term_and_Condition" placeholder="Term and Condition" class="form-control">{{ old('chalan_term_and_Condition', $system_info['general']['chalan_term_and_Condition']) }}</textarea>
+                                                                            @if ($errors->has('chalan_term_and_Condition'))
+                                                                                <span class="help-block">
+                                                                                    <strong><span
+                                                                                            class="fa fa-exclamation-triangle"></span>
+                                                                                        {{ $errors->first('chalan_term_and_Condition') }}</strong>
+                                                                                </span>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
 
                                                             <!-- Submit Button -->
