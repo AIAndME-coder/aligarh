@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Teacher;
 use App\Section;
 use App\Classe;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
@@ -85,17 +85,18 @@ class ManageClasses extends Controller
 
 	}
 
-	public function PostEditClass(Request $request, $id){
+	public function PostEditClass(Request $request, $id)
+	{
 
 		$this->PostValidate($request);
 
-		if(Classe::where('id', $id)->count() == 0){
-		return  redirect('manage-classes')->with([
+		if (Classe::where('id', $id)->count() == 0) {
+			return  redirect('manage-classes')->with([
 				'toastrmsg' => [
-					'type' => 'warning', 
+					'type' => 'warning',
 					'title'  =>  '# Invalid URL',
 					'msg' =>  'Do Not write hard URL\'s'
-					]
+				]
 			]);
 		}
 		$Classes = Classe::find($id);
@@ -111,12 +112,12 @@ class ManageClasses extends Controller
 		}
 
 		return redirect('manage-classes')->with([
-				'toastrmsg' => [
-					'type' => 'success',
-					'title'  =>  'Classes Registration',
-					'msg' =>  'Save Changes Successfull'
-					]
-			]);
+			'toastrmsg' => [
+				'type' => 'success',
+				'title'  =>  'Classes Registration',
+				'msg' =>  'Save Changes Successfull'
+			]
+		]);
 	}
 
 	protected function SetAttributes($Classes, $request){
@@ -137,4 +138,38 @@ class ManageClasses extends Controller
 	}
 
 
+	// Bulk update for many students not usefull, will delete after check
+	protected function UpdateGrNoToAllStudentBulk($students)
+	{
+		$students->load('StdClass', 'section');
+		$updates = [];
+
+		foreach ($students as $student) {
+			if ($student->StdClass && $student->section && $student->gr_no) {
+				$prefix = $student->StdClass->prifix ?? '';
+				$nickname = $student->section->nick_name ?? '';
+
+				// Extract base GR number
+				$lastDashPosition = strrpos($student->gr_no, '-');
+				if ($lastDashPosition !== false) {
+					$gr_base = substr($student->gr_no, $lastDashPosition + 1);
+					$new_gr_no = $prefix . $nickname . "-" . $gr_base;
+
+					// Only add to updates if GR number has changed
+					if ($student->gr_no !== $new_gr_no) {
+						$updates[] = [
+							'id' => $student->id,
+							'gr_no' => $new_gr_no,
+							'updated_at' => now(),
+						];
+					}
+				}
+			}
+		}
+
+		// Bulk update if there are changes
+		if (count($updates) > 0) {
+			DB::table('students')->upsert($updates, ['id'], ['gr_no', 'updated_at']);
+		}
+	}
 }
