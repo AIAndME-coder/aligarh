@@ -174,7 +174,8 @@ class StudentsController extends Controller
 		$this->SetAttributes($Student, $request);
 		$Student->created_by  = Auth::user()->id;
 		$Student->session_id  = Auth::user()->academic_session;
-		$this->UpdateGrNo($Student, $request);
+		$Student->UpdateGrNo($request->input('gr_no'));
+		// $this->UpdateGrNo($Student, $request);
 		$Student->save();
 		if($request->hasFile('img')){
 			$this->SaveImage($Student, $request);

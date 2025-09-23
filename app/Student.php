@@ -271,4 +271,11 @@ class Student extends Model
 			->where('to_percent', '>=', $totalPercentage)
 			->value('name');
 	}
+
+	public function UpdateGrNo($gr_no){
+		$class = $this->StdClass;
+		$section = $this->Section;
+//    $this->gr_no = $class->numeric_name . $section->nick_name ."-" . $this->id;
+		$this->gr_no = $class->prifix . $section->nick_name ."-" . $gr_no;
+	}
 }

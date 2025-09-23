@@ -9,6 +9,7 @@ use App\Section;
 use App\Classe;
 use DB;
 use Auth;
+use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 
 class ManageClasses extends Controller
@@ -97,12 +98,17 @@ class ManageClasses extends Controller
 					]
 			]);
 		}
-
 		$Classes = Classe::find($id);
+
+		$prifixChanged = $Classes->prifix != $request->input('prifix')? true : false;
 
 		$this->SetAttributes($Classes, $request);
 		$Classes->updated_by = Auth::user()->id;
 		$Classes->save();
+
+		if($prifixChanged){
+			$this->updateStudentsGrNo($Classes->Students, $Classes->prifix);
+		}
 
 		return redirect('manage-classes')->with([
 				'toastrmsg' => [
@@ -118,6 +124,16 @@ class ManageClasses extends Controller
 		$Classes->numeric_name = $request->input('numeric_name');
 		$Classes->teacher_id = $request->input('teacher');
 		$Classes->prifix = $request->input('prifix');
+	}
+
+	private function updateStudentsGrNo($students){
+		$students->load('StdClass', 'Section');
+		foreach ($students as $key => $student) {
+			$gr_no = Str::after($student->gr_no, '-');
+			$student->UpdateGrNo($gr_no);
+			$student->save();
+		}
+
 	}
 
 
