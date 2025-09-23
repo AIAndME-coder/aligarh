@@ -44,7 +44,10 @@ class TeacherController extends Controller
         //'email'     =>  'required|email',
         'qualification'  =>  'required',
         'salary'      =>  'required|numeric',
-        'img'       => 	'image|mimes:jpg,jpeg,png|max:100'
+        'img'       => 	'image|mimes:jpg,jpeg,png|max:100',
+        'date_of_birth' => 'required|date|date_format:Y-m-d',
+        'date_of_joining' => 'required|date|date_format:Y-m-d',
+        'id_card' => 'required|string|max:255|unique:teachers,id_card'. (($request->route('id'))? ','.$request->route('id') : ''),
     ]);
   }
 
@@ -151,13 +154,14 @@ class TeacherController extends Controller
     return redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Teacher Registration',
+          'title'  =>  'Teacher Update',
           'msg' =>  'Save Changes Successfull'
           ]
       ]);
   }
 
   public function AddTeacher(Request $request){
+
     $this->PostValidate($request);
     $Teacher = new Teacher;
     $this->SetAttributes($Teacher, $request);
@@ -191,6 +195,9 @@ class TeacherController extends Controller
     $Teacher->salary = $request->input('salary');
     $Teacher->address = $request->input('address');
     $Teacher->phone = $request->input('phone');
+    $Teacher->date_of_birth = $request->input('date_of_birth');
+    $Teacher->date_of_joining = $request->input('date_of_joining');
+    $Teacher->id_card = $request->input('id_card');
   }
 
 

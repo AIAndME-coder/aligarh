@@ -48,6 +48,9 @@ class EmployeeController extends Controller
         //'qualification'  =>  'required',
         'salary'      =>  'required|numeric',
         'img'       =>    'image|mimes:jpg,jpeg,png|max:100',
+        'date_of_birth' => 'required|date|date_format:Y-m-d',
+        'date_of_joining' => 'required|date|date_format:Y-m-d',
+        'id_card' => 'required|string|max:255|unique:employees,id_card'. (($request->route('id'))? ','.$request->route('id') : ''),
     ]);
   }
 
@@ -173,7 +176,7 @@ class EmployeeController extends Controller
     return redirect('employee')->with([
         'toastrmsg' => [
           'type' => 'success',
-          'title'  =>  'Employee Registration',
+          'title'  =>  'Employee Update',
           'msg' =>  'Save Changes Successfull'
           ]
       ]);
@@ -210,6 +213,9 @@ class EmployeeController extends Controller
     $Employee->address = $request->input('address');
     $Employee->religion = $request->input('religion');
     $Employee->phone = $request->input('phone');
+    $Employee->date_of_birth = $request->input('date_of_birth');
+    $Employee->date_of_joining = $request->input('date_of_joining');
+    $Employee->id_card = $request->input('id_card');
   }
 
 

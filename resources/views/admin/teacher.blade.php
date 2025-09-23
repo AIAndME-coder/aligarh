@@ -5,6 +5,7 @@
   @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
   <style type="text/css">
   .print-table {
     width: 100%;
@@ -653,6 +654,43 @@
                                             @endif
                                           </div>
                                         </div>
+
+                                        <div class="form-group{{ ($errors->has('date_of_birth'))? ' has-error' : '' }}">
+                                          <label class="col-md-2 control-label">DOB</label>
+                                          <div class="col-md-6">
+                                            <input id="date_of_birth" type="text" name="date_of_birth" value="{{ old('date_of_birth') }}" placeholder="Date Of Birth" class="form-control"/>
+                                            @if ($errors->has('date_of_birth'))
+                                                <span class="help-block">
+                                                    <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('date_of_birth') }}</strong>
+                                                </span>
+                                            @endif
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group{{ ($errors->has('id_card'))? ' has-error' : '' }}">
+                                          <label class="col-md-2 control-label">ID:</label>
+                                          <div class="col-md-6">
+                                            <input type="text" name="id_card" value="{{ old('id_card') }}" placeholder="Enter ID CNIC/Passport etc..." class="form-control"/>
+                                            @if ($errors->has('id_card'))
+                                                <span class="help-block">
+                                                    <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('id_card') }}</strong>
+                                                </span>
+                                            @endif
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group{{ ($errors->has('date_of_joining'))? ' has-error' : '' }}">
+                                          <label class="col-md-2 control-label">Date Of Joining</label>
+                                          <div class="col-md-6">
+                                            <input id="date_of_joining" type="text" name="date_of_joining" value="{{ old('date_of_joining') }}" placeholder="Date Of Joining" class="form-control"/>
+                                            @if ($errors->has('date_of_joining'))
+                                                <span class="help-block">
+                                                    <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('date_of_joining') }}</strong>
+                                                </span>
+                                            @endif
+                                          </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-6">
                                                 <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Register </button>
@@ -694,6 +732,16 @@
     <!-- Input Mask-->
      <script src="{{ asset('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
 
+    <script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
+    @if ($errors->any())
+      <script>
+          @foreach ($errors->all() as $error)
+              toastr.error("{{ $error }}", "Validation Error");
+          @endforeach
+      </script>
+    @endif
+
     <script type="text/javascript">
 
     function readURL(input) {
@@ -727,6 +775,15 @@
 
     var tbl;
       $(document).ready(function(){
+        $('#date_of_birth').datetimepicker({
+          format: 'YYYY-MM-DD',
+        });
+
+        $('#date_of_joining').datetimepicker({
+            format: 'YYYY-MM-DD',
+            defaultDate: moment(),
+        });
+
       $('[data-toggle="tooltip"]').tooltip();
 /*    For Column Search
         $('.dataTables-teacherList thead th').each( function () {
@@ -831,6 +888,15 @@
                 required: true,
               },
               qualification: {
+                required: true,
+              },
+              date_of_birth: {
+                required: true,
+              },
+              date_of_joining: {
+                required: true,
+              },
+              id_card: {
                 required: true,
               },
 /*              email: {
