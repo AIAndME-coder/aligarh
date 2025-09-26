@@ -219,12 +219,22 @@
                                 </tr>
                             </table>
 
-                            <p style="margin-top: 10px; text-transform: capitalize;" class="inwords fz-12">
+                            <p style="text-transform: capitalize; height:10px" class="inwords fz-12">
                                 Amount in words: <u>{{ $invoice->net_amount }}</u>
                             </p>
-
+                            {{-- Bar Code --}}
+                            <div class="text-center">
+                                <svg class="barcode"
+                                    jsbarcode-format="CODE128"
+                                    jsbarcode-value="{{ $invoice->id }}"
+                                    jsbarcode-width="2"
+                                    jsbarcode-height="20"
+                                    jsbarcode-displayValue="false"
+                                    jsbarcode-fontSize="10">
+                                </svg>
+                            </div>
                             {{-- Signature and Terms --}}
-                            <p style="margin-top: 20px; margin-bottom: 5px; border-bottom: 1px solid;">Accountant Signature
+                            <p style="margin-bottom: 5px; border-bottom: 1px solid;">Accountant Signature
                             </p>
 
                             <div>
@@ -240,10 +250,11 @@
                 </div>
             </div>
         @endforeach
-
     </div>
-
     <script>
+    
+        JsBarcode(".barcode", "Wider barcode").init();
+
         window.onload = function() {
             $('.inwords').each(function() {
                 const text = $(this).text().trim();
