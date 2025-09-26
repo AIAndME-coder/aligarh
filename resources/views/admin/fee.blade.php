@@ -68,6 +68,7 @@
 									<table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
 									  <thead>
 										<tr>
+										<th><input type="checkbox" id="select-all"></th>
 										  <th>ID</th>
 										  <th>GR-No</th>
 										  <th>Total Amount</th>
@@ -539,7 +540,7 @@
 		opthtm += '<a data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-invoice"><span class="fa fa-edit"></span></a>';
 		@endcan
 		@can('fee.group.chalan.print')
-		opthtm += '<a data-toggle="tooltip" target="_blank" title="Print Group Invoice" class="btn btn-default btn-circle btn-xs group-invoice"><span class="fa fa-print"></span></a>';
+		opthtm += '<a data-toggle="tooltip" target="_new" title="Print Group Invoice" class="btn btn-default btn-circle btn-xs group-invoice"><span class="fa fa-file-pdf-o"></span></a>';
 		@endcan
 		tbl = $('.dataTables-teacher').DataTable({
 		  dom: '<"html5buttons"B>lTfgitp',
@@ -558,13 +559,40 @@
 				.addClass('compact')
 				.css('font-size', 'inherit');
 			  }
-			}
+			},
+			@can('fee.bulk.print.invoice')
+				{
+					text: 'Print Bulk Invoices',
+					action: function (e, dt, node, config) {
+						var selectedIds = [];
+						$('.dataTables-teacher tbody .row-checkbox:checked').each(function () {
+							selectedIds.push($(this).data('id'));
+						});
+
+						if (selectedIds.length === 0 || selectedIds.length > 50) {
+							alert('Please select at least one row and at most 50 rows.');
+							return;
+						}
+						var queryString = selectedIds.map(id => 'ids[]=' + encodeURIComponent(id)).join('&');
+						var url = '{{ url("/fee/bulk-print-invoice") }}' + '?' + queryString;
+						window.open(url, '_blank');
+					}
+				},
+			@endcan	
 		  ],
 		  Processing: true,
 		  serverSide: true,
 		  order: [[0, "desc"]],
 		  ajax: '{{ URL('fee') }}',
 		  columns: [
+			{
+				data: 'id',
+				orderable: false,
+				searchable: false,
+				render: function (data, type, row) {
+				return '<input type="checkbox" class="row-checkbox" data-id="' + data + '">';
+				}
+			},
 			{data: 'id', name: 'invoice_master.id'},
 			{data: 'gr_no', name: 'invoice_master.gr_no'},
 			{data: 'total_amount', name: 'invoice_master.total_amount'},
@@ -592,6 +620,20 @@
 		$(this).attr('href','{{ URL('fee/group-chalan/') }}/'+tbl.row( $(this).parents('tr') ).data().guardian_id);
 		$(this).tooltip('show');
 	  });
+
+
+	// When "Select All" is clicked
+	$('#select-all').on('click', function() {
+	var checked = $(this).is(':checked');
+	$('.dataTables-teacher tbody .row-checkbox').prop('checked', checked);
+	});
+
+	$('.dataTables-teacher tbody').on('change', '.row-checkbox', function() {
+	var total = $('.dataTables-teacher tbody .row-checkbox').length;
+	var checked = $('.dataTables-teacher tbody .row-checkbox:checked').length;
+	$('#select-all').prop('checked', total === checked);
+	});
+
 
 		$("#tchr_rgstr").validate({
 			rules: {
@@ -756,7 +798,7 @@
 					success: function(msg){
 
 						if (e.target.id == 'GetStdFee') {
-//							console.log(msg);
+							//	console.log(msg);
 							feeApp.std.id = msg.id;
 							feeApp.std.name = msg.name;
 							feeApp.std.gr_no = msg.gr_no;
@@ -766,7 +808,7 @@
 							feeApp.fee.discount = msg.discount;
 							feeApp.fee.feedata = true;
 						} else {
-//							console.log(msg);
+							//console.log(msg);
 							feeApp.AjaxMsg(msg);
 							feeApp.fee.feedata = false;
 						}

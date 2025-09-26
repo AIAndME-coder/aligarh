@@ -19,6 +19,9 @@
 
       }
     </style>
+    
+    {{-- jsbarcode --}}
+    <script src="{{ asset('src/js/jsbarcode/jsbarcode.all.min.js') }}"></script>
 
     <script type="text/javascript">
         // Convert numbers to words
