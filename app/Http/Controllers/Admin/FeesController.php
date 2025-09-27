@@ -301,6 +301,89 @@ class FeesController extends Controller
 		]);
 	}
 
+	function CreateBulkInvoice(Request $request){
+
+		$request->validate([
+			'class_id'	=>	'required|exists:classes,id',
+			'months'  			=>  'required|array',
+			'months.*'  			=>  'required|date',
+			'issue_date'		=>	'required|date',
+			'due_date'			=>	'required|date|after_or_equal:issue_date'
+		]);
+
+		$classe = Classe::with('Students', 'Students.AdditionalFee')->find($request->input('class_id'));
+		$monthsCount = collect($request->input('months'))->count();
+		$createdInvoices = [];
+
+		foreach ($classe->Students as $key => $student) {
+
+			$invoiceMonthCount = InvoiceMonth::where('student_id', $student->id)
+			->whereIn('month', $request->input('months'))->count();
+
+			if($invoiceMonthCount){
+				continue;	// continue to next
+			}
+
+			$previousInvoice =	InvoiceMaster::where('student_id', $student->id)->orderBy('id', 'desc')->first();
+			
+			if($previousInvoice && $previousInvoice->getRawOriginal('due_date') >= now()->toDateString()){
+				continue; // continue to next
+			}
+
+			$data = [
+				'student_id' => $student->id,
+				'gr_no' => $student->gr_no,
+				'late_fee'	=>	$student->late_fee,
+				'months'	=>	$request->input('months'),
+
+				'created_at'	=>	$request->input('issue_date'),
+				'date'			=>	$request->input('issue_date'),
+				'due_date'	=>	$request->input('due_date'),
+
+				'total_tuition_fee'	=>	($student->tuition_fee * $monthsCount),
+				'total_amount'	=>	($student->total_amount * $monthsCount),
+				'arrears'				=>	0,// will update in calculation
+				'discount' => ($student->discount * $monthsCount),
+				'net_amount'	=>	($student->net_amount * $monthsCount),
+			];
+
+			if($previousInvoice){
+				if($previousInvoice->getRawOriginal('data_of_payment') >= $previousInvoice->getRawOriginal('due_date')){
+					$data['arrears']	=	($previousInvoice->net_amount+$previousInvoice->late_fee) - $previousInvoice->paid_amount;
+				} else {
+					$data['arrears']	=	$previousInvoice->net_amount - $previousInvoice->paid_amount;
+				}
+			}
+
+			$invoice = $this->SaveInvoice($student, $data);
+			
+			$this->SaveDetails($data, $student->AdditionalFee?? [], $student);
+
+			$this->SaveMonths($data, $student);
+
+			$createdInvoices[] = [
+				'invoice_id'	=>	$invoice->id,
+				'student_id'	=>	$student->id
+			];
+
+		}
+
+		$no_of_invoices = collect($createdInvoices)->count();
+
+		return redirect('fee')->with([
+			'toastrmsg' => [
+				'type' => 'success', 
+				'title'  =>  'Invoice',
+				'msg' =>  $no_of_invoices . ' Invoices were created successfully'
+			],
+			'no_of_invoices'	=>	collect($createdInvoices)->count(),
+			'created_invoices' => $createdInvoices,
+			'print_voucher' => route('fee.bulk.print.invoice', $request->only('class_id'))
+		]);
+
+
+	}
+
 	public function CollectInvoice(Request $request){
 
 		if($request->ajax() == false){
@@ -633,20 +716,21 @@ class FeesController extends Controller
 						'student_id' => $Student->id,
 						'gr_no' => $Student->gr_no,
 
-						'late_fee'	=>	$request->input('late_fee'),
-						'created_at'	=>	$request->input('issue_date'),
-						'date'			=>	$request->input('issue_date'),
-						'due_date'	=>	$request->input('due_date'),
+						'late_fee'	=>	$request['late_fee']?? 0,
+						'created_at'	=>	$request['issue_date']?? 0,
+						'date'			=>	$request['issue_date']?? 0,
+						'due_date'	=>	$request['due_date']?? 0,
 
-						'total_amount'	=>	($request->input('total_amount') + $request->input('arrears')),
-						'discount' => $request->input('discount'),
-						'net_amount'	=>	$request->input('net_amount'),
+						'total_amount'	=>	(($request['total_amount']?? 0) + ($request['arrears']?? 0)),
+						'discount' => $request['discount']?? 0,
+						'net_amount'	=>	$request['net_amount']?? 0,
 
 /* 						'payment_type' => $request->input('payment_type'),
 						'chalan_no' => ($request->input('payment_type') == 'Chalan')? $request->input('chalan_no') : null,
 						'date' => $request->input('date'), */
 					]
 				);
+		return $this->InvoiceMaster;
 	}
 
 	protected function SaveDetails($request, $AdditionalFee, $Student){
@@ -657,7 +741,7 @@ class FeesController extends Controller
 			],
 			[
 //				'amount'	=>	($this->Student->tuition_fee * COUNT($request->input('months')))
-				'amount'	=>	$request->input('total_tuition_fee'),
+				'amount'	=>	$request['total_tuition_fee']?? 0,
 			]
 		);
 
@@ -667,7 +751,7 @@ class FeesController extends Controller
 				'fee_name'		=>	'Arrears'
 			],
 			[
-				'amount'	=>	$request->input('arrears')
+				'amount'	=>	$request['arrears']?? 0
 			]
 		);
 
@@ -679,7 +763,7 @@ class FeesController extends Controller
 						'fee_name'		=>	$row->fee_name
 					],
 					[
-						'amount'	=>	($row->onetime)? $row->amount : ($row->amount * COUNT($request->input('months')))
+						'amount'	=>	($row->onetime)? $row->amount : ($row->amount * collect($request['months']?? null)->count())
 					]
 				);
 				if($row->onetime){
@@ -696,7 +780,8 @@ class FeesController extends Controller
 	}
 
 	protected function SaveMonths($request, $Student){
-		foreach ($request->input('months') as $month) {
+		$months = $request['months']?? [];
+		foreach ($months as $month) {
 			InvoiceMonth::updateOrCreate(
 				[
 					'invoice_id' => $this->InvoiceMaster->id,
