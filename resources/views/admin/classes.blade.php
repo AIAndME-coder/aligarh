@@ -59,6 +59,7 @@
                                       <thead>
                                         <tr>
                                           <th>Name</th>
+                                          <th>Prifix</th>
                                           <th>Numeric Name</th>
                                           <th>Class Teacher</th>
                                           <th>Options</th>
@@ -212,6 +213,7 @@
           ajax: '{{ URL('manage-classes') }}',
           columns: [
             {data: 'name', name: 'classes.name'},
+            {data: 'prifix', name: 'classes.prifix'},
             {data: 'numeric_name', name: 'classes.numeric_name'},
             {data: 'teacher_name', name: 'teachers.name'},
 //            {"defaultContent": '<div class="btn-group"><button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle option" aria-expanded="true">Action <span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#"><span class="fa fa-user"></span> Profile</a></li><li class="divider"></li><li><a data-original-title="Edit" class="edit-option"><span class="fa fa-edit"></span> Edit</a></li><li><a href="#"><span class="fa fa-trash"></span> Delete</a></li></ul></div>', className: 'hidden-print'},
