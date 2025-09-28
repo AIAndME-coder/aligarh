@@ -124,7 +124,7 @@ class StudentsController extends Controller
 			'StdClass:id,name',
 			'Guardian:id,name',
 			'lastInvoice:id,student_id,paid_amount,date'
-		]); 
+		])->active(); 
 
 		if ($request->filled('search_students')) {
 			$search = $request->input('search_students');

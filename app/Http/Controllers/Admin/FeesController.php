@@ -122,7 +122,7 @@ class FeesController extends Controller
 				]);
 			}
 
-			if($invoice->getRawOriginal('data_of_payment') >= $invoice->getRawOriginal('due_date')){
+			if($invoice->getRawOriginal('date_of_payment') > $invoice->getRawOriginal('due_date')){
 				$data['arrears']	=	($invoice->net_amount+$invoice->late_fee) - $invoice->paid_amount;
 			} else {
 				$data['arrears']	=	$invoice->net_amount - $invoice->paid_amount;
@@ -373,7 +373,7 @@ class FeesController extends Controller
 			// Calculate arrears
 			$arrears = 0;
 			if ($previousInvoice) {
-					$paidAfterDue = $previousInvoice->getRawOriginal('data_of_payment') > $previousInvoice->getRawOriginal('due_date');
+					$paidAfterDue = $previousInvoice->getRawOriginal('date_of_payment') > $previousInvoice->getRawOriginal('due_date');
 					$arrears = ($previousInvoice->net_amount + ($paidAfterDue ? $previousInvoice->late_fee : 0)) - $previousInvoice->paid_amount;
 			}
 
