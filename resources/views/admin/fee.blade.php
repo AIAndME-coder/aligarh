@@ -7,7 +7,7 @@
 	<link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
-<!-- 	<link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet"> -->
+	<link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
   @endsection
 
   @section('content')
@@ -50,6 +50,11 @@
 									<a data-toggle="tab" href="#tab-11"><span class="fa fa-edit"></span> Create Invoice</a>
 								</li>
 							@endcan
+							@can('fee.bulk.create.invoice')
+								<li class="make-fee">
+									<a data-toggle="tab" href="#tab-14"><span class="fa fa-edit"></span> Create Bulk Invoice</a>
+								</li>
+							@endcan
 							@can('fee.collect.store')
 								<li class="collect-invocie">
 									<a data-toggle="tab" href="#tab-12"><span class="fa fa-sticky-note-o"></span> Invoice Collect</a>
@@ -68,21 +73,134 @@
 									<table class="table table-striped table-bordered table-hover dataTables-teacher" width="100%">
 									  <thead>
 										<tr>
+										<th><input type="checkbox" id="select-all"></th>
 										  <th>ID</th>
 										  <th>GR-No</th>
 										  <th>Total Amount</th>
 										  <th>Discount</th>
+										  <th>Paid Status</th>
 										  <th>Paid Amount</th>
+										  <th>Due Status</th>
 										  <th>Due Date</th>
 										  <th>Issue Date</th>
 										  <th>Options</th>
 										</tr>
 									  </thead>
+										<tfoot>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th></th>
+												<th>
+													<select id="filterPaid">
+															<option value="">All</option>
+															<option value="1">Paid</option>
+															<option value="0">Unpaid</option>
+													</select>
+												</th>
+												<th></th>
+												<th>
+													<select id="filterDue">
+															<option value="">All</option>
+															<option value="1">Due</option>
+															<option value="0">Overdue</option>
+													</select>
+												</th>
+												<th></th>
+												<th></th>
+
+											</tr>
+
+										</tfoot>
 									</table>
 								  </div>
 
 								</div>
 							</div>
+							@can('fee.bulk.create.invoice')
+								<div id="tab-14" class="tab-pane fade make-fee">
+									<div id="createfeeApp" class="panel-body">
+									<h2> Create Bulk Invoice </h2>
+									<div class="hr-line-dashed"></div>
+
+										<form id="crt_bulk_invoice_frm" method="POST" action="{{ route('fee.bulk.create.invoice') }}" class="form-horizontal jumbotron" role="form" >
+											@csrf
+										<div class="form-group{{ ($errors->has('class_id'))? ' has-error' : '' }}">
+											<label class="col-md-2 control-label"> Class </label>
+											<div class="col-md-6">
+											<select class="form-control" name="class_id" required="true">
+												<option value="" disabled selected>Class</option>
+												@foreach ($classes as $class)
+														<option value="{{ $class->id }}" {{ old('class_id') == $class->id? 'selected' : ''}}>{{ $class->name }}</option>
+												@endforeach
+											</select>
+											@if ($errors->has('class_id'))
+												<span class="help-block">
+													<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('class_id') }} </strong>
+												</span>
+											@endif
+											</div>
+										</div>
+
+										<div class="form-group{{ $errors->has('months') ? ' has-error' : '' }}">
+											<label class="col-md-2 control-label">Months</label>
+											<div class="col-md-6">
+												<select class="form-control" id="select2_bulk_months" multiple="multiple" name="months[]" required="true" style="width: 100%">
+													@foreach($months as $month)
+													<option value="{{ $month['value'] }}">{{ $month['title'] }}</option>
+													@endforeach
+												</select>
+												@if ($errors->has('months'))
+													<span class="help-block">
+														<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('months') }} </strong>
+													</span>
+												@endif
+											</div>
+										</div>
+
+										<div class="form-group{{ $errors->has('issue_date') ? ' has-error' : '' }}">
+											<label class="col-md-2 control-label">Issue Date</label>
+											<div class="col-md-6">
+													<input type="text" id="datetimepicker_issuedate" name="issue_date"
+															placeholder="Issue Date" value="{{ old('issue_date') }}"
+															class="form-control" required />
+													@if ($errors->has('issue_date'))
+															<span class="help-block">
+																	<strong><span class="fa fa-exclamation-triangle"></span>
+																			{{ $errors->first('issue_date') }}</strong>
+															</span>
+													@endif
+											</div>
+										</div>
+
+										<div class="form-group{{ $errors->has('due_date') ? ' has-error' : '' }}">
+											<label class="col-md-2 control-label">Due Date</label>
+											<div class="col-md-6">
+													<input type="text" id="datetimepicker_duedate" name="due_date"
+															placeholder="Due Date" value="{{ old('due_date') }}"
+															class="form-control" required />
+													@if ($errors->has('due_date'))
+															<span class="help-block">
+																	<strong><span class="fa fa-exclamation-triangle"></span>
+																			{{ $errors->first('due_date') }}</strong>
+															</span>
+													@endif
+											</div>
+										</div>
+
+										<div class="form-group">
+											<div class="col-md-offset-2 col-md-6">
+												<button class="btn btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-save"></span> Create </button>
+											</div>
+										</div>
+
+										</form>
+									</div>
+								</div>
+							@endcan
 							@can('fee.create.store')
 								<div id="tab-11" class="tab-pane fade make-fee">
 									<div id="createfeeApp" class="panel-body">
@@ -477,10 +595,6 @@
 
 		  </div>
 
-
-		  
-
-
 		</div>
 
 	@endsection
@@ -501,8 +615,8 @@
 	<script src="{{ asset('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
 
 	<!-- require with bootstrap-datetimepicker -->
-<!-- 	<script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
-	<script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script> -->
+	<script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
+	<script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
 
 	<script type="text/javascript">
 	var tbl;
@@ -519,14 +633,21 @@
 
 	  $(document).ready(function(){
 
-	  @if((COUNT($errors) >= 1 && !$errors->has('toastrmsg')) || $root == 'create')
-		$('a[href="#tab-11"]').tab('show');
-		@if(isset($Input))
-		  $('[name="gr_no"').val('{{ $Input['gr_no'] }}');
-		@endif
-	  @else
-		$('a[href="#tab-10"]').tab('show');
+	  @if((COUNT($errors) >= 1 && session('toastrmsg.form') == 'fee.bulk.create.invoice'))
+			$('a[href="#tab-14"]').tab('show');
+			$('#select2_bulk_months').val(@json(old('months', [])));
+		@elseif((COUNT($errors) >= 1 && !$errors->has('toastrmsg')))
+			$('a[href="#tab-11"]').tab('show');
+				@if(isset($Input))
+					$('[name="gr_no"]').val('{{ $Input['gr_no'] }}');
+				@endif
+		@else
+			$('a[href="#tab-10"]').tab('show');
 	  @endif
+
+		@if(session('print_voucher'))
+			window.open('{!! session('print_voucher') !!}', '_blank');
+		@endif
 
 		opthtm = '';
 		@can('fee.chalan.print')
@@ -539,7 +660,7 @@
 		opthtm += '<a data-toggle="tooltip" title="Edit" class="btn btn-default btn-circle btn-xs edit-invoice"><span class="fa fa-edit"></span></a>';
 		@endcan
 		@can('fee.group.chalan.print')
-		opthtm += '<a data-toggle="tooltip" target="_new" title="Print Group Invoice" class="btn btn-default btn-circle btn-xs group-invoice"><span class="fa fa-print"></span></a>';
+		opthtm += '<a data-toggle="tooltip" target="_new" title="Print Group Invoice" class="btn btn-default btn-circle btn-xs group-invoice"><span class="fa fa-file-pdf-o"></span></a>';
 		@endcan
 		tbl = $('.dataTables-teacher').DataTable({
 		  dom: '<"html5buttons"B>lTfgitp',
@@ -558,18 +679,47 @@
 				.addClass('compact')
 				.css('font-size', 'inherit');
 			  }
-			}
+			},
+			@can('fee.bulk.print.invoice')
+				{
+					text: 'Print Bulk Invoices',
+					action: function (e, dt, node, config) {
+						var selectedIds = [];
+						$('.dataTables-teacher tbody .row-checkbox:checked').each(function () {
+							selectedIds.push($(this).data('id'));
+						});
+
+						if (selectedIds.length === 0 || selectedIds.length > 50) {
+							alert('Please select at least one row and at most 50 rows.');
+							return;
+						}
+						var queryString = selectedIds.map(id => 'ids[]=' + encodeURIComponent(id)).join('&');
+						var url = '{{ url("/fee/bulk-print-invoice") }}' + '?' + queryString;
+						window.open(url, '_blank');
+					}
+				},
+			@endcan	
 		  ],
 		  Processing: true,
 		  serverSide: true,
 		  order: [[0, "desc"]],
 		  ajax: '{{ URL('fee') }}',
 		  columns: [
+			{
+				data: 'id',
+				orderable: false,
+				searchable: false,
+				render: function (data, type, row) {
+				return '<input type="checkbox" class="row-checkbox" data-id="' + data + '">';
+				}
+			},
 			{data: 'id', name: 'invoice_master.id'},
 			{data: 'gr_no', name: 'invoice_master.gr_no'},
 			{data: 'total_amount', name: 'invoice_master.total_amount'},
 			{data: 'discount', name: 'invoice_master.discount'},
+			{data: 'paid_status', name: 'paid_status', visible: false },
 			{data: 'paid_amount', name: 'invoice_master.paid_amount'},
+			{data: 'due_status', name: 'due_status', visible: false },
 			{data: 'due_date', name: 'invoice_master.due_date'},
 			{data: 'created_at', name: 'invoice_master.created_at'},
 			{"defaultContent": opthtm, className: 'hidden-print'},
@@ -592,6 +742,20 @@
 		$(this).attr('href','{{ URL('fee/group-chalan/') }}/'+tbl.row( $(this).parents('tr') ).data().guardian_id);
 		$(this).tooltip('show');
 	  });
+
+
+	// When "Select All" is clicked
+	$('#select-all').on('click', function() {
+	var checked = $(this).is(':checked');
+	$('.dataTables-teacher tbody .row-checkbox').prop('checked', checked);
+	});
+
+	$('.dataTables-teacher tbody').on('change', '.row-checkbox', function() {
+	var total = $('.dataTables-teacher tbody .row-checkbox').length;
+	var checked = $('.dataTables-teacher tbody .row-checkbox:checked').length;
+	$('#select-all').prop('checked', total === checked);
+	});
+
 
 		$("#tchr_rgstr").validate({
 			rules: {
@@ -639,11 +803,40 @@
 			// templateResult: select2template,
 		});
 
+		$("#select2_bulk_months").select2({
+			placeholder: "select months"
+		}).change();
+
+		$('#datetimepicker_issuedate').datetimepicker({
+				format: 'YYYY-MM-DD',
+				defaultDate: moment()
+		});
+		$('#datetimepicker_duedate').datetimepicker({
+				format: 'YYYY-MM-DD',
+		});
+
 	  @if(Session::get('invoice_created') !== null)
 		window.open('{{ URL('fee/chalan/'.Session::get('invoice_created')) }}', '_new');
 	  @endif
 
 	  });
+		var search = $.fn.dataTable.util.throttle(
+			function(colIdx, val, exactmatch = false) {
+					regExSearch = '^' + val + '$';
+					tbl
+							.column(colIdx)
+							.search(exactmatch ? regExSearch : val, true, false)
+							.draw();
+			},
+			1000
+	);
+
+	$("#filterPaid").on('change', function() {
+			search((5), this.value, (this.value === ''));
+	});
+	$("#filterDue").on('change', function() {
+			search((7), this.value, (this.value === ''));
+	});
 	</script>
 
 	@endsection
@@ -756,7 +949,7 @@
 					success: function(msg){
 
 						if (e.target.id == 'GetStdFee') {
-//							console.log(msg);
+							//	console.log(msg);
 							feeApp.std.id = msg.id;
 							feeApp.std.name = msg.name;
 							feeApp.std.gr_no = msg.gr_no;
@@ -766,7 +959,7 @@
 							feeApp.fee.discount = msg.discount;
 							feeApp.fee.feedata = true;
 						} else {
-//							console.log(msg);
+							//console.log(msg);
 							feeApp.AjaxMsg(msg);
 							feeApp.fee.feedata = false;
 						}

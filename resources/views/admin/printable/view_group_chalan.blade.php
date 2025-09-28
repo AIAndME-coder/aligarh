@@ -7,7 +7,7 @@
     body {
         padding: 0 10px;
         margin: 0;
-        font-size: 15px;
+        /* font-size: 15px; */
         font-family: 'Arial', sans-serif;
         color: #000;
     }
@@ -19,7 +19,7 @@
 
     .table {
         width: 100%;
-        margin-top: 15px;
+        margin-top: 2px;
         border-collapse: collapse;
     }
 
@@ -38,16 +38,19 @@
     .table-bordered th,
     .table-bordered td {
         border: 1px solid black !important;
-        padding: 4px 6px;
+        padding: 2px 3px;
         vertical-align: middle;
     }
 
     .table > tbody > tr > td {
-        padding: 4px 6px;
+        padding: 2px 3px;
     }
+    /* .table > tbody > tr > th {
+        padding: 2px 3px;
+    } */
 
     #stdcopy {
-        padding: 10px 5px;
+        padding: 0px 5px;
     }
 
     a[href]:after {
@@ -163,7 +166,7 @@
             <h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> @{{ copy }} </h4>
 
             <div id="stdcopy">
-                <table style="margin-top: 15px">
+                <table>
                     <tbody>
                         <tr>
                             <td width="250px">R.No. <u>@{{ invoiceIds }}</u></td>
@@ -174,11 +177,11 @@
                             <td>Due Date. <u>@{{ dueDate }}</u></td>
                         </tr>
                         <tr>
-                            <td>Students. <u>@{{ studentNames | join }}</u></td>
+                            <td>Students. <u>@{{ studentNames }}</u></td>
                             <td>Guardian. <u>{{ $guardian->name }}</u></td>
                         </tr>
                         <tr>
-                            <td>Classes. <u>@{{ classNames | join }}</u></td>
+                            <td>Classes. <u>@{{ classNames }}</u></td>
                             <td>Total Students. <u>@{{ totalStudents }}</u></td>
                         </tr>
                         <tr>
@@ -187,7 +190,7 @@
                     </tbody>
                 </table>
 
-                <div style="height: 255px">
+                <div style="min-height: 255px">
                     <table class="table table-bordered">
                         <tbody>
                             <tr style="background: blue; color: white;">
@@ -245,18 +248,44 @@
                 consolidatedFees: {!! json_encode($consolidatedFees) !!},
                 totalPayable: {!! json_encode($totalAmount) !!},
                 totalDiscount: {!! json_encode($totalDiscount) !!},
-                studentNames: {!! json_encode($studentNames) !!},
-                classNames: {!! json_encode($classNames) !!},
+                studentNamesForNull: {!! json_encode($studentNames) !!},
+                classNamesForNull: {!! json_encode($classNames) !!},
                 uniqueMonths: {!! json_encode($uniqueMonths) !!},
                 totalStudents: {!! json_encode($invoiceCount) !!},
                 currentDate: '',
                 dueDate: {!! json_encode($dueDate) !!},
                 copies: ['Student\'s Copy', 'School\'s Copy', 'Bank\'s Copy']
             },
+            mounted(){
+                setTimeout(() => {
+                    window.print();
+                }, 800);
+            },
             computed: {
                 invoiceIds: function() {
-                    return this.groupInvoices.map((invoice) => invoice.id).join(',');
-                }
+                    return this.groupInvoices.map((group) => group?.due_invoice?.id).filter(id => id != null).join(', ');
+                },
+                filteredInvoices() {
+                    return this.groupInvoices.filter(group => group?.due_invoice);
+                },
+                studentNames() {
+                    if (this.hasAnyDueInvoice) {
+                        return this.filteredInvoices.map(group => group.name).join(', ');
+                    } else {
+                        return this.studentNamesForNull.join(', ');
+                    }
+                },
+                classNames(){
+                    if (this.hasAnyDueInvoice) {
+                        return this.filteredInvoices.map(group => group.std_class.name).join(', ');
+                    } else {
+                        return this.classNamesForNull.join(', ');
+                    }
+                },
+                hasAnyDueInvoice(){
+                    return this.groupInvoices.some(group => group?.due_invoice);
+                } 
+
             },
             filters: {
                 join: function(array) {

@@ -17,7 +17,7 @@ class ManageClasses extends Controller
 	public function GetClasses(Request $request){
 		if($request->ajax()){
 			return DataTables::queryBuilder(DB::table('classes')->leftjoin('teachers', 'classes.teacher_id', '=', 'teachers.id')
-																->select('classes.name', 'classes.numeric_name', 'classes.id','teachers.name AS teacher_name')
+																->select('classes.name', 'classes.prifix', 'classes.numeric_name', 'classes.id','teachers.name AS teacher_name')
 																)->make(true);
 		}
 		$data['classes'] = DB::table('classes')->leftjoin('teachers', 'classes.teacher_id', '=', 'teachers.id')

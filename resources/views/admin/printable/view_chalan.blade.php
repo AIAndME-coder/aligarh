@@ -54,7 +54,7 @@
 @section('content')
     <div class="container-fluid" style="padding-left: 5px; ">
 
-        <div class="row" style="border: 1px solid black; padding: 2px; width: 507px; position: absolute; height: 1000px">
+        <div class="row" style="border: 1px solid black; padding: 2px; width: 507px; position: absolute; height: 860px">
             <div id="address" style="width: 500px;">
                 <table style="width: 420px">
                     <tbody>
@@ -118,7 +118,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div style="height: 350px">
+                <div style="height: 225px">
 
                     <table class="table table-bordered">
                         <tbody>
@@ -151,8 +151,19 @@
                     </table>
                     <p style="width: 500px;margin-top: 15px;">Amount In Words: <u>@{{ inwords() }}</u></p>
                 </div>
+                {{-- Bar Code --}}
+                <div class="text-center">
+                    <svg class="barcode"
+                        jsbarcode-format="CODE128"
+                        jsbarcode-value="{{ $invoice->id }}"
+                        jsbarcode-width="2"
+                        jsbarcode-height="20"
+                        jsbarcode-displayValue="false"
+                        jsbarcode-fontSize="10">
+                    </svg>
+                </div>
 
-                <p style="margin-top: 20px; margin-bottom: 5px; border-bottom: 1px solid">Accountant Signature</p>
+                <p style="margin-bottom: 5px; border-bottom: 1px solid">Accountant Signature</p>
 
                 <ol style="margin-bottom: 0px">
                     @php
@@ -165,7 +176,7 @@
         </div>
 
         <div class="row"
-            style="border: 1px solid black; padding: 2px; width: 507px; height: 1000px; margin-left: 504px; position: absolute;"
+            style="border: 1px solid black; padding: 2px; width: 507px; height: 860px; margin-left: 504px; position: absolute;"
             id="schoolcopy">
             <div v-html="address"></div>
             <h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> School's Copy </h4>
@@ -173,7 +184,7 @@
         </div>
 
         <div class="row"
-            style="border: 1px solid black; padding: 2px; width: 507px; height: 1000px; margin-left: 1020px; position: absolute;"
+            style="border: 1px solid black; padding: 2px; width: 507px; height: 860px; margin-left: 1020px; position: absolute;"
             id=bankcopy>
             <div v-html="address"></div>
             <h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Bank's Copy </h4>
@@ -193,6 +204,8 @@
 @section('vue')
 
     <script type="text/javascript">
+        JsBarcode(".barcode", "Wider barcode").init();
+
         var app = new Vue({
             el: '#app',
             data: {
