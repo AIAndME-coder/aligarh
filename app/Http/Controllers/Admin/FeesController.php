@@ -343,11 +343,11 @@ class FeesController extends Controller
 			]);
 		}
 
-		$classe = Classe::with('Students', 'Students.AdditionalFee')->find($request->input('class_id'));
+		$classe = Classe::with('ActiveStudents', 'ActiveStudents.AdditionalFee')->find($request->input('class_id'));
 		$monthsCount = collect($request->input('months'))->count();
 		$createdInvoices = [];
 
-		foreach ($classe->Students as $key => $student) {
+		foreach ($classe->ActiveStudents as $key => $student) {
 
 			$invoiceMonthCount = InvoiceMonth::where('student_id', $student->id)
 			->whereIn('month', $request->input('months'))->count();
@@ -362,31 +362,45 @@ class FeesController extends Controller
 				continue; // continue to next
 			}
 
-			$data = [
-				'student_id' => $student->id,
-				'gr_no' => $student->gr_no,
-				'late_fee'	=>	$student->late_fee,
-				'months'	=>	$request->input('months'),
+			// Normalize dates
+			$issueDate = Carbon::parse($request->input('issue_date'))->startOfDay();
+			$dueDate = Carbon::parse($request->input('due_date'))->toDateString(); // Assuming DATE column
 
-				'created_at'	=>	$request->input('issue_date'),
-				'date'			=>	$request->input('issue_date'),
-				'issue_date'	=>	$request->input('issue_date'),
-				'due_date'	=>	$request->input('due_date'),
+			// Months
+			$months = $request->input('months', []);
+			$monthsCount = count($months);
 
-				'total_tuition_fee'	=>	($student->tuition_fee * $monthsCount),
-				'total_amount'	=>	($student->total_amount * $monthsCount),
-				'arrears'				=>	0,// will update in calculation
-				'discount' => ($student->discount * $monthsCount),
-				'net_amount'	=>	($student->net_amount * $monthsCount),
-			];
-
-			if($previousInvoice){
-				if($previousInvoice->getRawOriginal('data_of_payment') >= $previousInvoice->getRawOriginal('due_date')){
-					$data['arrears']	=	($previousInvoice->net_amount+$previousInvoice->late_fee) - $previousInvoice->paid_amount;
-				} else {
-					$data['arrears']	=	$previousInvoice->net_amount - $previousInvoice->paid_amount;
-				}
+			// Calculate arrears
+			$arrears = 0;
+			if ($previousInvoice) {
+					$paidAfterDue = $previousInvoice->getRawOriginal('data_of_payment') > $previousInvoice->getRawOriginal('due_date');
+					$arrears = ($previousInvoice->net_amount + ($paidAfterDue ? $previousInvoice->late_fee : 0)) - $previousInvoice->paid_amount;
 			}
+
+			// Financial calculations
+			$tuitionFeeTotal = $student->tuition_fee * $monthsCount;
+			$discountTotal = $student->discount * $monthsCount;
+			$totalAmount = ($student->total_amount * $monthsCount) + $arrears;
+			$netAmount = $totalAmount - $discountTotal;
+
+			// Final invoice data
+			$data = [
+					'student_id'         => $student->id,
+					'gr_no'              => $student->gr_no,
+					'late_fee'           => $student->late_fee,
+					'months'             => $months,
+
+					'created_at'         => $issueDate,
+					'date'               => $issueDate->toDateString(),
+					'issue_date'         => $issueDate->toDateString(),
+					'due_date'           => $dueDate,
+
+					'arrears'            => $arrears,
+					'total_tuition_fee'  => $tuitionFeeTotal,
+					'total_amount'       => $totalAmount,
+					'discount'           => $discountTotal,
+					'net_amount'         => $netAmount,
+			];
 
 			$invoice = $this->SaveInvoice($student, $data);
 			
