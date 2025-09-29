@@ -181,7 +181,7 @@
                             <td>Guardian. <u>{{ $guardian->name }}</u></td>
                         </tr>
                         <tr>
-                            <td>Classes. <u>@{{ classNames }}</u></td>
+                            <td>Class. <u>@{{ classNames }}</u></td>
                             <td>Total Students. <u>@{{ totalStudents }}</u></td>
                         </tr>
                         <tr>
