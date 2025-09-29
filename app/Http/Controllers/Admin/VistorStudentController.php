@@ -125,7 +125,7 @@ class VistorStudentController extends Controller
 
     public function GetProfile(Request $request, $id)
     {
-        $data['visitorStudents'] = VisitorStudent::findorFail($id);
+        $data['visitorStudents'] = VisitorStudent::with('StdClass:id,name')->findorFail($id);
         return view('admin.visitor_student_profile', $data);
     }
 
