@@ -28,9 +28,9 @@
 
 
         body {
-            padding: 0px 10px;
+            padding: 0px 0px;
             margin: 0px;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .table-bordered th,
@@ -52,11 +52,11 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid" style="padding-left: 5px; ">
+    <div style="display: flex; gap: 10px; padding: 5px; ">
 
-        <div class="row" style="border: 1px solid black; padding: 2px; width: 507px; position: absolute; height: 860px">
-            <div id="address" style="width: 500px;">
-                <table style="width: 420px">
+        <div style="border: 1px solid black; padding: 2px; width: 450px; ">
+            <div id="address" style="width: 100%;">
+                <table style="width: 100%">
                     <tbody>
                         <tr>
                             <td rowspan="3" style="padding: 5px">
@@ -71,7 +71,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <table style="width: 500px">
+                <table style="width: 100%">
                     <tbody>
                         <tr style="border-top:1px solid black">
                             <td>{{ tenancy()->tenant->system_info['general']['bank']['name'] }}</td>
@@ -88,7 +88,7 @@
                     </tbody>
                 </table>
             </div>
-            <h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Student's Copy </h4>
+            <h4 class="text-center text-danger" style="width: 100%; border:1px solid black"> Student's Copy </h4>
             <div id="stdcopy">
                 <table style="margin-top: 15px">
                     <tbody>
@@ -149,7 +149,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p style="width: 500px;margin-top: 15px;">Amount In Words: <u>@{{ inwords() }}</u></p>
+                    <p style="margin-top: 10px;">Amount In Words: <u>@{{ inwords() }}</u></p>
                 </div>
                 {{-- Bar Code --}}
                 <div class="text-center">
@@ -165,7 +165,7 @@
 
                 <p style="margin-bottom: 5px; border-bottom: 1px solid">Accountant Signature</p>
 
-                <ol style="margin-bottom: 0px">
+                <ol style="margin-bottom: 5px; font-size:10px">
                     @php
                         $terms = tenancy()->tenant->system_info['general']['chalan_term_and_Condition'];
                         $formatted_terms = nl2br(e($terms));
@@ -175,19 +175,19 @@
             </div>
         </div>
 
-        <div class="row"
-            style="border: 1px solid black; padding: 2px; width: 507px; height: 860px; margin-left: 504px; position: absolute;"
+        <div 
+            style="border: 1px solid black; padding: 2px; width: 450px;"
             id="schoolcopy">
             <div v-html="address"></div>
-            <h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> School's Copy </h4>
+            <h4 class="text-center text-danger" style="width: 100%; border:1px solid black"> School's Copy </h4>
             <div v-html="schoolcopy"></div>
         </div>
 
-        <div class="row"
-            style="border: 1px solid black; padding: 2px; width: 507px; height: 860px; margin-left: 1020px; position: absolute;"
+        <div
+            style="border: 1px solid black; padding: 2px; width: 450px;"
             id=bankcopy>
             <div v-html="address"></div>
-            <h4 class="text-center text-danger" style="width: 500px; border:1px solid black"> Bank's Copy </h4>
+            <h4 class="text-center text-danger" style="width: 100%; border:1px solid black"> Bank's Copy </h4>
             <div v-html="schoolcopy"></div>
         </div>
 
