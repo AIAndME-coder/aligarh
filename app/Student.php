@@ -196,7 +196,8 @@ class Student extends Model
 
 	public function dueInvoice()
 	{
-		return $this->hasOne('App\InvoiceMaster')->where('paid_amount', '0')->orderBy('created_at', 'desc');
+		return $this->hasOne('App\InvoiceMaster')->unPaid()->orderBy('created_at', 'desc');
+		// return $this->hasOne('App\InvoiceMaster')->where('paid_amount', '0')->orderBy('created_at', 'desc');		
 	}
 
 	public function attendances()

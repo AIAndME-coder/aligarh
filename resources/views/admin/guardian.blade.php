@@ -459,6 +459,11 @@
                                                             <i class="fa fa-pencil"></i> Edit
                                                         </a>
                                                       @endcan
+                                                			@can('fee.bulk.print.invoice')
+                                                      <a :href="'{{ url('fee/group-chalan') }}/' + guardian.id" class="btn btn-sm btn-outline-primary" title="Due Payments" target="_blank">
+                                                          <i class="fa fa-print"></i>
+                                                      </a>
+                                                      @endcan
                                                   </div>
                                               </div>
                                           </div>

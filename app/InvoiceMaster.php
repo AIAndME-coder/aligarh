@@ -71,7 +71,10 @@ class InvoiceMaster extends Model
 	}
 
 	public function scopeUnPaid($query){
-		return $query->where('date_of_payment', 0);
+		return $query->where(function($q) {
+        $q->where('date_of_payment', '0000-00-00')
+          ->orWhereNull('date_of_payment');
+    });
 	}
 
 	public function scopeDue($query){
