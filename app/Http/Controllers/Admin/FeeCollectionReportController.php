@@ -34,12 +34,22 @@ class FeeCollectionReportController extends Controller
 		]);
 
 		$data['betweendates']	=	['start' => $request->input('start'), 'end' => Carbon::createFromFormat('Y-m-d', $request->input('end'))->endOfMonth()->toDateString()];
-		$data['statments'] = InvoiceMaster::whereBetween('due_date', $data['betweendates'])->with(['Student' => function($qry){
+		$invoices = InvoiceMaster::whereBetween('due_date', $data['betweendates'])
+		->with(['Student' => function($qry){
 				$qry->select('id', 'name', 'father_name', 'gr_no', 'class_id');
 				$qry->with(['StdClass' => function($qry){
 					$qry->select('id', 'name', 'numeric_name');
 				}]);
-		}])->with('InvoiceMonths')->get();
+		}])->with('InvoiceMonths');
+
+		if($request->filled('student_id')){
+				$student = Student::find($request->input('student_id'));
+				if($student){
+					$invoices = $invoices->where('student_id', $request->input('student_id'));
+				}
+		}
+		$data['statments'] = $invoices->get();
+
 /* 		$data['summary'] = DB::table('invoice_master')
 								->select(DB::raw('sum(`paid_amount`) AS `paid_amount`, sum(`net_amount`) AS `net_amount`, `due_date`'))
 								->groupBy(DB::raw('YEAR(`due_date`), MONTH(`due_date`)'))

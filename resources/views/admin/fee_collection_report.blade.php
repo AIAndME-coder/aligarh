@@ -6,6 +6,7 @@
 		<link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('src/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+		<link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 	@endsection
 
 	@section('content')
@@ -50,13 +51,26 @@
 										<div class="form-group">
 											<label class="col-md-2 control-label">From</label>
 											<div class="col-md-6">
-												<div class="input-daterange input-group" id="datepicker">
+												<div class="input-daterange input-group" style="width: 100%" id="datepicker">
 													<input type="text" class="input-sm form-control" name="start" value="" required="" readonly="" placeholder="From Month" />
 													<span class="input-group-addon">to</span>
 													<input type="text" class="input-sm form-control" name="end" value="" required="" readonly="" placeholder="To Month" />
 												</div>
 											</div>
 										</div>
+
+										<div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
+											<label class="col-md-2 control-label"> GR-No </label>
+											<div class="col-md-6">
+											<select class="form-control" name="student_id" id="select2_findstu" ></select>
+											@if ($errors->has('gr_no'))
+												<span class="help-block">
+													<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('gr_no') }} </strong>
+												</span>
+											@endif
+											</div>
+										</div>
+
 										<div class="form-group">
 											<div class="col-md-offset-2 col-md-6">
 													<button class="btn btn-primary btn-block" type="submit"><span class="fa fa-file"></span> Show </button>
@@ -78,7 +92,7 @@
 										<div class="form-group">
 											<label class="col-md-2 control-label">From</label>
 											<div class="col-md-6">
-												<div class="input-daterange input-group" id="datepicker1">
+												<div class="input-daterange input-group" style="width:100%" id="datepicker1">
 													<input type="text" class="input-sm form-control" name="start" value="" required="" readonly="" placeholder="From Month" />
 													<span class="input-group-addon">to</span>
 													<input type="text" class="input-sm form-control" name="end" value="" required="" readonly="" placeholder="To Month" />
@@ -233,7 +247,8 @@
 
 		<!-- Data picker -->
 		<script src="{{ asset('src/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
-
+		<!-- Select2 -->
+		<script src="{{ asset('src/js/plugins/select2/select2.full.min.js') }}"></script>
 		<script type="text/javascript">
 		var tbl;
 
@@ -306,6 +321,21 @@
 					minViewMode: 1,
 					todayHighlight: true
 				});
+
+				$('#select2_findstu').attr('style', 'width:100%').select2({
+						placeholder: 'Search contacts',
+						minimumInputLength: 3,
+						Html: true,
+						ajax: {
+							url: '{{ URL('exam-reports/findstu') }}',
+						  processResults: function (data) {
+							return {
+							  results: data
+							};
+						  }
+						},
+						tags: true,
+					});
 
 			});
 		</script>
