@@ -63,18 +63,18 @@
 		
 		@foreach($invoice_dates AS $invoice)
 		<hr>
-		<h4>{{ Carbon\Carbon::createFromFormat('Y-m-d', $invoice->date)->Format('D, M d, Y') }}</h4>
+		<h4>{{ Carbon\Carbon::createFromFormat('Y-m-d', $invoice->date_of_payment)->Format('D, M d, Y') }}</h4>
 		<table id="rpt-att" class="table table-bordered">
 			<thead>
 			  <tr>
 			  	<th>Fee Description / Mode of Payment</th>
 			  	<th>Cash</th>
-			  	<th>Bank</th>
+			  	<th>Bank / Others</th>
 			  	<th>Total</th>
 			  </tr>
 			</thead>
 			<tbody>
-				@foreach($daily_fee_collection[$invoice->date] AS $collection)
+				@foreach($daily_fee_collection[$invoice->date_of_payment] AS $collection)
 				<tr>
 					<td>{{ $collection->fee_name }}</td>
 					<td>{{ $collection->cash }}</td>
@@ -89,10 +89,14 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th class="text-right">Total</th>
-					<th>{{ $daily_fee_collection[$invoice->date]->sum('cash') }}/=</th>
-					<th>{{ $daily_fee_collection[$invoice->date]->sum('chalan') }}/=</th>
-					<th>{{ ($daily_fee_collection[$invoice->date]->sum('amount') - $invoice->discount) }}/=</th>
+					<th class="text-right">Total Invoice Amount</th>
+					<th>{{ $daily_fee_collection[$invoice->date_of_payment]->sum('cash') }}/=</th>
+					<th>{{ $daily_fee_collection[$invoice->date_of_payment]->sum('chalan') }}/=</th>
+					<th>{{ ($daily_fee_collection[$invoice->date_of_payment]->sum('amount') - $invoice->discount) }}/=</th>
+				</tr>
+				<tr>
+					<th class="text-right">Total Received Amount</th>
+					<th colspan="3">{{ $invoice->paid_amount }}/=</th>
 				</tr>
 			</tfoot>
 		</table>
@@ -104,11 +108,13 @@
 				</tr><tr>
 					<th>Cash Amount</th><th>{{ $total_cash_amount }}/=</th>
 				</tr><tr>
-					<th>Chalan Amount</th><th>{{ $total_chalan_amount }}/=</th>
+					<th>Bank / Other Amount</th><th>{{ $total_chalan_amount }}/=</th>
 				</tr><tr>
 					<th>Discount Amount</th><th>{{ $total_discount_amount }}/=</th>
 				</tr><tr>
-					<th>Net Amount</th><th>{{ $net_total_amount }}/=</th>
+					<th>Net Received Amount</th><th>{{ $net_received_amount }}/=</th>
+				</tr><tr>
+					<th>Total Invoices Amount</th><th>{{ $net_total_amount }}/=</th>
 				</tr>
 			</thead>
 		</table>
