@@ -211,7 +211,7 @@ class ExamReportController extends Controller
 		}
 
 //		$data['selected_class']	=	Classe::findOrFail($request->input('class'));
-		if($data['results'][0] == null && $data['results'][1] == null){
+		if($data['results'][0] == null){
 			return redirect('exam-reports')->with([
 				'toastrmsg' => [
 					'type' => 'warning', 
