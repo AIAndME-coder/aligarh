@@ -1215,19 +1215,22 @@
                                                                             v-model.number="fee.amount"></td>
                                                                     <td>
                                                                         <div class="input-group">
-                                                                            <span class="input-group-addon"
+                                                                            <span class="input-group-addon cursor-pointer"
                                                                                 data-toggle="tooltip"
-                                                                                title="select if onetime charge">
-                                                                                <input type="checkbox"
+                                                                                title="select if onetime charge"
+                                                                                @click="fee.onetime = !fee.onetime">
+                                                                                <input type="radio"
                                                                                     :name="'fee[' + k + '][onetime]'"
-                                                                                    value="1" :checked="fee.onetime">
+                                                                                    value="1" :checked="fee.onetime"
+                                                                                    >                                                                                    
                                                                             </span>
-                                                                            <span class="input-group-addon"
-                                                                                data-toggle="tooltip" title="Active">
-                                                                                <input type="checkbox"
+                                                                            <span class="input-group-addon cursor-pointer"
+                                                                                data-toggle="tooltip" title="Active"
+                                                                                @click="fee.active = !fee.active">
+                                                                                <input type="radio"
                                                                                     :name="'fee[' + k + '][active]'"
                                                                                     value="1" :checked="fee.active"
-                                                                                    @click="fee.active = !fee.active">
+                                                                                    >
                                                                             </span>
                                                                             <a href="javascript:void(0);"
                                                                                 class="btn btn-default text-danger removefee"

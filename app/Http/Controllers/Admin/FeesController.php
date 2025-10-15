@@ -53,6 +53,9 @@ class FeesController extends Controller
 				->addColumn('paid_status', function ($row) {
 					return $row->paid_amount > 0 ? '1' : '0'; // Important: must match dropdown values
 				})
+				->addColumn('balance', function ($row) {
+					return $row->net_amount - $row->paid_amount;
+				})
 				->filterColumn('paid_status', function($query, $keyword) {
 					if ($keyword == '1') {
 						$query->where('paid_amount', '>', 0);
@@ -81,6 +84,7 @@ class FeesController extends Controller
 		$data['root'] = $job;
 		$data['classes'] = Classe::select('id', 'name')->get();
 		$data['session'] = Auth::user()->AcademicSession;
+
 		$data['betweendates']	=	[
 			'start'	=>	$data['session']->getRawOriginal('start'),
 			//				'start'	=>	$data['student']->getRawOriginal('date_of_enrolled'),
@@ -90,8 +94,9 @@ class FeesController extends Controller
 		];
 
 		$month = $data['betweendates']['start'];
+		$data['bulk_months'] = [];
 		while ($month <= $data['betweendates']['end']) {
-			$data['months'][] = [
+			$data['bulk_months'][] = [
 				'selected'	=>	false,
 				'title' => Carbon::createFromFormat('Y-m-d', $month)->Format('M-Y'),
 				'value' => Carbon::createFromFormat('Y-m-d', $month)->Format('Y-m-d')

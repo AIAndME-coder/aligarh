@@ -80,6 +80,7 @@
 										  <th>Discount</th>
 										  <th>Paid Status</th>
 										  <th>Paid Amount</th>
+										  <th>Balance</th>
 										  <th>Due Status</th>
 										  <th>Due Date</th>
 										  <th>Issue Date</th>
@@ -109,6 +110,7 @@
 															<option value="0">Unpaid</option>
 													</select>
 												</th>
+												<th></th>
 												<th></th>
 												<th>
 													<select id="filterDue">
@@ -157,7 +159,7 @@
 											<label class="col-md-2 control-label">Months</label>
 											<div class="col-md-6">
 												<select class="form-control select2_bulk_months" multiple="multiple" name="months[]" required="true" style="width: 100%">
-													@foreach($months as $month)
+													@foreach($bulk_months as $month)
 													<option value="{{ $month['value'] }}">{{ $month['title'] }}</option>
 													@endforeach
 												</select>
@@ -238,7 +240,7 @@
 												<label class="col-md-2 control-label">Months</label>
 												<div class="col-md-6">
 													<select class="form-control select2_bulk_months" multiple="multiple" name="months[]" required="true" style="width: 100%">
-														@foreach($months as $month)
+														@foreach($bulk_months as $month)
 														<option value="{{ $month['value'] }}">{{ $month['title'] }}</option>
 														@endforeach
 													</select>
@@ -762,13 +764,16 @@
 		  buttons: [
 			{ extend: 'copy'},
 			{extend: 'csv'},
-			{extend: 'excel', title: 'ExampleFile'},
-			{extend: 'pdf', title: 'ExampleFile'},
+			{extend: 'excel', title: 'Fee Receipts'},
+			{extend: 'pdf', title: 'Fee Receipts'},
 
 			{extend: 'print',
+				exportOptions: {
+					columns: ':not(.no-print)' // exclude all columns with class 'no-print'
+				},
 			  customize: function (win){
 				$(win.document.body).addClass('white-bg');
-				$(win.document.body).css('font-size', '10px');
+				$(win.document.body).css('font-size', '12px');
 
 				$(win.document.body).find('table')
 				.addClass('compact')
@@ -797,7 +802,7 @@
 		  ],
 		  Processing: true,
 		  serverSide: true,
-		  order: [[0, "desc"]],
+		  order: [[1, "desc"]],
 		  ajax: {
 			url: '{{ URL('fee') }}',
 			data: function(d) {
@@ -811,18 +816,20 @@
 				searchable: false,
 				render: function (data, type, row) {
 				return '<input type="checkbox" class="row-checkbox" data-id="' + data + '">';
-				}
+				},
+				className: 'no-print',
 			},
 			{data: 'id', name: 'invoice_master.id'},
 			{data: 'gr_no', name: 'invoice_master.gr_no'},
 			{data: 'total_amount', name: 'invoice_master.total_amount'},
 			{data: 'discount', name: 'invoice_master.discount'},
-			{data: 'paid_status', name: 'paid_status', visible: false },
+			{data: 'paid_status', name: 'paid_status', visible: false, className: 'hidden-print no-print' },
 			{data: 'paid_amount', name: 'invoice_master.paid_amount'},
-			{data: 'due_status', name: 'due_status', visible: false },
+			{data: 'balance', name: 'balance', searchable: false, orderable: false},
+			{data: 'due_status', name: 'due_status', visible: false, className: 'hidden-print no-print' },
 			{data: 'due_date', name: 'invoice_master.due_date'},
 			{data: 'created_at', name: 'invoice_master.created_at'},
-			{"defaultContent": opthtm, className: 'hidden-print'},
+			{"defaultContent": opthtm, className: 'hidden-print no-print'},
 		  ],
 		});
 
