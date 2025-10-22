@@ -688,6 +688,7 @@ class FeesController extends Controller
     })->all();
 
     $totalAmount = 0;
+    $totalLateFee = 0;
     $consolidatedFees = [];
     $uniqueMonths = [];
     $totalDiscount = 0;
@@ -695,6 +696,7 @@ class FeesController extends Controller
 
     $studentsWithInvoices->each(function ($student) use (
         &$totalAmount,
+				&$totalLateFee,
         &$consolidatedFees,
         &$uniqueMonths,
         &$totalDiscount,
@@ -703,6 +705,7 @@ class FeesController extends Controller
         $invoice = $student->dueInvoice;
 
         $totalAmount += $invoice->net_amount;
+        $totalLateFee += $invoice->totalLateFee;
         $totalDiscount += $invoice->discount ?? 0;
 
         if (!$dueDate) {
@@ -729,6 +732,7 @@ class FeesController extends Controller
         'groupInvoice' => $studentsWithInvoices->values(),
         'guardian' => $guardian,
         'totalAmount' => $totalAmount,
+        'totalLateFee' => $totalLateFee,
         'totalDiscount' => $totalDiscount,
         'consolidatedFees' => $consolidatedFees,
         'uniqueMonths' => $uniqueMonths,

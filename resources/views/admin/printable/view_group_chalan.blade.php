@@ -216,7 +216,7 @@
                             </tr>
                             <tr>
                                 <td class="text-right">Payable after due date</td>
-                                <td>@{{ totalPayable + (150 * totalStudents) }}/-</td>
+                                <td>@{{ totalPayable + totalLateFee }}/-</td>
                             </tr>
                         </tbody>
                     </table>
@@ -247,6 +247,7 @@
                 guardian: {!! json_encode($guardian, JSON_NUMERIC_CHECK) !!},
                 consolidatedFees: {!! json_encode($consolidatedFees) !!},
                 totalPayable: {!! json_encode($totalAmount) !!},
+                totalLateFee: {!! json_encode($totalLateFee) !!},
                 totalDiscount: {!! json_encode($totalDiscount) !!},
                 studentNamesForNull: {!! json_encode($studentNames) !!},
                 classNamesForNull: {!! json_encode($classNames) !!},
