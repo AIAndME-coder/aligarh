@@ -63,7 +63,7 @@
 														<td>@{{ student.name }}</td>
 														<td>@{{ student.father_name }}</td>
 														<td>@{{ student.total_marks }}</td>
-														<td>@{{ student.total_obtain_marks }}</td>
+														<td>@{{ Number((student.total_obtain_marks).toFixed(1)) }}</td>
 														<td><button @click="{student.transcriptshow = !student.transcriptshow}" @mouseenter="tooltip" @mouseleave="tooltipdestroy" class="btn" :class="[student.transcriptshow? 'btn-primary' : 'btn-default']"  title="Marks List"><span class="fa fa-list"></span></button></td>
 													</tr>
 													<tr v-if="student.transcriptshow">
@@ -96,7 +96,7 @@
 																				@{{ mark.name }}: @{{ mark.marks }}<br>
 																			</template>
 																		</td>
-																		<td>@{{ result.total_obtain_marks }}</td>
+																		<td>@{{ Number((result.total_obtain_marks).toFixed(1)) }}</td>
 																	</tr>
 																</tbody>
 																<tfoot>
