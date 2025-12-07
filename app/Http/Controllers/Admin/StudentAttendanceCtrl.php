@@ -16,6 +16,7 @@ use Auth;
 use App\Http\Controllers\Controller;
 use App\AcademicSession;
 use App\Jobs\SendAttendanceJob;
+use App\Helpers\PrintableViewHelper;
 
 class StudentAttendanceCtrl extends Controller
 {
@@ -205,7 +206,7 @@ class StudentAttendanceCtrl extends Controller
 		$data['noofweekends'] = COUNT($data['weekends']);
 		$data['input']['date'] = $dbdate->format('M-Y');
 
-		return view('admin.printable.students_attendance', $data);
+		return view(PrintableViewHelper::resolve('students_attendance'), $data);
 	}
 
 }

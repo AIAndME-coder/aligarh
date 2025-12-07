@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Student;
 use App\Section;
 use App\Classe;
+use App\Helpers\PrintableViewHelper;
 use Auth;
 use DB;
 
@@ -56,7 +57,7 @@ class FeeCollectionReportController extends Controller
 								->whereBetween('due_date', $data['betweendates'])
 								->orderBy('due_date')->get(); */
 
-		return view('admin.printable.fee_receipt_statment', $data);
+		return view(PrintableViewHelper::resolve('fee_receipt_statment'), $data);
 	}
 
 	public function DailyFeeCollection(Request $request){
@@ -109,7 +110,7 @@ class FeeCollectionReportController extends Controller
 		$data['net_received_amount']	=	$data['invoice_dates']->sum('paid_amount');
 		$data['net_total_amount']	=	($collectflatten->sum('amount') - $data['total_discount_amount']);
 
-		return view('admin.printable.daily_fee_collection', $data);
+		return view(PrintableViewHelper::resolve('daily_fee_collection'), $data);
 	}
 
 
@@ -120,7 +121,7 @@ class FeeCollectionReportController extends Controller
 			}]);
 		}])->get();
 //		$data['session'] = AcademicSession::find(Auth::user()->academic_session);
-		return view('admin.printable.list_freeship_students', $data);
+		return view(PrintableViewHelper::resolve('list_freeship_students'), $data);
 	}
 
 
@@ -240,7 +241,7 @@ class FeeCollectionReportController extends Controller
 //		}
 
 		$data['unpaid_fee_statment'] = collect($data['unpaid_fee_statment']);
-		return view('admin.printable.unpaid_fee_statment', $data);
+		return view(PrintableViewHelper::resolve('unpaid_fee_statment'), $data);
 
 	}
 
@@ -316,7 +317,7 @@ class FeeCollectionReportController extends Controller
 
 		$data['months'] = $this->getMonthsFromSession($data['session']);
 
-		return view('admin.printable.yearly_collection_statment', $data);
+		return view(PrintableViewHelper::resolve('yearly_collection_statment'), $data);
 
 	}
 

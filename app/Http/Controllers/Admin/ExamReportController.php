@@ -14,6 +14,7 @@ use App\Grade;
 use App\Subject;
 use App\Student;
 use App\StudentAttendance;
+use App\Helpers\PrintableViewHelper;
 use Auth;
 use Validator;
 
@@ -83,7 +84,7 @@ class ExamReportController extends Controller
 
 //		dd($data['selected_exam']);
 
-		return view('admin.printable.exam_tabulation_sheet', $data);
+		return view(PrintableViewHelper::resolve('exam_tabulation_sheet'), $data);
 
 	}
 
@@ -108,7 +109,7 @@ class ExamReportController extends Controller
 											$qry->with('Student');
 										}])->firstOrFail();
 
-		return view('admin.printable.exam_award_list', $data);
+		return view(PrintableViewHelper::resolve('exam_award_list'), $data);
 
 	}
 
@@ -137,7 +138,7 @@ class ExamReportController extends Controller
 			}])->orderBy('student_id')->get();
 		}
 
-		return view('admin.printable.exam_average_result', $data);
+		return view(PrintableViewHelper::resolve('exam_average_result'), $data);
 
 	}
 
@@ -211,7 +212,7 @@ class ExamReportController extends Controller
 												)->with('Classe')->firstOrFail();
 		}
 
-//		$data['selected_class']	=	Classe::findOrFail($request->input('class'));
+		//$data['selected_class']	=	Classe::findOrFail($request->input('class'));
 		if($data['results'][0] == null){
 			return redirect('exam-reports')->with([
 				'toastrmsg' => [
@@ -223,7 +224,7 @@ class ExamReportController extends Controller
 		}
 		$data['grades']			=	Grade::all();
 
-		return view('admin.printable.exam_transcript', $data);
+		return view(PrintableViewHelper::resolve('exam_transcript'), $data);
 
 	}
 

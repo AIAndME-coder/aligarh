@@ -96,12 +96,12 @@
                     <th>Grand Total:</th>
                     <template v-for="(exam, index) in selected_exams">
                         <th>@{{ grand_total.total_marks[index] }}</th>
-                        <th>@{{ grand_total.total_obtain_marks[index] }}</th>
+                        <th>@{{ Number((grand_total.total_obtain_marks[index]).toFixed(1)) }}</th>
                         <th>@{{ grand_total.pass[index] ? Grade(grand_total.total_percentage[index]) : 'F' }}</th>
                     </template>
                     <template v-if="selected_exams.length == 2">
                         <th>@{{ grand_total.total_marks[2] }}</th>
-                        <th>@{{ grand_total.total_obtain_marks[2].toFixed(2) }}</th>
+                        <th>@{{ Number((grand_total.total_obtain_marks[2]).toFixed(1)) }}</th>
                         <th>@{{ grand_total.pass[2] ? Grade(grand_total.total_percentage[2]) : 'F' }}</th>
                     </template>
                 </tr>
@@ -139,7 +139,10 @@
                             <th colspan="3" v-if="Grade(grand_total.total_percentage[index]) == '-'">-</th>
                             <th colspan="3" v-else>
                                 <u>Passed</u>, Grade: <u>@{{ Grade(grand_total.total_percentage[index]) }}</u>, 
-                                Rank: <u class="text-capitalize">@{{ stringifyNumber(grand_total.ranks[index]) }} (@{{ grand_total.ranks[index] }})</u>
+                                <template v-if="grand_total.ranks[index] <= 4">
+                                    Rank: <u class="text-capitalize">@{{ stringifyNumber(grand_total.ranks[index]) }} (@{{ grand_total.ranks[index] }})</u>
+                                </template>
+                                {{-- Attendance: <u>@{{ StudentAttendance(attendance.total) + '/' + attendance.total.length }}</u> --}}
                             </th>
                         </template>
                         <th colspan="3" v-else>Failed</th>
@@ -163,7 +166,7 @@
                 </tr>
                 <tr>
                     <td class="text-center" width="100px">
-                        <h3 style="margin-top: 50px">__________________</h3><p><b>Principal Sign</b></p>
+                        <h3 style="margin-top: 50px">__________________</h3><p><b>Sub-Incharge Sign</b></p>
                     </td>
                     <td class="text-center" width="100px">
                         <h3 style="margin-top: 50px">__________________</h3><p><b>Teacher's Sign</b></p>
@@ -171,7 +174,22 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+        <table style="width: 100%">
+            <tbody>
+                <tr>
+                    <td class="text-center" width="100px">
+                        <p style="margin-top: 50px">__________________</p><p><b>Director Sign</b></p>
+                    </td>
+                    <td class="text-center" width="100px">
+                        <p style="margin-top: 50px">__________________</p><p><b>Principal Sign</b></p>
+                    </td>
+                    <td class="text-center" width="100px">
+                        <p style="margin-top: 50px">__________________</p><p><b>Incharg Sign</b></p>
+                    </td>
+                </tr>
+            </tbody>
+        <table>
+    {{-- </div> --}}
 </div>
 @endsection
 
@@ -218,7 +236,7 @@
 			if (this.selected_exams.length == 2) {
 				this.grand_total.total_marks[2] = this.grand_total.total_marks[0] + this.grand_total.total_marks[1];
 				this.grand_total.total_obtain_marks[2] = this.grand_total.total_obtain_marks[0] + this.grand_total.total_obtain_marks[1];
-				this.grand_total.total_percentage[2] = parseFloat(((this.grand_total.total_obtain_marks[2]/this.grand_total.total_marks[2])*100).toFixed(2));
+				this.grand_total.total_percentage[2] = parseFloat(((this.grand_total.total_obtain_marks[2]/this.grand_total.total_marks[2])*100).toFixed(1));
 			}
 
 			window.print();
@@ -236,7 +254,7 @@
 			grand_total_percentage() {
 				return this.selected_exams.map((exam, i) => {
 					if (this.grand_total.total_marks[i] === 0) return 0;
-					return parseFloat(((this.grand_total.total_obtain_marks[i] / this.grand_total.total_marks[i]) * 100).toFixed(2));
+					return parseFloat(((this.grand_total.total_obtain_marks[i] / this.grand_total.total_marks[i]) * 100).toFixed(1));
 				});
 			},
 			stringifyNumber(n) {

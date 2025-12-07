@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Classe;
 use App\AcademicSession;
+use App\Helpers\PrintableViewHelper;
 use Auth;
 
 class SeatsReportController extends Controller
@@ -18,7 +19,7 @@ class SeatsReportController extends Controller
 									->with('Section')
 									->get();
 		$data['academic_session']	=	AcademicSession::find(Auth::user()->academic_session);
-		return view('admin.printable.seats_status_report', $data);
+		return view(PrintableViewHelper::resolve('seats_status_report'), $data);
 	}
 
 }

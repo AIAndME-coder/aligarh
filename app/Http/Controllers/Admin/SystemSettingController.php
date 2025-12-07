@@ -8,6 +8,7 @@ use Larapack\ConfigWriter\Repository as ConfigWriter;
 use App\SystemInvoice;
 use PDF;
 use App\NotificationsSetting;
+use App\Helpers\PrintableViewHelper;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -40,10 +41,10 @@ class SystemSettingController extends Controller
 	public function PrintInvoiceHistory()
 	{
 		$data['system_invoices']	=	SystemInvoice::all();
-		$pdf = PDF::loadView('admin.printable.system_invoice_history', $data)->setPaper('a4');
+		$pdf = PDF::loadView(PrintableViewHelper::resolve('system_invoice_history'), $data)->setPaper('a4');
 		return $pdf->stream('invoice-history-2018.pdf');
 		//return $pdf->download('invoice-history-2018.pdf');
-		//return view('admin.printable.system_invoice_history', $data);
+		//return view(PrintableViewHelper::resolve('system_invoice_history'), $data);
 	}
 
 	public function UpdateSetting(Request $request)

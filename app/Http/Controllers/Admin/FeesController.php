@@ -17,6 +17,7 @@ use PDF;
 use App\Http\Controllers\Controller;
 use App\AcademicSession;
 use App\Classe;
+use App\Helpers\PrintableViewHelper;
 use Illuminate\Support\Facades\Validator;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
 
@@ -649,14 +650,14 @@ class FeesController extends Controller
 	public function PrintInvoice($id){
 		$data['invoice'] = InvoiceMaster::findOrfail($id);
 		//		return PDF::loadView('admin.printable.view_invoice', $data)->stream();
-		return view('admin.printable.view_invoice', $data);
+		return view(PrintableViewHelper::resolve('view_invoice'), $data);
 	}
 
 	public function PrintChalan($id){
 
 		$data['invoice'] = InvoiceMaster::with('InvoiceDetail')->with('InvoiceMonths')->findOrfail($id);
 		$data['student']	= Student::find($data['invoice']->student_id);
-		return view('admin.printable.view_chalan', $data);
+		return view(PrintableViewHelper::resolve('view_chalan'), $data);
 	}
 
 	public function GetGroupInvoice(Request $request, $guardian_id)
@@ -742,7 +743,7 @@ class FeesController extends Controller
     ];
 
 		// ddd($data);
-		return view('admin.printable.view_group_chalan', $data);
+		return view(PrintableViewHelper::resolve('view_group_chalan'), $data);
 	}
 
 	public function BulkPrintInvoice(Request $request)
@@ -836,7 +837,7 @@ class FeesController extends Controller
 			$students[] = $studentsCollection->get($invoice->student_id);
 		}
 
-		return view('admin.printable.view_bulk_invoice', [
+		return view(PrintableViewHelper::resolve('view_bulk_invoice'), [
 			'invoices' => $invoices,
 			'students' => $students
 		]);

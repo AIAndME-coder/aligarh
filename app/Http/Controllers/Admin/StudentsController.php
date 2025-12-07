@@ -21,6 +21,7 @@ use App\Model\VisitorStudent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\PrintableViewHelper;
 
 class StudentsController extends Controller 
 {
@@ -376,7 +377,7 @@ class StudentsController extends Controller
 		switch ($this->data['root']['option']) {
 			case 'transfercertificate':
 				$this->data['student']	=	Student::with('StdClass')->findorfail($this->Request->input('id'));
-				return view('admin.printable.student_transfer_certificate', $this->data);
+				return view(PrintableViewHelper::resolve('student_transfer_certificate'), $this->data);
 				break;
 			
 			default:
