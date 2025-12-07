@@ -103,6 +103,30 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        // Custom validations
+        'gr_no' => [
+            'unique' => 'This Registration Number is already taken.',
+        ],
+        'email' => [
+            'unique' => 'This email address is already registered.',
+        ],
+        'phone' => [
+            'unique' => 'This phone number is already registered.',
+        ],
+        'cnic' => [
+            'unique' => 'This CNIC is already registered.',
+        ],
+        'marks' => [
+            'numeric' => 'Marks must be a valid number.',
+            'max' => 'The obtained marks cannot exceed :max.',
+        ],
+        'amount' => [
+            'numeric' => 'Amount must be a valid number.',
+            'gt' => 'Amount must be greater than zero.',
+        ],
+        'end_date' => [
+            'after' => 'The end date must be after the start date.',
+        ],
     ],
 
     /*
@@ -116,6 +140,30 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'name',
+        'email' => 'email address',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'phone' => 'phone number',
+        'mobile' => 'mobile number',
+        'address' => 'address',
+        'date_of_birth' => 'date of birth',
+        'gr_no' => 'registration number',
+        'father_name' => "father's name",
+        'mother_name' => "mother's name",
+        'guardian_name' => "guardian's name",
+        'class_id' => 'class',
+        'section_id' => 'section',
+        'session_id' => 'academic session',
+        'subject_id' => 'subject',
+        'exam_id' => 'exam',
+        'marks' => 'marks',
+        'amount' => 'amount',
+        'fee_amount' => 'fee amount',
+        'discount' => 'discount',
+        'start_date' => 'start date',
+        'end_date' => 'end date',
+    ],
 
 ];
