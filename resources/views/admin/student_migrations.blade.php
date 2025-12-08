@@ -192,12 +192,12 @@
 										<thead>
 											<tr>
 												<th>SNo</th>
-												<th>GR No</th>
-												<th>Name</th>
+												<th>{{ __("labels.gr_no") }}</th>
+												<th>{{ __("labels.name") }}</th>
 												<th>From Class of ( @{{ selected_from_session.title }} )</th>
 												<th v-if="selected_to_session">To Class of ( @{{ selected_to_session.title }} )</th>
 												<th v-else>To Class of ( Session Not Selected )</th>
-												<th>Options</th>
+												<th>{{ __("labels.options") }}</th>
 											</tr>
 										</thead>
 										<tbody>

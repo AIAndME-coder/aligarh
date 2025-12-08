@@ -492,11 +492,11 @@
                                     <table class="table table-striped table-bordered table-hover dataTables-guardian" width="100%">
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
-                                          <th>E-Mail</th>
-                                          <th>Contact</th>
-                                          <th>Address</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.name") }}</th>
+                                          <th>{{ __("labels.email_label") }}</th>
+                                          <th>{{ __("labels.contact") }}</th>
+                                          <th>{{ __("labels.address") }}</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                       <tfoot>
@@ -505,7 +505,7 @@
                                           <th><input type="text" placeholder="E-mail..."></th>
                                           <th><input type="text" placeholder="Contact..."></th>
                                           <th><input type="text" placeholder="Address..."></th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </tfoot>
                                     </table>
@@ -525,7 +525,7 @@
                                         <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Name</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="name" placeholder="Name" value="{{ old('name') }}" class="form-control"/>
+                                            <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name') }}" class="form-control"/>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -561,7 +561,7 @@
                                         <div class="form-group">
                                           <label class="col-md-2 control-label">Address</label>
                                           <div class="col-md-6">
-                                            <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                            <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                           </div>
                                         </div>
 

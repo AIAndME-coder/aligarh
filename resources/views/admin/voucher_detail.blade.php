@@ -75,7 +75,7 @@
                             <table class="table table-hover">
                                 <thead>
                                   <tr>
-                                    <th>Name</th>
+                                    <th>{{ __("labels.name") }}</th>
                                     <th>Category</th>
                                     <th>Qty</th>
                                     <th>Rate</th>

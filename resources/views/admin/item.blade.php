@@ -57,12 +57,12 @@
                                     <table class="table table-striped table-bordered table-hover dataTables-teacher" >
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
+                                          <th>{{ __("labels.name") }}</th>
                                           <th>Category</th>
                                           <th>Qty</th>
                                           <th>Qty Level</th>
                                           <th>location</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>

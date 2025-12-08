@@ -762,13 +762,13 @@
                                                 width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th>Class</th>
-                                                        <th>GR No</th>
-                                                        <th>Name</th>
+                                                        <th>{{ __("labels.class") }}</th>
+                                                        <th>{{ __("labels.gr_no") }}</th>
+                                                        <th>{{ __("labels.name") }}</th>
                                                         <th>Father Name</th>
-                                                        <th>Religion</th>
-                                                        <th>Contact</th>
-                                                        <th>Address</th>
+                                                        <th>{{ __("labels.religion") }}</th>
+                                                        <th>{{ __("labels.contact") }}</th>
+                                                        <th>{{ __("labels.address") }}</th>
                                                         <th>Birth Date</th>
                                                         <th>Place Of Birth</th>
                                                         <th>Last School</th>
@@ -777,7 +777,7 @@
                                                         <th>Remove Date</th>
                                                         <th>Cause Of Removal</th>
                                                         <th>Active</th>
-                                                        <th>Options</th>
+                                                        <th>{{ __("labels.options") }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tfoot>
@@ -884,7 +884,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">Address</label>
                                                 <div class="col-md-6">
-                                                    <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                                    <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                                 </div>
                                             </div>
 
@@ -909,7 +909,7 @@
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label">Student Name</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" name="name" placeholder="Name"
+                                                    <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}"
                                                         value="{{ old('name') }}" class="form-control" />
                                                     @if ($errors->has('name'))
                                                         <span class="help-block">
@@ -1329,7 +1329,7 @@
                                                                     <div class="guardian-model-form-row">
                                                                         <div class="guardian-model-form-group">
                                                                             <label class="guardian-model-form-label">Address</label>
-                                                                             <textarea id="guardian_address" style="height: 34px; width: 246px;" type="text" name="address" placeholder="Address" class="form-control"></textarea>
+                                                                             <textarea id="guardian_address" style="height: 34px; width: 246px;" type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control"></textarea>
                                                                         </div>
                                                                         <div class="guardian-model-form-group">
                                                                             <label class="guardian-model-form-label">Income</label>

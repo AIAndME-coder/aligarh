@@ -55,7 +55,7 @@
                                       <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Name</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="name" placeholder="Name" value="{{ old('name', $guardian['name']) }}" class="form-control"/>
+                                          <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name', $guardian['name']) }}" class="form-control"/>
                                           @if ($errors->has('name'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -91,7 +91,7 @@
                                       <div class="form-group">
                                         <label class="col-md-2 control-label">Address</label>
                                         <div class="col-md-6">
-                                          <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address', $guardian['address']) }}</textarea>
+                                          <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address', $guardian['address']) }}</textarea>
                                         </div>
                                       </div>
 

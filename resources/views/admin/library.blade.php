@@ -62,7 +62,7 @@
                                           <th>Author</th>
                                           <th>Edition</th>
                                           <th>Qty</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>

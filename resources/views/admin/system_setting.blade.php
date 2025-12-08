@@ -173,7 +173,7 @@
                                                                             Name</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="name"
-                                                                                placeholder="Name"
+                                                                                placeholder="{{ __("labels.name_placeholder") }}"
                                                                                 value="{{ old('name', $system_info['general']['name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('name'))
@@ -210,7 +210,7 @@
                                                                         <label class="col-md-2 control-label">Address</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="address"
-                                                                                placeholder="Address"
+                                                                                placeholder="{{ __("labels.address_placeholder_ellipsis") }}"
                                                                                 value="{{ old('address', $system_info['general']['address']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('address'))
@@ -717,7 +717,7 @@
                                                                         <label class="col-md-2 control-label">Bank Name</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_name"
-                                                                                placeholder="Name"
+                                                                                placeholder="{{ __("labels.name_placeholder") }}"
                                                                                 value="{{ old('bank_name', $system_info['general']['bank']['name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_name'))
@@ -736,7 +736,7 @@
                                                                             Address</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_address"
-                                                                                placeholder="Address"
+                                                                                placeholder="{{ __("labels.address_placeholder_ellipsis") }}"
                                                                                 value="{{ old('bank_address', $system_info['general']['bank']['address']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_address'))
@@ -826,7 +826,7 @@
                                                     <th>ID</th>
                                                     <th>Billing Month</th>
                                                     <th>Amount</th>
-                                                    <th>Status</th>
+                                                    <th>{{ __("labels.status") }}</th>
                                                     <th>Date Of Payment</th>
                                                     <th>Created At</th>
                                                 </tr>
@@ -915,7 +915,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Name</th>
+                                                    <th>{{ __("labels.name") }}</th>
                                                     <th>
                                                         <input id="select-all-mail" class="d-none"  type="checkbox" @change="toggleSelectAll('mail', $event)" @click.stop>
                                                         <label for="select-all-mail" data-toggle="tooltip" title="select all">

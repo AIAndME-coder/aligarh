@@ -63,7 +63,7 @@
                                                     <th>Title</th>
                                                     <th>Start</th>
                                                     <th>End</th>
-                                                    <th>Options</th>
+                                                    <th>{{ __("labels.options") }}</th>
                                                 </tr>
                                             </thead>
                                         </table>

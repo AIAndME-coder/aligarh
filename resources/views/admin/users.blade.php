@@ -75,9 +75,9 @@
                                       <thead>
                                         <tr>
                                           <th>User Name</th>
-                                          <th>E-Mail</th>
+                                          <th>{{ __("labels.email_label") }}</th>
                                           <th>Role</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>

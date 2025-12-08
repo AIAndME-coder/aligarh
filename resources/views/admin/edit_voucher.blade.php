@@ -104,7 +104,7 @@
                                       <table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
                                         <thead>
                                           <tr>
-                                            <th>Name</th>
+                                            <th>{{ __("labels.name") }}</th>
                                             <th>Category</th>
                                             <th>Qty</th>
                                             <th>Rate</th>

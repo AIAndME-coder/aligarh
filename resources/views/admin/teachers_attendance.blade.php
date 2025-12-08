@@ -96,7 +96,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
-                                                            <th>Name</th>
+                                                            <th>{{ __("labels.name") }}</th>
                                                             <th>
                                                                 <div class="checkbox checkbox-success">
                                                                     <input class="select-all" id="checkbox"

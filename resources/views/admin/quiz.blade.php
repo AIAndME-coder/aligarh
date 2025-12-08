@@ -632,7 +632,7 @@
                                                             <table class="table table-bordered">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Name</th>
+                                                                        <th>{{ __("labels.name") }}</th>
                                                                         <th>GR Number</th>
                                                                         <th>Obtained Marks</th>
                                                                         <th id="togglePresentHeader" style="cursor: pointer;">Present</th>

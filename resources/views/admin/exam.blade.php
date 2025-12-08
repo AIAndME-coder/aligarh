@@ -58,7 +58,7 @@
 											<th>Title</th>
 											<th>Description</th>
 											<th>Duration</th>
-											<th>Options</th>
+											<th>{{ __("labels.options") }}</th>
 										</tr>
 										</thead>
 									</table>

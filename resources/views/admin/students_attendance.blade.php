@@ -123,8 +123,8 @@
                                         <table class="table table-striped table-bordered table-hover">
                                           <thead>
                                             <tr>
-                                              <th>GR No</th>
-                                              <th>Name</th>
+                                              <th>{{ __("labels.gr_no") }}</th>
+                                              <th>{{ __("labels.name") }}</th>
                                               <th>
                                                 <div class="checkbox checkbox-success">
                                                   <input class="select-all" id="checkbox" type="checkbox" />

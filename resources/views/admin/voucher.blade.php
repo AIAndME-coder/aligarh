@@ -65,7 +65,7 @@
                                           <th>Voucher No</th>
                                           <th>Vendor</th>
                                           <th>Net Amount</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                       <tfoot>
@@ -74,7 +74,7 @@
                                           <th>Voucher No</th>
                                           <th>Vendor</th>
                                           <th>Net Amount</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </tfoot>
                                     </table>
@@ -143,7 +143,7 @@
                                         <table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
                                           <thead>
                                             <tr>
-                                              <th>Name</th>
+                                              <th>{{ __("labels.name") }}</th>
                                               <th>Category</th>
                                               <th>Qty</th>
                                               <th>Rate</th>

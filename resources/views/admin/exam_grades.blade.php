@@ -72,8 +72,8 @@
 																								<th>Percent From</th>
 																								<th>Percent To</th>
 																								<th>Prifix</th>
-																								<th>Name</th>
-																								<th>Action</th>
+																								<th>{{ __("labels.name") }}</th>
+																								<th>{{ __("labels.action") }}</th>
 																							</tr>
 																						</thead>
 																						<tbody>

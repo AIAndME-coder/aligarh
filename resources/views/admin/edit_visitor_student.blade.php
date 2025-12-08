@@ -41,7 +41,7 @@
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                     <label class="col-md-2 control-label">Name</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="name" placeholder="Name"
+                                        <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}"
                                             value="{{ old('name', $visitorStudents->name) }}" class="form-control" />
                                         @if ($errors->has('name'))
                                             <span class="help-block">
@@ -179,7 +179,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Address</label>
                                     <div class="col-md-6">
-                                        <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address', $visitorStudents->address) }}</textarea>
+                                        <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address', $visitorStudents->address) }}</textarea>
                                     </div>
                                 </div>
 
@@ -204,7 +204,7 @@
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label class="col-md-2 control-label">Email</label>
                                     <div class="col-md-6">
-                                        <input type="email" name="email" placeholder="Email"
+                                        <input type="email" name="email" placeholder="{{ __("labels.email") }}"
                                             value="{{ old('email', $visitorStudents->email) }}" class="form-control" />
                                         @if ($errors->has('email'))
                                             <span class="help-block">

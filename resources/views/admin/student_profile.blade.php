@@ -150,7 +150,7 @@
 								<thead>
 									<th>S.No</th>
 									<th>Gr No</th>
-									<th>Name</th>
+									<th>{{ __("labels.name") }}</th>
 								</thead>
 								<tbody>
 									<tr v-for="(std, k) in siblings" :key="std.id">
@@ -173,7 +173,7 @@
 								<thead>
 									<tr>
 										<th>Title</th>
-										<th>Action</th>
+										<th>{{ __("labels.action") }}</th>
 									</tr>
 								</thead>
 								<tbody>

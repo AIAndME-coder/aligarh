@@ -91,9 +91,9 @@
                                         <table class="table table-striped table-bordered table-hover dataTables-role">
                                             <thead>
                                                 <tr>
-                                                    <th>Name</th>
+                                                    <th>{{ __("labels.name") }}</th>
                                                     <th>Created At</th>
-                                                    <th>Options</th>
+                                                    <th>{{ __("labels.options") }}</th>
                                                 </tr>
                                             </thead>
                                         </table>

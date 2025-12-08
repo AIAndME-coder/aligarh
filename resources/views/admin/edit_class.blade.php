@@ -53,7 +53,7 @@
 														<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
 															<label class="col-md-2 control-label">Name</label>
 															<div class="col-md-6">
-																<input type="text" name="name" placeholder="Name" value="{{ old('name', $class->name) }}" class="form-control"/>
+																<input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name', $class->name) }}" class="form-control"/>
 																@if ($errors->has('name'))
 																		<span class="help-block">
 																				<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>

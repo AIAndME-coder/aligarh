@@ -103,7 +103,7 @@
                                       <div class="form-group">
                                         <label class="col-md-2 control-label">Address</label>
                                         <div class="col-md-6">
-                                          <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address', $vendor['address']) }}</textarea>
+                                          <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address', $vendor['address']) }}</textarea>
                                         </div>
                                       </div>
 

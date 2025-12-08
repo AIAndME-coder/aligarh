@@ -59,10 +59,10 @@
                                         <tr>
                                           <th>V Name</th>
                                           <th>C Name</th>
-                                          <th>E-Mail</th>
-                                          <th>Contact</th>
-                                          <th>Address</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.email_label") }}</th>
+                                          <th>{{ __("labels.contact") }}</th>
+                                          <th>{{ __("labels.address") }}</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>
@@ -131,7 +131,7 @@
                                         <div class="form-group">
                                           <label class="col-md-2 control-label">Address</label>
                                           <div class="col-md-6">
-                                            <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                            <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                           </div>
                                         </div>
 

@@ -62,7 +62,7 @@
 																					<th>Description</th>
 																					<th>Amount</th>
 																					<th>Date</th>
-																					<th>Options</th>
+																					<th>{{ __("labels.options") }}</th>
 																				</tr>
 																			</thead>
 																		</table>

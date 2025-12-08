@@ -47,12 +47,12 @@
 											<table class="table table-striped table-hover table-bordered">
 												<thead>
 													<tr>
-														<th>GR No</th>
-														<th>Name</th>
+														<th>{{ __("labels.gr_no") }}</th>
+														<th>{{ __("labels.name") }}</th>
 														<th>Father Name</th>
 														<th>Total Marks</th>
 														<th>Obtain Marks</th>
-														<th>Action</th>
+														<th>{{ __("labels.action") }}</th>
 													</tr>
 												</thead>
 												<tbody>

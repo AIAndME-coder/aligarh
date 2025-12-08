@@ -84,7 +84,7 @@
 										  <th>Due Status</th>
 										  <th>Due Date</th>
 										  <th>Issue Date</th>
-										  <th>Options</th>
+										  <th>{{ __("labels.options") }}</th>
 										</tr>
 									  </thead>
 										<tfoot>
