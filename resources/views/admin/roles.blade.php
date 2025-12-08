@@ -92,7 +92,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>{{ __("labels.name") }}</th>
-                                                    <th>Created At</th>
+                                                    <th>{{ __('labels.created_at') }}</th>
                                                     <th>{{ __("labels.options") }}</th>
                                                 </tr>
                                             </thead>
@@ -164,7 +164,7 @@
                                             <div class="form-group">
                                                 <div class="col-md-offset-2 col-md-6">
                                                     <button class="btn btn-primary" type="submit"><span
-                                                            class="glyphicon glyphicon-save"></span> Register </button>
+                                                            class="glyphicon glyphicon-save"></span> @lang('modules.buttons_register') </button>
                                                 </div>
                                             </div>
                                         </form>

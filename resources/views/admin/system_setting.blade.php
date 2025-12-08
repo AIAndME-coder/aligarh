@@ -89,17 +89,17 @@
                         <ul class="nav nav-tabs">
                             @can('system-setting.update')
                                 <li class="active">
-                                    <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span {{ __('modules.tabs_general_info') }} </a>
+                                    <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_general_info') }} </a>
                                 </li>
                             @endcan
                             @can('system-setting.print.invoice.history')
                                 <li>
-                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-list"></span {{ __('modules.tabs_package_info') }} </a>
+                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-list"></span> {{ __('modules.tabs_package_info') }} </a>
                                 </li>
                             @endcan
                             @can('system-setting.history')
                                 <li>
-                                    <a data-toggle="tab" href="#tab-12"><span class="fa fa-list"></span {{ __('modules.tabs_sms_package') }} </a>
+                                    <a data-toggle="tab" href="#tab-12"><span class="fa fa-list"></span> {{ __('modules.tabs_sms_package') }} </a>
                                 </li>
                             @endcan
                             @can('system-setting.notification.settings')
