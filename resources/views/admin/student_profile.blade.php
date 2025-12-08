@@ -132,7 +132,7 @@
 										<div v-if="student.date_of_leaving" class="form-group">
 											<div class="col-md-offset-2 col-md-10">
 												<button v-if="loading" class="btn btn-primary" disabled="true" type="submit"><span class="fa fa-pulse fa-spin fa-spinner"></span> Loading... </button>
-												<button v-else class="btn btn-primary" type="submit">Save</button>
+												<button v-else class="btn btn-primary" type="submit">{{ __("modules.buttons_save") }}</button>
 											</div>
 										</div>
 									</form>

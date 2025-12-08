@@ -170,7 +170,7 @@
                             </p>
 
                             <div class="form-group">
-                                <label>Subject</label>
+                                <label>{{ __("labels.subject") }}</label>
                                 <input type="email" class="form-control" placeholder="Message subject">
                             </div>
                             <div class="form-group">
