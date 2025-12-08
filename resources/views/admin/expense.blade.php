@@ -112,7 +112,7 @@
 																				<div class="form-group{{ ($errors->has('amount'))? ' has-error' : '' }}">
 																					<label class="col-md-2 control-label">Amount</label>
 																					<div class="col-md-6">
-																						<input type="number" name="amount" value="{{ old('amount') }}" placeholder="Amount" class="form-control"/>
+																						<input type="number" name="amount" value="{{ old('amount') }}" placeholder="{{ __('labels.amount_placeholder') }}" class="form-control"/>
 																						@if ($errors->has('amount'))
 																								<span class="help-block">
 																										<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('amount') }}</strong>

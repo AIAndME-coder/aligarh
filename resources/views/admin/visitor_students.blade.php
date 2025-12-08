@@ -718,7 +718,7 @@
                                                     <div class="input-group m-b">
                                                         <span class="input-group-addon">+92</span>
                                                         <input type="text" name="phone" value="{{ old('phone') }}"
-                                                            placeholder="Contact No" class="form-control"
+                                                            placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control"
                                                             data-mask="9999999999" />
                                                     </div>
                                                     @if ($errors->has('phone'))

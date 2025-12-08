@@ -194,7 +194,7 @@
                                         <div class="col-md-6">
                                           <div class="input-group m-b">
                                             <span class="input-group-addon">+92</span>
-                                            <input type="text" name="phone" value="{{ old('phone', $teacher['phone']) }}" placeholder="Contact No" class="form-control" data-mask="9999999999"/>
+                                            <input type="text" name="phone" value="{{ old('phone', $teacher['phone']) }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999"/>
                                           </div>
                                           @if ($errors->has('phone'))
                                               <span class="help-block">

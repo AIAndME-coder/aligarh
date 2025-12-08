@@ -110,7 +110,7 @@
                                         <div class="form-group{{ ($errors->has('password'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Password</label>
                                           <div class="col-md-6">
-                                            <input type="password" id="password" name="password" placeholder="Password" value="{{ old('password') }}" class="form-control"/>
+                                            <input type="password" id="password" name="password" placeholder="{{ __('labels.password_placeholder') }}" value="{{ old('password') }}" class="form-control"/>
                                             @if ($errors->has('password'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('password') }}</strong>
@@ -121,7 +121,7 @@
                                         <div class="form-group{{ ($errors->has('re_password'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Confirm Password</label>
                                           <div class="col-md-6">
-                                            <input type="password" name="re_password" placeholder="Confirm Password" value="{{ old('re_password') }}" class="form-control"/>
+                                            <input type="password" name="re_password" placeholder="{{ __('labels.confirm_password_placeholder') }}" value="{{ old('re_password') }}" class="form-control"/>
                                             @if ($errors->has('re_password'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('re_password') }}</strong>

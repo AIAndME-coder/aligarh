@@ -393,7 +393,7 @@
                                                                             Password</label>
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="smtp_password"
-                                                                                placeholder="Password" class="form-control"
+                                                                                placeholder="{{ __('labels.password_placeholder') }}" class="form-control"
                                                                                 value="{{ old('smtp_password', $system_info['smtp']['password']) }}" />
                                                                             @if ($errors->has('smtp_password'))
                                                                                 <span class="help-block">
@@ -461,7 +461,7 @@
                                                                         <label class="col-md-2 control-label">URL</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_url"
-                                                                                placeholder="API Key" class="form-control"
+                                                                                placeholder="{{ __('labels.api_key_placeholder') }}" class="form-control"
                                                                                 value="{{ old('sms_url', $system_info['sms']['url']) }}" />
                                                                             @if ($errors->has('sms_url'))
                                                                                 <span class="help-block">
@@ -479,7 +479,7 @@
                                                                             Token</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_api_token"
-                                                                                placeholder="API Token" class="form-control"
+                                                                                placeholder="{{ __('labels.api_token_placeholder') }}" class="form-control"
                                                                                 value="{{ old('sms_api_token', $system_info['sms']['api_token']) }}" />
                                                                             @if ($errors->has('sms_api_token'))
                                                                                 <span class="help-block">
@@ -497,7 +497,7 @@
                                                                             Secret</label>
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="sms_api_secret"
-                                                                                placeholder="API Secret" class="form-control"
+                                                                                placeholder="{{ __('labels.api_secret_placeholder') }}" class="form-control"
                                                                                 value="{{ old('sms_api_secret', $system_info['sms']['api_secret']) }}" />
                                                                             @if ($errors->has('sms_api_secret'))
                                                                                 <span class="help-block">
@@ -573,7 +573,7 @@
                                                                             Token</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="whatsapp_token"
-                                                                                placeholder="API Token" class="form-control"
+                                                                                placeholder="{{ __('labels.api_token_placeholder') }}" class="form-control"
                                                                                 value="{{ old('whatsapp_token', $system_info['whatsapp']['api_token']) }}" />
                                                                             @if ($errors->has('whatsapp_token'))
                                                                                 <span class="help-block">
@@ -654,7 +654,7 @@
                                                                         <label class="col-md-2 control-label">Contact Name</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="contact_name"
-                                                                                placeholder="Contact Name"
+                                                                                placeholder="{{ __('labels.contact_name_placeholder') }}"
                                                                                 value="{{ old('contact_name', $system_info['general']['contact_name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('contact_name'))
@@ -676,7 +676,7 @@
                                                                                 <span class="input-group-addon">+92</span>
                                                                                 <input type="text" name="contact_no"
                                                                                     value="{{ old('contact_no', $system_info['general']['contact_no']) }}"
-                                                                                    placeholder="Contact No"
+                                                                                    placeholder="{{ __('labels.contact_no_placeholder') }}"
                                                                                     class="form-control"
                                                                                     data-mask="9999999999" />
                                                                             </div>
@@ -755,7 +755,7 @@
                                                                             Account No</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_account_no"
-                                                                                placeholder="Account no"
+                                                                                placeholder="{{ __('labels.account_no_placeholder') }}"
                                                                                 value="{{ old('bank_account_no', $system_info['general']['bank']['account_no']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_account_no'))

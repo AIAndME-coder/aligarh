@@ -123,7 +123,7 @@
                                                 </select>
                                               </td>
                                               <td>
-                                                <input type="text" placeholder="Category" class="form-control category" disabled="true">
+                                                <input type="text" placeholder="{{ __('labels.category_placeholder') }}" class="form-control category" disabled="true">
                                               </td>
                                               <td>
                                                 <input type="number" name="items[{{ $k+1 }}][qty]" placeholder="Qty" onchange="Calc()" class="form-control qty" value="{{ $detail->qty }}" required="true">

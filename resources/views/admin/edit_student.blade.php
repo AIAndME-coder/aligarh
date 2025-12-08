@@ -264,7 +264,7 @@
 													<div class="col-md-6">
 														<div class="input-group m-b">
 															<span class="input-group-addon">+92</span>
-															<input type="text" name="phone" value="{{ old('phone', $student->phone) }}" placeholder="Contact No" class="form-control" data-mask="9999999999"/>
+															<input type="text" name="phone" value="{{ old('phone', $student->phone) }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999"/>
 														</div>
 														@if ($errors->has('phone'))
 																<span class="help-block">
@@ -277,7 +277,7 @@
 												<div class="form-group{{ ($errors->has('doa'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">Date Of Admission</label>
 													<div class="col-md-6">
-														<input type="text" id="datetimepicker5" name="doa" placeholder="Date Of Admission" value="{{ old('doa', $student->date_of_admission) }}" class="form-control"/>
+														<input type="text" id="datetimepicker5" name="doa" placeholder="{{ __('labels.date_of_admission_placeholder') }}" value="{{ old('doa', $student->date_of_admission) }}" class="form-control"/>
 														@if ($errors->has('doa'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('doa') }}</strong>

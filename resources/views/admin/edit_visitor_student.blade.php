@@ -190,7 +190,7 @@
                                             <span class="input-group-addon">+92</span>
                                             <input type="text" name="phone"
                                                 value="{{ old('phone', $visitorStudents->phone) }}"
-                                                placeholder="Contact No" class="form-control" data-mask="9999999999" />
+                                                placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999" />
                                         </div>
                                         @if ($errors->has('phone'))
                                             <span class="help-block">

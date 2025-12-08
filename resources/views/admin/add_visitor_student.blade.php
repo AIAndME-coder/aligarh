@@ -462,7 +462,7 @@
                                                 <label class="col-md-2 control-label">Date Of Admission</label>
                                                 <div class="col-md-6">
                                                     <input type="text" id="datetimepicker5" name="doa"
-                                                        placeholder="Date of Admission" value="{{ old('doa') }}"
+                                                        placeholder="{{ __('labels.date_of_admission_placeholder') }}" value="{{ old('doa') }}"
                                                         class="form-control" required="true" />
                                                     @if ($errors->has('doa'))
                                                         <span class="help-block">
@@ -515,7 +515,7 @@
                                                     <div class="input-group m-b">
                                                         <span class="input-group-addon">+92</span>
                                                         <input type="text" name="phone" value="{{ old('phone') }}"
-                                                            placeholder="Contact No" class="form-control"
+                                                            placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control"
                                                             data-mask="9999999999" />
                                                     </div>
                                                     @if ($errors->has('phone'))

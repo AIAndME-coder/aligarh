@@ -146,7 +146,7 @@
                                         <div class="form-group{{ ($errors->has('book'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Book</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="book" placeholder="Book" value="{{ old('book') }}" class="form-control"/>
+                                            <input type="text" name="book" placeholder="{{ __('labels.book_placeholder') }}" value="{{ old('book') }}" class="form-control"/>
                                             @if ($errors->has('book'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('book') }}</strong>

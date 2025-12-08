@@ -55,7 +55,7 @@
                                       <div class="form-group{{ ($errors->has('title'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Title</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="title" placeholder="Book Title" value="{{ old('title', $book['title']) }}" class="form-control"/>
+                                          <input type="text" name="title" placeholder="{{ __('labels.book_title_placeholder') }}" value="{{ old('title', $book['title']) }}" class="form-control"/>
                                           @if ($errors->has('title'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('title') }}</strong>

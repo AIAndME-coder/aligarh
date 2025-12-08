@@ -119,7 +119,7 @@
                                         <div class="form-group{{ ($errors->has('phone'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Contact No</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Contact No" class="form-control" data-mask="(999) 999-9999"/>
+                                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="(999) 999-9999"/>
                                             @if ($errors->has('phone'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('phone') }}</strong>

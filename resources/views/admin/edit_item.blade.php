@@ -67,7 +67,7 @@
                                       <div class="form-group{{ ($errors->has('category'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Category</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="category" placeholder="Category" value="{{ old('category', $item['category']) }}" class="form-control"/>
+                                          <input type="text" name="category" placeholder="{{ __('labels.category_placeholder') }}" value="{{ old('category', $item['category']) }}" class="form-control"/>
                                           @if ($errors->has('category'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('category') }}</strong>
