@@ -130,6 +130,8 @@ class FeesController extends Controller
 		$this->validate($request, [
 			'gr_no'  	=>  'required',
 			//'month'  	=>  'required',
+		], [
+			'gr_no.required'  	=>  __('validation.gr_no_required'),
 		]);
 
 		$data['student'] = Student::find($request->input('gr_no'));

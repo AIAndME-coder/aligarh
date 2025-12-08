@@ -38,6 +38,10 @@ class StudentAttendanceCtrl extends Controller
 	        'class'  	=>  'required|numeric',
 			//'section'  	=>  'required|numeric',
 	        'date'  	=>  'required',
+    	], [
+	        'class.required'  	=>  __('validation.class_required'),
+			'class.numeric'  	=>  __('validation.class_numeric'),
+	        'date.required'  	=>  __('validation.date_required'),
     	]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'));
 	$DateRange = $dbdate->toDateString();

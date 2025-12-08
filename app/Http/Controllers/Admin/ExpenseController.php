@@ -17,6 +17,12 @@ class ExpenseController extends Controller
         'description'  =>  'required',
         'amount' =>  'required|numeric',
         'date'  =>  'required',
+    ], [
+        'type.required'  =>  __('validation.type_required'),
+        'description.required'  =>  __('validation.description_required'),
+        'amount.required' =>  __('validation.amount_required'),
+        'amount.numeric' =>  __('validation.amount_numeric'),
+        'date.required'  =>  __('validation.date_required'),
     ]);
   }
 

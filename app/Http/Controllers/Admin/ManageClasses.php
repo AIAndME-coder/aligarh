@@ -61,6 +61,10 @@ class ManageClasses extends Controller
 				'numeric_name'  =>  'required',
 				'prifix'  =>  'required',
 /*        'teacher' =>  'required'*/
+		], [
+				'name.required'  =>  __('validation.name_required'),
+				'numeric_name.required'  =>  __('validation.numeric_name_required'),
+				'prifix.required'  =>  __('validation.prifix_required'),
 		]);
 	}
 

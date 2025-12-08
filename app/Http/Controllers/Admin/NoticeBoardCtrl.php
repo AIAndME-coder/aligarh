@@ -67,6 +67,10 @@ public function DeleteNotice(Request $request){
 			'title'  =>  'required',
 			'notice'  =>  'required',
 			'till_date' =>  'required',
+		], [
+			'title.required'  =>  __('validation.title_required'),
+			'notice.required'  =>  __('validation.notice_required'),
+			'till_date.required' =>  __('validation.till_date_required'),
 		]);
 	}
 

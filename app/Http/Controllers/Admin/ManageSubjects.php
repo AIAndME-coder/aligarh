@@ -101,6 +101,10 @@ class ManageSubjects extends Controller
 				'book'  =>  'required',
 //        'teacher' =>  'required',
 				'class' =>  'required'
+		], [
+				'name.required'  =>  __('validation.name_required'),
+				'book.required'  =>  __('validation.book_required'),
+				'class.required' =>  __('validation.class_required'),
 		]);
 	}
 

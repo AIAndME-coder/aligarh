@@ -22,6 +22,11 @@ class VouchersController extends Controller
           'voucher_no'  =>  'required',
           'voucher_date' =>  'required',
           'items.*.*' =>  'required',
+      ], [
+          'vendor.required'  =>  __('validation.vendor_required'),
+          'voucher_no.required'  =>  __('validation.voucher_no_required'),
+          'voucher_date.required' =>  __('validation.voucher_date_required'),
+          'items.required' =>  __('validation.items_required'),
       ]);
     }
 

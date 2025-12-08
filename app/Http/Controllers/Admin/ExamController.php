@@ -18,6 +18,12 @@ class ExamController extends Controller
 			'description'  =>  'required',
 			'start_date' =>  'required',
 			'end_date'  =>  'required',
+		], [
+			'exam_category.required'	=>	__('validation.exam_category_required'),
+			'name.required'  =>  __('validation.name_required'),
+			'description.required'  =>  __('validation.description_required'),
+			'start_date.required' =>  __('validation.start_date_required'),
+			'end_date.required'  =>  __('validation.end_date_required'),
 		]);
 	}
 

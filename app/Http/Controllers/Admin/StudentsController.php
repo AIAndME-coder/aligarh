@@ -85,6 +85,24 @@ class StudentsController extends Controller
 				'doa'       =>  'required',
 				'doe'       =>  'required',
 				'img'       => 	'image|mimes:jpg,jpeg,png|max:100',
+		], [
+				'name.required'    =>  __('validation.name_required'),
+				'father_name.required'    =>  __('validation.father_name_required'),
+				'gender.required'  =>  __('validation.gender_required'),
+				'class.required'   =>  __('validation.class_required'),
+				'section.required'  =>  __('validation.section_required'),
+				'gr_no.required'  =>  __('validation.gr_no_required'),
+				'gr_no.unique'  =>  __('validation.gr_no_unique'),
+				'guardian.required'    =>  __('validation.guardian_required'),
+				'guardian_relation.required'  =>  __('validation.guardian_relation_required'),
+				'tuition_fee.required'  =>  __('validation.tuition_fee_required'),
+				'tuition_fee.numeric'  =>  __('validation.tuition_fee_numeric'),
+				'dob.required'       =>  __('validation.dob_required'),
+				'doa.required'       =>  __('validation.doa_required'),
+				'doe.required'       =>  __('validation.doe_required'),
+				'img.image'       => 	__('validation.img_image'),
+				'img.mimes'       => 	__('validation.img_mimes'),
+				'img.max'       => 	__('validation.img_max'),
 		]);
 	}
 

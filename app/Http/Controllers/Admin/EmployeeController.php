@@ -51,6 +51,19 @@ class EmployeeController extends Controller
         'date_of_birth' => 'nullable|date|date_format:Y-m-d',
         'date_of_joining' => 'nullable|date|date_format:Y-m-d',
         'id_card' => 'nullable|string|max:255|unique:employees,id_card'. (($request->route('id'))? ','.$request->route('id') : ''),
+    ], [
+        'name.required'      =>  __('validation.name_required'),
+        'gender.required'    =>  __('validation.gender_required'),
+        'religion.required'    =>  __('validation.religion_required'),
+        'role.required'      =>  __('validation.role_required'),
+        'salary.required'      =>  __('validation.salary_required'),
+        'salary.numeric'      =>  __('validation.salary_numeric'),
+        'img.image'       =>    __('validation.img_image'),
+        'img.mimes'       =>    __('validation.img_mimes'),
+        'img.max'       =>    __('validation.img_max'),
+        'date_of_birth.date' => __('validation.dob_date'),
+        'date_of_joining.date' => __('validation.date_of_joining_date'),
+        'id_card.unique' => __('validation.id_card_unique'),
     ]);
   }
 
