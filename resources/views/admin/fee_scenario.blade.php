@@ -20,7 +20,7 @@
 							<div class="col-lg-8 col-md-6">
 									<h2>Settings</h2>
 									<ol class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 										@can('fee-scenario.update.scenario')
 											<li Class="active">
 													<a>Fee Scenario</a>

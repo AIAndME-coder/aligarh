@@ -381,7 +381,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Visitors</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Visitors</a>
                     </li>

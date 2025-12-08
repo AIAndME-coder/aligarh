@@ -658,4 +658,9 @@ return [
     'pages_guardians_title' => 'Guardians',
     'pages_routines_title' => 'Routines',
     'pages_notice_board_title' => 'Notice Board',
+
+    // Edit page titles
+    'pages_edit_teacher' => 'Edit Teacher',
+    'pages_edit_student' => 'Edit Student',
+    'pages_edit_employee' => 'Edit Employee',
 ];

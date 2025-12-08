@@ -37,7 +37,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Users</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Users</a>
                       </li>

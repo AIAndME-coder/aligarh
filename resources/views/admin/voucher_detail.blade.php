@@ -19,7 +19,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Vouchers</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li><a href="{{ URL('vouchers') }}"> Voucher </a></li>
                       <li Class="active">
                           <a>Detail</a>

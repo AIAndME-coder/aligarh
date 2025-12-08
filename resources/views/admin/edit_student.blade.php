@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Students |')
+	@section('title', __('modules.pages_students_title').' |')
 
 	@section('head')
 	<link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -20,16 +20,16 @@
 
 					@include('admin.includes.top_navbar')
 
-					<!-- Heading -->
-					<div class="row wrapper border-bottom white-bg page-heading">
-						<div class="col-lg-8 col-md-6">
-							<h2>Students</h2>
-							<ol class="breadcrumb">
-								<li>Home</li>
-								<li Class="active">
-										<a>Students</a>
-								</li>
-							</ol>
+				<!-- Heading -->
+				<div class="row wrapper border-bottom white-bg page-heading">
+					<div class="col-lg-8 col-md-6">
+						<h2>{{ __('modules.pages_edit_student') }}</h2>
+						<ol class="breadcrumb">
+							<li>{{ __('common.home') }}</li>
+							<li Class="active">
+									<a>{{ __('modules.pages_edit_student') }}</a>
+							</li>
+						</ol>
 						</div>
 						<div class="col-lg-4 col-md-6">
 							@include('admin.includes.academic_session')
@@ -52,10 +52,10 @@
 											<form id="tchr_rgstr" method="post" action="{{ URL('students/edit/'.$student->id) }}" class="form-horizontal" enctype="multipart/form-data">
 												{{ csrf_field() }}
 
-												<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Name</label>
-													<div class="col-md-6">
-														<input type="text" name="name" placeholder="Name" value="{{ old('name', $student->name) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.name') }}</label>
+												<div class="col-md-6">
+													<input type="text" name="name" placeholder="{{ __('labels.name_placeholder') }}" value="{{ old('name', $student->name) }}" class="form-control"/>
 														@if ($errors->has('name'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -64,10 +64,10 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('father_name'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Father Name</label>
-													<div class="col-md-6">
-														<input type="text" name="father_name" placeholder="Father Name" value="{{ old('father_name', $student->father_name) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('father_name'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.father_name') }}</label>
+												<div class="col-md-6">
+													<input type="text" name="father_name" placeholder="{{ __('labels.father_name_placeholder') }}" value="{{ old('father_name', $student->father_name) }}" class="form-control"/>
 														@if ($errors->has('father_name'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('father_name') }}</strong>
@@ -76,11 +76,11 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('gender'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Gender</label>
-													<div class="col-md-6">
-														<select class="form-control" name="gender" placeholder="Gender">
-															<option value="" disabled selected>Gender</option>
+											<div class="form-group{{ ($errors->has('gender'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.gender') }}</label>
+												<div class="col-md-6">
+													<select class="form-control" name="gender" placeholder="{{ __('labels.gender') }}">
+														<option value="" disabled selected>{{ __('labels.gender') }}</option>
 															<option>Male</option>
 															<option>Female</option>
 														</select>
@@ -92,10 +92,10 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('dob'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Date Of Birth</label>
-													<div class="col-md-6">
-														<input type="text" id="datetimepicker4" name="dob" placeholder="DOB" value="{{ old('dob', $student->date_of_birth) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('dob'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.date_of_birth') }}</label>
+												<div class="col-md-6">
+													<input type="text" id="datetimepicker4" name="dob" placeholder="{{ __('labels.dob_placeholder') }}" value="{{ old('dob', $student->date_of_birth) }}" class="form-control"/>
 														@if ($errors->has('dob'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('dob') }}</strong>

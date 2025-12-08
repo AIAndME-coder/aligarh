@@ -21,7 +21,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Teachers Attendance</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Teachers Attendance</a>
                     </li>

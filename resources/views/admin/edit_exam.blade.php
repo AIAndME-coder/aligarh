@@ -19,7 +19,7 @@
 							<div class="col-lg-8 col-md-6">
 									<h2>Exams</h2>
 									<ul class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 											<li><a>Exam</a></li>
 											<li Class="active"><a>Edit</a></li>
 									</ul>
