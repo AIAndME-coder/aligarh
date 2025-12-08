@@ -83,7 +83,7 @@ class UsersController extends Controller
           'toastrmsg' => [
             'type' => 'error',
             'title' => 'Users',
-            'msg' => 'There was an issue while Creating User'
+            'msg' => __('modules.users_create_error')
           ]
         ]);
     }
@@ -125,7 +125,7 @@ class UsersController extends Controller
       'toastrmsg' => [
         'type' => 'success',
         'title'  =>  'Users Registration',
-        'msg' =>  'Registration Successfull'
+        'msg' =>  __('modules.common_register_success')
       ]
     ]);
   }
@@ -170,7 +170,7 @@ class UsersController extends Controller
       'toastrmsg' => [
         'type' => 'success',
         'title'  =>  'Users Registration',
-        'msg' =>  'Save Changes Successfull'
+        'msg' =>  __('modules.common_save_success')
       ]
     ]);
   }

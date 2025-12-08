@@ -49,7 +49,7 @@ class StudentMigrationsController extends Controller
                                         'toastrmsg' => [
                                             'type'	=> 'error', 
                                             'title'	=>  'Students Migrations',
-                                            'msg'	=>  'Students not found!'
+                                            'msg'	=>  __('modules.student_migrations_not_found')
                                         ]
                                     ]);
         }
@@ -88,14 +88,12 @@ class StudentMigrationsController extends Controller
         }
 
         return redirect('student-migrations')->with([
-				'toastrmsg' => [
-					'type' => 'success', 
-					'title'  =>  'Student Migrations',
-					'msg' =>  'Migrations Successfull'
-					]
-			]);
-
-    }
+			'toastrmsg' => [
+				'type' => 'success', 
+				'title'  =>  'Student Migrations',
+				'msg' =>  __('modules.student_migrations_success')
+				]
+		]);    }
 
 
 }

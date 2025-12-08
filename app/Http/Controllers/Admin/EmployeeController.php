@@ -124,7 +124,7 @@ class EmployeeController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -140,7 +140,7 @@ class EmployeeController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -151,7 +151,7 @@ class EmployeeController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  'Employees Registration',
-          'msg' =>  'Sorry '.$Employee->name.' Employee Can\'t be Editable'
+          'msg' =>  str_replace('{{name}}', $Employee->name, __('modules.employee_not_editable'))
           ]
         ]);
         }
@@ -177,7 +177,7 @@ class EmployeeController extends Controller
         'toastrmsg' => [
           'type' => 'success',
           'title'  =>  'Employee Update',
-          'msg' =>  'Save Changes Successfull'
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -198,7 +198,7 @@ class EmployeeController extends Controller
         'toastrmsg' => [
           'type' => 'success', 
           'title'  =>  'Employee Registration',
-          'msg' =>  'Registration Successfull'
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
   }

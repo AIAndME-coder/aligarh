@@ -81,8 +81,8 @@ class ManageRoutine extends Controller
 		return  redirect('routines')->with([
 		    'toastrmsg' => [
 		      'type' => 'warning', 
-		      'title'  =>  '# Invalid URL',
-		      'msg' =>  'Do Not write hard URL\'s'
+		      'title'  =>  __('modules.routine_invalid_url_title'),
+		      'msg' =>  __('modules.common_url_error')
 		      ]
 		  ]);
 		}
@@ -115,8 +115,8 @@ class ManageRoutine extends Controller
     return redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Routines Timtable',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.routine_timetable_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 
@@ -129,13 +129,13 @@ class ManageRoutine extends Controller
     $Routines->delete();
 
     if ($request->ajax()) {
-      return  response(['type' => 'success','title'  =>  'Routines Timtable','msg' =>  'Routine Deleted']);
+      return  response(['type' => 'success','title'  =>  __('modules.routine_timetable_title'),'msg' =>  __('modules.routine_deleted_message')]);
     } else { 
     return redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Routines Timtable',
-          'msg' =>  'Routine Deleted'
+          'title'  =>  __('modules.routine_timetable_title'),
+          'msg' =>  __('modules.routine_deleted_message')
           ]
       ]);
     }
@@ -151,8 +151,8 @@ class ManageRoutine extends Controller
     return  redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.routine_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -166,8 +166,8 @@ class ManageRoutine extends Controller
     return redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'success',
-          'title'  =>  'Routines Settings',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.routine_settings_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }

@@ -34,7 +34,7 @@ class UserSettingController extends Controller
                   'toastrmsg' => [
                     'type' => 'error',
                     'title'  =>  'User Settings',
-                    'msg' =>  'In Demo Password Can Not Be Change!'
+                    'msg' =>  __('modules.common_demo_restriction')
                     ],
                   ]);
     		}
@@ -45,7 +45,7 @@ class UserSettingController extends Controller
               'toastrmsg' => [
                 'type' => 'success',
                 'title'  =>  'User Settings',
-                'msg' =>  'Password Changed'
+                'msg' =>  __('modules.common_password_change_success')
                 ],
               ]);
       } else {
@@ -66,7 +66,7 @@ class UserSettingController extends Controller
           'toastrmsg' => [
             'type' => 'success',
             'title'  =>  'User Settings',
-            'msg' =>  'Session Changed'
+            'msg' =>  __('modules.common_session_change_success')
           ],
           ]);
       }
@@ -75,7 +75,7 @@ class UserSettingController extends Controller
                   'toastrmsg' => [
                     'type' => 'error',
                     'title'  =>  'User Settings',
-                    'msg' =>  'Session Not Allowed'
+                    'msg' =>  __('modules.common_session_change_error')
                     ],
                   ]);
 
@@ -99,7 +99,7 @@ class UserSettingController extends Controller
               'toastrmsg' => [
                 'type' => 'success',
                 'title'  =>  'User Settings',
-                'msg' =>  'Update Skin Setting'
+                'msg' =>  __('modules.common_skin_update')
                 ],
               ]);
 

@@ -65,7 +65,7 @@ class GuardiansController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -83,7 +83,7 @@ class GuardiansController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -97,7 +97,7 @@ class GuardiansController extends Controller
         'toastrmsg' => [
           'type' => 'success', 
           'title'  =>  'Guardians Registration',
-          'msg' =>  'Save Changes Successfull'
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -118,7 +118,7 @@ class GuardiansController extends Controller
         'toastrmsg' => [
           'type' => 'success', 
           'title'  =>  'guardians Registration',
-          'msg' =>  'Registration Successfull'
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

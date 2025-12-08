@@ -111,8 +111,8 @@ class TeacherController extends Controller
     return  redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.teacher_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -127,8 +127,8 @@ class TeacherController extends Controller
     return  redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.teacher_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -154,8 +154,8 @@ class TeacherController extends Controller
     return redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Teacher Update',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.teacher_update_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -176,8 +176,8 @@ class TeacherController extends Controller
     return redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Teacher Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.teacher_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

@@ -19,314 +19,320 @@ use App\SmsLog;
 
 use Validator;
 use Auth;
-
+use Illuminate\Support\Arr;
 
 class SmsController extends Controller
 {
+    protected $raw = [
+        'students' => 'Student',
+        'student' => 'Student',
 
-	protected $raw = [
-		'students' => 'Student',
-		'student' => 'Student',
+        'guardians' => 'Guardian',
+        'guardian' => 'Guardian',
 
-		'guardians' => 'Guardian',
-		'guardian' => 'Guardian',
-		
-		'teachers' => 'Teacher',
-		'teacher' => 'Teacher',
-		
-		'emloys' => 'Employee',
-		'emloyee' => 'Employee',
-	];
+        'teachers' => 'Teacher',
+        'teacher' => 'Teacher',
 
-	public function Index(){
-		$data['Students']	=	Student::CurrentSession()->HaveCellNo()->active()->with('Guardian')->get();
-		$data['Teachers']	=	Teacher::HaveCellNo()->get();
-		$data['Employee']	=	Employee::HaveCellNo()->get();
-		$data['Classe']	=	Classe::all();
-		$data['availableSms']	=	tenancy()->tenant->system_info['general']['available_sms'];
-		$data['smsValidity']	=	tenancy()->tenant->system_info['general']['sms_validity'];
-		$data['ValidateExpireDate']	=	$this->ValidateExpireDate()? 1 : 0;
-	    return view('admin.sms_notifications', $data);
-	}
+        'emloys' => 'Employee',
+        'emloyee' => 'Employee',
+    ];
 
-	public function SendSms(Request $request){
+    public function Index()
+    {
+        $data['Students'] = Student::CurrentSession()->HaveCellNo()->active()->with('Guardian')->get();
+        $data['Teachers'] = Teacher::HaveCellNo()->get();
+        $data['Employee'] = Employee::HaveCellNo()->get();
+        $data['Classe'] = Classe::all();
+        $data['availableSms'] = tenancy()->tenant->system_info['general']['available_sms'];
+        $data['smsValidity'] = tenancy()->tenant->system_info['general']['sms_validity'];
+        $data['ValidateExpireDate'] = $this->ValidateExpireDate() ? 1 : 0;
+        return view('admin.sms_notifications', $data);
+    }
 
-		if($request->ajax()){
+    public function SendSms(Request $request)
+    {
+        if ($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'send_to' => 'required',
+                'message' => 'required',
+                'phoneinfo' => 'required',
+            ]);
 
-			$validator = Validator::make($request->all(), [
-				'send_to' => 'required',
-				'message' => 'required',
-				'phoneinfo'	=>	'required',
-			]);
+            if ($validator->fails()) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => 'Notifications',
+                        'msg' => __('modules.sms_validation_error'),
+                    ],
+                ];
+            }
 
-			if ($validator->fails()) {
-				return  [
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=> 'error', 
-						'title'	=>  'Notifications',
-						'msg'	=>  'Something is wrong!'
-					]
-				];
-			}
+            if ($this->ValidateExpireDate() == false) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => 'Notifications',
+                        'msg' => __('modules.common_sms_package_expired'),
+                    ],
+                ];
+            }
 
-			if($this->ValidateExpireDate() == false){
-				return [
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=>	'error',
-						'title'	=>	'Notifications',
-						'msg'	=>	'Package Expired',
-					]
-				];
-			}
+            if ($this->ValidateBalance($request->input('phoneinfo')) == false) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => 'Notifications',
+                        'msg' => __('modules.common_sms_insufficient_balance'),
+                    ],
+                ];
+            }
+            $responseApi = $this->SendSmsAPI('0' . implode(',0', array_pluck($request->input('phoneinfo'), 'no')), $request->input('message'));
+            $totalprice = 0;
+            if (isset($responseApi->totalprice)) {
+                $totalprice = $responseApi->totalprice;
+                $this->UpdateAvailableSms(tenancy()->tenant->system_info['general']['available_sms'] - $totalprice);
+            }
 
-			if($this->ValidateBalance($request->input('phoneinfo')) == false){
-				return [
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=>	'error',
-						'title'	=>	'Notifications',
-						'msg'	=>	'Insufficient Balance',
-					]
-				];
-			}
+            SmsLog::create([
+                'phone_info' => $request->input('phoneinfo'),
+                'message' => $request->input('message'),
+                'api_response' => $responseApi,
+                'total_price' => $totalprice,
+                'created_by' => Auth::user()->id,
+            ]);
 
-			$responseApi = $this->SendSmsAPI('0'.implode(',0', (array_pluck($request->input('phoneinfo'), 'no'))), $request->input('message'));
-			$totalprice = 0;
-			if(array_has($responseApi, 'totalprice')){
-				$totalprice = $responseApi->totalprice;
-				$this->UpdateAvailableSms(tenancy()->tenant->system_info['general']['available_sms'] - $totalprice);
-			}
+            if ($totalprice == 0) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => __('modules.sms_invalid_title'),
+                        'msg' => $responseApi->messages[0]->error,
+                        //'msg'	=>	'Contact service center'
+                    ],
+                    //[$request->all(), '0'.implode(',0', (array_pluck($request->input('phoneinfo'), 'no')))],
+                ];
+            }
 
-			SmsLog::create([
-				'phone_info'	=>	$request->input('phoneinfo'),
-				'message'	=>	$request->input('message'),
-				'api_response'	=>	$responseApi,
-				'total_price'	=>	$totalprice,
-				'created_by'	=>	Auth::user()->id
-			]);
+            return [
+                'errors' => false,
+                'toastrmsg' => [
+                    'type' => 'success',
+                    'title' => 'Notifications',
+                    'msg' => __('modules.common_query_submitted'),
+                ],
+                'availableSms' => tenancy()->tenant->system_info['general']['available_sms'] - $totalprice,
+            ];
+        } // <-- closes if ($request->ajax())
 
-			if($totalprice == 0){
-				return	[
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=> 'error', 
-						'title'	=>  'Invalid SMS',
-						'msg'	=>	$responseApi->messages[0]->error,
-						//'msg'	=>  'Contact service center'
-					],
-					//[$request->all(), '0'.implode(',0', (array_pluck($request->input('phoneinfo'), 'no')))],
-				];
-			}
+        return redirect('smsnotifications')->with([
+            'toastrmsg' => [
+                'type' => 'warning',
+                'title' => 'Notifications',
+                'msg' => __('modules.common_validation_error'),
+            ],
+        ]);
+    }
 
-			return	[
-				'errors'	=>	false,
-				'toastrmsg'	=>	[
-					'type'	=> 'success', 
-					'title'	=>  'Notifications',
-					'msg'	=>  'Query Submitted'
-				],
-				'availableSms' => tenancy()->tenant->system_info['general']['available_sms'] - $totalprice,
-			];
-		}
+    public function SendBulkSms(Request $request)
+    {
+        if ($request->ajax()) {
+            $validator = Validator::make($request->all(), [
+                'bulk_to' => 'required',
+                'message' => 'required',
 
-		return redirect('smsnotifications')->with([
-									'toastrmsg' => [
-										'type'	=> 'warning', 
-										'title'	=>  'Notifications',
-										'msg'	=>  'Something is wrong!'
-									]
-								]);
-	}
+                $request->input('bulk_to') => 'required',
+            ]);
 
+            if ($validator->fails()) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => 'Notifications',
+                        'msg' => __('modules.sms_validation_error'),
+                    ],
+                ];
+            }
 
-	public function SendBulkSms(Request $request){
+            if ($this->ValidateExpireDate() == false) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => 'Notifications',
+                        'msg' => __('modules.common_sms_package_expired'),
+                    ],
+                ];
+            }
 
-		if($request->ajax()){
+            $phoneInfo = $this->MakePhoneInfo($request->input('bulk_to'), $request->input($request->input('bulk_to')));
 
-			$validator = Validator::make($request->all(), [
-				'bulk_to' => 'required',
-				'message' => 'required',
+            if ($this->ValidateBalance($phoneInfo) == false) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => 'Notifications',
+                        'msg' => __('modules.common_sms_insufficient_balance'),
+                    ],
+                ];
+            }
+            $responseApi = $this->SendSmsAPI('0' . implode(',0', array_pluck($request->input($request->input('bulk_to')), 'no')), $request->input('message'));
 
-				$request->input('bulk_to') => 'required',
-			]);
+            $totalprice = 0;
+            if (isset($responseApi->totalprice)) {
+                $totalprice = $responseApi->totalprice;
+                $this->UpdateAvailableSms(tenancy()->tenant->system_info['general']['available_sms'] - $totalprice);
+            }
+						// Validate API response structure
+						if (!Arr::has($responseApi, 'totalprice')) {
+							$totalprice = 0;
+						}
 
-			if ($validator->fails()) {
-				return  [
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=> 'error', 
-						'title'	=>  'Notifications',
-						'msg'	=>  'Something is wrong!'
-					]
-				];
-			}
+						// Validate API response structure
+						if (!Arr::has($responseApi, 'totalprice')) {
+							$totalprice = 0;
+						}
 
-			if($this->ValidateExpireDate() == false){
-				return [
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=>	'error',
-						'title'	=>	'Notifications',
-						'msg'	=>	'Package Expired',
-					]
-				];
-			}
+            SmsLog::create([
+                'phone_info' => $phoneInfo,
+                //'phone_info'	=>	$request->input($request->input('bulk_to')),
+                'message' => $request->input('message'),
+                'api_response' => $responseApi,
+                'total_price' => $totalprice,
+                'created_by' => Auth::user()->id,
+            ]);
 
-			$phoneInfo = $this->MakePhoneInfo($request->input('bulk_to'), $request->input($request->input('bulk_to')));
+            if ($totalprice == 0) {
+                return [
+                    'errors' => true,
+                    'toastrmsg' => [
+                        'type' => 'error',
+                        'title' => __('modules.sms_invalid_title'),
+                        'msg' => $responseApi->messages[0]->error,
+                        // 'msg'	=>	'Contact service center'
+                    ],
+                    //[$request->all(), '0'.implode(',0', $request->input($request->input('bulk_to')))],
+                ];
+            }
 
-			if($this->ValidateBalance($phoneInfo) == false){
-				return [
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=>	'error',
-						'title'	=>	'Notifications',
-						'msg'	=>	'Insufficient Balance',
-					]
-				];
-			}
+            return [
+                'errors' => false,
+                'toastrmsg' => [
+                    'type' => 'success',
+                    'title' => 'Notifications',
+                    'msg' => __('modules.sms_query_submitted'),
+                ],
+                'availableSms' => tenancy()->tenant->system_info['general']['available_sms'] - $totalprice,
+                //[implode(',', $request->input($request->input('bulk_to')))]
+                //[$request->all()]
+            ];
+        }
 
-			$responseApi = $this->SendSmsAPI('0'.implode(',0', array_pluck($request->input($request->input('bulk_to')), 'no')), $request->input('message'));
+        return redirect('smsnotifications')->with([
+            'toastrmsg' => [
+                'type' => 'warning',
+                'title' => 'Notifications',
+                'msg' => __('modules.sms_validation_error'),
+            ],
+        ]);
+    }
 
-			$totalprice = 0;
-			if(array_has($responseApi, 'totalprice')){
-				$totalprice = $responseApi->totalprice;
-				$this->UpdateAvailableSms(tenancy()->tenant->system_info['general']['available_sms'] - $totalprice);
-			}
+    protected function SendSmsAPI($to = '', $message = '')
+    {
+        /*		$client = new Client(['base_uri' => 'https://lifetimesms.com', 'verify' => false]);
 
-			SmsLog::create([
-				'phone_info'	=>	$phoneInfo,
-				//'phone_info'	=>	$request->input($request->input('bulk_to')),
-				'message'	=>	$request->input('message'),
-				'api_response'	=>	$responseApi,
-				'total_price'	=>	$totalprice,
-				'created_by'	=>	Auth::user()->id
-			]);
-
-			if($totalprice == 0){
-				return	[
-					'errors'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=> 'error', 
-						'title'	=>  'Invalid SMS',
-						'msg'	=>	$responseApi->messages[0]->error,
-						// 'msg'	=>  'Contact service center'
-					],
-					//[$request->all(), '0'.implode(',0', $request->input($request->input('bulk_to')))],
-				];
-			}
-
-			return	[
-				'errors'	=>	false,
-				'toastrmsg'	=>	[
-					'type'	=> 'success', 
-					'title'	=>  'Notifications',
-					'msg'	=>  'Query Submitted'
-				],
-				'availableSms' => tenancy()->tenant->system_info['general']['available_sms'] - $totalprice,
-				//[implode(',', $request->input($request->input('bulk_to')))]
-				//[$request->all()]
-			];
-		}
-
-		return redirect('smsnotifications')->with([
-									'toastrmsg' => [
-										'type'	=> 'warning', 
-										'title'	=>  'Notifications',
-										'msg'	=>  'Something is wrong!'
-									]
-								]);
-
-	}
-
-
-
-	protected function SendSmsAPI($to='', $message=''){
-
-/*		$client = new Client(['base_uri' => 'https://lifetimesms.com', 'verify' => false]);
-
-		$response = $client->request('POST', '/json', [
-			'form_params' => [
-				'username' => 'muhammadali',
-				'password' => '53718',
+  $response = $client->request('POST', '/json', [
+   'form_params' => [
+    'username' => 'muhammadali',
+    'password' => '53718',
 //				'to'	=>	$to,
-				'to'	=>	'03132045991',
-				'from'	=>	'SmartSMS',
-				'message'	=>	$message,
-				]
-			]
-		);
-		return json_decode($response->getBody());
+    'to'	=>	'03132045991',
+    'from'	=>	'SmartSMS',
+    'message'	=>	$message,
+    ]
+   ]
+  );
+  return json_decode($response->getBody());
 */
 
-		return json_decode('{
-			"messages": [
-				{
-					"status": "-2",
-					"error": "After Correction No Recepient Left For Submit"
-				}
-			]
-		}');
+        return json_decode('{
+   "messages": [
+    {
+     "status": "-2",
+     "error": "After Correction No Recepient Left For Submit"
+    }
+   ]
+  }');
 
-/*
-		return json_decode('{
-			"type": "text",
-			"totalprice": "1",
-			"totalgsm": "1",
-			"remaincredit": "4",
-			"messages": [
-			    {
-			        "status": "1",
-			        "messageid": "220401354020",
-			        "gsm": "923132045991"
-			    }
-			]
-		}');
+        /*
+  return json_decode('{
+   "type": "text",
+   "totalprice": "1",
+   "totalgsm": "1",
+   "remaincredit": "4",
+   "messages": [
+     {
+       "status": "1",
+       "messageid": "220401354020",
+       "gsm": "923132045991"
+     }
+   ]
+  }');
 */
-	}
+    }
 
-	protected function UpdateAvailableSms($no){
-		$tenant = tenancy()->tenant;
-		$tenant->system_info['general']['available_sms'] = $no;
-		$tenant->save();
+    protected function UpdateAvailableSms($no)
+    {
+        $tenant = tenancy()->tenant;
+        $tenant->system_info['general']['available_sms'] = $no;
+        $tenant->save();
+    }
 
-	}
+    protected function MakePhoneInfo($bulk_to, $phones)
+    {
+        $phoneInfo = [];
+        foreach ($phones as $key => $value) {
+            $phoneInfo[] = [
+                'send_to' => $bulk_to,
+                'id' => $key,
+                'no' => $value['no'],
+                'name' => $value['name'],
+            ];
+        }
+        return $phoneInfo;
+    }
 
-	protected function MakePhoneInfo($bulk_to, $phones){
-		$phoneInfo = [];
-		foreach ($phones as $key => $value) {
-			$phoneInfo[] = [
-				'send_to' => $bulk_to,
-				'id' => $key,
-				'no' => $value['no'],
-				'name' => $value['name'],
-			];
-		}
-		return $phoneInfo;
-	}
+    public function History(Request $request)
+    {
+        $this->validate($request, [
+            'start' => 'required',
+            'end' => 'required',
+        ]);
 
-	public function History(Request $request){
+        $history = SmsLog::whereBetween('created_at', [$request->input('start') . ' 00:00:00', $request->input('end') . ' 23:59:59'])
+            ->with([
+                'User' => function ($qry) {
+                    $qry->select('id', 'name');
+                },
+            ])
+            ->get();
 
-		$this->validate($request, [
-			'start'	=>	'required',
-			'end'	=>	'required',
-		]);
+        return view('admin.printable.sms_history', ['history' => $history]);
+    }
 
-		$history	=	SmsLog::whereBetween('created_at', [$request->input('start').' 00:00:00', $request->input('end').' 23:59:59'])->with(['User'	=>	function($qry){
-			$qry->select('id', 'name');
-		}])->get();
+    protected function ValidateBalance($phoneInfo)
+    {
+        return tenancy()->tenant->system_info['general']['available_sms'] >= COUNT($phoneInfo);
+    }
 
-		return view('admin.printable.sms_history', ['history'	=>	$history]);
-
-	}
-
-	protected function ValidateBalance($phoneInfo){
-		return tenancy()->tenant->system_info['general']['available_sms'] >= COUNT($phoneInfo);
-	}
-
-	protected function ValidateExpireDate(){
-		return tenancy()->tenant->system_info['general']['sms_validity'] >= Carbon::now()->todateString();
-	}
-
+    protected function ValidateExpireDate()
+    {
+        return tenancy()->tenant->system_info['general']['sms_validity'] >= Carbon::now()->todateString();
+    }
 }

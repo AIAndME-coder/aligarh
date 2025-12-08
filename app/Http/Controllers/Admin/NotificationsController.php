@@ -210,8 +210,8 @@ class NotificationsController extends Controller
                     ->with([
                         'toastrmsg' => [
                             'type' => 'error',
-                            'title' => 'Error',
-                            'msg' => 'There was an issue while Sending message'
+                            'title' => __('modules.notifications_error_title'),
+                            'msg' => __('modules.notifications_error_sending')
                         ]
                     ]);
         }
@@ -296,8 +296,8 @@ class NotificationsController extends Controller
         return redirect('msg-notifications')->with([
             'toastrmsg' => [
                 'type' => 'success',
-                'title'  =>  'Message Send',
-                'msg' =>  'Messages sent to successfully'
+                'title'  =>  __('modules.notifications_message_send_title'),
+                'msg' =>  __('modules.common_messages_sent_success')
             ]
         ]);
     }

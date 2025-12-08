@@ -80,7 +80,7 @@ class QuizController extends Controller
                     'toastrmsg' => [
                         'type' => 'error',
                         'title' => 'Quiz',
-                        'msg' => 'There was an issue while Creating Quiz',
+                        'msg' => __('modules.quiz_create_error'),
                     ],
                 ]);
         }
@@ -98,7 +98,7 @@ class QuizController extends Controller
             'toastrmsg' => [
                 'type' => 'success',
                 'title' => 'Quiz',
-                'msg' => 'Quiz created successfully',
+                'msg' => __('modules.common_quiz_created'),
             ],
         ]);
     }
@@ -141,7 +141,7 @@ class QuizController extends Controller
             'toastrmsg' => [
                 'type' => 'success',
                 'title' => 'Quiz',
-                'msg' => 'Quiz Updated successfully',
+                'msg' => __('modules.common_quiz_updated'),
             ],
         ]);
     }
@@ -163,7 +163,7 @@ class QuizController extends Controller
                     'toastrmsg' => [
                         'type' => 'Error',
                         'title' => 'Quiz',
-                        'msg' => 'There was an issue while Deleting Quiz',
+                        'msg' => __('modules.common_quiz_delete_error'),
                     ],
                 ]);
         }
@@ -177,7 +177,7 @@ class QuizController extends Controller
             'toastrmsg' => [
                 'type' => 'success',
                 'title' => 'Quiz',
-                'msg' => 'Deleted Successfully',
+                'msg' => __('modules.common_delete_success'),
             ],
         ]);
     }

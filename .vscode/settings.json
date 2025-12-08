@@ -1,0 +1,12 @@
+{
+  "i18n-ally.localesPaths": [
+    "resources/lang",
+    "public/src/moment-develop/locale",
+    "public/src/moment-develop/src/locale",
+    "public/src/js/plugins/ckeditor_4.10.1/lang",
+    "public/src/js/plugins/jqGrid/i18n",
+    "public/src/moment-develop/src/lib/locale",
+    "public/src/js/plugins/ckeditor_4.10.1/plugins/a11yhelp/dialogs/lang",
+    "public/src/js/plugins/ckeditor_4.10.1/plugins/specialchar/dialogs/lang"
+  ]
+}

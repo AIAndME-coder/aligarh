@@ -41,8 +41,8 @@ class AcademicSessionController extends Controller
           ->with([
               'toastrmsg' => [
                   'type' => 'error', 
-                  'title' => 'Academic Session',
-                  'msg' => 'There was an issue while Updating Role'
+                  'title' => __('modules.academic_session_title'),
+                  'msg' => __('modules.academic_session_update_error')
               ]
           ]);
     }
@@ -60,8 +60,8 @@ class AcademicSessionController extends Controller
             ->with([
                 'toastrmsg' => [
                     'type' => 'warning',
-                    'title' => 'Academic Session',
-                    'msg' => 'A session with the same start and end date already exists.'
+                    'title' => __('modules.academic_session_title'),
+                    'msg' => __('modules.academic_session_duplicate_error')
                 ]
             ]);
     }
@@ -74,8 +74,8 @@ class AcademicSessionController extends Controller
     return redirect()->back()->with([
         'toastrmsg' => [
             'type' => 'success', 
-            'title' => 'Academic Session',
-            'msg' => 'Academic Session Created Successfully'
+            'title' => __('modules.academic_session_title'),
+            'msg' => __('modules.academic_session_created_success')
         ]
     ]);
   }

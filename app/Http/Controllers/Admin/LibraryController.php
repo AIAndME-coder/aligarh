@@ -32,8 +32,8 @@ class LibraryController extends Controller
       return  redirect('library')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.routine_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -51,8 +51,8 @@ class LibraryController extends Controller
       return  redirect('library')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.routine_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -65,8 +65,8 @@ class LibraryController extends Controller
       return redirect('library')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Library Books Registration',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.library_books_registration_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -83,8 +83,8 @@ class LibraryController extends Controller
       return redirect('library')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Parents Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.library_parents_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

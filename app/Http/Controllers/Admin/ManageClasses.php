@@ -46,7 +46,7 @@ class ManageClasses extends Controller
 				'toastrmsg' => [
 					'type' => 'warning', 
 					'title'  =>  '# Invalid URL',
-					'msg' =>  'Do Not write hard URL\'s'
+					'msg' =>  __('modules.common_url_error')
 					]
 			]);
 		}
@@ -79,7 +79,7 @@ class ManageClasses extends Controller
 				'toastrmsg' => [
 					'type' => 'success', 
 					'title'  =>  'Classes Registration',
-					'msg' =>  'Registration Successfull'
+					'msg' =>  __('modules.common_register_success')
 					]
 			]);
 
@@ -95,7 +95,7 @@ class ManageClasses extends Controller
 				'toastrmsg' => [
 					'type' => 'warning',
 					'title'  =>  '# Invalid URL',
-					'msg' =>  'Do Not write hard URL\'s'
+					'msg' =>  __('modules.common_url_error')
 				]
 			]);
 		}
@@ -115,7 +115,7 @@ class ManageClasses extends Controller
 			'toastrmsg' => [
 				'type' => 'success',
 				'title'  =>  'Classes Registration',
-				'msg' =>  'Save Changes Successfull'
+				'msg' =>  __('modules.common_save_success')
 			]
 		]);
 	}

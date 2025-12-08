@@ -48,8 +48,8 @@ class VouchersController extends Controller
       return  redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.vouchers_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -68,8 +68,8 @@ class VouchersController extends Controller
       return  redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.vouchers_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -84,8 +84,8 @@ class VouchersController extends Controller
       return redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Vouchers Registration',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.vouchers_registration_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -105,8 +105,8 @@ class VouchersController extends Controller
       return redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Vouchers Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.vouchers_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

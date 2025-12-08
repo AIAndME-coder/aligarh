@@ -147,7 +147,7 @@ class FeesController extends Controller
 					'toastrmsg' => [
 						'type' => 'info',
 						'title'  =>  "Invoice# $invoice->id",
-						'msg' =>  'Invoice Already Created'
+						'msg' =>  __('modules.fees_invoice_already_exists')
 					],
 				]);
 			}
@@ -262,8 +262,8 @@ class FeesController extends Controller
 		return redirect('fee')->with([
 			'toastrmsg' => [
 				'type' => 'success',
-				'title'  =>  'Invoice',
-				'msg' =>  'Invoice Updated Successfull'
+				'title'  =>  __('modules.invoice_title'),
+				'msg' =>  __('modules.fees_invoice_updated_success')
 			],
 			'invoice_created' => $InvoiceMaster->id,
 		]);
@@ -328,8 +328,8 @@ class FeesController extends Controller
 			return redirect()->back()->with([
 				'toastrmsg' => [
 					'type' => 'info',
-					'title'  =>  "Invoice",
-					'msg' =>  'Invoice Already Created'
+					'title'  =>  __('modules.invoice_title'),
+					'msg' =>  __('modules.fees_invoice_already_exists')
 				],
 			]);
 		}
@@ -342,8 +342,8 @@ class FeesController extends Controller
 		return redirect('fee')->with([
 			'toastrmsg' => [
 				'type' => 'success',
-				'title'  =>  'Invoice',
-				'msg' =>  'Invoice Created Successfull'
+				'title'  =>  __('modules.invoice_title'),
+				'msg' =>  __('modules.fees_invoice_created_success')
 			],
 			'invoice_created' => $this->InvoiceMaster->id,
 		]);
@@ -368,7 +368,7 @@ class FeesController extends Controller
 						'form' => 'fee.bulk.create.invoice',
 						'type' 	=> 'error',
 						'title' =>  'Invoice',
-						'msg' 	=>  'There was an issue while Creating Invoice'
+						'msg' =>  __('modules.fees_invoice_error_creating')
 					]
 				]);
 		}
@@ -472,19 +472,17 @@ class FeesController extends Controller
 
 		if($validator->fails()){
 			return redirect('fee')
-				->withErrors($validator)
-				->withInput()
-				->with([
-					'toastrmsg' => [
-						'form' => 'fee.bulk.create.invoice',
-						'type' 	=> 'error',
-						'title' =>  'Invoice',
-						'msg' 	=>  'There was an issue while Creating Invoice'
-					]
-				]);
-		}
-
-		// $classe = Classe::with('ActiveStudents', 'ActiveStudents.AdditionalFee')->find($request->input('class_id'));
+			->withErrors($validator)
+			->withInput()
+			->with([
+				'toastrmsg' => [
+					'form' => 'fee.bulk.create.invoice',
+					'type' 	=> 'error',
+					'title' =>  __('modules.fees_invoice'),
+					'msg' 	=>  __('modules.fees_invoice_error_creating')
+				]
+			]);
+	}		// $classe = Classe::with('ActiveStudents', 'ActiveStudents.AdditionalFee')->find($request->input('class_id'));
 		$guardian = Guardian::with('ActiveStudents', 'ActiveStudents.AdditionalFee')->find($request->input('guardian'));
 		$monthsCount = collect($request->input('months'))->count();
 		$createdInvoices = [];
@@ -578,8 +576,8 @@ class FeesController extends Controller
 			return redirect('fee')->with([
 				'toastrmsg' => [
 					'type'	=> 'warning',
-					'title'	=>  'Student Fee',
-					'msg'	=>  'Something is wrong!'
+					'title'	=>  __('modules.fees_title'),
+					'msg'	=>  __('modules.students_error_validation')
 				]
 			]);
 		}
@@ -591,27 +589,23 @@ class FeesController extends Controller
 			'payment_type'	=>	'sometimes|required|in:Cash,Chalan',
 		]);
 
-		if ($validator->fails()) {
-			return response([
-				'type'	=> 'error',
-				'title'	=>  'Student Fee',
-				'msg'	=>  'Error in posting fee invoice'
-			], 422);
-		}
-
-		$invoice = InvoiceMaster::findOrfail($request->input('invoice_no'));
+	if ($validator->fails()) {
+		return response([
+			'type'	=> 'error',
+			'title'	=>  __('modules.fees_title'),
+			'msg'	=>  __('modules.fees_invoice_error_posting')
+		], 422);
+	}		$invoice = InvoiceMaster::findOrfail($request->input('invoice_no'));
 		$invoice->date_of_payment = $request->input('date_of_payment');
 		$invoice->paid_amount = $request->input('paid_amount');
 		$invoice->payment_type = $request->input('payment_type');
 		$invoice->save();
 
-		return response([
-			'type'	=> 'success',
-			'title'	=>  'Student Fee',
-			'msg'	=>  'Invoice paid successfully'
-		], 200);
-
-	}
+	return response([
+		'type'	=> 'success',
+		'title'	=>  __('modules.fees_title'),
+		'msg'	=>  __('modules.fees_invoice_paid_success')
+	], 200);	}
 
 	public function GetInvoice(Request $request){
 
@@ -619,8 +613,8 @@ class FeesController extends Controller
 			return redirect('fee')->with([
 				'toastrmsg' => [
 					'type'	=> 'warning',
-					'title'	=>  'Student Fee',
-					'msg'	=>  'Something is wrong!'
+					'title'	=>  __('modules.fees_title'),
+					'msg'	=>  __('modules.students_error_validation')
 				]
 			]);
 		}
@@ -632,8 +626,8 @@ class FeesController extends Controller
 		if ($validator->fails()) {
 			return response([
 				'type'	=> 'error',
-				'title'	=>  'Student Fee',
-				'msg'	=>  'Invoice No not exists!'
+				'title'	=>  __('modules.fees_title'),
+				'msg'	=>  __('modules.fees_invoice_not_exists')
 			], 422);
 		}
 		$invoice = InvoiceMaster::findOrfail($request->input('invoice_no'));
@@ -774,23 +768,21 @@ class FeesController extends Controller
 
 		$ids = $request->input('ids');
 		if($ids){
-			if (empty($ids) || !is_array($ids)) {
+		if (empty($ids) || !is_array($ids)) {
+			return redirect('fee')->with([
+				'toastrmsg' => [
+					'type'	=> 'error',
+					'title'	=>  __('modules.fees_invoices'),
+					'msg'	=>  __('modules.fees_invoice_select_required')
+
+				]
+			]);
+		}			if (count($ids) > 50) {
 				return redirect('fee')->with([
 					'toastrmsg' => [
 						'type'	=> 'error',
-						'title'	=>  'Bulk Print Invoices',
-						'msg'	=>  'Please select at least one invoice.'
-
-					]
-				]);
-			}
-
-			if (count($ids) > 50) {
-				return redirect('fee')->with([
-					'toastrmsg' => [
-						'type'	=> 'error',
-						'title'	=>  'Bulk Print Invoices',
-						'msg'	=>  'You can not print more than 50 invoices at a time.'
+						'title'	=>  __('modules.fees_invoices'),
+						'msg'	=>  __('modules.fees_invoice_print_limit')
 					]
 				]);
 			}
@@ -864,17 +856,15 @@ class FeesController extends Controller
 
 		}
 
-		return redirect('fee')->with([
-			'toastrmsg' => [
-				'type'	=> 'warning',
-				'title'	=>  'Student Fee',
-				'msg'	=>  'Something is wrong!'
-			]
-		]);
+	return redirect('fee')->with([
+		'toastrmsg' => [
+			'type'	=> 'warning',
+			'title'	=>  __('modules.fees_title'),
+			'msg'	=>  __('modules.students_error_validation')
+		]
+	]);
 
-	}
-
-	public function UpdateFee(Request $request){
+}	public function UpdateFee(Request $request){
 
 		if($request->ajax()){
 			$validator = Validator::make($request->all(), [
@@ -883,15 +873,13 @@ class FeesController extends Controller
 				'fee'	=>	'sometimes|required'
 			]);
 
-			if ($validator->fails()) {
-				return  [
-					'type'	=> 'error',
-					'title'	=>  'Student Fee',
-					'msg'	=>  'Something is wrong!'
-				];
-			}
-
-
+		if ($validator->fails()) {
+			return  [
+				'type'	=> 'error',
+				'title'	=>  __('modules.fees_title'),
+				'msg'	=>  __('modules.fees_validation_error')
+			];
+		}
 			$Student = Student::findOrfail($request->input('id'));
 			$Student->tuition_fee = $request->input('tuition_fee');
 			$Student->late_fee = $request->input('late_fee');
@@ -899,23 +887,23 @@ class FeesController extends Controller
 			$Student->discount = $request->input('discount');
 			$Student->total_amount = $request->input('total_amount');
 			$Student->save();
-			$this->UpdateAdditionalFee($Student, $request);
+		$this->UpdateAdditionalFee($Student, $request);
 
-			return	[
-				'type'	=> 'success',
-				'title'	=>  'Student Fee',
-				'msg'	=>  'Update Fee Successfull'
-			];
-		}
-
-		return redirect('fee')->with([
-			'toastrmsg' => [
-				'type'	=> 'warning',
-				'title'	=>  'Student Fee',
-				'msg'	=>  'Something is wrong!'
-			]
-		]);
+		return	[
+			'type'	=> 'success',
+			'title'	=>  __('modules.fees_title'),
+			'msg'	=>  __('modules.fees_update_success')
+		];
 	}
+
+	return redirect('fee')->with([
+		'toastrmsg' => [
+			'type'	=> 'warning',
+			'title'	=>  __('modules.fees_title'),
+			'msg'	=>  __('modules.fees_validation_error')
+		]
+	]);
+}
 
 	protected function UpdateAdditionalFee($Student, $request){
 		AdditionalFee::where(['student_id' => $Student->id])->delete();

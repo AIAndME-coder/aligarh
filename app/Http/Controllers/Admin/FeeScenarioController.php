@@ -25,19 +25,17 @@ class FeeScenarioController extends Controller
 
 		switch ($request->input('type')) {
 			case 1:
-				$ConfigWriter = new ConfigWriter('feeses');
-				$ConfigWriter->set($this->SetFeeses($request));
-				$ConfigWriter->save();
-				return redirect('fee-scenario')->with([
-					'toastrmsg' => [
-						'type' => 'success', 
-						'title'  =>  'System Settings',
-						'msg' =>  'Feeses Updated For New Students'
-					]
-				]);
-				break;
-			
-			case 2:
+			$ConfigWriter = new ConfigWriter('feeses');
+			$ConfigWriter->set($this->SetFeeses($request));
+			$ConfigWriter->save();
+			return redirect('fee-scenario')->with([
+				'toastrmsg' => [
+					'type' => 'success', 
+					'title'  =>  __('modules.fees_title'),
+					'msg' =>  __('modules.fees_scenario_new_students_updated')
+				]
+			]);
+			break;			case 2:
 				return $this->ApplyAllStudent($request);
 				break;
 		}
@@ -94,7 +92,7 @@ class FeeScenarioController extends Controller
 			'toastrmsg' => [
 				'type' => 'success', 
 				'title'  =>  'System Settings',
-				'msg' =>  'Feeses Updated All Students'
+				'msg' =>  __('modules.fees_scenario_all_students_updated')
 			]
 		]);
 

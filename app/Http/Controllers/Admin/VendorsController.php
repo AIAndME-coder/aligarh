@@ -32,7 +32,7 @@ class VendorsController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -50,7 +50,7 @@ class VendorsController extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -64,7 +64,7 @@ class VendorsController extends Controller
         'toastrmsg' => [
           'type' => 'success', 
           'title'  =>  'Parents Registration',
-          'msg' =>  'Save Changes Successfull'
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -80,7 +80,7 @@ class VendorsController extends Controller
         'toastrmsg' => [
           'type' => 'success', 
           'title'  =>  'Parents Registration',
-          'msg' =>  'Registration Successfull'
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

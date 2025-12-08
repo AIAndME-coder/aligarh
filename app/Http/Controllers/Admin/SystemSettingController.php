@@ -153,7 +153,7 @@ class SystemSettingController extends Controller
 			'toastrmsg' => [
 				'type'  => 'success',
 				'title' => 'System Settings',
-				'msg'   => 'Settings Updated Successfully'
+				'msg'   => __('modules.system_settings_update_success')
 			]
 		]);
 	}

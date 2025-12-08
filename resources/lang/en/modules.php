@@ -82,6 +82,21 @@ return [
     'fees_library' => 'Library Fee',
     'fees_sports' => 'Sports Fee',
     'fees_computer_lab' => 'Computer Lab Fee',
+    
+    // Fee Operation Messages
+    'fees_invoice_created_success' => 'Invoice Created Successful',
+    'fees_invoice_updated_success' => 'Invoice Updated Successful',
+    'fees_invoice_already_exists' => 'Invoice Already Created',
+    'fees_invoice_error_creating' => 'There was an issue while Creating Invoice',
+    'fees_invoice_error_posting' => 'Error in posting fee invoice',
+    'fees_invoice_paid_success' => 'Invoice paid successfully',
+    'fees_invoice_not_exists' => 'Invoice No not exists!',
+    'fees_invoice_select_required' => 'Please select at least one invoice.',
+    'fees_invoice_print_limit' => 'You can not print more than 50 invoices at a time.',
+    'fees_update_success' => 'Update Fee Successful',
+    'fees_collection_date_invalid' => 'Selected Date is Invalid',
+    'fees_scenario_new_students_updated' => 'Feeses Updated For New Students',
+    'fees_scenario_all_students_updated' => 'Feeses Updated All Students',
 
     // ==================== EXAMS MODULE ====================
     'exams_management' => 'Exam Management',
@@ -229,6 +244,34 @@ return [
     'settings_database' => 'Database',
     'settings_maintenance' => 'Maintenance Mode',
 
+    // ==================== EXAMS & RESULTS MODULE ====================
+    'exams_management' => 'Exam Management',
+    'exams_title' => 'Exams',
+    'exams_create_success' => 'Exam Created',
+    'exams_update_success' => 'Exam Grades Updated',
+    'exams_save_success' => 'Save Changes Successfull',
+    'exams_already_exists' => 'Exam already created',
+    'exams_not_found' => 'Exam not found in selected Session',
+    'exams_student_not_found' => 'Student not found on Session',
+    'exams_data_not_found' => 'Data Not Found',
+    'exams_update_results_success' => 'Update Results Successfull',
+    'exams_delete_results_success' => 'Deleted Results Successfull',
+    'exams_validation_error' => 'Something is wrong!',
+    'exams_students_not_found_session' => 'Students not found in selected session',
+
+    // ==================== ATTENDANCE MODULE ====================
+    'attendance_management' => 'Attendance Management',
+    'attendance_title' => 'Attendance',
+    'attendance_job_success' => 'Attendance Job Successfull',
+    'attendance_added_success' => 'Attendance Added Successfull',
+    'attendance_date_weekend' => 'Selected Date is weekend',
+    'attendance_date_invalid' => 'Selected Date is Invalid',
+    'attendance_leave_create_error' => 'There was an issue while Creating Leave',
+    'attendance_leave_register_success' => 'Registration Successful',
+    'attendance_leave_update_success' => 'Successful Update',
+    'attendance_leave_delete_error' => 'There was an issue while Deleting Attendance Leave',
+    'attendance_leave_delete_success' => 'Deleted Successfully',
+
     // ==================== GUARDIAN/PARENT MODULE ====================
     'guardians_management' => 'Guardian Management',
     'guardians_title' => 'Guardians',
@@ -241,4 +284,115 @@ return [
     'guardians_contact_info' => 'Contact Information',
     'guardians_occupation' => 'Occupation',
     'guardians_income' => 'Income',
+
+    // ==================== ADDITIONAL MODULES ====================
+    'common_create_success' => 'Create Successfull',
+    'common_save_success' => 'Save Changes Successfull',
+    'common_update_success' => 'Successful Update',
+    'common_register_success' => 'Registration Successfull',
+    'common_delete_success' => 'Deleted Successfully',
+    'common_removed' => 'Removed',
+    'common_url_error' => 'Do Not write hard URL\'s',
+    'common_validation_error' => 'There was an issue',
+    'common_password_change_error' => 'Password Can Not Be Change!',
+    'common_password_change_success' => 'Password Changed',
+    'common_session_change_success' => 'Session Changed',
+    'common_session_change_error' => 'Session Not Allowed',
+    'common_skin_update' => 'Update Skin Setting',
+    'common_messages_sent_success' => 'Messages sent to successfully',
+    'common_demo_restriction' => 'In Demo Password Can Not Be Change!',
+    'common_not_editable' => 'Can\'t be Editable',
+    'common_sms_package_expired' => 'Package Expired',
+    'common_sms_insufficient_balance' => 'Insufficient Balance',
+    'common_invalid_url' => 'Do Not write hard URL\'s',
+    'common_quiz_create_error' => 'There was an issue while Creating Quiz',
+    'common_quiz_created' => 'Quiz created successfully',
+    'common_quiz_updated' => 'Quiz Updated successfully',
+    'common_quiz_delete_error' => 'There was an issue while Deleting Quiz',
+    'common_sending_error' => 'There was an issue while Sending message',
+    'common_query_submitted' => 'Query Submitted',
+    'common_migration_success' => 'Migrations Successfull',
+    'common_students_not_found' => 'Students not found!',
+    'common_role_update_error' => 'There was an issue while Updating Role',
+    'common_duplicate_session' => 'A session with the same start and end date already exists.',
+
+    // Notice Board, Vendors, Vouchers, Library, etc. messages
+    'notice_created_success' => 'Create Successfull',
+    'notice_removed' => 'Notice Removed',
+
+    // SMS Management
+    'sms_validation_error' => 'Something is wrong!',
+    'sms_invalid_title' => 'Invalid SMS',
+    'sms_query_submitted' => 'Query Submitted',
+
+    // Vouchers Management
+    'vouchers_invalid_url_title' => '# Invalid URL',
+    'vouchers_registration_title' => 'Vouchers Registration',
+
+    // Exam Reports
+    'exam_report_results_title' => 'Result Reports',
+    'exam_report_student_results_title' => 'Student Results',
+
+    // Notifications Management
+    'notifications_error_title' => 'Error',
+    'notifications_error_sending' => 'There was an issue while Sending message',
+    'notifications_message_send_title' => 'Message Send',
+
+    // Routine Management
+    'routine_invalid_url_title' => '# Invalid URL',
+    'routine_timetable_title' => 'Routines Timtable',
+    'routine_settings_title' => 'Routines Settings',
+    'routine_deleted_message' => 'Routine Deleted',
+
+    // Library Management
+    'library_books_registration_title' => 'Library Books Registration',
+    'library_parents_registration_title' => 'Parents Registration',
+
+    // Expense Management
+    'expense_title' => 'Expenses',
+    'expense_singular_title' => 'Expense',
+
+    // Invoice Titles
+    'invoice_title' => 'Invoice',
+
+    // Academic Session Management
+    'academic_session_title' => 'Academic Session',
+    'academic_session_update_error' => 'There was an issue while Updating Role',
+    'academic_session_duplicate_error' => 'A session with the same start and end date already exists.',
+    'academic_session_created_success' => 'Academic Session Created Successfully',
+
+    // Teacher Management
+    'teacher_invalid_url_title' => '# Invalid URL',
+    'teacher_update_title' => 'Teacher Update',
+    'teacher_registration_title' => 'Teacher Registration',
+
+    // Attendance Leave Management
+    'attendance_leave_title_label' => 'Leave',
+
+    // Users Management
+    'users_create_error' => 'There was an issue while Creating User',
+
+    // Roles Management
+    'roles_update_error' => 'There was an issue while Updating Role',
+    'roles_update_success' => 'Updated Successfull',
+
+    // System Settings
+    'system_settings_update_success' => 'Settings Updated Successfully',
+
+    // Visitor Student Management
+    'visitor_student_create_error' => 'There was an issue while Creating Visitor Student',
+    'visitor_student_create_success' => 'Visitor Student created successfully',
+    'visitor_student_update_error' => 'There was an issue while Updating Visitor Student',
+    'visitor_student_update_success' => 'Visitor Student updated successfully',
+    'visitor_student_delete_success' => 'Visitor Student deleted successfully',
+
+    // Student Migrations
+    'student_migrations_not_found' => 'Students not found!',
+    'student_migrations_success' => 'Migrations Successfull',
+
+    // Quiz Management
+    'quiz_create_error' => 'There was an issue while Creating Quiz',
+
+    // Employee Management
+    'employee_not_editable' => 'Sorry {{name}} Employee Can\'t be Editable',
 ];

@@ -104,6 +104,49 @@
 5. **Add permission**: Register in `config/permission.php` and seed via `PermissionsSeeder`
 6. **Build view**: Blade template in `resources/views/admin/feature/**`
 
+### Localization & Multi-Language Support
+- **Language files location**: `resources/lang/en/` (English - can add other languages later)
+- **Core language files** (6 files):
+  - `messages.php` - Generic UI messages, alerts, notifications
+  - `labels.php` - Form labels, field names, column headers
+  - `validation.php` - Validation error messages and custom attributes
+  - `common.php` - Shared strings across all modules (time, status, actions)
+  - `reports.php` - Report and printable-related strings
+  - `modules.php` - ALL module strings organized by underscore keys (students_management, fees_invoice, exams_result, etc.)
+
+- **Usage in Blade templates**:
+  ```blade
+  {{ __('messages.success') }}
+  {{ __('labels.student_name') }}
+  {{ __('modules.students_management') }}
+  ```
+
+- **Usage in Vue.js (Global mixin approach)**:
+  ```php
+  <!-- In Blade layout (e.g., base.blade.php) -->
+  <script>
+  window.__trans = @json([
+      'messages' => __('messages'),
+      'labels' => __('labels'),
+      'modules' => __('modules'),
+      'common' => __('common'),
+      'reports' => __('reports'),
+  ]);
+  </script>
+  ```
+
+  ```html
+  <!-- In Vue components -->
+  <div>{{ __trans['modules.students_management'] }}</div>
+  <p>{{ __trans['messages.success'] }}</p>
+  ```
+
+- **Usage in Controllers**:
+  ```php
+  return redirect()->with('message', __('messages.created_success'));
+  // Validation uses lang files automatically
+  ```
+
 ### Modifying Academic Session Logic
 - Always check `Auth::user()->academic_session` for current context
 - Use Student scopes (`.currentSession()`, `.active()`, etc.)
@@ -131,6 +174,7 @@
 - End tenancy: `tenancy()->end()` (only in landlord routes)
 
 ## Dependencies (Key Libraries)
+
 - `laravel/framework` ^8.75 - Core framework
 - `stancl/tenancy` ^3.6 - Multi-tenancy
 - `spatie/laravel-permission` ^6.20 - RBAC
@@ -176,28 +220,25 @@ DEBUGBAR_ENABLED=true                   # Enable debug toolbar
 2. **Discuss**: Explain your proposed changes in clear text to the user
 3. **Wait for Approval**: Get explicit user confirmation before implementing
 4. **Then Execute**: Only after approval, proceed with file updates/code changes
-5. **Report & Commit Message**: After completion, provide a git commit message
+5. **Report & Commit Message**: After completion, provide a short, smart commit message
 
-**Commit Message Format**:
-After implementing changes, provide a commit message following this pattern:
+**Commit Message Format** (Smart & Concise):
 ```
 <type>(<scope>): <subject>
 
-<body>
+- Key change 1
+- Key change 2 (max 2-3 lines)
 
 Examples:
-feat(printables): implement tenant-specific printable customization
+feat(printables): add tenant-specific printable customization
 
-- Add PrintableViewHelper for dynamic printable view resolution
-- Update 7 controllers to use PrintableViewHelper
-- Copy all 19 default printables to sags tenant folder
-- Filesystem-based approach for tenant overrides with automatic fallback to defaults
+- PrintableViewHelper with fallback to defaults
+- Update 7 controllers (17 printable views)
 
-refactor(controllers): replace hardcoded printable paths with helper
+feat(i18n): implement English localization (Phase 1)
 
-- ExamReportController: 4 printable views updated
-- FeeCollectionReportController: 5 printable views updated
-- Update instructions with printable customization pattern
+- 550+ translation strings across 6 language files
+- Foundation for multi-language support
 ```
 
 This ensures changes align with user intent and prevents unwanted modifications.

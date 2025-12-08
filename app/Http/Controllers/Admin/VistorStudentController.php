@@ -84,7 +84,7 @@ class VistorStudentController extends Controller
                     'toastrmsg' => [
                         'type' => 'Visitor Student',
                         'title' => 'Visitor Student',
-                        'msg' => 'There was an issue while Creating Visitor Student',
+                        'msg' => __('modules.visitor_student_create_error'),
                     ],
                 ]);
         }
@@ -110,7 +110,7 @@ class VistorStudentController extends Controller
             'toastrmsg' => [
                 'type' => 'success',
                 'title' => 'Visitor Student',
-                'msg' => 'Visitor Student created successfully',
+                'msg' => __('modules.visitor_student_create_success'),
             ],
         ]);
     }
@@ -160,7 +160,7 @@ class VistorStudentController extends Controller
                     'toastrmsg' => [
                         'type' => 'Visitor Student',
                         'title' => 'Visitor Student',
-                        'msg' => 'There was an issue while Updating Visitor Student',
+                        'msg' => __('modules.visitor_student_update_error'),
                     ],
                 ]);
         }
@@ -186,7 +186,7 @@ class VistorStudentController extends Controller
             'toastrmsg' => [
                 'type' => 'success',
                 'title' => 'Visitor Student',
-                'msg' => 'Visitor Student updated successfully',
+                'msg' => __('modules.visitor_student_update_success'),
             ],
         ]);
     }
@@ -199,7 +199,7 @@ class VistorStudentController extends Controller
             'toastrmsg' => [
                 'type' => 'success',
                 'title' => 'Visitor Student',
-                'msg' => 'Visitor Student deleted successfully',
+                'msg' => __('modules.visitor_student_delete_success'),
             ],
         ]);
     }

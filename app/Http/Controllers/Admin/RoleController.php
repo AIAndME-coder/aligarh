@@ -47,21 +47,19 @@ class RoleController extends Controller
 			DB::commit();
 		} catch (\Exception $e) {
 			DB::rollBack();
-			Log::emergency("File:" . $e->getFile() . "Line:" . $e->getLine() . "Message:" . $e->getMessage());
-			return redirect('roles')->with([
-				'toastrmsg' => [
-					'type' => 'error', 
-					'title'  =>  'Roles',
-					'msg' =>  'There was an issue while Updating Role'
-				]
-			]);
-		}
-
+		Log::emergency("File:" . $e->getFile() . "Line:" . $e->getLine() . "Message:" . $e->getMessage());
 		return redirect('roles')->with([
+			'toastrmsg' => [
+				'type' => 'error', 
+				'title'  =>  'Roles',
+				'msg' =>  __('modules.roles_update_error')
+			]
+		]);
+	}		return redirect('roles')->with([
         'toastrmsg' => [
           'type' 	=> 'success', 
           'title'  	=>  'Role Registration',
-          'msg' 	=>  'Registration Successfull'
+          'msg' 	=>  __('modules.common_register_success')
           ]
       	]);
 	}
@@ -109,17 +107,15 @@ class RoleController extends Controller
 					'msg' =>  'There was an issue while Updating Role'
 				]
 			]);
-		}
-		return redirect('roles')->with([
+	}
+	return redirect('roles')->with([
         'toastrmsg' => [
           'type' 	=> 'success', 
           'title'  	=>  'Role Updated',
-          'msg' 	=>  'Updated Successfull'
+          'msg' 	=>  __('modules.roles_update_success')
           ]
       	]);
-	}
-
-	// public function delete(Request $request, $id)
+	}	// public function delete(Request $request, $id)
 	// {
 	// 	$Role = Role::NotDeveloper()->findOrFail($id);
 

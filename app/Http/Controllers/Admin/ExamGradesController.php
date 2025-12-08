@@ -27,7 +27,7 @@ class ExamGradesController extends Controller
 			'toastrmsg' => [
 				'type' => 'success', 
 				'title'  =>  'System Settings',
-				'msg' =>  'Exam Grades Updated'
+				'msg' =>  __('modules.exams_update_success')
 			]
 		]);
 	}

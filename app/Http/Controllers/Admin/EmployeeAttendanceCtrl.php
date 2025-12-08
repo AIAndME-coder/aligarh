@@ -65,17 +65,15 @@ class EmployeeAttendanceCtrl extends Controller
 			} else {
 				$att->update(['status' => ($request->input('attendance'.$employee_id) !== null)? 1 : 0]);
 			}
-		}
-		return redirect('employee-attendance')->with([
-									'toastrmsg' => [
-										'type' => 'success', 
-										'title'  =>  'Employee Attendance',
-										'msg' =>  'Attendance Job Successfull'
-									]
-								]); 
 	}
-
-	public function AttendanceReport(Request $request){
+	return redirect('employee-attendance')->with([
+								'toastrmsg' => [
+									'type' => 'success', 
+									'title'  =>  __('modules.attendance_title'),
+									'msg' =>  __('modules.attendance_job_success')
+								]
+							]); 
+}	public function AttendanceReport(Request $request){
 		$this->validate($request, [
 			'date'  	=>  'required',
 		]);

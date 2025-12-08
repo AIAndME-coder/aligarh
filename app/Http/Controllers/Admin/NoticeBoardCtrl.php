@@ -37,34 +37,32 @@ class NoticeBoardCtrl extends Controller
 		$this->SetAttributes($NoticeBoard, $request);
 		$NoticeBoard->save();
 
-		return redirect('noticeboard')->with([
+	return redirect('noticeboard')->with([
+		'toastrmsg' => [
+			'type' => 'success', 
+			'title'  =>  __('modules.notice_created_success'),
+			'msg' =>  __('modules.notice_created_success')
+		]
+	]);
+}
+
+public function DeleteNotice(Request $request){
+
+	$NoticeBoard = NoticeBoard::findOrfail($request->input('id'));
+	$NoticeBoard->delete();
+
+	if ($request->ajax()) {
+		return  response(['type' => 'success','title'  =>  __('modules.notice_removed'),'msg' =>  __('modules.notice_removed')]);
+	} else { 
+		return redirect('routines')->with([
 			'toastrmsg' => [
 				'type' => 'success', 
-				'title'  =>  'Notice Board',
-				'msg' =>  'Create Successfull'
+				'title'  =>  __('modules.notice_removed'),
+				'msg' =>  __('modules.notice_removed')
 			]
 		]);
 	}
-
-	public function DeleteNotice(Request $request){
-
-		$NoticeBoard = NoticeBoard::findOrfail($request->input('id'));
-		$NoticeBoard->delete();
-
-		if ($request->ajax()) {
-			return  response(['type' => 'success','title'  =>  'Notice Board','msg' =>  'Notice Removed']);
-		} else { 
-			return redirect('routines')->with([
-				'toastrmsg' => [
-					'type' => 'success', 
-					'title'  =>  'Notice Board',
-					'msg' =>  'Notice Removed'
-				]
-			]);
-		}
-	}
-
-	protected function PostValidate($request){
+}	protected function PostValidate($request){
 		$this->validate($request, [
 			'title'  =>  'required',
 			'notice'  =>  'required',

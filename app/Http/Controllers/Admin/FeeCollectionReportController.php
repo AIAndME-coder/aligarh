@@ -145,9 +145,9 @@ class FeeCollectionReportController extends Controller
 		if($data['session']->getRawOriginal('end') < $data['betweendates']['end'] || $data['session']->getRawOriginal('start') > $data['betweendates']['end']){
 			return redirect('fee-collection-reports')->withInput()->with([
 				'toastrmsg' => [
-					'type' => 'error',
-					'title'  =>  'Student Unpaid Statment',
-					'msg' =>  'Selected Date is Invalid'
+				'type' => 'error',
+				'title'  =>  __('modules.fees_title'),
+				'msg' =>  __('modules.fees_collection_date_invalid')
 					]
 			]);
 		}

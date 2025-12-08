@@ -46,8 +46,8 @@ class ExpenseController extends Controller
     return redirect('expense')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Expenses',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.expense_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -63,8 +63,8 @@ class ExpenseController extends Controller
     return redirect('expense')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Expense',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.expense_singular_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 
