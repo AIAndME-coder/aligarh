@@ -227,6 +227,9 @@ if (!empty($invalid)) {
 			],
 			'Roles' => [
 				'roles.index' => 'Role View',
+				'roles.create' => ['label' => 'Role Create', 'dependencies' => $this->transformDependencies($dependencies['roles.create'] ?? [], $permissionLabels)],
+				'roles.edit' => ['label' => 'Role Edit', 'dependencies' => $this->transformDependencies($dependencies['roles.edit'] ?? [], $permissionLabels)],
+				'roles.update' => 'Role update',
 			],
 		'Students' => [
 			'students.index' => 'Students View',
@@ -472,6 +475,9 @@ if (!empty($invalid)) {
 			],
 			'Roles' => [
 				'roles.index' => 'Role View',
+				'roles.create' => 'Role Create',
+				'roles.edit' => 'Role Edit',
+				'roles.update' => 'Role update',
 			],
 			'Students' => [
 				'students.index' => 'Students View',
