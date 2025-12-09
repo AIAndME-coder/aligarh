@@ -20,14 +20,15 @@ class PermissionDependencyService
 {
     /**
      * Get all dependencies for a permission
+     * Extracts from config('permission.permissions') merged structure
      * 
      * @param string $permissionName
      * @return array
      */
     public function getDependencies($permissionName): array
     {
-        $dependencies = config('permission_dependencies', []);
-        return $dependencies[$permissionName] ?? [];
+        $dependencyTree = $this->buildDependencyTree();
+        return $dependencyTree[$permissionName] ?? [];
     }
     
     /**
@@ -39,10 +40,10 @@ class PermissionDependencyService
      */
     public function getReverseDependencies($permissionName): array
     {
-        $dependencies = config('permission_dependencies', []);
+        $dependencyTree = $this->buildDependencyTree();
         $reverseDeps = [];
         
-        foreach ($dependencies as $parent => $children) {
+        foreach ($dependencyTree as $parent => $children) {
             if (in_array($permissionName, $children)) {
                 $reverseDeps[] = $parent;
             }
@@ -183,7 +184,7 @@ class PermissionDependencyService
     public function validatePermissionCompleteness(Role $role): array
     {
         $rolePermissions = $role->permissions->pluck('name')->toArray();
-        $dependencies = config('permission_dependencies', []);
+        $dependencyTree = $this->buildDependencyTree();
         
         $result = [
             'complete' => [],
@@ -191,7 +192,7 @@ class PermissionDependencyService
         ];
         
         foreach ($rolePermissions as $permission) {
-            $deps = $dependencies[$permission] ?? [];
+            $deps = $dependencyTree[$permission] ?? [];
             
             if (empty($deps)) {
                 $result['complete'][] = $permission;
@@ -246,13 +247,37 @@ class PermissionDependencyService
     }
     
     /**
+     * Build dependency tree from permissions config
+     * Extracts 'dependencies' arrays from permissions that have them
+     * 
+     * @return array ['permission.name' => ['dep1', 'dep2'], ...]
+     */
+    private function buildDependencyTree(): array
+    {
+        $permissionsConfig = config('permission.permissions', []);
+        $dependencyTree = [];
+        
+        // Flatten permission groups and extract dependencies
+        foreach ($permissionsConfig as $group => $permissions) {
+            foreach ($permissions as $permName => $permData) {
+                // Check if permission has dependencies (array format with 'label' and 'dependencies')
+                if (is_array($permData) && isset($permData['dependencies'])) {
+                    $dependencyTree[$permName] = $permData['dependencies'];
+                }
+            }
+        }
+        
+        return $dependencyTree;
+    }
+    
+    /**
      * Get permission dependency tree (for UI display)
      * 
      * @return array
      */
     public function getDependencyTree(): array
     {
-        return config('permission_dependencies', []);
+        return $this->buildDependencyTree();
     }
     
     /**
