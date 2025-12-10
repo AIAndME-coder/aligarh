@@ -378,6 +378,8 @@ return [
 
     // System Settings
     'system_settings_update_success' => 'Settings Updated Successfully',
+    'module_permissions' => 'Module Permissions',
+    'module_permissions_update_success' => 'Module Permissions updated successfully',
 
     // Visitor Student Management
     'visitor_student_create_error' => 'There was an issue while Creating Visitor Student',

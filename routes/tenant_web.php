@@ -398,6 +398,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/', [SystemSettingController::class, 'GetSetting'])->name('.index');
         Route::get('/logo', [SystemSettingController::class, 'GetLog'])->name('.logo');
         Route::post('/update', [SystemSettingController::class, 'UpdateSetting'])->name('.update');
+        Route::post('/module-permissions', [SystemSettingController::class, 'UpdateModulePermissions'])->name('.module.permissions.update');
         Route::get('/print-invoice-history', [SystemSettingController::class, 'PrintInvoiceHistory'])->name('.print.invoice.history');
         Route::post('/history', [SystemSettingController::class, 'History'])->name('.history');
         Route::post('/notification-settings/{id}', [SystemSettingController::class, 'NotificationSettings'])->name('.notification.settings');

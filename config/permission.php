@@ -719,6 +719,10 @@ return [
         'System Settings' => [
             'system-setting.index' => 'System Settings View',
             'system-setting.update' => 'System Settings Update',
+            'system-setting.module.permissions.update' => [
+                'label' => 'Update Module Permissions',
+                'dependencies' => ['system-setting.index', 'system-setting.module.permissions']
+            ],
             'system-setting.print.invoice.history' => 'Print Invoice History',
             'system-setting.history' => 'System History',
             'system-setting.notification.settings' => 'Notification Settings',

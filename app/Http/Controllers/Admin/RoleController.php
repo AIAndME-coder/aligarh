@@ -256,11 +256,15 @@ class RoleController extends Controller
     }
 
     /**
-     * Get permissions from centralized config
-     * Returns permission structure with labels and dependencies
+     * Get permissions filtered by tenant-allowed permissions
+     * Developer role bypasses tenant restrictions
      */
     private function getPermissions(): array
     {
-        return config('permission.permissions', []);
+        $allPermissions = config('permission.permissions', []);
+        $isDeveloper = auth()->user()->hasRole('Developer');
+        
+        // Filter permissions based on tenant's allowed permissions
+        return $this->depService->filterPermissionsByTenant($allPermissions, $isDeveloper);
     }
 }
