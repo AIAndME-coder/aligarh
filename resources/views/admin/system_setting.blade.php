@@ -108,6 +108,11 @@
                                         Settings</a>
                                 </li>
                             @endcan
+                            @can('system-setting.module.permissions')
+                                <li>
+                                    <a data-toggle="tab" href="#tab-14"><span class="fa fa-lock"></span> {{ __('modules.module_permissions') }}</a>
+                                </li>
+                            @endcan
                         </ul>
                         <div class="tab-content">
                             @can('system-setting.update')
@@ -949,6 +954,15 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                            @endcan
+                            @can('system-setting.module.permissions')
+                                <div id="tab-14" class="tab-pane fade fade in">
+                                    <div class="panel-body">
+                                        <h2>{{ __('modules.module_permissions') }}</h2>
+                                        <div class="hr-line-dashed"></div>
+                                        @include('admin.system_setting_module_permissions')
                                     </div>
                                 </div>
                             @endcan

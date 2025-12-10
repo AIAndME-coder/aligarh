@@ -9,12 +9,19 @@ use App\SystemInvoice;
 use PDF;
 use App\NotificationsSetting;
 use App\Helpers\PrintableViewHelper;
+use App\Services\PermissionDependencyService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class SystemSettingController extends Controller
 {
+	protected $depService;
+
+	public function __construct(PermissionDependencyService $depService)
+	{
+		$this->depService = $depService;
+	}
 	public function GetLog()
 	{
 		$logo = tenancy()->tenant->system_info['general']['logo'] ?? '';
@@ -34,6 +41,11 @@ class SystemSettingController extends Controller
 		$defaultSystemInfo = config('systemInfo', []);
 		$tenantSystemInfo = tenancy()->tenant->system_info ?? [];
 		$data['system_info'] = array_merge_recursive_distinct($defaultSystemInfo, $tenantSystemInfo);
+
+		// Add permission data for Module Permissions tab (same structure as role edit page)
+		$data['permissions'] = $this->getPermissions();
+		$data['allowedPermissions'] = $this->depService->getTenantAllowedPermissions();
+		$data['permissionLabels'] = $this->depService->buildPermissionLabelMap();
 
 		return view('admin.system_setting', $data);
 	}
@@ -237,6 +249,46 @@ class SystemSettingController extends Controller
 			$systemInfo['general']['logo'] = null;
 		}
 		$tenant->system_info = $systemInfo;
+	}
+
+	/**
+	 * Update tenant's allowed module permissions
+	 */
+	public function UpdateModulePermissions(Request $request)
+	{
+		$this->validate($request, [
+			'permissions' => 'nullable|array',
+			'permissions.*' => 'string'
+		]);
+
+		$tenant = tenancy()->tenant;
+		$selectedPermissions = $request->input('permissions', []);
+		
+		// Get current system_info
+		$currentSystemInfo = $tenant->system_info ?? [];
+		
+		// Update allowed_module_permissions array
+		$currentSystemInfo['allowed_module_permissions'] = $selectedPermissions;
+		
+		// Save back to tenant
+		$tenant->fill(['system_info' => $currentSystemInfo]);
+		$tenant->save();
+
+		return redirect('system-setting')->with([
+			'toastrmsg' => [
+				'type'  => 'success',
+				'title' => __('modules.module_permissions'),
+				'msg'   => __('modules.module_permissions_update_success')
+			]
+		]);
+	}
+
+	/**
+	 * Get all permissions without filtering (show all for tenant admin)
+	 */
+	private function getPermissions(): array
+	{
+		return config('permission.permissions', []);
 	}
 
 }

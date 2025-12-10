@@ -375,4 +375,100 @@ class PermissionDependencyService
         $this->dependencyTreeCache = null;
         $this->labelMapCache = null;
     }
+    
+    // ==================== Tenant Permission Methods ====================
+    
+    /**
+     * Get tenant's allowed permissions from system_info
+     * Returns all permissions by default if not set
+     * 
+     * @return array
+     */
+    public function getTenantAllowedPermissions(): array
+    {
+        $systemInfo = tenancy()->tenant->system_info ?? [];
+        
+        // If not set, return all permissions (backward compatible)
+        if (!isset($systemInfo['allowed_module_permissions'])) {
+            return $this->getDefaultAllowedPermissions();
+        }
+        
+        return $systemInfo['allowed_module_permissions'] ?? [];
+    }
+    
+    /**
+     * Get all permission names from config (default allowed list)
+     * Used as default for new tenants or when not configured
+     * 
+     * @return array
+     */
+    public function getDefaultAllowedPermissions(): array
+    {
+        $permissionsConfig = config('permission.permissions', []);
+        $allPermissions = [];
+        
+        foreach ($permissionsConfig as $group => $permissions) {
+            foreach ($permissions as $permName => $permData) {
+                $allPermissions[] = $permName;
+                // $allPermissions[] = $permData;
+            }
+        }
+        
+        return $allPermissions;
+    }
+    
+    /**
+     * Filter permissions by tenant's allowed permissions
+     * Developer role bypasses this filter
+     * 
+     * @param array $permissions
+     * @param bool $isDeveloper
+     * @return array
+     */
+    public function filterPermissionsByTenant(array $permissions, bool $isDeveloper = false): array
+    {
+        // Developer sees all permissions
+        if ($isDeveloper) {
+            return $permissions;
+        }
+        
+        $allowedPermissions = $this->getTenantAllowedPermissions();
+        $filtered = [];
+        
+        foreach ($permissions as $group => $groupPermissions) {
+            $filteredGroup = [];
+            
+            foreach ($groupPermissions as $permName => $permData) {
+                if (in_array($permName, $allowedPermissions)) {
+                    $filteredGroup[$permName] = $permData;
+                }
+            }
+            
+            // Only include group if it has permissions
+            if (!empty($filteredGroup)) {
+                $filtered[$group] = $filteredGroup;
+            }
+        }
+        
+        return $filtered;
+    }
+    
+    /**
+     * Check if a permission is allowed for current tenant
+     * Developer role bypasses this check
+     * 
+     * @param string $permissionName
+     * @param bool $isDeveloper
+     * @return bool
+     */
+    public function isPermissionAllowedForTenant(string $permissionName, bool $isDeveloper = false): bool
+    {
+        // Developer bypasses tenant restrictions
+        if ($isDeveloper) {
+            return true;
+        }
+        
+        $allowedPermissions = $this->getTenantAllowedPermissions();
+        return in_array($permissionName, $allowedPermissions);
+    }
 }

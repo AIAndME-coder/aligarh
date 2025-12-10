@@ -19,6 +19,7 @@ return [
     'error_operation_failed' => 'Operation failed',
     'error_delete_failed' => 'Failed to delete record',
     'error_update_failed' => 'Failed to update record',
+    'permission_not_enabled_for_tenant' => 'This permission is not enabled for your organization. Please contact administrator.',
 
     // Warning Messages
     'warning' => 'Warning',

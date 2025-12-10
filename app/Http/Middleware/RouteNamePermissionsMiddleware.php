@@ -8,10 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
+use App\Services\PermissionDependencyService;
 
 
 class RouteNamePermissionsMiddleware
 {
+    protected $depService;
+
+    public function __construct(PermissionDependencyService $depService)
+    {
+        $this->depService = $depService;
+    }
     /**
      * Handle an incoming request.
      *
@@ -27,10 +34,27 @@ class RouteNamePermissionsMiddleware
         $permission = Permission::where('name', $routeName)->first();
         $ignored = config('permission.ignore_routes', []);
 
-        if (!$permission || Auth::user()->hasPermissionTo($permission) || in_array($routeName, $ignored)) {
+        // Check if route should be ignored
+        if (!$permission || in_array($routeName, $ignored)) {
             return $next($request);
         }
 
-        return response()->view('errors.403', [], 403);
+        // Get user and check if Developer role
+        $user = Auth::user();
+        $isDeveloper = $user->hasRole('Developer');
+
+        // Step 1: Check tenant-level permission (skip for Developer)
+        if (!$isDeveloper && !$this->depService->isPermissionAllowedForTenant($routeName, $isDeveloper)) {
+            return response()->view('errors.403', [
+                'message' => __('messages.permission_not_enabled_for_tenant')
+            ], 403);
+        }
+
+        // Step 2: Check user's role permission
+        if (!$user->hasPermissionTo($permission)) {
+            return response()->view('errors.403', [], 403);
+        }
+
+        return $next($request);
     }
 }
