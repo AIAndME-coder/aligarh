@@ -57,7 +57,148 @@
             display: none !important;
         }
 
-    </style>
+				</style>
+				@can('system-setting.module.permissions')
+					<style>
+				/* Module Permissions Styles */
+            .permission-group {
+                background: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 22px;
+                margin-bottom: 35px;
+            }
+
+            .permission-group h4 {
+                font-size: 15px;
+                font-weight: 700;
+                margin-bottom: 20px;
+                color: #333;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .permission-group h4:hover {
+                color: #10b981;
+            }
+
+            .permission-group h4 input[type="checkbox"]:checked~* {
+                color: #10b981;
+            }
+
+            .permission-group .select-all {
+                margin-right: 8px;
+                cursor: pointer;
+            }
+
+            .permission-card {
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 14px 16px;
+                transition: .2s ease;
+                cursor: pointer;
+                margin-bottom: 10px;
+            }
+
+            .permission-card:hover {
+                background: #f3f4f6;
+                border-color: #d1d5db;
+            }
+
+            .permission-card.checked {
+                background: #ecfdf5 !important;
+                border-color: #34d399 !important;
+            }
+
+            .permission-card-header {
+                font-size: 14px;
+                font-weight: 600;
+                color: #222;
+                display: flex;
+                align-items: center;
+            }
+
+            .permission-card-header input {
+                margin-right: 10px;
+            }
+
+            .permission-card-header input:checked~span {
+                color: #10b981;
+                font-weight: 700;
+            }
+
+            .info-icon {
+                margin-left: 8px;
+                width: 18px;
+                height: 18px;
+                background: #3b82f6;
+                color: #fff;
+                border-radius: 50%;
+                font-size: 11px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: help;
+            }
+
+            .dependency-list {
+                padding: 10px;
+                background: #eef2ff;
+                border-radius: 6px;
+                border-left: 3px solid #6366f1;
+                margin-top: 10px;
+                display: none;
+            }
+
+            .permission-card.expanded .dependency-list {
+                display: block !important;
+            }
+
+            .dependency-item {
+                display: inline-block;
+                padding: 4px 10px;
+                background: #e5e7eb;
+                border-radius: 4px;
+                font-size: 12px;
+                margin: 4px 6px 4px 0;
+                color: #374151;
+            }
+
+            .dependency-item.auto-granted {
+                background: #d1fae5;
+                border: 1px solid #10b981;
+                color: #059669;
+            }
+
+            .auto-grant-notice {
+                background: #ecfdf5;
+                border-left: 4px solid #10b981;
+                border-radius: 6px;
+                padding: 14px 18px;
+                font-size: 14px;
+                color: #065f46;
+                margin-bottom: 20px;
+                display: none;
+            }
+
+            .auto-grant-notice.show {
+                display: block;
+            }
+
+            .tenant-permission-notice {
+                background: #fef3c7;
+                border-left: 4px solid #f59e0b;
+                border-radius: 6px;
+                padding: 14px 18px;
+                font-size: 14px;
+                color: #92400e;
+                margin-bottom: 20px;
+            }
+					</style>
+			@endcan
 @endsection
 @section('content')
     @include('admin.includes.side_navbar')
@@ -68,7 +209,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>{{ __('modules.pages_settings_title') }}</h2>
                 <ol class="breadcrumb">
-                    <li>{{ __("common.home") }}</li>
+                    <li>{{ __('common.home') }}</li>
                     <li Class="active">
                         <a>{{ __('modules.pages_settings_title') }}</a>
                     </li>
@@ -89,17 +230,20 @@
                         <ul class="nav nav-tabs">
                             @can('system-setting.update')
                                 <li class="active">
-                                    <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_general_info') }} </a>
+                                    <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span>
+                                        {{ __('modules.tabs_general_info') }} </a>
                                 </li>
                             @endcan
                             @can('system-setting.print.invoice.history')
                                 <li>
-                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-list"></span> {{ __('modules.tabs_package_info') }} </a>
+                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-list"></span>
+                                        {{ __('modules.tabs_package_info') }} </a>
                                 </li>
                             @endcan
                             @can('system-setting.history')
                                 <li>
-                                    <a data-toggle="tab" href="#tab-12"><span class="fa fa-list"></span> {{ __('modules.tabs_sms_package') }} </a>
+                                    <a data-toggle="tab" href="#tab-12"><span class="fa fa-list"></span>
+                                        {{ __('modules.tabs_sms_package') }} </a>
                                 </li>
                             @endcan
                             @can('system-setting.notification.settings')
@@ -110,7 +254,8 @@
                             @endcan
                             @can('system-setting.module.permissions')
                                 <li>
-                                    <a data-toggle="tab" href="#tab-14"><span class="fa fa-lock"></span> {{ __('modules.module_permissions') }}</a>
+                                    <a data-toggle="tab" href="#tab-14"><span class="fa fa-lock"></span>
+                                        {{ __('modules.module_permissions') }}</a>
                                 </li>
                             @endcan
                         </ul>
@@ -150,7 +295,7 @@
                                                             </li>
                                                             <li>
                                                                 <a href="#bank" data-toggle="tab">
-                                                                     <i class="fa fa-bank"></i> Bank Info
+                                                                    <i class="fa fa-bank"></i> Bank Info
 
                                                                 </a>
                                                             </li>
@@ -163,7 +308,8 @@
                                                     </div>
                                                     <div class="col-md-10">
                                                         <form id="tchr_rgstr" method="POST"
-                                                            action="{{ URL('system-setting/update') }}" class="form-horizontal" enctype="multipart/form-data">
+                                                            action="{{ URL('system-setting/update') }}" class="form-horizontal"
+                                                            enctype="multipart/form-data">
                                                             {{ csrf_field() }}
 
                                                             <div class="tab-content">
@@ -178,7 +324,7 @@
                                                                             Name</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="name"
-                                                                                placeholder="{{ __("labels.name_placeholder") }}"
+                                                                                placeholder="{{ __('labels.name_placeholder') }}"
                                                                                 value="{{ old('name', $system_info['general']['name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('name'))
@@ -198,7 +344,7 @@
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="title"
                                                                                 placeholder="Title"
-                                                                                value="{{ old('name', $system_info['general']['title']) }}"
+                                                                                value="{{ old('title', $system_info['general']['title']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('title'))
                                                                                 <span class="help-block">
@@ -215,7 +361,7 @@
                                                                         <label class="col-md-2 control-label">Address</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="address"
-                                                                                placeholder="{{ __("labels.address_placeholder_ellipsis") }}"
+                                                                                placeholder="{{ __('labels.address_placeholder_ellipsis') }}"
                                                                                 value="{{ old('address', $system_info['general']['address']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('address'))
@@ -266,32 +412,39 @@
                                                                         </div>
                                                                     </div> --}}
 
-                                                                    <div class="form-group{{ $errors->has('logo') ? ' has-error' : '' }}">
-                                                                        <div class="col-md-2"> 
+                                                                    <div
+                                                                        class="form-group{{ $errors->has('logo') ? ' has-error' : '' }}">
+                                                                        <div class="col-md-2">
                                                                             <span class="btn btn-default btn-block btn-file">
-                                                                                <input type="file" name="logo" accept="image/*" id="logoinp" /> 
-                                                                                <span class="fa fa-image"></span>  {{ __('modules.settings_upload_logo') }}
-                                                                            </span> 
+                                                                                <input type="file" name="logo"
+                                                                                    accept="image/*" id="logoinp" />
+                                                                                <span class="fa fa-image"></span>
+                                                                                {{ __('modules.settings_upload_logo') }}
+                                                                            </span>
                                                                         </div>
-                                                                        <div class="col-md-6"> 
-                                                                            <img id="logo" 
-                                                                                src="{{ $system_info['general']['logo'] ? route('system-setting.logo'): '' }}" 
-                                                                                alt="Logo Preview" 
+                                                                        <div class="col-md-6">
+                                                                            <img id="logo"
+                                                                                src="{{ $system_info['general']['logo'] ? route('system-setting.logo') : '' }}"
+                                                                                alt="Logo Preview"
                                                                                 class="img-responsive img-thumbnail"
                                                                                 style="max-width:100px !important; {{ isset($system_info['general']['logo']) && $system_info['general']['logo'] ? 'display: block;' : 'display: none;' }}" />
-                                                                                
-                                                                            @if(isset($system_info['general']['logo']) && $system_info['general']['logo'])
+
+                                                                            @if (isset($system_info['general']['logo']) && $system_info['general']['logo'])
                                                                                 <div class="mt-2" id="deleteLogoContainer">
-                                                                                    <button type="button" class="btn btn-danger btn-sm" id="deleteLogo">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-danger btn-sm"
+                                                                                        id="deleteLogo">
                                                                                         <span class="fa fa-trash"></span>
                                                                                     </button>
-                                                                                    <input type="hidden" name="removeImage" id="removeImageInput" value="">
+                                                                                    <input type="hidden" name="removeImage"
+                                                                                        id="removeImageInput" value="">
                                                                                 </div>
                                                                             @endif
                                                                             @if ($errors->has('logo'))
-                                                                                <span class="help-block"> 
+                                                                                <span class="help-block">
                                                                                     <strong>
-                                                                                        <span class="fa fa-exclamation-triangle"></span>
+                                                                                        <span
+                                                                                            class="fa fa-exclamation-triangle"></span>
                                                                                         {{ $errors->first('logo') }}
                                                                                     </strong>
                                                                                 </span>
@@ -362,7 +515,8 @@
                                                                             Mail From Address</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="smtp_from_address"
-                                                                                placeholder="mail@domain.com" class="form-control"
+                                                                                placeholder="mail@domain.com"
+                                                                                class="form-control"
                                                                                 value="{{ old('smtp_from_address', $system_info['smtp']['from_address']) }}" />
                                                                             @if ($errors->has('smtp_from_address'))
                                                                                 <span class="help-block">
@@ -398,7 +552,8 @@
                                                                             Password</label>
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="smtp_password"
-                                                                                placeholder="{{ __('labels.password_placeholder') }}" class="form-control"
+                                                                                placeholder="{{ __('labels.password_placeholder') }}"
+                                                                                class="form-control"
                                                                                 value="{{ old('smtp_password', $system_info['smtp']['password']) }}" />
                                                                             @if ($errors->has('smtp_password'))
                                                                                 <span class="help-block">
@@ -463,10 +618,12 @@
 
                                                                     <div
                                                                         class="form-group{{ $errors->has('sms_url') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">{{ __('labels.sms_url') }}</label>
+                                                                        <label
+                                                                            class="col-md-2 control-label">{{ __('labels.sms_url') }}</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_url"
-                                                                                placeholder="{{ __('labels.api_key_placeholder') }}" class="form-control"
+                                                                                placeholder="{{ __('labels.api_key_placeholder') }}"
+                                                                                class="form-control"
                                                                                 value="{{ old('sms_url', $system_info['sms']['url']) }}" />
                                                                             @if ($errors->has('sms_url'))
                                                                                 <span class="help-block">
@@ -484,7 +641,8 @@
                                                                             Token</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_api_token"
-                                                                                placeholder="{{ __('labels.api_token_placeholder') }}" class="form-control"
+                                                                                placeholder="{{ __('labels.api_token_placeholder') }}"
+                                                                                class="form-control"
                                                                                 value="{{ old('sms_api_token', $system_info['sms']['api_token']) }}" />
                                                                             @if ($errors->has('sms_api_token'))
                                                                                 <span class="help-block">
@@ -502,7 +660,8 @@
                                                                             Secret</label>
                                                                         <div class="col-md-6">
                                                                             <input type="password" name="sms_api_secret"
-                                                                                placeholder="{{ __('labels.api_secret_placeholder') }}" class="form-control"
+                                                                                placeholder="{{ __('labels.api_secret_placeholder') }}"
+                                                                                class="form-control"
                                                                                 value="{{ old('sms_api_secret', $system_info['sms']['api_secret']) }}" />
                                                                             @if ($errors->has('sms_api_secret'))
                                                                                 <span class="help-block">
@@ -516,7 +675,8 @@
 
                                                                     <div
                                                                         class="form-group{{ $errors->has('sms_sender') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">{{ __('labels.sender_id') }}</label>
+                                                                        <label
+                                                                            class="col-md-2 control-label">{{ __('labels.sender_id') }}</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="sms_sender"
                                                                                 placeholder="Sender Name" class="form-control"
@@ -558,7 +718,8 @@
                                                                     </div>
                                                                     <div
                                                                         class="form-group{{ $errors->has('whatsapp_url') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">{{ __('labels.sms_url') }}</label>
+                                                                        <label
+                                                                            class="col-md-2 control-label">{{ __('labels.sms_url') }}</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="whatsapp_url"
                                                                                 placeholder="URL" class="form-control"
@@ -578,7 +739,8 @@
                                                                             Token</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="whatsapp_token"
-                                                                                placeholder="{{ __('labels.api_token_placeholder') }}" class="form-control"
+                                                                                placeholder="{{ __('labels.api_token_placeholder') }}"
+                                                                                class="form-control"
                                                                                 value="{{ old('whatsapp_token', $system_info['whatsapp']['api_token']) }}" />
                                                                             @if ($errors->has('whatsapp_token'))
                                                                                 <span class="help-block">
@@ -656,7 +818,8 @@
                                                                 <div id="contact" class="tab-pane fade">
                                                                     <div
                                                                         class="form-group{{ $errors->has('contact_name') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">{{ __('labels.contact_name') }}</label>
+                                                                        <label
+                                                                            class="col-md-2 control-label">{{ __('labels.contact_name') }}</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="contact_name"
                                                                                 placeholder="{{ __('labels.contact_name_placeholder') }}"
@@ -697,7 +860,8 @@
 
                                                                     <div
                                                                         class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">{{ __('labels.email_address') }}</label>
+                                                                        <label
+                                                                            class="col-md-2 control-label">{{ __('labels.email_address') }}</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="email"
                                                                                 placeholder="E-Mail"
@@ -719,10 +883,11 @@
                                                                 <div id="bank" class="tab-pane fade">
                                                                     <div
                                                                         class="form-group{{ $errors->has('bank_name') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">{{ __('labels.bank_name') }}</label>
+                                                                        <label
+                                                                            class="col-md-2 control-label">{{ __('labels.bank_name') }}</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_name"
-                                                                                placeholder="{{ __("labels.name_placeholder") }}"
+                                                                                placeholder="{{ __('labels.name_placeholder') }}"
                                                                                 value="{{ old('bank_name', $system_info['general']['bank']['name']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_name'))
@@ -741,7 +906,7 @@
                                                                             Address</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_address"
-                                                                                placeholder="{{ __("labels.address_placeholder_ellipsis") }}"
+                                                                                placeholder="{{ __('labels.address_placeholder_ellipsis') }}"
                                                                                 value="{{ old('bank_address', $system_info['general']['bank']['address']) }}"
                                                                                 class="form-control" />
                                                                             @if ($errors->has('bank_address'))
@@ -756,8 +921,8 @@
 
                                                                     <div
                                                                         class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
-                                                                        <label class="col-md-2 control-label">Bank
-                                                                            Account No</label>
+                                                                        <label class="col-md-2 control-label">Bank Account
+                                                                            No</label>
                                                                         <div class="col-md-6">
                                                                             <input type="text" name="bank_account_no"
                                                                                 placeholder="{{ __('labels.account_no_placeholder') }}"
@@ -779,14 +944,17 @@
                                                                 <div id="miscellaneous" class="tab-pane fade">
                                                                     <div
                                                                         class="form-group{{ $errors->has('bank_account_no') ? ' has-error' : '' }}">
-                                                                        <label title="Term and Condition of Fee Chalan" class="col-md-2 control-label">
-                                                                            Term and Condition 
-                                                                            <span class="text-info" data-toggle="tooltip" title="Term and Condition of Fee Chalan">
+                                                                        <label title="Term and Condition of Fee Chalan"
+                                                                            class="col-md-2 control-label">
+                                                                            Term and Condition
+                                                                            <span class="text-info" data-toggle="tooltip"
+                                                                                title="Term and Condition of Fee Chalan">
                                                                                 <i class="fa fa-info-circle"></i>
                                                                             </span>
                                                                         </label>
                                                                         <div class="col-md-6">
-                                                                            <textarea type="text" rows="10" name="chalan_term_and_Condition" placeholder="Term and Condition" class="form-control">{{ old('chalan_term_and_Condition', $system_info['general']['chalan_term_and_Condition']) }}</textarea>
+                                                                            <textarea type="text" rows="10" name="chalan_term_and_Condition" placeholder="Term and Condition"
+                                                                                class="form-control">{{ old('chalan_term_and_Condition', $system_info['general']['chalan_term_and_Condition']) }}</textarea>
                                                                             @if ($errors->has('chalan_term_and_Condition'))
                                                                                 <span class="help-block">
                                                                                     <strong><span
@@ -805,7 +973,7 @@
                                                                 <div class="col-md-offset-2 col-md-6">
                                                                     <button class="btn btn-primary" type="submit">
                                                                         <span class="glyphicon glyphicon-save"></span>
-                                                                        Update
+                                                                        @lang('modules.buttons_update')
                                                                     </button>
                                                                 </div>
                                                             </div>
@@ -831,7 +999,7 @@
                                                     <th>ID</th>
                                                     <th>Billing Month</th>
                                                     <th>Amount</th>
-                                                    <th>{{ __("labels.status") }}</th>
+                                                    <th>{{ __('labels.status') }}</th>
                                                     <th>Date Of Payment</th>
                                                     <th>Created At</th>
                                                 </tr>
@@ -876,7 +1044,7 @@
                                                     @endif
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <b>Remain SMS: </b>{{ $system_info['general']['available_sms']}}
+                                                    <b>Remain SMS: </b>{{ $system_info['general']['available_sms'] }}
                                                 </li>
                                             </ul>
                                         </div>
@@ -913,29 +1081,34 @@
                             @endcan
                             @can('system-setting.notification.settings')
                                 <div id="tab-13" class="tab-pane fade fade in ">
-                                    <div id= "app" class="panel-body">
+                                    <div id="app" class="panel-body">
                                         <h2> Notifications Configuration</h2>
                                         <div class="hr-line-dashed"></div>
                                         <table class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>{{ __("labels.name") }}</th>
+                                                    <th>{{ __('labels.name') }}</th>
                                                     <th>
-                                                        <input id="select-all-mail" class="d-none"  type="checkbox" @change="toggleSelectAll('mail', $event)" @click.stop>
-                                                        <label for="select-all-mail" data-toggle="tooltip" title="select all">
+                                                        <input id="select-all-mail" class="d-none" type="checkbox"
+                                                            @change="toggleSelectAll('mail', $event)" @click.stop>
+                                                        <label for="select-all-mail" data-toggle="tooltip"
+                                                            title="select all">
                                                             <b>Mail</b>
                                                         </label>
                                                     </th>
                                                     <th>
-                                                        <input id="select-all-sms" class="d-none" type="checkbox" @change="toggleSelectAll('sms', $event)" @click.stop>
+                                                        <input id="select-all-sms" class="d-none" type="checkbox"
+                                                            @change="toggleSelectAll('sms', $event)" @click.stop>
                                                         <label for="select-all-sms" data-toggle="tooltip" title="select all">
                                                             <b>SMS</b>
                                                         </label>
                                                     </th>
                                                     <th>
-                                                        <input id="select-all-whatsapp" class="d-none" type="checkbox" @change="toggleSelectAll('whatsapp', $event)" @click.stop>
-                                                        <label for="select-all-whatsapp" data-toggle="tooltip" title="select all">
+                                                        <input id="select-all-whatsapp" class="d-none" type="checkbox"
+                                                            @change="toggleSelectAll('whatsapp', $event)" @click.stop>
+                                                        <label for="select-all-whatsapp" data-toggle="tooltip"
+                                                            title="select all">
                                                             <b>WhatsApp</b>
                                                         </label>
                                                     </th>
@@ -944,7 +1117,8 @@
                                             <tbody>
                                                 <tr v-for="(notification, index) in notifications" :key="notification.id">
                                                     <td>@{{ index + 1 }}</td>
-                                                    <td><span @click="selectRow(notification)" style="cursor: pointer;">@{{ formatName(notification.name) }}</span></td>
+                                                    <td><span @click="selectRow(notification)"
+                                                            style="cursor: pointer;">@{{ formatName(notification.name) }}</span></td>
                                                     <td><input type="checkbox" v-model="notification.mail"
                                                             @change="updateSetting(notification, 'mail')" @click.stop></td>
                                                     <td><input type="checkbox" v-model="notification.sms"
@@ -993,33 +1167,33 @@
     <script type="text/javascript">
         var tbl;
 
-        function readURL(input) { 
-            if (input.files && input.files[0]) { 
-                var reader = new FileReader(); 
-                reader.onload = function (e) { 
-                    $('#logo').attr('src', e.target.result).show(); 
-                } 
-                reader.readAsDataURL(input.files[0]); 
-            } 
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#logo').attr('src', e.target.result).show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         $(document).ready(function() {
 
             $("[data-toggle='tooltip']").tooltip();
 
-            $("#logoinp").change(function(){
-                    readURL(this);
-                    $('#removeImageInput').val('');
+            $("#logoinp").change(function() {
+                readURL(this);
+                $('#removeImageInput').val('');
             });
 
             $('#deleteLogo').click(function() {
                 $('#logo').hide();
-                $('#logoinp').val(''); 
-                $('#removeImageInput').val('1'); 
+                $('#logoinp').val('');
+                $('#removeImageInput').val('1');
                 $('#deleteLogoContainer').hide();
                 var newInput = $('#logoinp').clone();
                 $('#logoinp').replaceWith(newInput);
-                newInput.change(function(){
+                newInput.change(function() {
                     readURL(this);
                     $('#removeImageInput').val('');
                 });
@@ -1148,5 +1322,187 @@
                 }
             }
         });
-    </script>
+				</script>
+			@can('system-setting.module.permissions')
+				<script>
+            // Module Permissions JavaScript
+            // Build dependency map from data attributes
+            var dependencyMap = {};
+            $('input[name="permissions[]"][data-dependencies]').each(function() {
+                var perm = $(this).data('permission');
+                var deps = $(this).data('dependencies').split(',');
+                dependencyMap[perm] = deps.map(function(d) {
+                    return $.trim(d);
+                });
+            });
+
+            // Initialize select-all checkboxes based on existing permissions
+            $('.select-all').each(function() {
+                var group = $(this).data('group');
+                var totalInGroup = $('.' + group).length;
+                var checkedInGroup = $('.' + group + ':checked').length;
+
+                if (checkedInGroup === totalInGroup && totalInGroup > 0) {
+                    $(this).prop('checked', true);
+                }
+            });
+
+            // Handle Select All functionality
+            $('.select-all').change(function() {
+                var group = $(this).data('group');
+                var isChecked = $(this).is(':checked');
+
+                $('.' + group).prop('checked', isChecked);
+                updateDependencyIndicators();
+            });
+
+            // Make permission group label clickable for select-all
+            $('.permission-group-label').on('click', function(e) {
+                if ($(e.target).is('input[type="checkbox"]')) {
+                    return;
+                }
+
+                var $checkbox = $(this).find('.select-all');
+                if ($checkbox.length) {
+                    $checkbox.prop('checked', !$checkbox.is(':checked')).trigger('change');
+                    e.preventDefault();
+                }
+            });
+
+            // Make entire permission card clickable
+            $('.permission-card').on('click', function(e) {
+                // Don't double-trigger if clicking the checkbox or info icon
+                if ($(e.target).is('input[type="checkbox"]') || $(e.target).closest('.info-icon').length) {
+                    return;
+                }
+
+                var $checkbox = $(this).find('input[type="checkbox"]');
+                if ($checkbox.length) {
+                    $checkbox.prop('checked', !$checkbox.is(':checked')).trigger('change');
+                    e.preventDefault();
+                }
+            });
+
+            // Handle individual checkbox changes with auto-check for dependencies
+            $('input[name="permissions[]"]').change(function() {
+                var permission = $(this).data('permission');
+                var isChecked = $(this).is(':checked');
+                var dependencyMap = buildDependencyMap();
+
+                // Auto-check dependencies if this permission is checked
+                if (isChecked && dependencyMap[permission]) {
+                    dependencyMap[permission].forEach(function(dep) {
+                        var $depCheckbox = $('input[data-permission="' + dep + '"]');
+                        if ($depCheckbox.length && !$depCheckbox.is(':checked')) {
+                            $depCheckbox.prop('checked', true);
+                            $depCheckbox.closest('.permission-card')
+                                .addClass('checked').addClass('expanded');
+                        }
+                    });
+                }
+
+                // Update group select-all checkbox
+                var $thisCheckbox = $(this);
+                var classes = $thisCheckbox.attr('class').split(' ');
+                var groupClass = classes.find(function(c) {
+                    return c !== 'permission-with-deps' && c.indexOf('-') > -1;
+                });
+
+                if (groupClass) {
+                    var totalInGroup = $('.' + groupClass).length;
+                    var checkedInGroup = $('.' + groupClass + ':checked').length;
+
+                    if (checkedInGroup === totalInGroup) {
+                        $('.select-all[data-group="' + groupClass + '"]').prop('checked', true);
+                    } else {
+                        $('.select-all[data-group="' + groupClass + '"]').prop('checked', false);
+                    }
+                }
+
+                updateDependencyIndicators();
+            });
+
+            // Build dependency map from data attributes
+            function buildDependencyMap() {
+                var dependencyMap = {};
+                $('input[data-dependencies]').each(function() {
+                    var permission = $(this).data('permission');
+                    var deps = $(this).data('dependencies');
+                    if (deps && typeof deps === 'string') {
+                        dependencyMap[permission] = deps.split(',').map(function(d) {
+                            return d.trim();
+                        });
+                    } else if (deps && Array.isArray(deps)) {
+                        dependencyMap[permission] = deps;
+                    }
+                });
+                return dependencyMap;
+            }
+
+            // Function to update dependency indicators and visual feedback
+            function updateDependencyIndicators() {
+                var dependencyMap = buildDependencyMap();
+                var checkedPermissions = [];
+                var hasDependencies = false;
+                var autoGrantedDependencies = {};
+
+                // Collect all checked permissions
+                $('input[name="permissions[]"]:checked').each(function() {
+                    var permission = $(this).data('permission');
+                    checkedPermissions.push(permission);
+
+                    // Track auto-granted dependencies
+                    if (dependencyMap[permission]) {
+                        hasDependencies = true;
+                        dependencyMap[permission].forEach(function(dep) {
+                            if (!autoGrantedDependencies[dep]) {
+                                autoGrantedDependencies[dep] = [];
+                            }
+                            autoGrantedDependencies[dep].push(permission);
+                        });
+                    }
+                });
+
+                // Show/hide auto-grant notice
+                if (hasDependencies) {
+                    $('#autoGrantNotice').addClass('show');
+                } else {
+                    $('#autoGrantNotice').removeClass('show');
+                }
+
+                // Update visual indicators for each permission with dependencies
+                $('input[data-dependencies]').each(function() {
+                    var $container = $(this).closest('.permission-card');
+                    var permission = $(this).data('permission');
+                    var isChecked = $(this).is(':checked');
+
+                    if (isChecked) {
+                        $container.addClass('checked');
+                        if (dependencyMap[permission]) {
+                            $container.addClass('expanded');
+                        }
+                    } else {
+                        $container.removeClass('checked');
+                        // Only keep expanded if showing dependencies needed
+                        if (!dependencyMap[permission]) {
+                            $container.removeClass('expanded');
+                        }
+                    }
+                });
+
+                // Highlight dependency items that are auto-granted
+                $('.dependency-item').each(function() {
+                    var depName = $(this).data('dependency');
+                    if (depName && autoGrantedDependencies[depName]) {
+                        $(this).addClass('auto-granted');
+                    } else {
+                        $(this).removeClass('auto-granted');
+                    }
+                });
+            }
+
+            // Initialize on page load
+            updateDependencyIndicators();
+				</script>
+			@endcan
 @endsection
