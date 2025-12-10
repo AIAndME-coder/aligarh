@@ -9,6 +9,7 @@ use App\SystemInvoice;
 use PDF;
 use App\NotificationsSetting;
 use App\Helpers\PrintableViewHelper;
+use App\Role;
 use App\Services\PermissionDependencyService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -270,9 +271,13 @@ class SystemSettingController extends Controller
 		// Update allowed_module_permissions array
 		$currentSystemInfo['allowed_module_permissions'] = $selectedPermissions;
 		
+		
 		// Save back to tenant
 		$tenant->fill(['system_info' => $currentSystemInfo]);
 		$tenant->save();
+
+		// call another method to update all roles' permissions based on new allowed tenant permissions
+		$this->syncRolePermissionsWithTenantAllowed();
 
 		return redirect('system-setting')->with([
 			'toastrmsg' => [
@@ -281,6 +286,29 @@ class SystemSettingController extends Controller
 				'msg'   => __('modules.module_permissions_update_success')
 			]
 		]);
+	}
+
+	/**
+	 * Update all roles' permissions based on tenant's allowed module permissions
+	 * Removes any permissions from roles that are no longer allowed by tenant
+	 */
+	protected function syncRolePermissionsWithTenantAllowed()
+	{
+		$allowedPermissions = $this->depService->getTenantAllowedPermissions();
+		
+		// Get all roles except Developer
+		$roles = Role::where('name', '!=', 'Developer')->get();
+		
+		foreach ($roles as $role) {
+			// Get current role permissions
+			$currentPermissions = $role->permissions->pluck('name')->toArray();
+			
+			// Filter to keep only permissions that are still allowed by tenant
+			$filteredPermissions = array_intersect($currentPermissions, $allowedPermissions);
+			
+			// Sync the filtered permissions back to the role
+			$role->syncPermissions($filteredPermissions);
+		}
 	}
 
 	/**
