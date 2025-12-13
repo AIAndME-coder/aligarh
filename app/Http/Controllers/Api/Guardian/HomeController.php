@@ -28,7 +28,7 @@ class HomeController extends Controller
             ->Active();
         }])->first();
 
-        foreach ($guardian->Student as $key => $student) {
+        foreach ($guardian->Students as $key => $student) {
 			if($student->image_dir){
 				$image = Storage::get($student->image_dir);
 				$type = pathinfo($student->image_dir, PATHINFO_EXTENSION);
@@ -36,7 +36,7 @@ class HomeController extends Controller
 			}
         }
 
-        return response()->json(['User' => ['User'  =>  $request->user(), 'Profile' =>  $guardian], 'Students' => $guardian->Student, 'ImagesBase64' => $images_base64], 200, ['Content-Type' => 'application/json'], JSON_NUMERIC_CHECK);
+        return response()->json(['User' => ['User'  =>  $request->user(), 'Profile' =>  $guardian], 'Students' => $guardian->Students, 'ImagesBase64' => $images_base64], 200, ['Content-Type' => 'application/json'], JSON_NUMERIC_CHECK);
     }
 
 }
