@@ -16,6 +16,7 @@ use App\Observers\InvoiceMasterObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Configure morphMap for polymorphic relationships
+        Relation::morphMap([
+            'employee' => 'App\Model\Employee',
+            'teacher' => 'App\Model\Teacher',
+            'guardian' => 'App\Model\Guardian',
+        ]);
         StudentResult::observe(StudentResultObserver::class);
         ExamRemark::observe(ExamRemarkObserver::class);
         StudentAttendance::observe(StudentAttendanceObserver::class);

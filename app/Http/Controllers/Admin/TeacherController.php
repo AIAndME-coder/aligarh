@@ -90,7 +90,7 @@ class TeacherController extends Controller
                   ->get();
                   $k=0;
       foreach ($teachers as $teacher) {
-        if ($teacher->User == null) {
+        if ($teacher->user == null) {
           $data[$k]['id'] = $teacher->id;
           $data[$k]['text'] = $teacher->name.' | '.$teacher->email;
           $data[$k]['email']  = $teacher->email;
@@ -145,10 +145,10 @@ class TeacherController extends Controller
 
     $Teacher->updated_by  = Auth::user()->id;
     $Teacher->save();
-    if ($Teacher->User) {
-      $Teacher->User->email   =  $Teacher->email;
-      $Teacher->User->contact_no   =  $Teacher->phone;
-      $Teacher->User->save();
+    if ($Teacher->user) {
+      $Teacher->user->email   =  $Teacher->email;
+      $Teacher->user->contact_no   =  $Teacher->phone;
+      $Teacher->user->save();
     }
 
     return redirect('teacher')->with([

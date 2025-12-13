@@ -8,6 +8,11 @@ class Guardian extends Model
 {
 
 
+	public function user()
+	{
+		return $this->morphOne('App\Model\User', 'userable');
+	}
+
 	public function Student() {
 		return $this->hasMany('App\Model\Student');
 	}

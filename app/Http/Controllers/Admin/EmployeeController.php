@@ -114,7 +114,7 @@ class EmployeeController extends Controller
                   ->get();
                   $k = 0;
       foreach ($employees as $employee) {
-        if ($employee->User == null) {
+        if ($employee->user == null) {
           $data[$k]['id'] = $employee->id;
           $data[$k]['text'] = $employee->name.' | '.$employee->email.' | '.$employee->role;
           $data[$k]['email']  = $employee->email;
@@ -180,10 +180,10 @@ class EmployeeController extends Controller
     $Employee->updated_by  = Auth::user()->id;
     $Employee->save();
 
-    if ($Employee->User) {
-      $Employee->User->email   =  $Employee->email;
-      $Employee->User->contact_no   =  $Employee->phone;
-      $Employee->User->save();
+    if ($Employee->user) {
+      $Employee->user->email   =  $Employee->email;
+      $Employee->user->contact_no   =  $Employee->phone;
+      $Employee->user->save();
     }
 
     return redirect('employee')->with([

@@ -9,9 +9,9 @@ class Teacher extends Model
 {
 	use HasLeave;
 
-	public function User()
+	public function user()
 	{
-		return $this->belongsTo('App\Model\User');
+		return $this->morphOne('App\Model\User', 'userable');
 	}
 
 	public function scopeHaveCellNo($query)

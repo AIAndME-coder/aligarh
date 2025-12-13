@@ -67,6 +67,11 @@ class User extends Authenticatable
 		return $this->hasOne('App\Model\AcademicSession', 'id', 'academic_session');
 	}
 
+	public function userable()
+	{
+		return $this->morphsTo(__FUNCTION__, 'user_type', 'foreign_id');
+	}
+
 	public function scopeStaff($query){
 		return	$query->whereIn('user_type', ['employee', 'teacher']);
 	}
