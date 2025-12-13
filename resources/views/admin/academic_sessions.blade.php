@@ -19,11 +19,11 @@
         <!-- Heading -->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-8 col-md-6">
-                <h2>Academic Session</h2>
+                <h2>@lang('modules.pages_academic_session_title')</h2>
                 <ol class="breadcrumb">
                     <li>{{ __("common.home") }}</li>
                     <li Class="active">
-                        <a>Session</a>
+                        <a>@lang('labels.session')</a>
                     </li>
                 </ol>
             </div>
