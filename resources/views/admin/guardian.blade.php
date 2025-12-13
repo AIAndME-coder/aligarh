@@ -218,10 +218,6 @@
         font-size: 18px;
       }
 
-      .info-value {
-        font-size: 10px;
-      }
-
       .status-badge {
         font-size: 10px;
         padding: 4px 12px;
@@ -440,7 +436,7 @@
                                                           </div>
                                                           <div class="info-content">
                                                               <div class="info-label">Address</div>
-                                                              <div class="info-value" style="font-size: 9px !important">@{{ guardian.address }}</div>
+                                                              <div class="info-value">@{{ guardian.address }}</div>
                                                           </div>
                                                       </li>
                                                       <li class="info-item">

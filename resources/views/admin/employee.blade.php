@@ -220,10 +220,6 @@
       font-size: 18px;
     }
 
-    .info-value {
-      font-size: 10px;
-    }
-
     .status-badge {
       font-size: 10px;
       padding: 4px 12px;
@@ -501,7 +497,7 @@
                                           <th>{{ __("labels.name") }}</th>
                                           <th>{{ __("labels.email_label") }}</th>
                                           <th>{{ __("labels.contact") }}</th>
-                                          <th>Role</th>
+                                          <th>@lang('labels.role')</th>
                                           <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </tfoot>
