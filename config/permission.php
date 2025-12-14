@@ -511,6 +511,10 @@ return [
 
         'Routines' => [
             'routines.index' => 'Routines View',
+            'routines.print' => [
+                'label' => 'Routines Print',
+                'dependencies' => ['routines.index']
+            ],
             'routines.add' => [
                 'label' => 'Routines Create',
                 'dependencies' => ['routines.index']
@@ -719,7 +723,7 @@ return [
         'System Settings' => [
             'system-setting.index' => 'System Settings View',
             'system-setting.update' => 'System Settings Update',
-            'system-setting.module.permissions.update' => [
+            'system-setting.module.permissions' => [
                 'label' => 'Update Module Permissions',
                 'dependencies' => ['system-setting.index', 'system-setting.module.permissions']
             ],
