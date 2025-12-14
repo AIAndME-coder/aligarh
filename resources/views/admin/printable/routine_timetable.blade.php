@@ -3,35 +3,98 @@
 @section('head')
 <style>
 @media print {
-    .print-header {
-        margin-bottom: 20px;
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: #000;
     }
+
+    .print-header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .print-header h2 {
+        font-size: 16pt;
+        margin: 0 0 5px 0;
+    }
+
+    .print-header h3 {
+        font-size: 13pt;
+        margin: 0;
+        font-weight: normal;
+    }
+
     .section-break {
         page-break-before: always;
-        margin-top: 20px;
+        margin-top: 30px;
     }
+
     .section-break.no-break {
         page-break-before: avoid;
     }
+
+    h4 {
+        font-size: 13pt;
+        margin-bottom: 10px;
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 20px;
     }
+
     th, td {
         border: 1px solid #000;
         padding: 8px;
-        text-align: left;
+        vertical-align: top;
     }
+
     th {
-        background-color: #f2f2f2;
+        background-color: #f0f0f0;
+        font-weight: bold;
+        font-size: 11pt;
     }
+
     td {
-      white-space: normal;
-      word-wrap: break-word;
+        font-size: 10.5pt;
+        line-height: 1.4;
+    }
+
+    .schedule-container {
+        display: block;
+    }
+
+    .schedule-item {
+        display: inline-block;
+        border: 1px solid #000;
+        padding: 6px 8px;
+        margin: 4px 4px 4px 0;
+        font-size: 10pt;
+        page-break-inside: avoid;
+    }
+
+    .schedule-item strong {
+        display: block;
+        font-size: 10.5pt;
+        margin-bottom: 2px;
+    }
+
+    .schedule-time {
+        font-size: 9.5pt;
+    }
+
+    .schedule-teacher {
+        font-size: 9.5pt;
+        font-style: italic;
+        margin-top: 2px;
+        display: block;
     }
 }
 </style>
 @endsection
+
 
 @section('content')
 <div class="print-header text-center">
@@ -54,21 +117,21 @@
                 <tr>
                     <td>{{ $day }}</td>
                     <td>
-                        @if(isset($routines['section_' . $section->id][$day]))
-                          <div class="tw-flex tw-flex-wrap tw-gap-2">
-                              @foreach($routines['section_' . $section->id][$day] as $routin)
-                                  <span class="tw-inline-block tw-border tw-border-gray-700 tw-rounded tw-px-2 tw-py-1 tw-text-sm">
-                                      <strong>{{ $routin->subject_name }}</strong>
-                                      <span class="tw-text-xs">
-                                          ({{ $routin->from_time }} - {{ $routin->to_time }})
-                                      </span>
-                                      <br>
-                                      <span class="tw-text-xs tw-italic">
-                                          {{ $routin->teacher_name }}
-                                      </span>
-                                  </span>
-                              @endforeach
-                          </div>
+                      @if(isset($routines['section_' . $section->id][$day]))
+                          <div class="schedule-container">
+                            @foreach($routines['section_' . $section->id][$day] as $routin)
+                                <div class="schedule-item">
+                                    <strong>{{ $routin->subject_name }}</strong>
+                                    <span class="schedule-time">
+                                        ({{ $routin->from_time }} - {{ $routin->to_time }})
+                                    </span>
+                                    <span class="schedule-teacher">
+                                        {{ $routin->teacher_name }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+
                       @else
                           -
                       @endif
