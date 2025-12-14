@@ -2,7 +2,6 @@
 
 @section('head')
 <style>
-@media print {
     body {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 11pt;
@@ -23,15 +22,6 @@
         font-size: 13pt;
         margin: 0;
         font-weight: normal;
-    }
-
-    .section-break {
-        page-break-before: always;
-        margin-top: 30px;
-    }
-
-    .section-break.no-break {
-        page-break-before: avoid;
     }
 
     h4 {
@@ -90,6 +80,21 @@
         font-style: italic;
         margin-top: 2px;
         display: block;
+    }
+
+/* ===== PRINT-ONLY STYLES ===== */
+@media print {
+    .section-break {
+        page-break-before: always;
+        margin-top: 30px;
+    }
+
+    .section-break.no-break {
+        page-break-before: avoid;
+    }
+
+    .schedule-item {
+        page-break-inside: avoid;
     }
 }
 </style>
