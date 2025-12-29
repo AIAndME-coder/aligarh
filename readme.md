@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/img/logo.png" alt="Aligarh Logo" width="200">
+  <img src="/public/src/icon/favicon.png" alt="Aligarh Logo" width="200">
 </p>
 
 <h1 align="center">Aligarh</h1>
@@ -579,7 +579,7 @@ _This section will be updated with license details._
 
 ### Support
 For questions, issues, or feature requests:
-- **Email**: [your-email@domain.com](mailto:your-email@domain.com)
+- **Email**: [muhammadaliecho@gmail.com](mailto:muhammadaliecho@gmail.com)
 - **GitHub Issues**: [Create an issue](https://github.com/yourusername/aligarh/issues)
 
 ### Acknowledgments
@@ -587,6 +587,39 @@ For questions, issues, or feature requests:
 - Stancl/Tenancy for multi-tenant architecture
 - Spatie for Laravel Permission package
 - All contributors and users
+
+---
+
+## 📝 README Update Checklist
+
+> **Note for Maintainers**: The following items need to be updated before final release:
+
+### ✅ Already Updated
+- [x] Logo path (using hosted logo)
+
+### ⏳ Pending Updates
+
+1. **Repository URLs** (Replace in 3 locations)
+   - [ ] Installation section: `git clone https://github.com/yourusername/aligarh.git`
+   - [ ] GitHub Issues link: `https://github.com/yourusername/aligarh/issues`
+   - Update with actual repository URL
+
+2. **Support Email** (Credits & Support section)
+   - [ ] Replace `[muhammadaliecho@gmail.com](mailto:muhammadaliecho@gmail.com)` with actual support email
+
+3. **Screenshots** (Optional - can add later)
+   - [ ] Create `docs/screenshots/` directory
+   - [ ] Add: `dashboard.png`, `students.png`, `fees.png`, `exams.png`
+   - [ ] Or remove screenshots section if not needed
+
+4. **License Information**
+   - [ ] Update "License information to be determined" section when decided
+
+5. **Docker Port Verification**
+   - [ ] Verify actual port in `docker-compose.yml` (currently shows `8080`)
+
+6. **Production Domain Examples** (Optional)
+   - [ ] Add production domain examples alongside local development domains
 
 ---
 
