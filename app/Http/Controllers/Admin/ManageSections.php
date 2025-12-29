@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Teacher;
-use App\Classe;
-use App\Section;
+use App\Model\Teacher;
+use App\Model\Classe;
+use App\Model\Section;
 use DB;
 use Auth;
 use App\Http\Controllers\Controller;
@@ -32,7 +32,7 @@ class ManageSections extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -56,7 +56,7 @@ class ManageSections extends Controller
         'toastrmsg' => [
           'type' => 'success', 
           'title'  =>  'Section Registration',
-          'msg' =>  'Registration Successfull'
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 
@@ -71,7 +71,7 @@ class ManageSections extends Controller
         'toastrmsg' => [
           'type' => 'warning', 
           'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -86,7 +86,7 @@ class ManageSections extends Controller
         'toastrmsg' => [
           'type' => 'success',
           'title'  =>  'Section Registration',
-          'msg' =>  'Save Changes Successfull'
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }

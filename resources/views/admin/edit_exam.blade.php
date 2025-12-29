@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Edit Exam |')
+	@section('title', __('modules.pages_edit_exam_title').' |')
 
 	@section('head')
 	<link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
@@ -19,7 +19,7 @@
 							<div class="col-lg-8 col-md-6">
 									<h2>Exams</h2>
 									<ul class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 											<li><a>Exam</a></li>
 											<li Class="active"><a>Edit</a></li>
 									</ul>
@@ -37,7 +37,7 @@
 							 <div class="col-lg-12">
 								<div class="ibox float-e-margins">
 										<div class="ibox-title">
-												<h2>Edit Exam</h2>
+												<h2>{{ __('modules.forms_edit_exam') }}</h2>
 												<div class="hr-line-dashed"></div>
 										</div>
 

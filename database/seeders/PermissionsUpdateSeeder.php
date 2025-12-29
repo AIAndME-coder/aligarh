@@ -19,7 +19,7 @@ class PermissionsUpdateSeeder extends Seeder
         Log::info('PermissionsUpdateSeeder: Starting permission sync.');
 
         $ignored = config('permission.ignore_routes', []);
-        $default_permissions = config('DefaultPermissions') ?? [];
+        $default_permissions = config('permission.default_permissions') ?? [];
 
         // Get all route names, excluding ignored ones
         $routePermissions = collect(Route::getRoutes())

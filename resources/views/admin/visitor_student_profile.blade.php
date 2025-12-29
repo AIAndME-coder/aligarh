@@ -1,137 +1,369 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Visitor |')
+@section('title', 'Visitor |')
 
-  @section('head')
-  <!-- HEAD -->
-  @endsection
+@section('head')
+    <!-- HEAD -->
+	<style type="text/css">
+		/* Gradient Header */
+		.gradient-header {
+			background: linear-gradient(135deg, #009486 0%, #1ab394 100%);
+		}
 
-  @section('content')
+		/* Hover effect for cards */
+		.profile-card-hover:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+		}
 
-  @include('admin.includes.side_navbar')
+		.detail-item-hover:hover {
+			background: rgba(26, 179, 148, 0.05) !important;
+			border-color: #1ab394 !important;
+		}
 
-        <div id="page-wrapper" class="gray-bg">
+		/* Detail Item Styling */
+		.detail-item {
+			display: flex;
+			flex-direction: column;
+		}
 
-          @include('admin.includes.top_navbar')
+		.detail-content {
+			display: flex;
+			align-items: flex-start;
+			gap: 12px;
+		}
 
-          <!-- Heading -->
-          <div class="row wrapper border-bottom white-bg page-heading">
-              <div class="col-lg-8 col-md-6">
-                  <h2>Visitors</h2>
-                  <ol class="breadcrumb">
-                    <li>Home</li>
+		.detail-icon {
+			width: 40px;
+			height: 40px;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+			background: rgba(26, 179, 148, 0.1);
+		}
+
+		.detail-label {
+			font-size: 12px;
+			font-weight: 600;
+			color: #1ab394;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			margin-bottom: 4px;
+		}
+
+		.detail-value {
+			font-size: 14px;
+			font-weight: 500;
+			color: #333333;
+			margin: 0;
+		}
+	</style>
+@endsection
+
+@section('content')
+
+    @include('admin.includes.side_navbar')
+
+    <div id="page-wrapper" class="gray-bg hidden-print">
+
+        @include('admin.includes.top_navbar')
+
+        <!-- Heading -->
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-8 col-md-6">
+                <h2>Visitors</h2>
+                <ol class="breadcrumb">
+                    <li>{{ __("common.home") }}</li>
                     <li><a href="{{ URL('visitors') }}"> Visitor </a></li>
-                      <li Class="active">
-                          <a>Profile</a>
-                      </li>
-                      <li Class="active">
-                          {{ $visitorStudents->name }}
-                      </li>
-                  </ol>
-              </div>
-              @can('user-settings.change.session')
-              <div class="col-lg-4 col-md-6">
-                @include('admin.includes.academic_session')
-              </div>
-              @endcan
-          </div>
+                    <li Class="active">
+                        <a>Profile</a>
+                    </li>
+                    <li Class="active">
+                        {{ $visitorStudents->name }}
+                    </li>
+                </ol>
+            </div>
+            @can('user-settings.change.session')
+                <div class="col-lg-4 col-md-6">
+                    @include('admin.includes.academic_session')
+                </div>
+            @endcan
+        </div>
 
-          <!-- main Section -->
+        <!-- main Section -->
 
         <div class="wrapper wrapper-content">
-            <div class="row animated fadeInRight">
+            <div class="row">
+                <!-- Profile Card -->
                 <div class="col-md-4">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Profile Detail</h5>
-                        </div>
-                        <div>
-                            <div class="ibox-content no-padding border-left-right">
-                              <center>
-                                <img alt="image" class="img-responsive" src="{{ URL(($visitorStudents->img_url == '')? 'img/avatar.jpg' : $visitorStudents->img_url) }}">
-                              </center>
+                    <div class="tw-bg-white tw-rounded-xl tw-shadow-lg tw-overflow-hidden tw-transition-all tw-duration-300 hover:tw-shadow-2xl profile-card-hover">
+                        <!-- Gradient Header -->
+
+                        <div class="gradient-header tw-h-32"></div>
+                        
+                        <!-- Profile Image -->
+                        <div class="tw-relative tw--mt-16 tw-mb-4">
+                            <div class="tw-flex tw-justify-center">
+                                <img class="tw-w-32 tw-h-32 tw-rounded-full tw-border-4 tw-border-white tw-shadow-xl tw-object-cover" 
+                                     src="{{ URL($visitorStudents->img_url == '' ? 'img/avatar.jpg' : $visitorStudents->img_url) }}" 
+                                     alt="{{ $visitorStudents->name }}">
                             </div>
-                            <div class="ibox-content profile-content">
-                                <h4><strong>{{ $visitorStudents->name }}</strong></h4>
-                                <p><i class="fa fa-map-marker"></i> {{ $visitorStudents->address }}</p>
+                        </div>
+
+                        <!-- Profile Info -->
+                        <div class="tw-px-6 tw-pb-6 tw-text-center">
+                            <h3 class="tw-text-2xl tw-font-bold tw-text-gray-800 tw-mb-2">{{ $visitorStudents->name }}</h3>
+                            <p class="tw-text-gray-600 tw-flex tw-items-center tw-justify-center tw-gap-2">
+                                <i class="fa fa-map-marker text-primary"></i>
+                                <span>{{ $visitorStudents->address }}</span>
+                            </p>
+                            
+                            <!-- Status Badge -->
+                            <div class="tw-mt-4">
+                                <span class="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-rounded-full tw-text-sm tw-font-semibold bg-light text-primary">
+                                    <i class="fa fa-eye tw-mr-2"></i>
+                                    Visitor
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Details Card -->
                 <div class="col-md-8">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5>Details</h5>
+                    <div class="tw-bg-white tw-rounded-xl tw-shadow-lg tw-overflow-hidden">
+                        <!-- Card Header -->
+                        <div class="gradient-header tw-px-6 tw-py-4 tw-flex tw-justify-between tw-items-center">
+                            <h3 class="tw-text-xl tw-font-bold tw-text-white tw-flex tw-items-center tw-gap-2">
+                                <i class="fa fa-info-circle"></i>
+                                Visitor Details
+                            </h3>
+                            <button @click="printForm()" 
+                                    class="tw-bg-white text-primary tw-px-4 tw-py-2 tw-rounded-lg tw-font-semibold tw-flex tw-items-center tw-gap-2 tw-transition-all tw-duration-200 hover:bg-light hover:tw-shadow-md"
+                                    title="Print Profile">
+                                <i class="fa fa-print"></i>
+                                Print
+                            </button>
                         </div>
-                        <div class="ibox-content">
 
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr>
-                                        <th>Name :</th>
-                                        <td>{{ $visitorStudents->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Father Name :</th>
-                                        <td>{{ $visitorStudents->father_name }}</td>
-                                    </tr>
+                        <!-- Details Grid -->
+                        <div class="tw-p-6">
+                            <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
 
-                                    <tr>
-                                        <th>Class :</th>
-                                        <td>{{ $visitorStudents->StdClass->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Seeking Class :</th>
-                                        <td>{{ $visitorStudents->seeking_class }}</td>
-                                    </tr>
-                                     <tr>
-                                        <th>Date Of Birth :</th>
-                                        <td>{{ $visitorStudents->date_of_birth }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Place Of Birth :</th>
-                                        <td>{{ $visitorStudents->place_of_birth }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Guardian Relation :</th>
-                                        <td>{{ $visitorStudents->guardian_relation }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Last School :</th>
-                                        <td>{{ $visitorStudents->last_school }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Religion :</th>
-                                        <td>{{ $visitorStudents->religion }}</td>
-                                    </tr>
+                                <!-- Name -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-user tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Name</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.name }}</p>
+                                    </div>
+                                </div>
 
-                                    <tr>
-                                        <th>Gender :</th>
-                                        <td>{{ $visitorStudents->gender }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Email :</th>
-                                        <td>{{ $visitorStudents->email }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Address :</th>
-                                        <td>{{ $visitorStudents->address }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Contact No :</th>
-                                        <td>{{ $visitorStudents->phone }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Date Of Visiting :</th>
-                                        <td>{{ $visitorStudents->date_of_visiting }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                <!-- Father Name -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-male tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Father Name</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.father_name }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Current Class -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-graduation-cap tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Current Class</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.std_class.name }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Seeking Class -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-bullseye tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Seeking Class</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.seeking_class }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-birthday-cake tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Date of Birth</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.date_of_birth }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Place of Birth -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-map-marker tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Place of Birth</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.place_of_birth }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Last School -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-university tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Last School</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.last_school }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Religion -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-book tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Religion</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.religion }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-venus-mars tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Gender</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.gender }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-envelope tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Email</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800 tw-truncate">@{{ student.email }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Contact No -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-phone tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Contact No</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.phone }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Date of Visiting -->
+                                <div class="tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                    <div class="tw-flex-shrink-0">
+                                        <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                            <i class="fa fa-calendar tw-text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tw-flex-1 tw-min-w-0">
+                                        <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Date of Visiting</p>
+                                        <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.date_of_visiting }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Address - Full Width -->
+                            <div class="tw-mt-4 tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                <div class="tw-flex-shrink-0">
+                                    <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                        <i class="fa fa-home tw-text-gray-500"></i>
+                                    </div>
+                                </div>
+                                <div class="tw-flex-1 tw-min-w-0">
+                                    <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Address</p>
+                                    <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.address }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Remarks - Full Width -->
+                            <div v-if="student.remarks" class="tw-mt-4 tw-flex tw-items-start tw-gap-3 tw-p-4 tw-rounded-xl tw-bg-gray-50 tw-transition-all tw-duration-200 hover:tw-bg-gray-100 hover:tw-shadow-md">
+                                <div class="tw-flex-shrink-0">
+                                    <div class="tw-w-10 tw-h-10 tw-rounded-lg tw-bg-gray-200 tw-flex tw-items-center tw-justify-center">
+                                        <i class="fa fa-comment tw-text-gray-500"></i>
+                                    </div>
+                                </div>
+                                <div class="tw-flex-1 tw-min-w-0">
+                                    <p class="tw-text-sm tw-text-gray-500 tw-mb-1">Remarks</p>
+                                    <p class="tw-text-base tw-font-semibold tw-text-gray-800">@{{ student.remarks }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-        </div>
-    @endsection
+    </div>
+    <div id="visitor_student_profile_printable" class="visible-print">
+        @include('admin.printable.include.visitor_student_profile')
+    </div>
+@endsection
+@section('vue')
+    <script type="text/javascript">
+        var app = new Vue({
+            el: "#app",
+            data: {
+                student: {!! json_encode($visitorStudents, JSON_NUMERIC_CHECK) !!},
+            },
+            mounted: function() {
+                $("[data-toggle='tooltip']").on('mouseenter', function() {
+                    $(this).tooltip('show');
+                }).mouseleave(function() {
+                    $(this).tooltip('destroy');
+                });
+            },
+
+            methods: {
+                printForm: function() {
+                    window.print();
+                }
+            }
+        });
+    </script>
+@endsection

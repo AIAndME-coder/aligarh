@@ -19,11 +19,11 @@
         <!-- Heading -->
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-8 col-md-6">
-                <h2>Academic Session</h2>
+                <h2>@lang('modules.pages_academic_session_title')</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
-                        <a>Session</a>
+                        <a>@lang('labels.session')</a>
                     </li>
                 </ol>
             </div>
@@ -43,11 +43,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                                <a data-toggle="tab" onClick="drawTable()" href="#tab-10"><span class="fa fa-list"></span> Sessions</a>
+                                <a data-toggle="tab" onClick="drawTable()" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_sessions') }}</a>
                             </li>
                             @can('academic-sessions.create')
                                 <li class="add-item">
-                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Session</a>
+                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_session') }}</a>
                                 </li>
                             @endcan
                         </ul>
@@ -63,7 +63,7 @@
                                                     <th>Title</th>
                                                     <th>Start</th>
                                                     <th>End</th>
-                                                    <th>Options</th>
+                                                    <th>{{ __("labels.options") }}</th>
                                                 </tr>
                                             </thead>
                                         </table>

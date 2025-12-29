@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Teacher;
-use App\Classe;
-use App\Section;
-use App\Routine;
-use App\Subject;
+use App\Model\Teacher;
+use App\Model\Classe;
+use App\Model\Section;
+use App\Model\Routine;
+use App\Model\Subject;
 use DB;
 use Auth;
 use App\Http\Controllers\Controller;
+use App\Helpers\PrintableViewHelper;
 
 class ManageRoutine extends Controller
 {
@@ -81,8 +82,8 @@ class ManageRoutine extends Controller
 		return  redirect('routines')->with([
 		    'toastrmsg' => [
 		      'type' => 'warning', 
-		      'title'  =>  '# Invalid URL',
-		      'msg' =>  'Do Not write hard URL\'s'
+		      'title'  =>  __('modules.routine_invalid_url_title'),
+		      'msg' =>  __('modules.common_url_error')
 		      ]
 		  ]);
 		}
@@ -115,8 +116,8 @@ class ManageRoutine extends Controller
     return redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Routines Timtable',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.routine_timetable_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 
@@ -129,13 +130,13 @@ class ManageRoutine extends Controller
     $Routines->delete();
 
     if ($request->ajax()) {
-      return  response(['type' => 'success','title'  =>  'Routines Timtable','msg' =>  'Routine Deleted']);
+      return  response(['type' => 'success','title'  =>  __('modules.routine_timetable_title'),'msg' =>  __('modules.routine_deleted_message')]);
     } else { 
     return redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Routines Timtable',
-          'msg' =>  'Routine Deleted'
+          'title'  =>  __('modules.routine_timetable_title'),
+          'msg' =>  __('modules.routine_deleted_message')
           ]
       ]);
     }
@@ -151,8 +152,8 @@ class ManageRoutine extends Controller
     return  redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.routine_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -166,8 +167,8 @@ class ManageRoutine extends Controller
     return redirect('routines')->with([
         'toastrmsg' => [
           'type' => 'success',
-          'title'  =>  'Routines Settings',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.routine_settings_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -192,6 +193,30 @@ class ManageRoutine extends Controller
     $Routines->subject_id = $request->input('subject');
     $Routines->from_time = $request->input('from_time');
     $Routines->to_time = $request->input('to_time');
+  }
+
+  public function printTimetable($classId, $sectionId = null) {
+    $class = Classe::findOrFail($classId);
+    $data['class'] = $class;
+
+    if ($sectionId) {
+      $sections = Section::where('id', $sectionId)->where('class_id', $classId)->get();
+    } else {
+      $sections = Section::where('class_id', $classId)->get();
+    }
+
+    $data['sections'] = $sections;
+    $data['routines'] = [];
+
+    foreach ($sections as $section) {
+      $this->RoutinesSortDays($section);
+      $data['routines']['section_' . $section->id] = $this->data['routines']['section_' . $section->id];
+    }
+
+    $data['days'] = $this->days;
+
+    $view = PrintableViewHelper::resolve('routine_timetable');
+    return view($view, $data);
   }
 
 }

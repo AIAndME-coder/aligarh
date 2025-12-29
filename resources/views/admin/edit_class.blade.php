@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Classes |')
+	@section('title', __('modules.pages_classes_title').' |')
 
 	@section('head')
 	<link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
@@ -19,7 +19,7 @@
 							<div class="col-lg-8 col-md-6">
 									<h2>Teachers</h2>
 									<ol class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 											<li>
 													<a>Classes</a>
 											</li>
@@ -41,7 +41,7 @@
 							 <div class="col-lg-12">
 								<div class="ibox float-e-margins">
 										<div class="ibox-title">
-												<h2>Edit Class</h2>
+												<h2>{{ __('modules.forms_edit_class') }}</h2>
 												<div class="hr-line-dashed"></div>
 										</div>
 
@@ -51,9 +51,9 @@
 														{{ csrf_field() }}
 
 														<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
-															<label class="col-md-2 control-label">Name</label>
+															<label class="col-md-2 control-label">{{ __('labels.name') }}</label>
 															<div class="col-md-6">
-																<input type="text" name="name" placeholder="Name" value="{{ old('name', $class->name) }}" class="form-control"/>
+																<input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name', $class->name) }}" class="form-control"/>
 																@if ($errors->has('name'))
 																		<span class="help-block">
 																				<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -158,7 +158,7 @@
 				});
 
 				$('#tchr_rgstr [name="gender"]').val('{{ old('gender') }}');
-			@if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+			@if(count($errors) >= 1 && !$errors->has('toastrmsg'))
 				$('a[href="#tab-11"]').click();
 			@endif
 

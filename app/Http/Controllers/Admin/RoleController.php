@@ -4,389 +4,267 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Role;
+use App\Model\Role;
+use App\Services\PermissionDependencyService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
-
 class RoleController extends Controller
 {
-	public function index(Request $request)
-	{
-		$data = [];
-		if ($request->ajax()) {
-			return DataTables::eloquent(
-				Role::select('id', 'name', 'created_at')->notDeveloper()
-			)
-				->editColumn('created_at', function ($role) {
-					return $role->created_at->format('Y-m-d');
-				})
-				->make(true);
-		}
-		$data['content'] = null;
-		$data['permissions'] = $this->getPermissions();
-		return view('admin.roles', $data);
-	}
+    protected $depService;
 
+    public function __construct(PermissionDependencyService $depService)
+    {
+        $this->depService = $depService;
+    }
 
-	public function create(Request $request)
-	{
+    /**
+     * Display roles listing and create form
+     * Handles DataTables AJAX requests for role list
+     */
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            return $this->getRolesDataTable();
+        }
 
-		$request->validate([
-			'name' => 'required|unique:roles,name',
-			'permissions.*' => 'exists:permissions,name',
-		], [
-			'permissions.*.exists' => 'The selected permission is invalid.',
-		]);
+        return view('admin.roles', [
+            'content' => null,
+            'permissions' => $this->getPermissions(),
+            'permissionLabels' => $this->depService->buildPermissionLabelMap(),
+        ]);
+    }
 
-		DB::beginTransaction();
-		try {
-			$Role =	Role::create(['name' => $request->input('name'), 'guard_name' => 'web']);
-			$Role->syncPermissions($request->input('permissions'));
-			DB::commit();
-		} catch (\Exception $e) {
-			DB::rollBack();
-			Log::emergency("File:" . $e->getFile() . "Line:" . $e->getLine() . "Message:" . $e->getMessage());
-			return redirect('roles')->with([
-				'toastrmsg' => [
-					'type' => 'error', 
-					'title'  =>  'Roles',
-					'msg' =>  'There was an issue while Updating Role'
-				]
-			]);
-		}
+    /**
+     * Create a new role with permissions
+     * Auto-grants dependent permissions based on service logic
+     */
+    public function create(Request $request)
+    {
+        $this->validateRoleCreation($request);
 
-		return redirect('roles')->with([
-        'toastrmsg' => [
-          'type' 	=> 'success', 
-          'title'  	=>  'Role Registration',
-          'msg' 	=>  'Registration Successfull'
-          ]
-      	]);
-	}
+        DB::beginTransaction();
+        try {
+            $role = Role::create([
+                'name' => $request->input('name'),
+                'guard_name' => 'web'
+            ]);
 
-	public function edit($id)
-	{
-		$role = Role::notDeveloper()->findOrFail($id); 
-		$rolePermissions = $role->permissions->pluck('name')->toArray();
-		$permissions = $this->getPermissions();
+            $allPermissions = $this->resolvePermissionsWithDependencies(
+                $request->input('permissions', [])
+            );
 
+            $role->syncPermissions($allPermissions);
 
-      	return view('admin.edit_role', compact('role', 'rolePermissions', 'permissions'));
-	}
+            // Validate completeness
+            $this->depService->validatePermissionCompleteness($role);
 
-	public function update(Request $request, $id)
-	{
-		$request->validate([
-			'permissions.*' => 'exists:permissions,name',
-		], [
-			'permissions.*.exists' => 'The selected permission is invalid.',
-		]);
+            DB::commit();
 
-		DB::beginTransaction();
-		try {
-			$Role = Role::NotDeveloper()->findOrFail($id);
-			$Role->syncPermissions($request->input('permissions'));
+            return $this->successResponse('roles', __('modules.common_register_success'), 'Role Registration');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->logError($e);
+            return $this->errorResponse('roles', __('modules.roles_update_error'), 'Roles');
+        }
+    }
 
-			if (filled($request->sync_permissions)) {
-				$rolesToSync = Role::NotDeveloper()
-					// ->where('id', '!=', $Role->id)
-					->get();
-				foreach ($rolesToSync as $role) {
-					$role->syncPermissions($request->input('permissions'));
-				}
-			}
+    /**
+     * Show the edit form for a role
+     */
+    public function edit($id)
+    {
+        $role = Role::notDeveloper()->findOrFail($id);
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
 
-			DB::commit();
-		} catch (\Exception $e) {
-			DB::rollBack();
-			Log::emergency("File:" . $e->getFile() . "Line:" . $e->getLine() . "Message:" . $e->getMessage());
-			return redirect('roles')->with([
-				'toastrmsg' => [
-					'type' => 'error', 
-					'title'  =>  'Roles',
-					'msg' =>  'There was an issue while Updating Role'
-				]
-			]);
-		}
-		return redirect('roles')->with([
-        'toastrmsg' => [
-          'type' 	=> 'success', 
-          'title'  	=>  'Role Updated',
-          'msg' 	=>  'Updated Successfull'
-          ]
-      	]);
-	}
+        return view('admin.edit_role', [
+            'role' => $role,
+            'rolePermissions' => $rolePermissions,
+            'permissions' => $this->getPermissions(),
+            'permissionLabels' => $this->depService->buildPermissionLabelMap(),
+        ]);
+    }
 
-	// public function delete(Request $request, $id)
-	// {
-	// 	$Role = Role::NotDeveloper()->findOrFail($id);
+    /**
+     * Update role permissions
+     * Optionally sync permissions to all roles (Developer only)
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validatePermissions($request);
 
-	// 	if ($Role->users()->count('id')) {
-	// 		return response()->json(['message' => "Sorry users have this Role " . $Role->name], 422);
-	// 	}
+        DB::beginTransaction();
+        try {
+            $role = Role::notDeveloper()->findOrFail($id);
 
-	// 	$Role->syncPermissions([]);
-	// 	$Role->delete();
-	// 	return response()->json(['success' => 'Role Deleted successfully']);
-	// }
+            $allPermissions = $this->resolvePermissionsWithDependencies(
+                $request->input('permissions', [])
+            );
 
-	private function getPermissions()
-	{
-		return [
-			'Dashboard & Settings' => [
-				'dashboard' => 'Dashboard',
-				'dashboard.top_content' => 'Show Total Students, Teacher etc..',
-				'dashboard.timeline' => 'Show TimeLins (Notice Board)',
-				'dashboard.monthly_attendance' => 'Show Monthly Attendance',
-				'dashboard.fee_Collection' => 'Show Fee Collection',
-				'dashboard.monthly_expenses' => 'Show Monthly Expenses',
-				'user-settings.index' => 'User Settings View',
-				'user-settings.password.update' => 'Password Update',
-				'user-settings.change.session' => 'Change Session',
-			],
-			'Users' => [
-				'users.index' => 'User View',
-				'users.create' => 'User Create',
-				'users.edit' => 'User Edit',
-				'users.update' => 'User Update',
-				'users.update.update_password' => 'Update Password (User Update)'
-			],
-			'Roles' => [
-				'roles.index' => 'Role View',
-				'roles.create' => 'Role Create',
-				'roles.edit' => 'Role Edit',
-				'roles.update' => 'Role update',
-			],
-			'Students' => [
-				'students.index' => 'Students View',
-				'students.grid' => 'Students Gird View',
-				'students.add' => 'Students Create',
-				'students.edit' => 'Students Edit',
-				'students.card' => 'Student View Card',
-				'students.class_edit' => 'Edit Class',
-				'students.edit.post' => 'Students Update',
-				'students.profile' => 'Students Profile',
-				'students.image' => 'Students Image',
-				'students.interview.get' => 'Interview View',
-				'students.interview.update.create' => 'Interview Update',
-				'students.certificate.get' => 'Certificate View',
-				'students.certificate.create' => 'Certificate Create',
-				'students.leave' => 'Students Leave',
-			],
+            $role->syncPermissions($allPermissions);
 
-			'Visitors' => [
-				'visitors.index' => 'Visitors View',
-				'visitors.grid' => 'Visitors Gird View',
-				'visitors.profile' => 'Visitors Profile',
-				'visitors.create' => 'Visitors Create',	
-				'students.show.visitor' => 'Show  Addmissison Visitors',
-				'students.create.visitor' => 'Create Addmissison Visitors',
-				'visitors.edit' => 'Visitors Edit',
-				'visitors.update' => 'Visitors Update',	
-				'visitors.delete' => 'Visitors Delete',
-			],
-			
-			'Teachers' => [
-				'teacher.index' => 'Teachers View',
-				'teacher.grid' => 'Teachers Gird View',
-				'teacher.add' => 'Teachers Create',
-				'teacher.edit' => 'Teachers Edit',
-				'teacher.edit.post' => 'Teachers Update',
-				'teacher.profile' => 'Teachers Profile',
-				'teacher.image' => 'Teachers Image',
-				'teacher.find' => 'Find Teachers',
-			],
-			'Employees' => [
-				'employee.index' => 'Employees View',
-				'employee.grid' => 'Employees Gird View',
-				'employee.add' => 'Employees Create',
-				'employee.edit' => 'Employees Edit',
-				'employee.edit.post' => 'Employees Update',
-				'employee.profile' => 'Employees Profile',
-				'employee.image' => 'Employees Image',
-				'employee.find' => 'Find Employees',
-			],
-			'Guardians' => [
-				'guardian.index' => 'Guardians View',
-				'guardian.grid' => 'Guardians Gird View',
-				'guardian.add' => 'Guardians Create',
-				'guardian.edit' => 'Guardians Edit',
-				'guardian.edit.post' => 'Guardians Update',
-				'guardian.profile' => 'Guardians Profile',
-			],
-			'Classes & Sections' => [
-				'manage-classes.index' => 'Classes View',
-				'manage-classes.add' => 'Classes Create',
-				'manage-classes.edit' => 'Classes Edit',
-				'manage-classes.edit.post' => 'Classes Update',
-				'manage-sections.index' => 'Sections View',
-				'manage-sections.add' => 'Sections Create',
-				'manage-sections.edit' => 'Sections Edit',
-				'manage-sections.edit.post' => 'Sections Update',
-			],
-			'Subjects' => [
-				'manage-subjects.index' => 'Subjects View',
-				'manage-subjects.add' => 'Subjects Create',
-				'manage-subjects.edit' => 'Subjects Edit',
-				'manage-subjects.edit.post' => 'Subjects Update',
-			],
-			'Vendors & Items' => [
-				'vendors.index' => 'Vendors View',
-				'vendors.add' => 'Vendors Create',
-				'vendors.edit' => 'Vendors Edit',
-				'vendors.edit.post' => 'Vendors Update',
-				'items.index' => 'Items View',
-				'items.add' => 'Items Create',
-				'items.edit' => 'Items Edit',
-				'items.edit.post' => 'Items Update',
-			],
-			'Vouchers' => [
-				'vouchers.index' => 'Vouchers View',
-				'vouchers.add' => 'Vouchers Create',
-				'vouchers.edit' => 'Vouchers Edit',
-				'vouchers.edit.post' => 'Vouchers Update',
-				'vouchers.detail' => 'Vouchers Detail',
-			],
-			'Routines' => [
-				'routines.index' => 'Routines View',
-				'routines.add' => 'Routines Create',
-				'routines.edit' => 'Routines Edit',
-				'routines.edit.post' => 'Routines Update',
-				'routines.delete' => 'Routines Delete',
-			],
-			'Attendance' => [
-				'student-attendance.index' => 'Student Attendance View',
-				'student-attendance.make' => 'Student Attendance Get',
-				'student-attendance.make.post' => 'Student Attendance Make',
-				'student-attendance.report' => 'Student Attendance Report',
-				'teacher-attendance.index' => 'Teacher Attendance View',
-				'teacher-attendance.make' => 'Teacher Attendance Get',
-				'teacher-attendance.make.post' => 'Teacher Attendance Make',
-				'teacher-attendance.report' => 'Teacher Attendance Report',
-				'employee-attendance.index' => 'Employee Attendance View',
-				'employee-attendance.make' => 'Employee Attendance Get',
-				'employee-attendance.make.post' => 'Employee Attendance Make',
-				'employee-attendance.report' => 'Employee Attendance Report',
-			],
-			'Attendance Leave' => [
-				'attendance-leave.index' => 'Leave View',
-				'attendance-leave.get.data' => 'get Data',
-				'attendance-leave.make' => 'Leave Make',
-				'attendance-leave.edit' => 'Leave Edit',
-				'attendance-leave.update' => 'Leave Update',
-				'attendance-leave.delete' => 'Leave Delete',
-			],
-			'Student Migrations' => [
-				'student-migrations.index' => 'Migrations View',
-				'student-migrations.get' => 'Migrations Get',
-				'student-migrations.create' => 'Migrations Create',
-			],
-			'Exams & Results' => [
-				'exam.index' => 'Exams View',
-				'exam.add' => 'Exams Create',
-				'exam.edit' => 'Exams Edit',
-				'exam.edit.post' => 'Exams Update',
-				'manage-result.index' => 'Results View',
-				'manage-result.make' => 'Results Make',
-				'manage-result.attributes' => 'Results Attributes',
-				'manage-result.maketranscript' => 'Make Transcript',
-				'manage-result.maketranscript.create' => 'Create Transcript',
-				'manage-result.result' => 'View Result',
-			],
+            // Sync to all roles if requested (Developer feature)
+            if ($request->filled('sync_permissions')) {
+                $this->syncPermissionsToAllRoles($allPermissions);
+            }
 
-			'Quizzes' => [
-				'quizzes.index' => 'Quizzess View',
-				'quizzes.get.data' => 'Get Data',
-				'quizzes.create' => 'Quiz Create',
-				'quizzes.edit' => 'Quiz Edit',
-				'quizzes.update' => 'Quiz Update',
-				'quizzes.delete' => 'Quiz Delete',
+            // Validate completeness
+            $this->depService->validatePermissionCompleteness($role);
 
-				'quizresult.index' => 'Quiz Result View',
-				'quizresult.create' => 'Quiz Result Create',
-				// .....
-			],
-			'Library' => [
-				'library.index' => 'Library View',
-				'library.add' => 'Library Create',
-				'library.edit' => 'Library Edit',
-				'library.edit.post' => 'Library Update',
-			],
-			'Notice Board' => [
-				'noticeboard.index' => 'Notice View',
-				'noticeboard.create' => 'Notice Create',
-				'noticeboard.delete' => 'Notice Delete',
-			],
-			'Fee Management' => [
-				'fee.index' 				=> 'Fee View',
-				'fee.create' 				=> 'Get Student',
-				'fee.create.store' 			=> 'Fee Create',
-				'fee.get.invoice.collect' 	=> 'Get Invoice Collect',
-				'fee.collect.store' 		=> 'Store Invoice Collect',
-				'fee.edit.invoice' 			=> 'Edit Invoice',
-				'fee.edit.invoice.post' 	=> 'Update Invoice',
-				'fee.get.student.fee' 		=> 'Get Student Fee',
-				'fee.update' 				=> 'Student Fee Update',
-				'fee.chalan.print' 			=> 'Chalan Print',
-				'fee.group.chalan.print'	=> 'Group Chalan Print',
-				'fee.invoice.print' 		=> 'Invoice Print',
-				'fee.bulk.print.invoice' 	=> 'Bulk Print Invoice',
-				'fee.bulk.create.invoice' 	=> 'Bulk Create Invoice',
-				//lnk with create and update invoice
-				'fee.findstu' 				=> 'Find Student Fee',
-			],
-			'Expenses' => [
-				'expense.index' => 'Expenses View',
-				'expense.add' => 'Expenses Create',
-				'expense.edit' => 'Expenses Edit',
-				'expense.edit.post' => 'Expenses Update',
-				'expense.summary' => 'Expenses Summary',
-			],
-			'SMS Notifications' => [
-				'smsnotifications.index' => 'SMS View',
-				'smsnotifications.sendsms' => 'Send SMS',
-				'smsnotifications.sendbulksms' => 'Send Bulk SMS',
-				'smsnotifications.history' => 'SMS History',
-			],
-			'Message Notifications' => [
-				'msg-notifications.index' => 'View',
-				'msg-notifications.get.data' => 'Get Data',
-				'msg-notifications.send' => 'Messsage Send',
-				'msg-notifications.msg.log' => 'View Message Logs',
-			],
-			'Reports' => [
-				'seatsreport' => 'Seats Report',
-				'fee-collection-reports.index' => 'Fee Collection View',
-				'fee-collection-reports.fee.receipts.statment' => 'Fee Receipts Statement',
-				'fee-collection-reports.daily.fee.collection' => 'Daily Fee Collection',
-				'fee-collection-reports.free.ship.students' => 'Freeship Students',
-				'fee-collection-reports.unpaid.fee.statment' => 'Unpaid Fee Statement',
-				'fee-collection-reports.yearly.collection.statment' => 'Yearly Collection Statement',
-				
-				'exam-reports.index' => 'Exam Reports View',
-				'exam-reports.tabulation.sheet' => 'Tabulation Sheet',
-				'exam-reports.award.list' => 'Award List',
-				'exam-reports.average.result' => 'Average Result',
-				'exam-reports.find.student' => 'Find Student',
-				'exam-reports.result.transcript' => 'Result Transcript',
-			],
-			// 'Academic Sessions' => [
-			// 	'academic-sessions.index' => 'Sessions View',
-			// 	'academic-sessions.create' => 'Sessions create',
-			// ],
-			'System Settings' => [
-				'system-setting.index' => 'System Settings View',
-				'system-setting.update' => 'System Settings Update',
-				'system-setting.print.invoice.history' => 'Print Invoice History',
-				'system-setting.history' => 'System History',
-				'system-setting.notification.settings' => 'Notification Settings',
-				'fee-scenario.index' => 'Fee Scenario View',
-				'fee-scenario.update.scenario' => 'Fee Scenario Update',
-				'exam-grades.index' => 'Exam Grades View',
-				'exam-grades.update' => 'Exam Grades Update',
-			],
-		];
-	}
+            DB::commit();
+
+            return $this->successResponse('roles', __('modules.roles_update_success'), 'Role Updated');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->logError($e);
+            return $this->errorResponse('roles', 'There was an issue while Updating Role', 'Roles');
+        }
+    }
+
+    // ==================== Private Helper Methods ====================
+
+    /**
+     * Get DataTable for roles listing
+     */
+    private function getRolesDataTable()
+    {
+        return DataTables::eloquent(
+            Role::select('id', 'name', 'created_at')->notDeveloper()
+        )
+            ->editColumn('created_at', function ($role) {
+                return $role->created_at->format('Y-m-d');
+            })
+            ->make(true);
+    }
+
+    /**
+     * Validate role creation request
+     */
+    private function validateRoleCreation(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|unique:roles,name',
+            'permissions.*' => 'exists:permissions,name',
+        ], [
+            'permissions.*.exists' => 'The selected permission is invalid.',
+        ]);
+    }
+
+    /**
+     * Validate permissions in update request
+     * Includes pre-validation to catch non-existent permissions
+     */
+    private function validatePermissions(Request $request)
+    {
+        $submitted = $request->input('permissions', []);
+
+        // Pre-validation: Check if permissions exist in database
+        $valid = DB::table('permissions')
+            ->whereIn('name', $submitted)
+            ->pluck('name')
+            ->toArray();
+
+        $invalid = array_diff($submitted, $valid);
+
+        if (!empty($invalid)) {
+            Log::warning('Invalid permissions submitted', [
+                'invalid_permissions' => $invalid,
+                'user_id' => auth()->id(),
+                'submitted_permissions' => $submitted,
+            ]);
+
+            return back()->withErrors([
+                'permissions' => 'These permissions do not exist: ' . implode(', ', $invalid),
+            ])->withInput();
+        }
+
+        // Formal validation
+        $request->validate([
+            'permissions.*' => 'exists:permissions,name',
+        ], [
+            'permissions.*.exists' => 'The selected permission is invalid.',
+        ]);
+    }
+
+    /**
+     * Resolve permissions with their dependencies
+     * Uses PermissionDependencyService to auto-grant required permissions
+     */
+    private function resolvePermissionsWithDependencies(array $permissions): array
+    {
+        $allPermissions = [];
+
+        foreach ($permissions as $permission) {
+            $allPermissions[] = $permission;
+            $allPermissions = array_merge(
+                $allPermissions,
+                $this->depService->getAllDependencies($permission)
+            );
+        }
+
+        return array_unique($allPermissions);
+    }
+
+    /**
+     * Sync permissions to all non-Developer roles
+     * (Developer-only feature)
+     */
+    private function syncPermissionsToAllRoles(array $permissions)
+    {
+        $roles = Role::notDeveloper()->get();
+
+        foreach ($roles as $role) {
+            $role->syncPermissions($permissions);
+        }
+    }
+
+    /**
+     * Log exception error
+     */
+    private function logError(\Exception $e)
+    {
+        Log::emergency("File:" . $e->getFile() . "Line:" . $e->getLine() . "Message:" . $e->getMessage());
+    }
+
+    /**
+     * Success redirect response with toast message
+     */
+    private function successResponse(string $route, string $message, string $title)
+    {
+        return redirect($route)->with([
+            'toastrmsg' => [
+                'type' => 'success',
+                'title' => $title,
+                'msg' => $message
+            ]
+        ]);
+    }
+
+    /**
+     * Error redirect response with toast message
+     */
+    private function errorResponse(string $route, string $message, string $title)
+    {
+        return redirect($route)->with([
+            'toastrmsg' => [
+                'type' => 'error',
+                'title' => $title,
+                'msg' => $message
+            ]
+        ]);
+    }
+
+    /**
+     * Get permissions filtered by tenant-allowed permissions
+     * Developer role bypasses tenant restrictions
+     */
+    private function getPermissions(): array
+    {
+        $allPermissions = config('permission.permissions', []);
+        $isDeveloper = auth()->user()->hasRole('Developer');
+        
+        // Filter permissions based on tenant's allowed permissions
+        return $this->depService->filterPermissionsByTenant($allPermissions, $isDeveloper);
+    }
 }

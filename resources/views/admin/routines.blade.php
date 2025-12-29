@@ -27,9 +27,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Routines</h2>
+                  <h2>{{ __("modules.pages_routines_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Routines</a>
                       </li>
@@ -51,11 +51,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Routines</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_routines') }}</a>
                             </li>
                             @can('routines.add')
                               <li class="add-routine-tab">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Routine</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_routine') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -72,6 +72,9 @@
                                             <span class="fa fa-plus" data-toggle="tooltip" title="Add Routine"></span>
                                           </a>
                                           @endcan
+                                          <a href="{{ route('routines.print', ['class' => $class->id]) }}" target="_blank" data-toggle="tooltip" title="Print Class Timetable">
+                                            <span class="fa fa-print"></span>
+                                          </a>
                                           <a class="collapse-link">
                                             <i data-toggle="tooltip" title="Collapse" class="fa fa-chevron-up"></i>
                                           </a>
@@ -92,6 +95,11 @@
                                             <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9 bhoechie-tab">
                                               @foreach($sections['class_'.$class->id] AS $sk=>$section)
                                               <div id="tab-section-{{ $section->id }}" class="bhoechie-tab-content {{ ($sk == 0)? 'active' : '' }}">                                            
+                                                <div class="ibox-tools" style="margin-bottom: 10px;">
+                                                  <a href="{{ route('routines.print', ['class' => $class->id, 'section' => $section->id]) }}" target="_blank" data-toggle="tooltip" title="Print Section Timetable">
+                                                    <span class="fa fa-print"></span> Print Timetable
+                                                  </a>
+                                                </div>
                                                 <div class="table-responsive">
                                                   <table class="table table-striped table-bordered table-hover dataTables-teacher" >
                                                     <thead>
@@ -184,7 +192,7 @@
                                         </div>
 
                                         <div class="form-group{{ ($errors->has('subject'))? ' has-error' : '' }}">
-                                          <label class="col-md-2 control-label">Subject</label>
+                                          <label class="col-md-2 control-label">{{ __('labels.subject') }}</label>
                                           <div class="col-md-6 select2-div">
                                             <select class="form-control select2" name="subject">
                                             </select>
@@ -370,7 +378,7 @@
 
         });
 
-        @if(COUNT($errors) >= 1)
+        @if(count($errors) >= 1)
           $('#tchr_rgstr [name="class"]').val("{{ old('class') }}");
           $('#tchr_rgstr [name="class"]').change();
           $('#tchr_rgstr [name="section"]').val("{{ old('section') }}");
@@ -427,7 +435,7 @@
             });
         });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @endif
 

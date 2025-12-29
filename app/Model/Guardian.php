@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Model;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Guardian extends Model
+{
+
+
+	public function user()
+	{
+		return $this->morphOne('App\Model\User', 'userable');
+	}
+
+	public function Students() {
+		return $this->hasMany('App\Model\Student');
+	}
+
+	public function scopeHaveCellNo($query){
+		return $query->where('phone', 'NOT LIKE', '21%')->whereRaw('LENGTH(phone) = 10');
+	}
+
+	public function ActiveStudents(){
+		return $this->hasMany('App\Model\Student', 'guardian_id')->active();
+	}
+
+}

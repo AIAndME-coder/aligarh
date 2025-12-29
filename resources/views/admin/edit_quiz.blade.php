@@ -1,9 +1,7 @@
 @php use Illuminate\Support\Str; @endphp
 @extends('admin.layouts.master')
 
-@section('title', 'Edit Quiz |')
-
-@section('head')
+  @section('title', __('modules.pages_edit_quiz_title').' |')@section('head')
     <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
     <style type="text/css">
@@ -38,7 +36,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Quizzes</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Edit</a>
                     </li>
@@ -133,7 +131,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Date </label>
+                                    <label class="col-md-2 control-label">{{ __('labels.date') }} </label>
                                     <div class="col-md-6">
                                         <input id="datetimepicker" type="text" name="date" class="form-control"
                                             placeholder="From Date"

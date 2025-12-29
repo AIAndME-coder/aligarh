@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Edit Book |')
+  @section('title', __('modules.pages_edit_book_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -19,7 +19,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Library</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li>
                           <a>Books</a>
                       </li>
@@ -43,7 +43,7 @@
                <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h2>Edit Book</h2>
+                        <h2>{{ __('modules.forms_edit_book') }}</h2>
                         <div class="hr-line-dashed"></div>
                     </div>
 
@@ -55,7 +55,7 @@
                                       <div class="form-group{{ ($errors->has('title'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Title</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="title" placeholder="Book Title" value="{{ old('title', $book['title']) }}" class="form-control"/>
+                                          <input type="text" name="title" placeholder="{{ __('labels.book_title_placeholder') }}" value="{{ old('title', $book['title']) }}" class="form-control"/>
                                           @if ($errors->has('title'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('title') }}</strong>

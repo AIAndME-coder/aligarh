@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Guardian\AttendanceController as GuardianAttendance
 
 use App\Http\Controllers\Api\TMS\UserController as TMSUserController;
 use App\Http\Controllers\Api\TMS\AttendanceController;
+use App\Model\Guardian;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,6 @@ use App\Http\Controllers\Api\TMS\AttendanceController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 
 Route::get('/', function(){
 	return "welcome Tenants ... API";
@@ -56,7 +56,7 @@ Route::prefix('guardian')->group(function () {
             Route::get('user', function (Request $request) {
                 return response()->json([
                     'User' => $request->user(),
-                    'Profile' => \App\Guardian::find($request->user()->foreign_id),
+                    'Profile' => Guardian::find($request->user()->foreign_id),
                 ]);
             });
 

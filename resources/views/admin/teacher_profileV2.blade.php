@@ -19,7 +19,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Teachers</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li><a href="{{ URL('teachers') }}"> Teachers </a></li>
                       <li Class="active">
                           <a>Profile</a>
@@ -170,7 +170,7 @@
                             </p>
 
                             <div class="form-group">
-                                <label>Subject</label>
+                                <label>{{ __("labels.subject") }}</label>
                                 <input type="email" class="form-control" placeholder="Message subject">
                             </div>
                             <div class="form-group">

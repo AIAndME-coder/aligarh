@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Teacher |')
+  @section('title', __('modules.pages_teachers_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -323,11 +323,11 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Teachers</h2>
+                  <h2>{{ __('modules.pages_teachers_title') }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __('common.home') }}</li>
                       <li Class="active">
-                          <a>Teachers</a>
+                          <a>{{ __('modules.pages_teachers_title') }}</a>
                       </li>
                   </ol>
               </div>
@@ -348,12 +348,12 @@
                         <ul class="nav nav-tabs">
                             @canany(['teacher.index','teacher.grid'])
                               <li class="">
-                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Teachers</a>
+                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_teachers') }}</a>
                               </li>
                             @endcanany
                             @can('teacher.add')
                               <li class="add-teacher">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Teachers</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_teacher') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -486,10 +486,10 @@
                                     <table class="table table-striped table-bordered table-hover dataTables-teacherList" width="100%">
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
-                                          <th>E-Mail</th>
-                                          <th>Contact</th>
-                                          <th>Address</th>
+                                          <th>{{ __("labels.name") }}</th>
+                                          <th>{{ __("labels.email_label") }}</th>
+                                          <th>{{ __("labels.contact") }}</th>
+                                          <th>{{ __("labels.address") }}</th>
                                           <th width="60px">Options</th>
                                         </tr>
                                       </thead>
@@ -499,7 +499,7 @@
                                           <th><input type="text" placeholder="E-Mail..."></th>
                                           <th><input type="text" placeholder="Contact..."></th>
                                           <th><input type="text" placeholder="Address..."></th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </tfoot>
                                     </table>
@@ -517,7 +517,7 @@
                                         <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Name</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="name" placeholder="Name" value="{{ old('name') }}" class="form-control"/>
+                                            <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name') }}" class="form-control"/>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -576,7 +576,7 @@
                                           </div>
                                         </div>
                                         <div class="form-group{{ ($errors->has('subject'))? ' has-error' : '' }}">
-                                          <label class="col-md-2 control-label">Subject</label>
+                                          <label class="col-md-2 control-label">{{ __('labels.subject') }}</label>
                                           <div class="col-md-6">
                                             <input type="text" name="subject" placeholder="Subject" value="{{ old('subject') }}" class="form-control"/>
                                             @if ($errors->has('subject'))
@@ -626,7 +626,7 @@
                                         <div class="form-group">
                                           <label class="col-md-2 control-label">Address</label>
                                           <div class="col-md-6">
-                                            <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                            <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                           </div>
                                         </div>
                                         <div class="form-group{{ ($errors->has('phone'))? ' has-error' : '' }}">
@@ -634,7 +634,7 @@
                                           <div class="col-md-6">
                                             <div class="input-group m-b">
                                               <span class="input-group-addon">+92</span>
-                                              <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Contact No" class="form-control" data-mask="9999999999"/>
+                                              <input type="text" name="phone" value="{{ old('phone') }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999"/>
                                             </div>
                                             @if ($errors->has('phone'))
                                                 <span class="help-block">
@@ -917,7 +917,7 @@
 
       $('#tchr_rgstr [name="gender"]').val('{{ old('gender') }}');
       
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

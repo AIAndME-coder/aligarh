@@ -19,11 +19,11 @@ class VisitorStudent extends Model
         'phone',
         'address',
         'place_of_birth',
-        'guardian_relation',
         'date_of_birth',
         'last_school',
         'date_of_visiting',
         'seeking_class',
+        'remarks',
         'created_by',
         'updated_by',
     ];
@@ -41,11 +41,11 @@ class VisitorStudent extends Model
 
     public function StdClass()
     {
-        return $this->hasOne('App\Classe', 'id', 'class_id');
+        return $this->hasOne('App\Model\Classe', 'id', 'class_id');
     }
 
     public function session()
     {
-        return $this->belongsTo('App\Session', 'session_id');
+        return $this->belongsTo('App\Model\Session', 'session_id');
     }
 }

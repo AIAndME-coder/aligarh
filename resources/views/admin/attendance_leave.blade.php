@@ -1,7 +1,7 @@
 @php use Illuminate\Support\Str; @endphp
 @extends('admin.layouts.master')
 
-@section('title', 'Attendance Leave |')
+@section('title', __('modules.pages_attendance_leave_title').' |')
 
 @section('head')
     <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
@@ -236,7 +236,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Attendance Leaves</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Attendance Leaves</a>
                     </li>
@@ -253,7 +253,7 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Attendance Leave</a>
+                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_attendance_leave') }}</a>
                             </li>
                             @can('attendance-leave.make')
                                 <li class="add-role">
@@ -365,7 +365,7 @@
                             @can('attendance-leave.make')
                                 <div id="tab-11" class="tab-pane fade make-attendance">
                                     <div class="panel-body" style="min-height: 400px">
-                                        <h2> Make Attendance </h2>
+                                        <h2> {{ __('modules.forms_make_attendance') }} </h2>
                                         <div class="hr-line-dashed"></div>
                                         <form method="post" id="mk_att_frm" action="{{ route('attendance-leave.make') }}"
                                             class="form-horizontal jumbotron" role="form">
@@ -373,7 +373,7 @@
                                             <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label"> Type </label>
                                                 <div class="col-md-6">
-                                                    <select class="form-control select2" v-model="type" name="type"
+                                                    <select class="form-control" v-model="type" name="type"
                                                         required="true">
                                                         <option value="">{{ '--- Select Type ---' }}</option>
                                                         <option value="{{ 'Student' }}">{{ 'Student' }}</option>
@@ -524,6 +524,8 @@
     <script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
     <script src="{{ asset('src/js/plugins/jasny/jasny-bootstrap.min.js') }}"></script>
     <script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    	<!-- Select2 -->
+	<script src="{{ asset('src/js/plugins/select2/select2.full.min.js') }}"></script>
     @if ($errors->any())
         <script>
             @foreach ($errors->all() as $error)
@@ -560,6 +562,10 @@
             @else
                 $('a[href="#tab-10"]').tab('show');
             @endif
+
+            $('.select2').attr('style', 'width:100%').select2({
+    			placeholder: 'Search contacts',
+            });
         });
     </script>
 @endsection

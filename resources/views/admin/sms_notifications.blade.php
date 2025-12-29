@@ -1,8 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'SMS Notifications |')
-
-  @section('head')
+	@section('title', __('modules.pages_sms_notifications_title').' |')  @section('head')
 
 	<link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('src/css/plugins/iCheck/custom.css') }}" rel="stylesheet">
@@ -24,7 +22,7 @@
 			  <div class="col-lg-8 col-md-6">
 				  <h2>SMS</h2>
 				  <ol class="breadcrumb">
-					<li>Home</li>
+					<li>{{ __("common.home") }}</li>
 					  <li Class="active">
 						  <a>SMS Notifications</a>
 					  </li>

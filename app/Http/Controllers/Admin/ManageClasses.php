@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Teacher;
-use App\Section;
-use App\Classe;
+use App\Model\Teacher;
+use App\Model\Section;
+use App\Model\Classe;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Illuminate\Support\Str;
@@ -46,7 +46,7 @@ class ManageClasses extends Controller
 				'toastrmsg' => [
 					'type' => 'warning', 
 					'title'  =>  '# Invalid URL',
-					'msg' =>  'Do Not write hard URL\'s'
+					'msg' =>  __('modules.common_url_error')
 					]
 			]);
 		}
@@ -61,6 +61,10 @@ class ManageClasses extends Controller
 				'numeric_name'  =>  'required',
 				'prifix'  =>  'required',
 /*        'teacher' =>  'required'*/
+		], [
+				'name.required'  =>  __('validation.name_required'),
+				'numeric_name.required'  =>  __('validation.numeric_name_required'),
+				'prifix.required'  =>  __('validation.prifix_required'),
 		]);
 	}
 
@@ -79,7 +83,7 @@ class ManageClasses extends Controller
 				'toastrmsg' => [
 					'type' => 'success', 
 					'title'  =>  'Classes Registration',
-					'msg' =>  'Registration Successfull'
+					'msg' =>  __('modules.common_register_success')
 					]
 			]);
 
@@ -95,7 +99,7 @@ class ManageClasses extends Controller
 				'toastrmsg' => [
 					'type' => 'warning',
 					'title'  =>  '# Invalid URL',
-					'msg' =>  'Do Not write hard URL\'s'
+					'msg' =>  __('modules.common_url_error')
 				]
 			]);
 		}
@@ -115,7 +119,7 @@ class ManageClasses extends Controller
 			'toastrmsg' => [
 				'type' => 'success',
 				'title'  =>  'Classes Registration',
-				'msg' =>  'Save Changes Successfull'
+				'msg' =>  __('modules.common_save_success')
 			]
 		]);
 	}

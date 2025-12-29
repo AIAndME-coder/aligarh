@@ -26,6 +26,9 @@
     {{-- Notification Bell --}}
     <link href="{{ asset('/src/css/notification-bell.css') }}" rel="stylesheet">
     
+    {{-- Tailwind CSS --}}
+    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+    
     @yield('head')
 
     <script src="{{ asset('src/js/jquery-2.1.1.js') }}"></script>

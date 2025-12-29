@@ -19,7 +19,7 @@
 							<div class="col-lg-8 col-md-6">
 									<h2>Make Transcript</h2>
 									<ol class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 										<li Class="active">
 											<a>Make Transcript</a>
 										</li>
@@ -47,12 +47,12 @@
 											<table class="table table-striped table-hover table-bordered">
 												<thead>
 													<tr>
-														<th>GR No</th>
-														<th>Name</th>
+														<th>{{ __("labels.gr_no") }}</th>
+														<th>{{ __("labels.name") }}</th>
 														<th>Father Name</th>
 														<th>Total Marks</th>
 														<th>Obtain Marks</th>
-														<th>Action</th>
+														<th>{{ __("labels.action") }}</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -63,7 +63,7 @@
 														<td>@{{ student.name }}</td>
 														<td>@{{ student.father_name }}</td>
 														<td>@{{ student.total_marks }}</td>
-														<td>@{{ student.total_obtain_marks }}</td>
+														<td>@{{ Number((student.total_obtain_marks).toFixed(1)) }}</td>
 														<td><button @click="{student.transcriptshow = !student.transcriptshow}" @mouseenter="tooltip" @mouseleave="tooltipdestroy" class="btn" :class="[student.transcriptshow? 'btn-primary' : 'btn-default']"  title="Marks List"><span class="fa fa-list"></span></button></td>
 													</tr>
 													<tr v-if="student.transcriptshow">
@@ -96,7 +96,7 @@
 																				@{{ mark.name }}: @{{ mark.marks }}<br>
 																			</template>
 																		</td>
-																		<td>@{{ result.total_obtain_marks }}</td>
+																		<td>@{{ Number((result.total_obtain_marks).toFixed(1)) }}</td>
 																	</tr>
 																</tbody>
 																<tfoot>

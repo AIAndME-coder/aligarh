@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Exam Reports |')
+	@section('title', __('modules.pages_exam_reports_title').' |')
 
 	@section('head')
 		<link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -21,7 +21,7 @@
 					<div class="col-lg-8 col-md-6">
 							<h2>Reports</h2>
 							<ol class="breadcrumb">
-								<li>Home</li>
+								<li>{{ __("common.home") }}</li>
 									<li Class="active">
 											<a>Exam Reports</a>
 									</li>
@@ -41,17 +41,17 @@
 						@can('exam-reports.tabulation.sheet')
 							<div class="ibox">
 								<div class="ibox-title">
-									<h2>Generate Exam Tabulation Sheet</h2>
+										<h2>{{ __('modules.reports_generate_tabulation_sheet') }}</h2>
 									<div class="hr-line-dashed"></div>
 								</div>
 								<div class="ibox-content">
 									<form id="tabulation_sheet" method="POST" action="{{ URL('exam-reports/tabulation-sheet') }}" class="form-horizontal" target="_blank">
 										{{ csrf_field() }}
-										<div class="form-group{{ ($errors->has('exam'))? ' has-error' : '' }}">
-											<label class="col-md-2 control-label"> Exam </label>
-											<div class="col-md-6">
-											<select class="form-control select2" name="exam" v-model="selected_exam" required="true">
-												<option value="" disabled selected>Exam</option>
+									<div class="form-group{{ ($errors->has('exam'))? ' has-error' : '' }}">
+										<label class="col-md-2 control-label"> {{ __('modules.pages_exams_title') }} </label>
+										<div class="col-md-6">
+										<select class="form-control select2" name="exam" v-model="selected_exam" required="true">
+											<option value="" disabled selected>{{ __('modules.pages_exams_title') }}</option>
 												<option v-for="exam in Exams" :value="exam.id">@{{ exam.name+' "'+exam.academic_session.title+'"' }}</option>
 											</select>
 											@if ($errors->has('exam'))
@@ -87,7 +87,7 @@
 						@can('exam-reports.award.list')
 							<div class="ibox">
 								<div class="ibox-title">
-									<h2>Award List</h2>
+										<h2>{{ __('modules.reports_exam_award_list') }}</h2>
 									<div class="hr-line-dashed"></div>
 								</div>
 
@@ -154,7 +154,7 @@
 						@can('exam-reports.average.result')
 							<div class="ibox">
 								<div class="ibox-title">
-									<h2>Average Result</h2>
+										<h2>{{ __('modules.reports_exam_average_result') }}</h2>
 									<div class="hr-line-dashed"></div>
 								</div>
 
@@ -163,12 +163,28 @@
 									<form id="tabulation_sheet" method="POST" action="{{ URL('exam-reports/average-result') }}" class="form-horizontal" target="_blank">
 										{{ csrf_field() }}
 
-										<div class="form-group{{ ($errors->has('exam'))? ' has-error' : '' }}">
+										{{-- <div class="form-group{{ ($errors->has('exam'))? ' has-error' : '' }}">
 											<label class="col-md-2 control-label"> Exam </label>
 											<div class="col-md-6">
 												<div class="i-checks"><label> <input type="radio" value="1" name="exam" required=""> <i></i> 1st Ass/Half Year </label></div>
 												<div class="i-checks"><label> <input type="radio" value="2" name="exam"> <i></i> 2nd Ass/Final Year </label></div>
 											</div>
+										</div> --}}
+
+										<div class="form-group{{ $errors->has('exams') ? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">Exams</label>
+												<div class="col-md-6">
+													<select class="form-control select2_exams" multiple="multiple" name="exams[]" max="2" required="true" style="width: 100%">
+														@foreach($exams as $exam)
+														<option value="{{ $exam['id'] }}">{{ $exam['name'] }}</option>
+														@endforeach
+													</select>
+													@if ($errors->has('exams'))
+														<span class="help-block">
+															<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('exams') }} </strong>
+														</span>
+													@endif
+												</div>
 										</div>
 
 										<div class="form-group{{ ($errors->has('class'))? ' has-error' : '' }}">
@@ -208,12 +224,28 @@
 									<form id="tabulation_sheet" method="POST" action="{{ URL('exam-reports/result-transcript') }}" class="form-horizontal" target="_blank">
 										{{ csrf_field() }}
 
-										<div class="form-group{{ ($errors->has('exam'))? ' has-error' : '' }}">
+										{{-- <div class="form-group{{ ($errors->has('exam'))? ' has-error' : '' }}">
 											<label class="col-md-2 control-label"> Exam </label>
 											<div class="col-md-6">
 												<div class="i-checks"><label> <input type="radio" value="1" name="exam" required=""> <i></i> 1st Ass/Half Year </label></div>
 												<div class="i-checks"><label> <input type="radio" value="2" name="exam"> <i></i> 2nd Ass/Final Year </label></div>
 											</div>
+										</div> --}}
+
+										<div class="form-group{{ $errors->has('exams') ? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">Exams</label>
+												<div class="col-md-6">
+													<select class="form-control select2_exams" multiple="multiple" name="exams[]" max="2" required="true" style="width: 100%">
+														@foreach($exams as $exam)
+														<option value="{{ $exam['id'] }}">{{ $exam['name'] }}</option>
+														@endforeach
+													</select>
+													@if ($errors->has('exams'))
+														<span class="help-block">
+															<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('exams') }} </strong>
+														</span>
+													@endif
+												</div>
 										</div>
 
 										<div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
@@ -297,6 +329,11 @@
 						tags: true,
 					});
 
+					$(".select2_exams").select2({
+						placeholder: "Select Max 2 Exams",
+						maximumSelectionLength: 2,
+					}).change();
+
 
 			});
 		</script>
@@ -308,9 +345,9 @@
 			var app = new Vue({
 				el: "#app",
 				data: {
-					Exams: {!! json_encode($exams) !!},
-					Classes: {!! json_encode($classes) !!},
-					Subjects: {!! json_encode($subjects ?? '') !!},
+					Exams: @json($exams),
+					Classes: @json($classes),
+					Subjects: @json($subjects ?? []),
 					filtered_subjects: [],
 					selected_class: '',
 					selected_exam: '',

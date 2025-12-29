@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\AcademicSession;
-use App\Classe;
-use App\Student;
+use App\Model\AcademicSession;
+use App\Model\Classe;
+use App\Model\Student;
 use Auth;
-use App\AcademicSessionHistory;
+use App\Model\AcademicSessionHistory;
 
 class StudentMigrationsController extends Controller
 {
@@ -49,7 +49,7 @@ class StudentMigrationsController extends Controller
                                         'toastrmsg' => [
                                             'type'	=> 'error', 
                                             'title'	=>  'Students Migrations',
-                                            'msg'	=>  'Students not found!'
+                                            'msg'	=>  __('modules.student_migrations_not_found')
                                         ]
                                     ]);
         }
@@ -88,14 +88,12 @@ class StudentMigrationsController extends Controller
         }
 
         return redirect('student-migrations')->with([
-				'toastrmsg' => [
-					'type' => 'success', 
-					'title'  =>  'Student Migrations',
-					'msg' =>  'Migrations Successfull'
-					]
-			]);
-
-    }
+			'toastrmsg' => [
+				'type' => 'success', 
+				'title'  =>  'Student Migrations',
+				'msg' =>  __('modules.student_migrations_success')
+				]
+		]);    }
 
 
 }

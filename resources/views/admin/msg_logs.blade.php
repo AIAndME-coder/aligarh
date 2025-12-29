@@ -1,8 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Message Logs |')
-
-@section('head')
+	@section('title', __('modules.pages_message_logs_title').' |')@section('head')
     <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <style type="text/css">
@@ -36,7 +34,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Logs</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li class="active"><a>Message Logs</a></li>
                 </ol>
             </div>

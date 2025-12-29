@@ -22,7 +22,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Vouchers</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Vouchers</a>
                       </li>
@@ -104,7 +104,7 @@
                                       <table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
                                         <thead>
                                           <tr>
-                                            <th>Name</th>
+                                            <th>{{ __("labels.name") }}</th>
                                             <th>Category</th>
                                             <th>Qty</th>
                                             <th>Rate</th>
@@ -123,7 +123,7 @@
                                                 </select>
                                               </td>
                                               <td>
-                                                <input type="text" placeholder="Category" class="form-control category" disabled="true">
+                                                <input type="text" placeholder="{{ __('labels.category_placeholder') }}" class="form-control category" disabled="true">
                                               </td>
                                               <td>
                                                 <input type="number" name="items[{{ $k+1 }}][qty]" placeholder="Qty" onchange="Calc()" class="form-control qty" value="{{ $detail->qty }}" required="true">
@@ -266,7 +266,7 @@
         Calc();
       });
 
-      @if(COUNT($errors) >= 1)
+      @if(count($errors) >= 1)
         $('#vchr_rgstr [name="vendor"]').val('{{ old('vendor') }}');
       @else
         $('#vchr_rgstr [name="vendor"]').val('{{ $voucher->vendor_id }}');

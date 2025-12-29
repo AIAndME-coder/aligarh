@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Teacher;
+use App\Model\Teacher;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Auth;
@@ -90,7 +90,7 @@ class TeacherController extends Controller
                   ->get();
                   $k=0;
       foreach ($teachers as $teacher) {
-        if ($teacher->User == null) {
+        if ($teacher->user == null) {
           $data[$k]['id'] = $teacher->id;
           $data[$k]['text'] = $teacher->name.' | '.$teacher->email;
           $data[$k]['email']  = $teacher->email;
@@ -111,8 +111,8 @@ class TeacherController extends Controller
     return  redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.teacher_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -127,8 +127,8 @@ class TeacherController extends Controller
     return  redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.teacher_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -145,17 +145,17 @@ class TeacherController extends Controller
 
     $Teacher->updated_by  = Auth::user()->id;
     $Teacher->save();
-    if ($Teacher->User) {
-      $Teacher->User->email   =  $Teacher->email;
-      $Teacher->User->contact_no   =  $Teacher->phone;
-      $Teacher->User->save();
+    if ($Teacher->user) {
+      $Teacher->user->email   =  $Teacher->email;
+      $Teacher->user->contact_no   =  $Teacher->phone;
+      $Teacher->user->save();
     }
 
     return redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Teacher Update',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.teacher_update_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -176,8 +176,8 @@ class TeacherController extends Controller
     return redirect('teacher')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Teacher Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.teacher_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

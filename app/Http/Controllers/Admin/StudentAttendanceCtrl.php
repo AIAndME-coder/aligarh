@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Admin;
 //use Yajra\DataTables\Facades\DataTables;
 //use Illuminate\Http\Request as InputRequest;
 use Illuminate\Http\Request;
-use App\Student;
-use App\StudentAttendance;
-use App\Classe;
-use App\Section;
+use App\Model\Student;
+use App\Model\StudentAttendance;
+use App\Model\Classe;
+use App\Model\Section;
 use DB;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Auth;
 use App\Http\Controllers\Controller;
-use App\AcademicSession;
+use App\Model\AcademicSession;
 use App\Jobs\SendAttendanceJob;
+use App\Helpers\PrintableViewHelper;
 
 class StudentAttendanceCtrl extends Controller
 {
@@ -37,32 +38,34 @@ class StudentAttendanceCtrl extends Controller
 	        'class'  	=>  'required|numeric',
 			//'section'  	=>  'required|numeric',
 	        'date'  	=>  'required',
+    	], [
+	        'class.required'  	=>  __('validation.class_required'),
+			'class.numeric'  	=>  __('validation.class_numeric'),
+	        'date.required'  	=>  __('validation.date_required'),
     	]);
 		$dbdate =	Carbon::createFromFormat('d/m/Y', $request->input('date'));
-		$DateRange = $dbdate->toDateString();
-		if($dbdate->isWeekend()){
-			return redirect('student-attendance')->withInput()->with([
-				'toastrmsg' => [
-					'type' => 'error',
-					'title'  =>  'Student Attendance',
-					'msg' =>  'Selected Date is weekend'
-					]
-			]);
-		}
+	$DateRange = $dbdate->toDateString();
+	if($dbdate->isWeekend()){
+		return redirect('student-attendance')->withInput()->with([
+			'toastrmsg' => [
+				'type' => 'error',
+				'title'  =>  __('modules.attendance_title'),
+				'msg' =>  __('modules.attendance_date_weekend')
+				]
+		]);
+	}
 
-		$AcademicSession = Auth::user()->AcademicSession()->first();
+	$AcademicSession = Auth::user()->AcademicSession()->first();
 
-		if($AcademicSession->getRawOriginal('start') > $DateRange || $AcademicSession->getRawOriginal('end') < $DateRange){
-			return redirect('student-attendance')->withInput()->with([
-				'toastrmsg' => [
-					'type' => 'error',
-					'title'  =>  'Student Attendance',
-					'msg' =>  'Selected Date is Invalid'
-					]
-			]);
-		}
-
-		$data['students'] = Student::withLeaveOn($dbdate->toDateString())->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+	if($AcademicSession->getRawOriginal('start') > $DateRange || $AcademicSession->getRawOriginal('end') < $DateRange){
+		return redirect('student-attendance')->withInput()->with([
+			'toastrmsg' => [
+				'type' => 'error',
+				'title'  =>  __('modules.attendance_title'),
+				'msg' =>  __('modules.attendance_date_invalid')
+				]
+		]);
+	}		$data['students'] = Student::withLeaveOn($dbdate->toDateString())->join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
 									->where([
 										'academic_session_history.class_id' => $request->input('class'),
@@ -133,14 +136,12 @@ class StudentAttendanceCtrl extends Controller
 		}
 		return redirect('student-attendance')->with([
 									'toastrmsg' => [
-										'type' => 'success', 
-										'title'  =>  'Student Attendance',
-										'msg' =>  'Attendance Added Successfull'
-									]
-								]); 
-	}
-
-	public function AttendanceReport(Request $request){
+					'type' => 'success', 
+					'title'  =>  __('modules.attendance_title'),
+					'msg' =>  __('modules.attendance_added_success')
+				]
+							]); 
+}	public function AttendanceReport(Request $request){
 		$this->validate($request, [
 			'class'  	=>  'required',
 			'date'  	=>  'required',
@@ -154,17 +155,15 @@ class StudentAttendanceCtrl extends Controller
 
 		$AcademicSession = Auth::user()->AcademicSession()->first();
 
-		if($AcademicSession->getRawOriginal('start') > $DateRange['start'] || $AcademicSession->getRawOriginal('end') < $DateRange['end']){
-			return redirect('student-attendance')->withInput()->with([
-				'toastrmsg' => [
-					'type' => 'error',
-					'title'  =>  'Student Attendance',
-					'msg' =>  'Selected Date is Invalid'
-					]
-			]);
-		}
-
-		$data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
+	if($AcademicSession->getRawOriginal('start') > $DateRange['start'] || $AcademicSession->getRawOriginal('end') < $DateRange['end']){
+		return redirect('student-attendance')->withInput()->with([
+			'toastrmsg' => [
+				'type' => 'error',
+				'title'  =>  __('modules.attendance_title'),
+				'msg' =>  __('modules.attendance_date_invalid')
+				]
+		]);
+	}		$data['students'] = Student::join('academic_session_history', 'students.id', '=', 'academic_session_history.student_id')
 									->select('students.id', 'students.name', 'students.gr_no', 'academic_session_history.class_id AS session_history_class_id', 'students.class_id AS current_class_id')
 									->where([
 										'academic_session_history.class_id' => $request->input('class'),
@@ -202,10 +201,10 @@ class StudentAttendanceCtrl extends Controller
 			}
 		}
 
-		$data['noofweekends'] = COUNT($data['weekends']);
+		$data['noofweekends'] = count($data['weekends']);
 		$data['input']['date'] = $dbdate->format('M-Y');
 
-		return view('admin.printable.students_attendance', $data);
+		return view(PrintableViewHelper::resolve('students_attendance'), $data);
 	}
 
 }

@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Students |')
+	@section('title', __('modules.pages_students_title').' |')
 
 	@section('head')
 	<link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -20,16 +20,16 @@
 
 					@include('admin.includes.top_navbar')
 
-					<!-- Heading -->
-					<div class="row wrapper border-bottom white-bg page-heading">
-						<div class="col-lg-8 col-md-6">
-							<h2>Students</h2>
-							<ol class="breadcrumb">
-								<li>Home</li>
-								<li Class="active">
-										<a>Students</a>
-								</li>
-							</ol>
+				<!-- Heading -->
+				<div class="row wrapper border-bottom white-bg page-heading">
+					<div class="col-lg-8 col-md-6">
+						<h2>{{ __('modules.pages_edit_student') }}</h2>
+						<ol class="breadcrumb">
+							<li>{{ __('common.home') }}</li>
+							<li Class="active">
+									<a>{{ __('modules.pages_edit_student') }}</a>
+							</li>
+						</ol>
 						</div>
 						<div class="col-lg-4 col-md-6">
 							@include('admin.includes.academic_session')
@@ -44,7 +44,7 @@
 							 <div class="col-lg-12">
 								<div class="ibox float-e-margins">
 										<div class="ibox-title">
-												<h2>Edit Student</h2>
+												<h2>{{ __('modules.forms_edit_student') }}</h2>
 												<div class="hr-line-dashed"></div>
 										</div>
 
@@ -52,10 +52,10 @@
 											<form id="tchr_rgstr" method="post" action="{{ URL('students/edit/'.$student->id) }}" class="form-horizontal" enctype="multipart/form-data">
 												{{ csrf_field() }}
 
-												<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Name</label>
-													<div class="col-md-6">
-														<input type="text" name="name" placeholder="Name" value="{{ old('name', $student->name) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.name') }}</label>
+												<div class="col-md-6">
+													<input type="text" name="name" placeholder="{{ __('labels.name_placeholder') }}" value="{{ old('name', $student->name) }}" class="form-control"/>
 														@if ($errors->has('name'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -64,10 +64,10 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('father_name'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Father Name</label>
-													<div class="col-md-6">
-														<input type="text" name="father_name" placeholder="Father Name" value="{{ old('father_name', $student->father_name) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('father_name'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.father_name') }}</label>
+												<div class="col-md-6">
+													<input type="text" name="father_name" placeholder="{{ __('labels.father_name_placeholder') }}" value="{{ old('father_name', $student->father_name) }}" class="form-control"/>
 														@if ($errors->has('father_name'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('father_name') }}</strong>
@@ -76,13 +76,13 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('gender'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Gender</label>
-													<div class="col-md-6">
-														<select class="form-control" name="gender" placeholder="Gender">
-															<option value="" disabled selected>Gender</option>
-															<option>Male</option>
-															<option>Female</option>
+											<div class="form-group{{ ($errors->has('gender'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.gender') }}</label>
+												<div class="col-md-6">
+													<select class="form-control" name="gender" placeholder="{{ __('labels.gender') }}">
+														<option value="" disabled selected>{{ __('labels.gender') }}</option>
+															<option>{{ __('labels.male') }}</option>
+															<option>{{ __('labels.female') }}</option>
 														</select>
 														@if ($errors->has('gender'))
 																<span class="help-block">
@@ -92,10 +92,10 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('dob'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Date Of Birth</label>
-													<div class="col-md-6">
-														<input type="text" id="datetimepicker4" name="dob" placeholder="DOB" value="{{ old('dob', $student->date_of_birth) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('dob'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.date_of_birth') }}</label>
+												<div class="col-md-6">
+													<input type="text" id="datetimepicker4" name="dob" placeholder="{{ __('labels.dob_placeholder') }}" value="{{ old('dob', $student->date_of_birth) }}" class="form-control"/>
 														@if ($errors->has('dob'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('dob') }}</strong>
@@ -104,10 +104,10 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('place_of_birth'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Place Of Birth</label>
-													<div class="col-md-6">
-														<input type="text" name="place_of_birth" placeholder="Place Of Birth" value="{{ old('place_of_birth', $student->place_of_birth) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('place_of_birth'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.place_of_birth') }}</label>
+												<div class="col-md-6">
+													<input type="text" name="place_of_birth" placeholder="{{ __('labels.place_of_birth') }}" value="{{ old('place_of_birth', $student->place_of_birth) }}" class="form-control"/>
 														@if ($errors->has('place_of_birth'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('place_of_birth') }}</strong>
@@ -116,10 +116,10 @@
 													</div>
 												</div>
 
-												<div class="form-group{{ ($errors->has('religion'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Religion</label>
-													<div class="col-md-6">
-														<input type="text" name="religion" placeholder="Religion" value="{{ old('religion', $student->religion) }}" class="form-control"/>
+											<div class="form-group{{ ($errors->has('religion'))? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">{{ __('labels.religion') }}</label>
+												<div class="col-md-6">
+													<input type="text" name="religion" placeholder="{{ __('labels.religion') }}" value="{{ old('religion', $student->religion) }}" class="form-control"/>
 														@if ($errors->has('religion'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('religion') }}</strong>
@@ -130,11 +130,11 @@
 
 												<div class="form-group {{ ($errors->has('img'))? ' has-error' : '' }}">
 													<div class="col-md-2">
-														<span class="btn btn-default btn-block btn-file">
-															<input type="file" name="img" accept="image/*" id="imginp" />
-																<span class="fa fa-image"></span>
-																Upload Image
-														</span>
+													<span class="btn btn-default btn-block btn-file">
+														<input type="file" name="img" accept="image/*" id="imginp" />
+															<span class="fa fa-image"></span>
+															{{ __('labels.upload_image') }}
+													</span>
 													</div>
 													<div class="col-md-6">
 														<input type="hidden" name="removeImage" v-model="removeImage" />
@@ -214,7 +214,7 @@
 												<div class="form-group{{ ($errors->has('gr_no'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">GR No</label>
 													<div class="col-md-6">
-														<input type="number" name="gr_no" placeholder="GR NO" value="{{ old('gr_no', substr($student->gr_no, (strpos($student->gr_no, '-')+1))) }}" class="form-control" />
+														<input type="number" name="gr_no" placeholder="GR NO" value="{{ old('gr_no', substr($student->gr_no, strrpos($student->gr_no, '-') + 1)) }}" class="form-control" />
 														@if ($errors->has('gr_no'))
 															<span class="help-block">
 																<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('gr_no') }}</strong>
@@ -253,18 +253,18 @@
 												</div>
 
 												<div class="form-group">
-													<label class="col-md-2 control-label">Address</label>
+													<label class="col-md-2 control-label">{{ __('labels.address') }}</label>
 													<div class="col-md-6">
-														<textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address', $student->address) }}</textarea>
+														<textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address', $student->address) }}</textarea>
 													</div>
 												</div>
 
 												<div class="form-group{{ ($errors->has('phone'))? ' has-error' : '' }}">
-													<label class="col-md-2 control-label">Contact No</label>
+													<label class="col-md-2 control-label">{{ __('labels.contact_no') }}</label>
 													<div class="col-md-6">
 														<div class="input-group m-b">
 															<span class="input-group-addon">+92</span>
-															<input type="text" name="phone" value="{{ old('phone', $student->phone) }}" placeholder="Contact No" class="form-control" data-mask="9999999999"/>
+															<input type="text" name="phone" value="{{ old('phone', $student->phone) }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999"/>
 														</div>
 														@if ($errors->has('phone'))
 																<span class="help-block">
@@ -277,7 +277,7 @@
 												<div class="form-group{{ ($errors->has('doa'))? ' has-error' : '' }}">
 													<label class="col-md-2 control-label">Date Of Admission</label>
 													<div class="col-md-6">
-														<input type="text" id="datetimepicker5" name="doa" placeholder="Date Of Admission" value="{{ old('doa', $student->date_of_admission) }}" class="form-control"/>
+														<input type="text" id="datetimepicker5" name="doa" placeholder="{{ __('labels.date_of_admission_placeholder') }}" value="{{ old('doa', $student->date_of_admission) }}" class="form-control"/>
 														@if ($errors->has('doa'))
 																<span class="help-block">
 																		<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('doa') }}</strong>

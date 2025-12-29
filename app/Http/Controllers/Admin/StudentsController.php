@@ -6,21 +6,22 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-use App\Student;
-use App\Guardian;
-use App\Classe;
-use App\Section;
-use App\AdditionalFee;
+use App\Model\Student;
+use App\Model\Guardian;
+use App\Model\Classe;
+use App\Model\Section;
+use App\Model\AdditionalFee;
 use Carbon\Carbon;
-use App\AcademicSessionHistory;
+use App\Model\AcademicSessionHistory;
 use App\Http\Controllers\Controller;
 use Validator;
-use App\Certificate;
-use App\ParentInterview;
+use App\Model\Certificate;
+use App\Model\ParentInterview;
 use App\Model\VisitorStudent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\PrintableViewHelper;
 
 class StudentsController extends Controller 
 {
@@ -59,7 +60,7 @@ class StudentsController extends Controller
 									->with('StdClass')
 									->with('Section')
 									->with(['Guardian'	=>	function($qry) use ($id){
-										$qry->with(['Student'	=>	function($qry) use ($id){
+										$qry->with(['Students'	=>	function($qry) use ($id){
 											$qry->select('id', 'guardian_id', 'name', 'gr_no');
 											$qry->where('id', '!=', $id);
 										}]);
@@ -84,6 +85,24 @@ class StudentsController extends Controller
 				'doa'       =>  'required',
 				'doe'       =>  'required',
 				'img'       => 	'image|mimes:jpg,jpeg,png|max:100',
+		], [
+				'name.required'    =>  __('validation.name_required'),
+				'father_name.required'    =>  __('validation.father_name_required'),
+				'gender.required'  =>  __('validation.gender_required'),
+				'class.required'   =>  __('validation.class_required'),
+				'section.required'  =>  __('validation.section_required'),
+				'gr_no.required'  =>  __('validation.gr_no_required'),
+				'gr_no.unique'  =>  __('validation.gr_no_unique'),
+				'guardian.required'    =>  __('validation.guardian_required'),
+				'guardian_relation.required'  =>  __('validation.guardian_relation_required'),
+				'tuition_fee.required'  =>  __('validation.tuition_fee_required'),
+				'tuition_fee.numeric'  =>  __('validation.tuition_fee_numeric'),
+				'dob.required'       =>  __('validation.dob_required'),
+				'doa.required'       =>  __('validation.doa_required'),
+				'doe.required'       =>  __('validation.doe_required'),
+				'img.image'       => 	__('validation.img_image'),
+				'img.mimes'       => 	__('validation.img_mimes'),
+				'img.max'       => 	__('validation.img_max'),
 		]);
 	}
 
@@ -160,16 +179,15 @@ class StudentsController extends Controller
 
 		$this->PostValidate($request);
 
-		if(Student::active()->count() >= tenancy()->tenant->system_info['general']['student_capacity']){
-			return redirect('students')->with([
-									'toastrmsg' => [
-										'type'	=> 'error', 
-										'title'	=>  'Students',
-										'msg'	=>  'Over students limit'
-									]
-								]);
-		}
-
+	if(Student::active()->count() >= tenancy()->tenant->system_info['general']['student_capacity']){
+		return redirect('students')->with([
+								'toastrmsg' => [
+									'type'	=> 'error', 
+									'title'	=>  __('modules.students_management'),
+									'msg'	=>  __('modules.students_add_error_limit')
+								]
+							]);
+	}
 		$Student = new Student;
 		$this->SetAttributes($Student, $request);
 		$Student->created_by  = Auth::user()->id;
@@ -189,8 +207,8 @@ class StudentsController extends Controller
 		return redirect('students')->with([
 				'toastrmsg' => [
 					'type' => 'success', 
-					'title'  =>  'Student Registration',
-					'msg' =>  'Registration Successfull'
+					'title'  =>  __('modules.students_management'),
+					'msg' =>  __('modules.students_add_success')
 					]
 			]);
 
@@ -201,15 +219,14 @@ class StudentsController extends Controller
 
 		if ($data['visitorStudents']->student_id) {
 
-			return redirect('students')->with([
-				'toastrmsg' => [
-					'type'	=> 'error',
-					'title'	=>  'Students',
-					'msg'	=>  'Student already Admitted'
-				]
-			]);
-		}
-
+		return redirect('students')->with([
+			'toastrmsg' => [
+				'type'	=> 'error',
+				'title'	=>  __('modules.students_management'),
+				'msg'	=>  __('modules.students_already_admitted')
+			]
+		]);
+	}
 		$data['classes'] = Classe::select('id', 'name')->get();
 		$data['guardians'] = Guardian::select('id', 'name', 'email', 'phone', 'address')->get();
 		$data['no_of_active_students'] = Student::active()->count();
@@ -226,8 +243,8 @@ class StudentsController extends Controller
 			return redirect('students')->with([
 				'toastrmsg' => [
 					'type'  => 'error',
-					'title' => 'Students',
-					'msg'   => 'Over students limit'
+					'title' => __('modules.students_management'),
+					'msg'   => __('modules.students_add_error_limit')
 				]
 			]);
 		}
@@ -260,8 +277,8 @@ class StudentsController extends Controller
 			return redirect('students')->with([
 				'toastrmsg' => [
 					'type'  => 'success',
-					'title' => 'Student Registration',
-					'msg'   => 'Registration Successful'
+					'title' => __('modules.students_management'),
+					'msg'   => __('modules.students_add_success')
 				]
 			]);
 		} catch (\Exception $e) {
@@ -271,8 +288,8 @@ class StudentsController extends Controller
 			return redirect('students')->with([
 				'toastrmsg' => [
 					'type'  => 'error',
-					'title' => 'Students',
-					'msg'   => 'Something went wrong'
+					'title' => __('modules.students_management'),
+					'msg'   => __('modules.students_error_generic')
 				]
 			]);
 		}
@@ -309,14 +326,14 @@ class StudentsController extends Controller
 		$Student->updated_by  = Auth::user()->id;
 		$Student->save();
 
-//		$this->UpdateAcademicSessionHistory();
+		$this->UpdateAcademicSessionHistory($Student);
 //		$this->UpdateAdditionalFee();
 
 		return redirect('students')->with([
 				'toastrmsg' => [
 					'type' => 'success', 
-					'title'  =>  'Students Registration',
-					'msg' =>  'Save Changes Successfull'
+					'title'  =>  __('modules.students_management'),
+					'msg' =>  __('modules.students_update_success')
 					]
 			]);
 	}
@@ -334,8 +351,8 @@ class StudentsController extends Controller
 					'updated'	=>	false,
 					'toastrmsg'	=>	[
 						'type'	=> 'error', 
-						'title'	=>  'Students',
-						'msg'	=>  'Something is wrong!'
+						'title'	=>  __('modules.students_management'),
+						'msg'	=>  __('modules.students_error_validation')
 					]
 				];
 			}
@@ -346,26 +363,25 @@ class StudentsController extends Controller
 			$student->active = 0;
 			$student->save();
 
-				return  [
-					'updated'	=>	true,
-					'toastrmsg'	=>	[
-						'type'	=> 'success', 
-						'title'	=>  'Students',
-						'msg'	=>  'Update Successfull'
-					]
-				];
-		}
-
-		return redirect('students')->with([
-									'toastrmsg' => [
-										'type'	=> 'warning', 
-										'title'	=>  'Students',
-										'msg'	=>  'Something is wrong!'
-									]
-								]);
-
-
+			return  [
+				'updated'	=>	true,
+				'toastrmsg'	=>	[
+					'type'	=> 'success', 
+					'title'	=>  __('modules.students_management'),
+					'msg'	=>  __('modules.students_update_success')
+				]
+			];
 	}
+	return redirect('students')->with([
+								'toastrmsg' => [
+									'type'	=> 'warning', 
+									'title'	=>  __('modules.students_management'),
+									'msg'	=>  __('modules.students_error_validation')
+								]
+							]);
+
+
+}
 
 	public function Certificates(){
 
@@ -376,7 +392,7 @@ class StudentsController extends Controller
 		switch ($this->data['root']['option']) {
 			case 'transfercertificate':
 				$this->data['student']	=	Student::with('StdClass')->findorfail($this->Request->input('id'));
-				return view('admin.printable.student_transfer_certificate', $this->data);
+				return view(PrintableViewHelper::resolve('student_transfer_certificate'), $this->data);
 				break;
 			
 			default:
@@ -456,8 +472,8 @@ class StudentsController extends Controller
 		return redirect('students/profile/'.$request->input('student_id'))->with([
 									'toastrmsg' => [
 										'type'	=> 'success', 
-										'title'	=>  'Students',
-										'msg'	=>  'Certificate is Updated!'
+										'title'	=>  __('modules.students_management'),
+										'msg'	=>  __('modules.students_certificate_updated')
 									]
 								]);
 
@@ -478,13 +494,13 @@ class StudentsController extends Controller
 				'student_id' => 'required'
 			]);
 
-			if ($validator->fails()) {
-				return  [
-					'type'	=> 'error', 
-					'title'	=>  'Parent Interview',
-					'msg'	=>  'Something is wrong!'
-				];
-			}
+		if ($validator->fails()) {
+			return  [
+				'type'	=> 'error', 
+				'title'	=>  __('modules.parent_interview'),
+				'msg'	=>  __('modules.students_error_validation')
+			];
+		}
 
 			ParentInterview::updateOrCreate(
 				['student_id'	=>	$request->input('student_id')],
@@ -507,21 +523,20 @@ class StudentsController extends Controller
 			
 			return	[
 				'type'	=> 'success', 
-				'title'	=>  'Parent Interview',
-				'msg'	=>  'Update Interview Successfull'
+				'title'	=>  __('modules.parent_interview'),
+				'msg'	=>  __('modules.parent_interview_update')
 			];
 		}
-	
+
 		return redirect('Students')->with([
-									'toastrmsg' => [
-										'type'	=> 'warning', 
-										'title'	=>  'Students',
-										'msg'	=>  'Something is wrong!'
-									]
-								]);
+								'toastrmsg' => [
+									'type'	=> 'warning', 
+									'title'	=>  __('modules.students_management'),
+									'msg'	=>  __('modules.students_error_validation')
+								]
+		]);
 //		dd($this->Request);
 	}
-
 	protected function SetAttributes($Student, $request, $new = true){
 		$Student->name = $request->input('name');
 		$Student->father_name = $request->input('father_name');
@@ -557,7 +572,7 @@ class StudentsController extends Controller
 
 	protected function UpdateAdditionalFee($Student, $request){
 		AdditionalFee::where(['student_id' => $Student->id])->delete();
-		if ($request->input('fee') && COUNT($request->input('fee')) >= 1) {
+		if ($request->input('fee') && count($request->input('fee')) >= 1) {
 			foreach ($request->input('fee') as $key => $value) {
 				$AdditionalFee = new AdditionalFee;
 				$AdditionalFee->id = $value['id'];

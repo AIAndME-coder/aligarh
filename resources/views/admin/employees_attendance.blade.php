@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Employees Attendance |')
+@section('title', __('modules.pages_employees_attendance_title').' |')
 
 @section('head')
     <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -21,7 +21,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Employees Attendance</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Employees Attendance</a>
                     </li>
@@ -43,7 +43,7 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="make-attendance">
-                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Make Attendance </a>
+                                <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_make_attendance') }} </a>
                             </li>
                             @can('employee-attendance.report')
                                 <li class="get-attendance">
@@ -55,7 +55,7 @@
                         <div class="tab-content">
                             <div id="tab-10" class="tab-pane fade make-attendance">
                                 <div class="panel-body" style="min-height: 400px">
-                                    <h2> Make Attendance </h2>
+                                    <h2> {{ __('modules.forms_make_attendance') }} </h2>
                                     <div class="hr-line-dashed"></div>
 
                                     <form id="mk_att_frm" method="GET" action="{{ URL('employee-attendance/make') }}"
@@ -79,7 +79,7 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-6">
                                                 <button class="btn btn-primary" type="submit"><span
-                                                        class="glyphicon glyphicon-save"></span> Make Attendance </button>
+                                                        class="glyphicon glyphicon-save"></span> {{ __('modules.tabs_make_attendance') }} </button>
                                             </div>
                                         </div>
 
@@ -96,7 +96,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
-                                                            <th>Name</th>
+                                                            <th>{{ __("labels.name") }}</th>
                                                             <th>
                                                                 <div class="checkbox checkbox-success">
                                                                     <input class="select-all" id="checkbox"

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Teacher;
-use App\TeacherAttendance;
-use App\Classe;
-use App\Section;
+use App\Model\Teacher;
+use App\Model\TeacherAttendance;
+use App\Model\Classe;
+use App\Model\Section;
 use DB;
 use Carbon\Carbon;
 use Auth;
@@ -65,17 +65,15 @@ class TeacherAttendanceCtrl extends Controller
 			} else {
 				$att->update(['status' => ($request->input('attendance'.$teacher_id) !== null)? 1 : 0]);
 			}
-		}
-		return redirect('teacher-attendance')->with([
-									'toastrmsg' => [
-										'type' => 'success', 
-										'title'  =>  'Teacher Attendance',
-										'msg' =>  'Attendance Job Successfull'
-									]
-								]); 
 	}
-
-	public function AttendanceReport(Request $request){
+	return redirect('teacher-attendance')->with([
+								'toastrmsg' => [
+									'type' => 'success', 
+									'title'  =>  __('modules.attendance_title'),
+									'msg' =>  __('modules.attendance_job_success')
+								]
+							]); 
+}	public function AttendanceReport(Request $request){
 		$this->validate($request, [
 			'date'  	=>  'required',
 		]);

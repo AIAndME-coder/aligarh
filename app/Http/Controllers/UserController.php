@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
-use App\User;
+use App\Model\User;
 
 class UserController extends Controller {
 
@@ -23,7 +23,7 @@ class UserController extends Controller {
 
     // Attempt to find the user
     $user = User::where($this->LoginUserIDKey, $request->input('userid'))->first();
-    if (!$user->active) {
+    if ($user && !$user->active) {
         return redirect()->back()->withInput()
             ->withErrors([
                 'invalid' => 'You must be Active to login',

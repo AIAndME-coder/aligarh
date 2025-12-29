@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Routine |')
+  @section('title', __('modules.pages_routine_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -26,7 +26,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Routines</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Routines</a>
                     </li>
@@ -51,7 +51,7 @@
                <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h2>Edit Routine</h2>
+                        <h2>{{ __('modules.forms_edit_routine') }}</h2>
                         <div class="hr-line-dashed"></div>
                     </div>
 
@@ -92,7 +92,7 @@
                                       </div>
 
                                       <div class="form-group{{ ($errors->has('subject'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">Subject</label>
+                                        <label class="col-md-2 control-label">{{ __('labels.subject') }}</label>
                                         <div class="col-md-6 select2-div">
                                           <select class="form-control select2" name="subject">
                                             <option></option>
@@ -260,7 +260,7 @@
         $('#tchr_rgstr [name="day"]').select2('val', "{{ old('subject', $routine->day) }}");
 
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').click();
       @endif
 

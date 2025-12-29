@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Expense;
+use App\Model\Expense;
 use Carbon\Carbon;
 use Auth;
 use App\Http\Controllers\Controller;
@@ -17,6 +17,12 @@ class ExpenseController extends Controller
         'description'  =>  'required',
         'amount' =>  'required|numeric',
         'date'  =>  'required',
+    ], [
+        'type.required'  =>  __('validation.type_required'),
+        'description.required'  =>  __('validation.description_required'),
+        'amount.required' =>  __('validation.amount_required'),
+        'amount.numeric' =>  __('validation.amount_numeric'),
+        'date.required'  =>  __('validation.date_required'),
     ]);
   }
 
@@ -46,8 +52,8 @@ class ExpenseController extends Controller
     return redirect('expense')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Expenses',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.expense_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -63,8 +69,8 @@ class ExpenseController extends Controller
     return redirect('expense')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Expense',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.expense_singular_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

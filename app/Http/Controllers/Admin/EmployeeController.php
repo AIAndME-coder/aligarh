@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Employee;
+use App\Model\Employee;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Auth;
@@ -51,6 +51,19 @@ class EmployeeController extends Controller
         'date_of_birth' => 'nullable|date|date_format:Y-m-d',
         'date_of_joining' => 'nullable|date|date_format:Y-m-d',
         'id_card' => 'nullable|string|max:255|unique:employees,id_card'. (($request->route('id'))? ','.$request->route('id') : ''),
+    ], [
+        'name.required'      =>  __('validation.name_required'),
+        'gender.required'    =>  __('validation.gender_required'),
+        'religion.required'    =>  __('validation.religion_required'),
+        'role.required'      =>  __('validation.role_required'),
+        'salary.required'      =>  __('validation.salary_required'),
+        'salary.numeric'      =>  __('validation.salary_numeric'),
+        'img.image'       =>    __('validation.img_image'),
+        'img.mimes'       =>    __('validation.img_mimes'),
+        'img.max'       =>    __('validation.img_max'),
+        'date_of_birth.date' => __('validation.dob_date'),
+        'date_of_joining.date' => __('validation.date_of_joining_date'),
+        'id_card.unique' => __('validation.id_card_unique'),
     ]);
   }
 
@@ -101,7 +114,7 @@ class EmployeeController extends Controller
                   ->get();
                   $k = 0;
       foreach ($employees as $employee) {
-        if ($employee->User == null) {
+        if ($employee->user == null) {
           $data[$k]['id'] = $employee->id;
           $data[$k]['text'] = $employee->name.' | '.$employee->email.' | '.$employee->role;
           $data[$k]['email']  = $employee->email;
@@ -123,8 +136,8 @@ class EmployeeController extends Controller
     return  redirect('employee')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.employee_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -139,8 +152,8 @@ class EmployeeController extends Controller
     return  redirect('employee')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.employee_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
     }
@@ -150,8 +163,8 @@ class EmployeeController extends Controller
         return redirect('employee')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  'Employees Registration',
-          'msg' =>  'Sorry '.$Employee->name.' Employee Can\'t be Editable'
+          'title'  =>  __('modules.employee_registration_title'),
+          'msg' =>  str_replace('{{name}}', $Employee->name, __('modules.employee_not_editable'))
           ]
         ]);
         }
@@ -167,17 +180,17 @@ class EmployeeController extends Controller
     $Employee->updated_by  = Auth::user()->id;
     $Employee->save();
 
-    if ($Employee->User) {
-      $Employee->User->email   =  $Employee->email;
-      $Employee->User->contact_no   =  $Employee->phone;
-      $Employee->User->save();
+    if ($Employee->user) {
+      $Employee->user->email   =  $Employee->email;
+      $Employee->user->contact_no   =  $Employee->phone;
+      $Employee->user->save();
     }
 
     return redirect('employee')->with([
         'toastrmsg' => [
           'type' => 'success',
-          'title'  =>  'Employee Update',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.employee_update_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
   }
@@ -197,8 +210,8 @@ class EmployeeController extends Controller
     return redirect('employee')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Employee Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.employee_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
   }

@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Visitors |')
+@section('title', __('modules.pages_visitors_title').' |')
 @section('head')
     <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -14,7 +14,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Visitors</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Visitors</a>
                     </li>
@@ -39,9 +39,9 @@
                                 {{ csrf_field() }}
 
                                 <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Name</label>
+                                    <label class="col-md-2 control-label">{{ __('labels.name') }}</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="name" placeholder="Name"
+                                        <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}"
                                             value="{{ old('name', $visitorStudents->name) }}" class="form-control" />
                                         @if ($errors->has('name'))
                                             <span class="help-block">
@@ -53,7 +53,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('father_name') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Father Name</label>
+                                    <label class="col-md-2 control-label">{{ __('labels.father_name') }}</label>
                                     <div class="col-md-6">
                                         <input type="text" name="father_name" placeholder="Father Name"
                                             value="{{ old('father_name', $visitorStudents->father_name) }}"
@@ -68,7 +68,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Gender</label>
+                                    <label class="col-md-2 control-label">{{ __('labels.gender') }}</label>
                                     <div class="col-md-6">
                                         <select class="form-control" name="gender" placeholder="Gender">
                                             <option value="" disabled selected>Gender</option>
@@ -115,7 +115,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('religion') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Religion</label>
+                                    <label class="col-md-2 control-label">{{ __('labels.religion') }}</label>
                                     <div class="col-md-6">
                                         <input type="text" name="religion" placeholder="Religion"
                                             value="{{ old('religion', $visitorStudents->religion) }}"
@@ -176,36 +176,21 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group{{ $errors->has('guardian_relation') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Guardian Relation</label>
-                                    <div class="col-md-6">
-                                        <input type="text" name="guardian_relation" placeholder="guardian Relation"
-                                            value="{{ old('guardian_relation', $visitorStudents->guardian_relation) }}"
-                                            class="form-control" />
-                                        @if ($errors->has('guardian_relation'))
-                                            <span class="help-block">
-                                                <strong><span class="fa fa-exclamation-triangle"></span>
-                                                    {{ $errors->first('guardian_relation') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label">Address</label>
+                                    <label class="col-md-2 control-label">{{ __('labels.address') }}</label>
                                     <div class="col-md-6">
-                                        <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address', $visitorStudents->address) }}</textarea>
+                                        <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address', $visitorStudents->address) }}</textarea>
                                     </div>
                                 </div>
 
                                 <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                                    <label class="col-md-2 control-label">Contact No</label>
+                                    <label class="col-md-2 control-label">{{ __('labels.contact_no') }}</label>
                                     <div class="col-md-6">
                                         <div class="input-group m-b">
                                             <span class="input-group-addon">+92</span>
                                             <input type="text" name="phone"
                                                 value="{{ old('phone', $visitorStudents->phone) }}"
-                                                placeholder="Contact No" class="form-control" data-mask="9999999999" />
+                                                placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999" />
                                         </div>
                                         @if ($errors->has('phone'))
                                             <span class="help-block">
@@ -219,7 +204,7 @@
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label class="col-md-2 control-label">Email</label>
                                     <div class="col-md-6">
-                                        <input type="email" name="email" placeholder="guardian Relation"
+                                        <input type="email" name="email" placeholder="{{ __("labels.email") }}"
                                             value="{{ old('email', $visitorStudents->email) }}" class="form-control" />
                                         @if ($errors->has('email'))
                                             <span class="help-block">
@@ -229,6 +214,14 @@
                                         @endif
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-6">
+                                        <textarea type="text" name="remarks" placeholder="Remarks" class="form-control">{{ old('remarks', $visitorStudents->remarks) }}</textarea>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-6">
                                         <button class="btn btn-primary" type="submit"><span
@@ -281,9 +274,6 @@
                     name: {
                         required: true,
                     },
-                    email: {
-                        email: true,
-                    },
                     father_name: {
                         required: true,
                     },
@@ -294,9 +284,6 @@
                         required: true,
                     },
                     religion: {
-                        required: true,
-                    },
-                    guardian_relation: {
                         required: true,
                     },
                     address: {

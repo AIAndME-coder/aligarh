@@ -19,9 +19,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Sections</h2>
+                  <h2>{{ __("modules.pages_sections_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Sections</a>
                       </li>
@@ -43,11 +43,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Sections</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_sections') }}</a>
                             </li>
                             @can('manage-sections.add')
                               <li class="add-section">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Section</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_section') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -72,7 +72,7 @@
                                               <table class="table table-striped table-bordered table-hover dataTables-teacher" >
                                                 <thead>
                                                   <tr>
-                                                    <th>Name</th>
+                                                    <th>{{ __("labels.name") }}</th>
                                                     <th>Nick Name</th>
                                                     <th>Capacity</th>
                                                     <th>Teacher</th>
@@ -136,7 +136,7 @@
                                         <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Name</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="name" placeholder="Name" value="{{ old('name') }}" class="form-control"/>
+                                            <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name') }}" class="form-control"/>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -256,7 +256,7 @@
         $('#tchr_rgstr [name="class"]').val("{{ old('class') }}");
         $('[data-toggle="tooltip"]').tooltip();
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

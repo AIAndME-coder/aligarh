@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Vendors |')
+  @section('title', __('modules.pages_vendors_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -20,7 +20,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Vendors</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Vendors</a>
                       </li>
@@ -42,11 +42,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Vendors</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_vendors') }}</a>
                             </li>
                             @can('vendors.add')
                               <li class="add-vendor">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Vendors</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_vendor') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -59,10 +59,10 @@
                                         <tr>
                                           <th>V Name</th>
                                           <th>C Name</th>
-                                          <th>E-Mail</th>
-                                          <th>Contact</th>
-                                          <th>Address</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.email_label") }}</th>
+                                          <th>{{ __("labels.contact") }}</th>
+                                          <th>{{ __("labels.address") }}</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>
@@ -119,7 +119,7 @@
                                         <div class="form-group{{ ($errors->has('phone'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Contact No</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Contact No" class="form-control" data-mask="(999) 999-9999"/>
+                                            <input type="text" name="phone" value="{{ old('phone') }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="(999) 999-9999"/>
                                             @if ($errors->has('phone'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('phone') }}</strong>
@@ -131,7 +131,7 @@
                                         <div class="form-group">
                                           <label class="col-md-2 control-label">Address</label>
                                           <div class="col-md-6">
-                                            <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                            <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                           </div>
                                         </div>
 
@@ -241,7 +241,7 @@
             },
         });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

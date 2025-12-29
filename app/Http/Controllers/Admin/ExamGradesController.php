@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Grade;
+use App\Model\Grade;
 
 class ExamGradesController extends Controller
 {
@@ -26,8 +26,8 @@ class ExamGradesController extends Controller
 		return redirect('exam-grades')->with([
 			'toastrmsg' => [
 				'type' => 'success', 
-				'title'  =>  'System Settings',
-				'msg' =>  'Exam Grades Updated'
+				'title'  =>  __('modules.exam_grades_title'),
+				'msg' =>  __('modules.exams_update_success')
 			]
 		]);
 	}

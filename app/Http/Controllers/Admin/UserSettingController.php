@@ -33,8 +33,8 @@ class UserSettingController extends Controller
               ->with([
                   'toastrmsg' => [
                     'type' => 'error',
-                    'title'  =>  'User Settings',
-                    'msg' =>  'In Demo Password Can Not Be Change!'
+                    'title'  =>  __('modules.user_settings_title'),
+                    'msg' =>  __('modules.common_demo_restriction')
                     ],
                   ]);
     		}
@@ -44,8 +44,8 @@ class UserSettingController extends Controller
           ->with([
               'toastrmsg' => [
                 'type' => 'success',
-                'title'  =>  'User Settings',
-                'msg' =>  'Password Changed'
+                'title'  =>  __('modules.user_settings_title'),
+                'msg' =>  __('modules.common_password_change_success')
                 ],
               ]);
       } else {
@@ -65,8 +65,8 @@ class UserSettingController extends Controller
         return redirect()->back()->with([
           'toastrmsg' => [
             'type' => 'success',
-            'title'  =>  'User Settings',
-            'msg' =>  'Session Changed'
+            'title'  =>  __('modules.user_settings_title'),
+            'msg' =>  __('modules.common_session_change_success')
           ],
           ]);
       }
@@ -74,8 +74,8 @@ class UserSettingController extends Controller
       return redirect()->back()->with([
                   'toastrmsg' => [
                     'type' => 'error',
-                    'title'  =>  'User Settings',
-                    'msg' =>  'Session Not Allowed'
+                    'title'  =>  __('modules.user_settings_title'),
+                    'msg' =>  __('modules.common_session_change_error')
                     ],
                   ]);
 
@@ -98,8 +98,8 @@ class UserSettingController extends Controller
       return response([
               'toastrmsg' => [
                 'type' => 'success',
-                'title'  =>  'User Settings',
-                'msg' =>  'Update Skin Setting'
+                'title'  =>  __('modules.user_settings_title'),
+                'msg' =>  __('modules.common_skin_update')
                 ],
               ]);
 

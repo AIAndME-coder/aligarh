@@ -22,7 +22,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Notice Boards</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Notice</a>
                       </li>
@@ -83,7 +83,7 @@
 
                             <div id="tab-11" class="tab-pane fade make-notice">
                                 <div class="panel-body">
-                                  <h2> Create Notice </h2>
+                                  <h2> {{ __('modules.forms_create_notice') }} </h2>
                                   <div class="hr-line-dashed"></div>
 
                                     <form id="tchr_rgstr" method="POST" action="{{ URL('noticeboard/create') }}" class="form-horizontal" >
@@ -223,7 +223,7 @@
 
       $(document).ready(function(){
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

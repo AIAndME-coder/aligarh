@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Vouchers |')
+  @section('title', __('modules.pages_vouchers_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -20,9 +20,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Vouchers</h2>
+                  <h2>{{ __("modules.pages_vouchers_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Vouchers</a>
                       </li>
@@ -44,12 +44,12 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Vouchers</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_vouchers') }}</a>
                             </li>
 
                             @can('vouchers.add')
                               <li class="add-voucher">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Vouchers</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_voucher') }}</a>
                               </li>
                             @endcan
 
@@ -65,7 +65,7 @@
                                           <th>Voucher No</th>
                                           <th>Vendor</th>
                                           <th>Net Amount</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                       <tfoot>
@@ -74,7 +74,7 @@
                                           <th>Voucher No</th>
                                           <th>Vendor</th>
                                           <th>Net Amount</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </tfoot>
                                     </table>
@@ -85,7 +85,7 @@
                             @can('vouchers.add')
                               <div id="tab-11" class="tab-pane fade add-voucher">
                                   <div class="panel-body">
-                                    <h2> Add Voucher </h2>
+                                    <h2> {{ __('modules.forms_add_voucher') }} </h2>
                                     <div class="hr-line-dashed"></div>
 
                                       <form id="vchr_rgstr" method="post" action="{{ URL('vouchers/add') }}" class="form-horizontal" >
@@ -97,7 +97,7 @@
                                           <label class="col-md-2 control-label">Vendor</label>
                                           <div class="col-md-6">
                                             <select class="form-control" name="vendor">
-                                              <option value="" disabled selected>Vendor</option>
+                                              <option value="" disabled selected>{{ __('modules.pages_vendors_title') }}</option>
                                               @foreach($vendors as $vendor)
                                                 <option value="{{ $vendor->id }}">{{ $vendor->v_name.' | '.$vendor->email }}</option>
                                               @endforeach
@@ -113,7 +113,7 @@
                                         <div class="form-group{{ ($errors->has('voucher_date'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Voucher Date</label>
                                           <div class="col-md-6">
-                                            <input type="text" id="datetimepicker4" name="voucher_date" placeholder="Voucher Date" value="{{ old('voucher_date') }}" class="form-control"/>
+                                            <input type="text" id="datetimepicker4" name="voucher_date" placeholder="{{ __('modules.labels_date') }}" value="{{ old('voucher_date') }}" class="form-control"/>
                                             @if ($errors->has('voucher_date'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('voucher_date') }}</strong>
@@ -143,7 +143,7 @@
                                         <table id="additionalfeetbl" class="table table-bordered table-hover table-striped">
                                           <thead>
                                             <tr>
-                                              <th>Name</th>
+                                              <th>{{ __("labels.name") }}</th>
                                               <th>Category</th>
                                               <th>Qty</th>
                                               <th>Rate</th>
@@ -154,26 +154,26 @@
                                               <tr>
                                                 <td>
                                                   <select class="form-control item" onchange="ItemChanged(this)" name="items[1][id]" required="true">
-                                                    <option value="" disabled selected>Items</option>
+                                                    <option value="" disabled selected>{{ __('modules.table_items') }}</option>
                                                     @foreach($items as $item)
                                                       <option value="{{ $item->id }}" category="{{ $item->category }}">{{ $item->name.' | '.$item->category }}</option>
                                                     @endforeach
                                                   </select>
                                                 </td>
                                                 <td>
-                                                  <input type="text" placeholder="Category" class="form-control category" disabled="true">
+                                                  <input type="text" placeholder="{{ __('modules.labels_class') }}" class="form-control category" disabled="true">
                                                 </td>
                                                 <td>
-                                                  <input type="number" name="items[1][qty]" placeholder="Qty" onchange="Calc()" class="form-control qty" required="true">
+                                                  <input type="number" name="items[1][qty]" placeholder="{{ __('modules.labels_qty') }}" onchange="Calc()" class="form-control qty" required="true">
                                                 </td>
                                                 <td>
-                                                  <input type="number" name="items[1][rate]" placeholder="Rate" onchange="Calc()" class="form-control rate" required="true">
+                                                  <input type="number" name="items[1][rate]" placeholder="{{ __('modules.labels_rate') }}" onchange="Calc()" class="form-control rate" required="true">
                                                 </td>
                                               </tr>
                                           </tbody>
                                           <tfoot>
                                             <tr>
-                                              <th>Total</th>
+                                              <th>{{ __('modules.table_total') }}</th>
                                               <th></th>
                                               <th></th>
                                               <th id="net_amount">{{ old('net_amount') }}</th>
@@ -360,7 +360,7 @@
 
       $('#additemrow').click(function(){
         var $row = $('#additionalfeetbl tbody').children('tr:first').html();
-        $row  += '<td><a href="javascript:void(0);" class="btn btn-default text-danger remove" data-toggle="tooltip" title="Remove" ><span class="fa fa-trash"></span></a></td>';
+        $row  += '<td><a href="javascript:void(0);" class="btn btn-default text-danger remove" data-toggle="tooltip" title="{{ __('modules.buttons_remove') }}" ><span class="fa fa-trash"></span></a></td>';;
 //        console.log($row);
 
         $('#additionalfeetbl tbody').append('<tr>'+$row+'</tr>');
@@ -384,7 +384,7 @@
         Calc();
       });
 
-      @if(COUNT($errors) >= 1)
+      @if(count($errors) >= 1)
         $('#vchr_rgstr [name="vendor"]').val('{{ old('vendor') }}');
       @endif
 
@@ -393,7 +393,7 @@
                 allowClear: true,
             });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('.nav-tabs a[href="#tab-11"]').tab('show');
       @else
         $('.nav-tabs a[href="#tab-10"]').tab('show');

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Teacher;
-use App\Classe;
-use App\Subject;
+use App\Model\Teacher;
+use App\Model\Classe;
+use App\Model\Subject;
 use DB;
 use Auth;
 use App\Http\Controllers\Controller;
@@ -36,8 +36,8 @@ class ManageSubjects extends Controller
 		return  redirect('manage-subjects')->with([
 				'toastrmsg' => [
 					'type' => 'warning', 
-					'title'  =>  '# Invalid URL',
-					'msg' =>  'Do Not write hard URL\'s'
+					'title'  =>  __('modules.subjects_invalid_url_title'),
+					'msg' =>  __('modules.common_url_error')
 					]
 			]);
 		}
@@ -59,8 +59,8 @@ class ManageSubjects extends Controller
 		return redirect('manage-subjects')->with([
 				'toastrmsg' => [
 					'type' => 'success', 
-					'title'  =>  'Subjects Registration',
-					'msg' =>  'Registration Successfull'
+					'title'  =>  __('modules.subjects_registration_title'),
+					'msg' =>  __('modules.common_register_success')
 					]
 			]);
 
@@ -74,8 +74,8 @@ class ManageSubjects extends Controller
 		return  redirect('manage-subjects')->with([
 				'toastrmsg' => [
 					'type' => 'warning',
-					'title'  =>  '# Invalid URL',
-					'msg' =>  'Do Not write hard URL\'s'
+					'title'  =>  __('modules.subjects_invalid_url_title'),
+					'msg' =>  __('modules.common_url_error')
 					]
 			]);
 		}
@@ -89,8 +89,8 @@ class ManageSubjects extends Controller
 		return redirect('manage-subjects')->with([
 				'toastrmsg' => [
 					'type' => 'success',
-					'title'  =>  'Subject Registration',
-					'msg' =>  'Save Changes Successfull'
+					'title'  =>  __('modules.subject_registration_title'),
+					'msg' =>  __('modules.common_save_success')
 					]
 			]);
 	}
@@ -101,6 +101,10 @@ class ManageSubjects extends Controller
 				'book'  =>  'required',
 //        'teacher' =>  'required',
 				'class' =>  'required'
+		], [
+				'name.required'  =>  __('validation.name_required'),
+				'book.required'  =>  __('validation.book_required'),
+				'class.required' =>  __('validation.class_required'),
 		]);
 	}
 

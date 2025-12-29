@@ -570,7 +570,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Guardians</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li><a href="{{ URL('guardians') }}"> Guardian </a></li>
                     <li Class="active">
                         <a>Profile</a>
@@ -673,7 +673,7 @@
                                     <div class="info-content">
                                         <div class="info-label">No of Students</div>
                                         <div class="info-value address-text">
-                                            {{ $guardian->Student->count() }}
+                                            {{ $guardian->Students->count() }}
                                         </div>
                                     </div>
                                 </li>
@@ -691,7 +691,7 @@
             </div>
 
             <div class="students" style="display: ruby">
-                @foreach ($guardian->Student as $student)
+                @foreach ($guardian->Students as $student)
                     <div class="student-m-2">
                         <a href="/students/profile/{{$student->id}}" class="text-decoration-none">
                             <div class="student-panel student-card">

@@ -24,7 +24,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Students Attendance</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Students Attendance</a>
                       </li>
@@ -57,7 +57,7 @@
                         <div class="tab-content">
                             <div id="tab-10" class="tab-pane fade make-attendance">
                                 <div class="panel-body" style="min-height: 400px">
-                                  <h2> Make Attendance </h2>
+                                  <h2> {{ __('modules.forms_make_attendance') }} </h2>
                                   <div class="hr-line-dashed"></div>
 
                                     <form id="mk_att_frm" method="GET" action="{{ URL('student-attendance/make') }}" class="form-horizontal jumbotron" role="form" >
@@ -123,8 +123,8 @@
                                         <table class="table table-striped table-bordered table-hover">
                                           <thead>
                                             <tr>
-                                              <th>GR No</th>
-                                              <th>Name</th>
+                                              <th>{{ __("labels.gr_no") }}</th>
+                                              <th>{{ __("labels.name") }}</th>
                                               <th>
                                                 <div class="checkbox checkbox-success">
                                                   <input class="select-all" id="checkbox" type="checkbox" />
@@ -236,7 +236,7 @@
                                       @if($job)
                                       <div class="row">
                                       <h3>Class: {{ $selected_class->name.' '.$section_nick }} ({{ $input['date'] }})</h3>
-                                      <h4>No Of Students: {{ COUNT($students) }}</h3>
+                                      <h4>No Of Students: {{ count($students) }}</h3>
                                       <h4>Teacher: {{ $selected_class->Teacher->name }}</h3>
                                         <div class="hr-line-dashed"></div>
                                           <div class="table-responsive">
@@ -322,7 +322,7 @@
           }
       });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('#mk_att_frm [name="class"]').val("{{ old('class') }}");
         $('[name="class"]').change();
         $('[name="section"]').val('{{ old('section') }}');
@@ -340,7 +340,7 @@
 
       @endif
 {{--
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('.nav-tabs a[href="#tab-11"]').tab('show');
       @else
 

@@ -1,8 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Expense |')
-
-	@section('head')
+        @section('title', __('modules.pages_expense_title').' |')	@section('head')
 	<link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 	@endsection
@@ -18,9 +16,9 @@
 					<!-- Heading -->
 					<div class="row wrapper border-bottom white-bg page-heading">
 							<div class="col-lg-8 col-md-6">
-									<h2>Expenses</h2>
+									<h2>{{ __("modules.pages_expenses_title") }}</h2>
 									<ol class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 											<li Class="active">
 													<a>Expense</a>
 											</li>
@@ -40,11 +38,11 @@
 										<div class="tabs-container">
 												<ul class="nav nav-tabs">
 														<li class="">
-															<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Expenses</a>
+															<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_expenses') }}</a>
 														</li>
 														@can('expense.add')
 															<li class="add-expense">
-																<a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Expense</a>
+																<a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_expense') }}</a>
 															</li>
 														@endcan
 														@can('expense.summary')
@@ -64,7 +62,7 @@
 																					<th>Description</th>
 																					<th>Amount</th>
 																					<th>Date</th>
-																					<th>Options</th>
+																					<th>{{ __("labels.options") }}</th>
 																				</tr>
 																			</thead>
 																		</table>
@@ -75,7 +73,7 @@
 														@can('expense.add')
 															<div id="tab-11" class="tab-pane fade add-expense">
 																	<div class="panel-body">
-																		<h2> Add Expense </h2>
+																		<h2> {{ __('modules.forms_add_expense') }} </h2>
 																		<div class="hr-line-dashed"></div>
 
 																			<form id="tchr_rgstr" method="post" action="{{ URL('expense/add') }}" class="form-horizontal" >
@@ -114,7 +112,7 @@
 																				<div class="form-group{{ ($errors->has('amount'))? ' has-error' : '' }}">
 																					<label class="col-md-2 control-label">Amount</label>
 																					<div class="col-md-6">
-																						<input type="number" name="amount" value="{{ old('amount') }}" placeholder="Amount" class="form-control"/>
+																						<input type="number" name="amount" value="{{ old('amount') }}" placeholder="{{ __('labels.amount_placeholder') }}" class="form-control"/>
 																						@if ($errors->has('amount'))
 																								<span class="help-block">
 																										<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('amount') }}</strong>
@@ -256,7 +254,7 @@
 		var tbl;
 			$(document).ready(function(){
 
-			@if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+			@if(count($errors) >= 1 && !$errors->has('toastrmsg'))
 				$('a[href="#tab-11"]').tab('show');
 			@else
 				$('a[href="#tab-10"]').tab('show');

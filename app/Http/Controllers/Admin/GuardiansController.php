@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Guardian;
+use App\Model\Guardian;
 use Auth;
 use App\Http\Controllers\Controller;
 
@@ -64,8 +64,8 @@ class GuardiansController extends Controller
       return  redirect('guardians')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.guardians_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -82,8 +82,8 @@ class GuardiansController extends Controller
       return  redirect('guardians')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.guardians_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -96,8 +96,8 @@ class GuardiansController extends Controller
       return redirect('guardians')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Guardians Registration',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.guardians_registration_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -117,8 +117,8 @@ class GuardiansController extends Controller
       return redirect('guardians')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'guardians Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.guardians_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

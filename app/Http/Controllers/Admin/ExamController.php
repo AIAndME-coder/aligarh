@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Exam;
+use App\Model\Exam;
 use Carbon\Carbon;
 use Auth;
 use App\Http\Controllers\Controller;
@@ -18,6 +18,12 @@ class ExamController extends Controller
 			'description'  =>  'required',
 			'start_date' =>  'required',
 			'end_date'  =>  'required',
+		], [
+			'exam_category.required'	=>	__('validation.exam_category_required'),
+			'name.required'  =>  __('validation.name_required'),
+			'description.required'  =>  __('validation.description_required'),
+			'start_date.required' =>  __('validation.start_date_required'),
+			'end_date.required'  =>  __('validation.end_date_required'),
 		]);
 	}
 
@@ -48,8 +54,8 @@ class ExamController extends Controller
 		return redirect('exam')->with([
 			'toastrmsg' => [
 			'type'	=> 'success',
-			'title'  =>  'Exams',
-			'msg' =>  'Save Changes Successfull'
+			'title'  =>  __('modules.exams_title'),
+			'msg' =>  __('modules.exams_save_success')
 			]
 		]);
 	}
@@ -61,9 +67,9 @@ class ExamController extends Controller
 			return redirect('exam')->withInput()->with([
 				'toastrmsg' => [
 					'type' => 'error',
-					'title'  =>  'Exam',
-					'msg' =>  'Exam "'.config('examcategories.'.$request['exam_category']).'" already created'
-					]
+					'title'  =>  __('modules.exams_title'),
+					'msg' =>  __('modules.exams_already_exists')
+				]
 			]);
 		}
 		$Exam = new Exam;
@@ -75,8 +81,8 @@ class ExamController extends Controller
 		return redirect('exam')->with([
 			'toastrmsg' => [
 			'type' => 'success', 
-			'title'  =>  'Exams',
-			'msg' =>  'Exam Created'
+			'title'  =>  __('modules.exams_title'),
+			'msg' =>  __('modules.exams_create_success')
 			]
 		]);
 

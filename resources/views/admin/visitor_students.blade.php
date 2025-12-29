@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Vistor Students |')
+@section('title', __('modules.pages_visitor_students_title').' |')
 @section('head')
     <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
@@ -381,7 +381,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Visitors</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Visitors</a>
                     </li>
@@ -577,7 +577,7 @@
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label">Student Name</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" name="name" placeholder="Name"
+                                                    <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}"
                                                         value="{{ old('name') }}" class="form-control" />
                                                     @if ($errors->has('name'))
                                                         <span class="help-block">
@@ -602,21 +602,7 @@
                                                 </div>
                                             </div>
 
-                                            <div
-                                                class="form-group{{ $errors->has('guardian_relation') ? ' has-error' : '' }}">
-                                                <label class="col-md-2 control-label">Guardian Relation</label>
-                                                <div class="col-md-6">
-                                                    <input type="text" name="guardian_relation"
-                                                        placeholder="Guardian Relation"
-                                                        value="{{ old('guardian_relation') }}" class="form-control" />
-                                                    @if ($errors->has('guardian_relation'))
-                                                        <span class="help-block">
-                                                            <strong><span class="fa fa-exclamation-triangle"></span>
-                                                                {{ $errors->first('guardian_relation') }}</strong>
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
+                                        
 
                                             <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label">Gender</label>
@@ -732,7 +718,7 @@
                                                     <div class="input-group m-b">
                                                         <span class="input-group-addon">+92</span>
                                                         <input type="text" name="phone" value="{{ old('phone') }}"
-                                                            placeholder="Contact No" class="form-control"
+                                                            placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control"
                                                             data-mask="9999999999" />
                                                     </div>
                                                     @if ($errors->has('phone'))
@@ -748,8 +734,8 @@
                                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label">Email</label>
                                                 <div class="col-md-6">
-                                                    <input type="email" name="email" placeholder="Email"
-                                                        value="{{ old('email') }}" required class="form-control" />
+                                                    <input type="email" name="email" placeholder="{{ __("labels.email") }}"
+                                                        value="{{ old('email') }}" class="form-control" />
                                                     @if ($errors->has('email'))
                                                         <span class="help-block">
                                                             <strong><span class="fa fa-exclamation-triangle"></span>
@@ -762,7 +748,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">Address</label>
                                                 <div class="col-md-6">
-                                                    <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                                    <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                                 </div>
                                             </div>
 
@@ -780,6 +766,14 @@
                                                     @endif
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label class="col-md-2 control-label">Remarks</label>
+                                                <div class="col-md-6">
+                                                    <textarea type="text" name="remarks" placeholder="Remarks" class="form-control">{{ old('remarks') }}</textarea>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group">
                                                 <div class="col-md-offset-2 col-md-6">
                                                     <button class="btn btn-primary" type="submit"><span
@@ -840,9 +834,6 @@
                     name: {
                         required: true,
                     },
-                    email: {
-                        email: true,
-                    },
                     father_name: {
                         required: true,
                     },
@@ -853,9 +844,6 @@
                         required: true,
                     },
                     religion: {
-                        required: true,
-                    },
-                    guardian_relation: {
                         required: true,
                     },
                     address: {
@@ -881,14 +869,14 @@
 
            
 
-            @if (COUNT($errors) >= 1)
+            @if (count($errors) >= 1)
                 $('#tchr_rgstr [name="gender"]').val('{{ old('gender') }}');
                 $('#tchr_rgstr [name="class"]').val("{{ old('class') }}");
                 $('#tchr_rgstr [name="class"]').change();
             @endif
 
 
-            @if (COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+            @if (count($errors) >= 1 && !$errors->has('toastrmsg'))
                 $('.nav-tabs a[href="#tab-11"]').tab('show');
             @else
                 $('.nav-tabs a[href="#tab-10"]').tab('show');

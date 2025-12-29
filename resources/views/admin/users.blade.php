@@ -1,8 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Users |')
-
-  @section('head')
+	@section('title', __('modules.pages_users_title').' |')  @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
   <link href="{{ asset('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
@@ -39,7 +37,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Users</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Users</a>
                       </li>
@@ -61,11 +59,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" onClick="drawTable()" href="#tab-10"><span class="fa fa-list"></span> Users</a>
+                              <a data-toggle="tab" onClick="drawTable()" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_users') }}</a>
                             </li>
                             @can('users.create')
                               <li class="add-user">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Users</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_user') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -77,9 +75,9 @@
                                       <thead>
                                         <tr>
                                           <th>User Name</th>
-                                          <th>E-Mail</th>
+                                          <th>{{ __("labels.email_label") }}</th>
                                           <th>Role</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>
@@ -156,7 +154,7 @@
                                         <div class="form-group{{ ($errors->has('password'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Password</label>
                                           <div class="col-md-6">
-                                            <input type="password" id="password" name="password" placeholder="Password" value="{{ old('password') }}" class="form-control"/>
+                                            <input type="password" id="password" name="password" placeholder="{{ __('labels.password_placeholder') }}" value="{{ old('password') }}" class="form-control"/>
                                             @if ($errors->has('password'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('password') }}</strong>
@@ -167,7 +165,7 @@
                                         <div class="form-group{{ ($errors->has('re_password'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Confirm Password</label>
                                           <div class="col-md-6">
-                                            <input type="password" name="re_password" placeholder="Confirm Password" value="{{ old('re_password') }}" class="form-control"/>
+                                            <input type="password" name="re_password" placeholder="{{ __('labels.confirm_password_placeholder') }}" value="{{ old('re_password') }}" class="form-control"/>
                                             @if ($errors->has('re_password'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('re_password') }}</strong>
@@ -179,7 +177,7 @@
                                           <label class="col-md-2 control-label">Allow Session</label>
                                           <div class="col-md-6">
                                             <select class="select2 form-control" multiple="multiple" name="allow_session[]" style="width: 100%">
-                                            @foreach(App\AcademicSession::UserAllowSession()->get() AS $session)
+                                            @foreach(App\Model\AcademicSession::UserAllowSession()->get() AS $session)
                                                 <option value="{{ $session->id }}">{{ $session->title }}</option>
                                             @endforeach
                                             </select>

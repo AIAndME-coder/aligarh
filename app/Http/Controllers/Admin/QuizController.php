@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Classe;
-use App\Section;
-use App\Quiz;
+use App\Model\Classe;
+use App\Model\Section;
+use App\Model\Quiz;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Teacher;
+use App\Model\Teacher;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -79,8 +79,8 @@ class QuizController extends Controller
                 ->with([
                     'toastrmsg' => [
                         'type' => 'error',
-                        'title' => 'Quiz',
-                        'msg' => 'There was an issue while Creating Quiz',
+                        'title' => __('modules.quiz_title'),
+                        'msg' => __('modules.quiz_create_error'),
                     ],
                 ]);
         }
@@ -97,8 +97,8 @@ class QuizController extends Controller
         return redirect('quizzes')->with([
             'toastrmsg' => [
                 'type' => 'success',
-                'title' => 'Quiz',
-                'msg' => 'Quiz created successfully',
+                'title' => __('modules.quiz_title'),
+                'msg' => __('modules.common_quiz_created'),
             ],
         ]);
     }
@@ -140,8 +140,8 @@ class QuizController extends Controller
         return redirect('quizzes')->with([
             'toastrmsg' => [
                 'type' => 'success',
-                'title' => 'Quiz',
-                'msg' => 'Quiz Updated successfully',
+                'title' => __('modules.quiz_title'),
+                'msg' => __('modules.common_quiz_updated'),
             ],
         ]);
     }
@@ -162,8 +162,8 @@ class QuizController extends Controller
                 ->with([
                     'toastrmsg' => [
                         'type' => 'Error',
-                        'title' => 'Quiz',
-                        'msg' => 'There was an issue while Deleting Quiz',
+                        'title' => __('modules.quiz_title'),
+                        'msg' => __('modules.common_quiz_delete_error'),
                     ],
                 ]);
         }
@@ -176,8 +176,8 @@ class QuizController extends Controller
         return redirect('attendance-leave')->with([
             'toastrmsg' => [
                 'type' => 'success',
-                'title' => 'Quiz',
-                'msg' => 'Deleted Successfully',
+                'title' => __('modules.quiz_title'),
+                'msg' => __('modules.common_delete_success'),
             ],
         ]);
     }

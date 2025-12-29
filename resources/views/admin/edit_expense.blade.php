@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Edit Expense |')
+  @section('title', __('modules.pages_edit_expense_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
@@ -19,7 +19,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Expense</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li>
                           <a>Expense</a>
                       </li>
@@ -43,7 +43,7 @@
                <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h2>Edit Expense</h2>
+                        <h2>{{ __('modules.forms_edit_expense') }}</h2>
                         <div class="hr-line-dashed"></div>
                     </div>
 
@@ -85,7 +85,7 @@
                                       <div class="form-group{{ ($errors->has('amount'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Amount</label>
                                         <div class="col-md-6">
-                                          <input type="number" name="amount" value="{{ old('amount', $expense->amount) }}" placeholder="Amount" class="form-control"/>
+                                          <input type="number" name="amount" value="{{ old('amount', $expense->amount) }}" placeholder="{{ __('labels.amount_placeholder') }}" class="form-control"/>
                                           @if ($errors->has('amount'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('amount') }}</strong>

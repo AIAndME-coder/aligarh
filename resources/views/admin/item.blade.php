@@ -18,11 +18,11 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Items</h2>
+                  <h2>{{ __('modules.pages_items_title') }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __('common.home') }}</li>
                       <li Class="active">
-                          <a>Items</a>
+                          <a>{{ __('modules.pages_items_title') }}</a>
                       </li>
                   </ol>
               </div>
@@ -46,7 +46,7 @@
                             </li>
                             @can('items.add')
                               <li class="add-item">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Items</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_items') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -57,12 +57,12 @@
                                     <table class="table table-striped table-bordered table-hover dataTables-teacher" >
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
+                                          <th>{{ __("labels.name") }}</th>
                                           <th>Category</th>
                                           <th>Qty</th>
                                           <th>Qty Level</th>
                                           <th>location</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>
@@ -80,9 +80,9 @@
                                         {{ csrf_field() }}
 
                                         <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
-                                          <label class="col-md-2 control-label">Item Name</label>
+                                            <label class="col-md-2 control-label">{{ __('modules.labels_item_name') }}</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="name" placeholder="Item Name" value="{{ old('name') }}" class="form-control"/>
+                                            <input type="text" name="name" placeholder="{{ __('modules.labels_item_name') }}" value="{{ old('name') }}" class="form-control"/>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -94,7 +94,7 @@
                                         <div class="form-group{{ ($errors->has('category'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Category</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="category" placeholder="Category" value="{{ old('category') }}" class="form-control"/>
+                                            <input type="text" name="category" placeholder="{{ __('labels.category_placeholder') }}" value="{{ old('category') }}" class="form-control"/>
                                             @if ($errors->has('category'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('category') }}</strong>
@@ -243,7 +243,7 @@
             },
         });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Fees |')
+  @section('title', __('modules.pages_fees_title').' |')
 
   @section('head')
 	<link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -21,9 +21,9 @@
 		  <!-- Heading -->
 		  <div class="row wrapper border-bottom white-bg page-heading">
 			  <div class="col-lg-8 col-md-6">
-				  <h2>Fees</h2>
+				  <h2>{{ __("modules.pages_fees_title") }}</h2>
 				  <ol class="breadcrumb">
-					<li>Home</li>
+					<li>{{ __("common.home") }}</li>
 					  <li Class="active">
 						  <a>Fee</a>
 					  </li>
@@ -43,16 +43,16 @@
 					<div class="tabs-container">
 						<ul class="nav nav-tabs">
 							<li class="">
-								<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Invoice</a>
+								<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_invoice') }}</a>
 							</li>
 							@can('fee.create.store')
 								<li class="make-fee">
-									<a data-toggle="tab" href="#tab-11"><span class="fa fa-edit"></span> Create Invoice</a>
+									<a data-toggle="tab" href="#tab-11"><span class="fa fa-edit"></span> {{ __('modules.tabs_create_invoice') }}</a>
 								</li>
 							@endcan
 							@can('fee.bulk.create.invoice')
 								<li class="make-fee">
-									<a data-toggle="tab" href="#tab-14"><span class="fa fa-edit"></span> Create Bulk Invoice</a>
+									<a data-toggle="tab" href="#tab-14"><span class="fa fa-edit"></span> {{ __('modules.tabs_create_bulk_invoice') }}</a>
 								</li>
 							@endcan
 							@can('fee.collect.store')
@@ -80,15 +80,24 @@
 										  <th>Discount</th>
 										  <th>Paid Status</th>
 										  <th>Paid Amount</th>
+										  <th>Balance</th>
 										  <th>Due Status</th>
 										  <th>Due Date</th>
 										  <th>Issue Date</th>
-										  <th>Options</th>
+										  <th>{{ __("labels.options") }}</th>
 										</tr>
 									  </thead>
 										<tfoot>
 											<tr>
-												<th></th>
+												<th>
+													<select id="filterClass">
+														<option value="">All</option>
+														@foreach ($classes as $class)
+															<option value="{{ $class->id }}">{{ $class->name }}
+															</option>
+														@endforeach
+													</select>
+												</th>
 												<th></th>
 												<th></th>
 												<th></th>
@@ -101,6 +110,7 @@
 															<option value="0">Unpaid</option>
 													</select>
 												</th>
+												<th></th>
 												<th></th>
 												<th>
 													<select id="filterDue">
@@ -120,9 +130,9 @@
 
 								</div>
 							</div>
-							@can('fee.bulk.create.invoice')
+							@canany(['fee.bulk.create.invoice', 'fee.bulk.create.group.invoice'])
 								<div id="tab-14" class="tab-pane fade make-fee">
-									<div id="createfeeApp" class="panel-body">
+									<div class="panel-body">
 									<h2> Create Bulk Invoice </h2>
 									<div class="hr-line-dashed"></div>
 
@@ -148,8 +158,8 @@
 										<div class="form-group{{ $errors->has('months') ? ' has-error' : '' }}">
 											<label class="col-md-2 control-label">Months</label>
 											<div class="col-md-6">
-												<select class="form-control" id="select2_bulk_months" multiple="multiple" name="months[]" required="true" style="width: 100%">
-													@foreach($months as $month)
+												<select class="form-control select2_bulk_months" multiple="multiple" name="months[]" required="true" style="width: 100%">
+													@foreach($bulk_months as $month)
 													<option value="{{ $month['value'] }}">{{ $month['title'] }}</option>
 													@endforeach
 												</select>
@@ -164,9 +174,9 @@
 										<div class="form-group{{ $errors->has('issue_date') ? ' has-error' : '' }}">
 											<label class="col-md-2 control-label">Issue Date</label>
 											<div class="col-md-6">
-													<input type="text" id="datetimepicker_issuedate" name="issue_date"
+													<input type="text" name="issue_date"
 															placeholder="Issue Date" value="{{ old('issue_date') }}"
-															class="form-control" required />
+															class="form-control datetimepicker_issuedate" required />
 													@if ($errors->has('issue_date'))
 															<span class="help-block">
 																	<strong><span class="fa fa-exclamation-triangle"></span>
@@ -179,9 +189,9 @@
 										<div class="form-group{{ $errors->has('due_date') ? ' has-error' : '' }}">
 											<label class="col-md-2 control-label">Due Date</label>
 											<div class="col-md-6">
-													<input type="text" id="datetimepicker_duedate" name="due_date"
+													<input type="text"  name="due_date"
 															placeholder="Due Date" value="{{ old('due_date') }}"
-															class="form-control" required />
+															class="form-control datetimepicker_duedate" required />
 													@if ($errors->has('due_date'))
 															<span class="help-block">
 																	<strong><span class="fa fa-exclamation-triangle"></span>
@@ -198,13 +208,94 @@
 										</div>
 
 										</form>
+
+										<h2> From Guardian </h2>
+										<form id="crt_group_invoice_frm" method="POST" action="{{ route('fee.bulk.create.group.invoice') }}" class="form-horizontal jumbotron" role="form" >
+											@csrf
+
+											<div class="form-group{{ $errors->has('guardian') ? ' has-error' : '' }}">
+													<label class="col-md-2 control-label">Guardian</label>
+													<div class="col-md-6">
+															<select class="form-control select2" name="guardian" id="guardian-select">
+																	<option value="" disabled selected>Guardian</option>
+																	@foreach ($guardians as $guardian)
+																			<option 
+																					value="{{ $guardian->id }}"
+																					data-address="{{ e($guardian->address ?? '') }}"
+																					data-phone="{{ e($guardian->phone ?? '') }}">
+																					{{ $guardian->name . ' | ' . $guardian->email }}
+																			</option>
+																	@endforeach
+															</select>
+															@if ($errors->has('guardian'))
+																	<span class="help-block">
+																			<strong><span class="fa fa-exclamation-triangle"></span>
+																					{{ $errors->first('guardian') }}</strong>
+																	</span>
+															@endif
+													</div>
+											</div>
+
+											<div class="form-group{{ $errors->has('months') ? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">Months</label>
+												<div class="col-md-6">
+													<select class="form-control select2_bulk_months" multiple="multiple" name="months[]" required="true" style="width: 100%">
+														@foreach($bulk_months as $month)
+														<option value="{{ $month['value'] }}">{{ $month['title'] }}</option>
+														@endforeach
+													</select>
+													@if ($errors->has('months'))
+														<span class="help-block">
+															<strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('months') }} </strong>
+														</span>
+													@endif
+												</div>
+											</div>
+
+											<div class="form-group{{ $errors->has('issue_date') ? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">Issue Date</label>
+												<div class="col-md-6">
+														<input type="text" name="issue_date"
+																placeholder="Issue Date" value="{{ old('issue_date') }}"
+																class="form-control datetimepicker_issuedate" required />
+														@if ($errors->has('issue_date'))
+																<span class="help-block">
+																		<strong><span class="fa fa-exclamation-triangle"></span>
+																				{{ $errors->first('issue_date') }}</strong>
+																</span>
+														@endif
+												</div>
+											</div>
+
+											<div class="form-group{{ $errors->has('due_date') ? ' has-error' : '' }}">
+												<label class="col-md-2 control-label">Due Date</label>
+												<div class="col-md-6">
+														<input type="text" name="due_date"
+																placeholder="Due Date" value="{{ old('due_date') }}"
+																class="form-control datetimepicker_duedate" required />
+														@if ($errors->has('due_date'))
+																<span class="help-block">
+																		<strong><span class="fa fa-exclamation-triangle"></span>
+																				{{ $errors->first('due_date') }}</strong>
+																</span>
+														@endif
+												</div>
+											</div>
+
+											<div class="form-group">
+												<div class="col-md-offset-2 col-md-6">
+													<button class="btn btn-primary btn-block" type="submit"><span class="glyphicon glyphicon-save"></span> Create </button>
+												</div>
+											</div>
+
+										</form>
 									</div>
 								</div>
 							@endcan
 							@can('fee.create.store')
 								<div id="tab-11" class="tab-pane fade make-fee">
 									<div id="createfeeApp" class="panel-body">
-									<h2> Create Invoice </h2>
+									<h2> {{ __('modules.forms_create_invoice') }} </h2>
 									<div class="hr-line-dashed"></div>
 
 										<form id="crt_invoice_frm" method="GET" action="{{ URL('fee/create') }}" class="form-horizontal jumbotron" role="form" >
@@ -617,6 +708,8 @@
 	<!-- require with bootstrap-datetimepicker -->
 	<script src="{{ asset('src/js/plugins/moment/moment.min.js') }}"></script>
 	<script src="{{ asset('src/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+	<!-- Select2 -->
+	<script src="{{ asset('src/js/plugins/select2/select2.full.min.js') }}"></script>
 
 	<script type="text/javascript">
 	var tbl;
@@ -633,14 +726,20 @@
 
 	  $(document).ready(function(){
 
-	  @if((COUNT($errors) >= 1 && session('toastrmsg.form') == 'fee.bulk.create.invoice'))
+	  @if((count($errors) >= 1 && session('toastrmsg.form') == 'fee.bulk.create.invoice'))
 			$('a[href="#tab-14"]').tab('show');
-			$('#select2_bulk_months').val(@json(old('months', [])));
-		@elseif((COUNT($errors) >= 1 && !$errors->has('toastrmsg')))
+			$('.select2_bulk_months').val(@json(old('months', [])));
+			$('#crt_group_invoice_frm [name="guardian"]').val({{old('guardian_id')}});
+		@elseif((count($errors) >= 1 && !$errors->has('toastrmsg')))
 			$('a[href="#tab-11"]').tab('show');
 				@if(isset($Input))
 					$('[name="gr_no"]').val('{{ $Input['gr_no'] }}');
 				@endif
+		@elseif($root == 'create')
+			$('a[href="#tab-11"]').tab('show');
+			@if(isset($Input) && $Input['gr_no'])
+				$('[name="gr_no"]').val('{{ $Input['gr_no'] }}');
+			@endif
 		@else
 			$('a[href="#tab-10"]').tab('show');
 	  @endif
@@ -667,13 +766,16 @@
 		  buttons: [
 			{ extend: 'copy'},
 			{extend: 'csv'},
-			{extend: 'excel', title: 'ExampleFile'},
-			{extend: 'pdf', title: 'ExampleFile'},
+			{extend: 'excel', title: 'Fee Receipts'},
+			{extend: 'pdf', title: 'Fee Receipts'},
 
 			{extend: 'print',
+				exportOptions: {
+					columns: ':not(.no-print)' // exclude all columns with class 'no-print'
+				},
 			  customize: function (win){
 				$(win.document.body).addClass('white-bg');
-				$(win.document.body).css('font-size', '10px');
+				$(win.document.body).css('font-size', '12px');
 
 				$(win.document.body).find('table')
 				.addClass('compact')
@@ -702,8 +804,13 @@
 		  ],
 		  Processing: true,
 		  serverSide: true,
-		  order: [[0, "desc"]],
-		  ajax: '{{ URL('fee') }}',
+		  order: [[1, "desc"]],
+		  ajax: {
+			url: '{{ URL('fee') }}',
+			data: function(d) {
+				d.class_id = $('#filterClass').val(); 
+		  	}
+		  },
 		  columns: [
 			{
 				data: 'id',
@@ -711,18 +818,20 @@
 				searchable: false,
 				render: function (data, type, row) {
 				return '<input type="checkbox" class="row-checkbox" data-id="' + data + '">';
-				}
+				},
+				className: 'no-print',
 			},
 			{data: 'id', name: 'invoice_master.id'},
 			{data: 'gr_no', name: 'invoice_master.gr_no'},
 			{data: 'total_amount', name: 'invoice_master.total_amount'},
 			{data: 'discount', name: 'invoice_master.discount'},
-			{data: 'paid_status', name: 'paid_status', visible: false },
+			{data: 'paid_status', name: 'paid_status', visible: false, className: 'hidden-print no-print' },
 			{data: 'paid_amount', name: 'invoice_master.paid_amount'},
-			{data: 'due_status', name: 'due_status', visible: false },
+			{data: 'balance', name: 'balance', searchable: false, orderable: false},
+			{data: 'due_status', name: 'due_status', visible: false, className: 'hidden-print no-print' },
 			{data: 'due_date', name: 'invoice_master.due_date'},
 			{data: 'created_at', name: 'invoice_master.created_at'},
-			{"defaultContent": opthtm, className: 'hidden-print'},
+			{"defaultContent": opthtm, className: 'hidden-print no-print'},
 		  ],
 		});
 
@@ -803,15 +912,20 @@
 			// templateResult: select2template,
 		});
 
-		$("#select2_bulk_months").select2({
+		$(".select2_bulk_months").select2({
 			placeholder: "select months"
 		}).change();
 
-		$('#datetimepicker_issuedate').datetimepicker({
+		$('#crt_group_invoice_frm [name="guardian"]').attr('style', 'width:100%').select2({
+					placeholder: "Nothing Selected",
+					allowClear: true,
+			});
+
+		$('.datetimepicker_issuedate').datetimepicker({
 				format: 'YYYY-MM-DD',
 				defaultDate: moment()
 		});
-		$('#datetimepicker_duedate').datetimepicker({
+		$('.datetimepicker_duedate').datetimepicker({
 				format: 'YYYY-MM-DD',
 		});
 
@@ -837,14 +951,15 @@
 	$("#filterDue").on('change', function() {
 			search((7), this.value, (this.value === ''));
 	});
+	$("#filterClass").on('change', function() {
+		// console.log('Filter changed to:', this.value); 
+		tbl.ajax.reload();
+	});
 	</script>
 
 	@endsection
 
 	@section('vue')
-
-	<!-- Select2 -->
-	<script src="{{ asset('src/js/plugins/select2/select2.full.min.js') }}"></script>
 
 	@if($root == 'create')
 	<script type="text/javascript">

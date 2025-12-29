@@ -71,6 +71,11 @@ Route::group(['middleware' => 'guest'], function(){
 	Route::post('login', [UserController::class, 'PostLogin'])->name('login.post');
 });
 
+// Swagger/OpenAPI Documentation
+Route::get('/api/documentation', function() {
+    return view('swagger');
+})->middleware(['auth', 'auth.active', 'role:Developer'])->name('tenant.api.documentation');
+
 Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], function(){
 
     Route::get('/cmd', function () {
@@ -111,7 +116,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/', [StudentsController::class, 'Index'])->name('.index');
         Route::get('/{id}/visitor', [StudentsController::class, 'ShowVistor'])->name('.show.visitor');
         Route::post('/{id}/visitor', [StudentsController::class, 'CreateVistor'])->name('.create.visitor');
-        Route::get('/guardians/list', [StudentsController::class, 'getGuardians']);
+        Route::get('/guardians/list', [StudentsController::class, 'getGuardians'])->name('.guardians.list');
         Route::get('/grid', [StudentsController::class, 'Grid'])->name('.grid');
         Route::get('/image/{id}', [StudentsController::class, 'GetImage'])->name('.image');
         Route::get('/profile/{id}', [StudentsController::class, 'GetProfile'])->name('.profile');
@@ -212,6 +217,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::post('/delete', [ManageRoutine::class, 'DeleteRoutine'])->name('.delete');
         Route::post('/add', [ManageRoutine::class, 'AddRoutine'])->name('.add');
         Route::post('/edit/{id}', [ManageRoutine::class, 'PostEditRoutine'])->name('.edit.post');
+        Route::get('/print/{class}/{section?}', [ManageRoutine::class, 'printTimetable'])->name('.print');
     });
 
     Route::prefix('student-attendance')->name('student-attendance')->group(function(){
@@ -310,6 +316,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/create ', [FeesController::class, 'FindInvoice'])->name('.create');
         Route::post('/create/{id}', [FeesController::class, 'CreateInvoice'])->name('.create.store');
         Route::post('/bulk-create-invoice', [FeesController::class, 'CreateBulkInvoice'])->name('.bulk.create.invoice');
+        Route::post('/bulk-create-group-invoice', [FeesController::class, 'CreateGroupInvoice'])->name('.bulk.create.group.invoice');
         Route::get('/collect', [FeesController::class, 'GetInvoice'])->name('.get.invoice.collect');
         Route::post('/collect ', [FeesController::class, 'CollectInvoice'])->name('.collect.store');
         Route::get('/update ', [FeesController::class, 'GetStudentFee'])->name('.get.student.fee');
@@ -349,6 +356,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
 
     Route::prefix('exam-reports')->name('exam-reports')->group(function(){
         Route::get('/', [ExamReportController::class, 'Index'])->name('.index');
+        Route::post('/', [ExamReportController::class, 'UpdateRank'])->name('.update.rank');
         Route::post('/tabulation-sheet', [ExamReportController::class, 'GetExamTabulation'])->name('.tabulation.sheet');
         Route::post('/award-list', [ExamReportController::class, 'AwardList'])->name('.award.list');
         Route::post('/average-result', [ExamReportController::class, 'AverageResult'])->name('.average.result');
@@ -396,6 +404,7 @@ Route::group(['middleware' => ['auth', 'auth.active', 'route_has_permission']], 
         Route::get('/', [SystemSettingController::class, 'GetSetting'])->name('.index');
         Route::get('/logo', [SystemSettingController::class, 'GetLog'])->name('.logo');
         Route::post('/update', [SystemSettingController::class, 'UpdateSetting'])->name('.update');
+        Route::post('/module-permissions', [SystemSettingController::class, 'UpdateModulePermissions'])->name('.module.permissions');
         Route::get('/print-invoice-history', [SystemSettingController::class, 'PrintInvoiceHistory'])->name('.print.invoice.history');
         Route::post('/history', [SystemSettingController::class, 'History'])->name('.history');
         Route::post('/notification-settings/{id}', [SystemSettingController::class, 'NotificationSettings'])->name('.notification.settings');

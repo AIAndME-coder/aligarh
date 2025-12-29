@@ -17,7 +17,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>User Settings</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>User Settings</a>
                       </li>
@@ -38,7 +38,7 @@
                <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h2>Change Password</h2>
+                        <h2>{{ __('modules.forms_change_password') }}</h2>
                         <div class="hr-line-dashed"></div>
                     </div>
 
@@ -54,7 +54,7 @@
 									<label class="col-md-2 control-label">Current password</label>
 
 									<div class="col-md-6">
-									<input type="password" name="cr_pwd" placeholder="Current Password" class="form-control">
+									<input type="password" name="cr_pwd" placeholder="{{ __('labels.current_password_placeholder') }}" class="form-control">
                   @if ($errors->has('cr_pwd'))
                       <span class="help-block">
                           <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('cr_pwd') }}</strong>

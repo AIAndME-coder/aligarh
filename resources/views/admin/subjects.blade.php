@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Classes |')
+  @section('title', __('modules.pages_classes_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -19,9 +19,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Subjects</h2>
+                  <h2>{{ __("modules.pages_subjects_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Subjects</a>
                       </li>
@@ -43,11 +43,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Subjects</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_subjects') }}</a>
                             </li>
                             @can('manage-subjects.add')
                               <li class="add-subject">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Subject</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_subject') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -72,7 +72,7 @@
                                               <table class="table table-striped table-bordered table-hover dataTables-teacher" >
                                                 <thead>
                                                   <tr>
-                                                    <th>Name</th>
+                                                    <th>{{ __("labels.name") }}</th>
                                                     <th>Book</th>
                                                     <th>Teacher</th>
                                                     <th class="edit-subject">Options</th>
@@ -108,7 +108,7 @@
                             @can('manage-subjects.add')
                               <div id="tab-11" class="tab-pane fade add-subject">
                                   <div class="panel-body">
-                                    <h2> Subject Registration </h2>
+                                    <h2> {{ __('modules.forms_subject_registration') }} </h2>
                                     <div class="hr-line-dashed"></div>
 
                                       <form id="tchr_rgstr" method="post" action="{{ URL('manage-subjects/add') }}" class="form-horizontal">
@@ -134,7 +134,7 @@
                                         <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Name</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="name" placeholder="Name" value="{{ old('name') }}" class="form-control"/>
+                                            <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name') }}" class="form-control"/>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -146,7 +146,7 @@
                                         <div class="form-group{{ ($errors->has('book'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Book</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="book" placeholder="Book" value="{{ old('book') }}" class="form-control"/>
+                                            <input type="text" name="book" placeholder="{{ __('labels.book_placeholder') }}" value="{{ old('book') }}" class="form-control"/>
                                             @if ($errors->has('book'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('book') }}</strong>
@@ -253,7 +253,7 @@
 //        $('.select2-div>span').attr('style', 'width:100%');
         $('[data-toggle="tooltip"]').tooltip();
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

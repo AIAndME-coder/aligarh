@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Library |')
+  @section('title', __('modules.pages_library_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -18,9 +18,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Library</h2>
+                  <h2>{{ __("modules.pages_library_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Books</a>
                       </li>
@@ -42,11 +42,11 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Books</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_books') }}</a>
                             </li>
                             @can('library.add')
                               <li class="add-item">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Book</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_book') }}</a>
                               </li>
                             @endcan                   
                         </ul>
@@ -62,7 +62,7 @@
                                           <th>Author</th>
                                           <th>Edition</th>
                                           <th>Qty</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                     </table>
@@ -73,7 +73,7 @@
                             @can('library.add')
                               <div id="tab-11" class="tab-pane fade add-item">
                                   <div class="panel-body">
-                                    <h2> Book Registration </h2>
+                                    <h2> {{ __('modules.forms_book_registration') }} </h2>
                                     <div class="hr-line-dashed"></div>
 
                                       <form id="vdr_rgstr" method="post" action="{{ URL('library/add') }}" class="form-horizontal" >
@@ -82,7 +82,7 @@
                                         <div class="form-group{{ ($errors->has('title'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Title</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="title" placeholder="Book Title" value="{{ old('title') }}" class="form-control"/>
+                                            <input type="text" name="title" placeholder="{{ __('labels.book_title_placeholder') }}" value="{{ old('title') }}" class="form-control"/>
                                             @if ($errors->has('title'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('title') }}</strong>
@@ -165,7 +165,7 @@
 
                                         <div class="form-group">
                                             <div class="col-md-offset-2 col-md-6">
-                                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Add Book </button>
+                                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> {{ __('modules.buttons_add') }} {{ __('modules.forms_add_book') }} </button>
                                             </div>
                                         </div>
                                       </form>
@@ -208,7 +208,7 @@
       opthtm = '';
       //  opthtm = '<a href="{{ URL('items/profile') }}/'+full.id+'" data-toggle="tooltip" title="Profile" class="btn btn-default btn-circle btn-xs profile"><span class="fa fa-user"></span></a>';
       @can('library.edit.post')
-      opthtm += '<a href="{{ URL('library/edit') }}/'+full.id+'" data-toggle="tooltip" title="Edit Book" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
+      opthtm += '<a href="{{ URL('library/edit') }}/'+full.id+'" data-toggle="tooltip" title="{{ __('modules.buttons_edit') }}" class="btn btn-default btn-circle btn-xs"><span class="fa fa-edit"></span></a>';
       @endcan     
 
         return opthtm;
@@ -267,7 +267,7 @@
             },
         });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

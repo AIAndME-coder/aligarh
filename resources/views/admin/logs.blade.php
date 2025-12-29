@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Logs |')
+@section('title', __('modules.pages_logs_title').' |')
 
 @section('head')
     <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -144,7 +144,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Notifications</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li class="active"><a>Logs</a></li>
                 </ol>
             </div>

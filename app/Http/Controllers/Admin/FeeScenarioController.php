@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Larapack\ConfigWriter\Repository as ConfigWriter;
 
-use App\Student;
-use App\AdditionalFee;
+use App\Model\Student;
+use App\Model\AdditionalFee;
 
 class FeeScenarioController extends Controller
 {
@@ -25,19 +25,17 @@ class FeeScenarioController extends Controller
 
 		switch ($request->input('type')) {
 			case 1:
-				$ConfigWriter = new ConfigWriter('feeses');
-				$ConfigWriter->set($this->SetFeeses($request));
-				$ConfigWriter->save();
-				return redirect('fee-scenario')->with([
-					'toastrmsg' => [
-						'type' => 'success', 
-						'title'  =>  'System Settings',
-						'msg' =>  'Feeses Updated For New Students'
-					]
-				]);
-				break;
-			
-			case 2:
+			$ConfigWriter = new ConfigWriter('feeses');
+			$ConfigWriter->set($this->SetFeeses($request));
+			$ConfigWriter->save();
+			return redirect('fee-scenario')->with([
+				'toastrmsg' => [
+					'type' => 'success', 
+					'title'  =>  __('modules.fees_title'),
+					'msg' =>  __('modules.fees_scenario_new_students_updated')
+				]
+			]);
+			break;			case 2:
 				return $this->ApplyAllStudent($request);
 				break;
 		}
@@ -75,13 +73,13 @@ class FeeScenarioController extends Controller
 				$student->late_fee	=	$request->input('late_fee');
 				$student->save();
 
-				$student->AdditionalFee()->delete();
-				if ($request->input('fee') && COUNT($request->input('fee')) >= 1) {
-					foreach ($request->input('fee') as $key => $value) {
-						$AdditionalFee = new AdditionalFee;
-						$AdditionalFee->student_id = $student->id;
-						$AdditionalFee->fee_name = $value['fee_name'];
-						$AdditionalFee->amount = $value['amount'];
+			$student->AdditionalFee()->delete();
+			if ($request->input('fee') && count($request->input('fee')) >= 1) {
+				foreach ($request->input('fee') as $key => $value) {
+					$AdditionalFee = new AdditionalFee;
+					$AdditionalFee->student_id = $student->id;
+					$AdditionalFee->fee_name = $value['fee_name'];
+					$AdditionalFee->amount = $value['amount'];
 						$AdditionalFee->onetime = isset($value['onetime'])? 1 : 0;
 						$AdditionalFee->active = isset($value['active'])? 1 : 0;
 						$AdditionalFee->save();
@@ -94,7 +92,7 @@ class FeeScenarioController extends Controller
 			'toastrmsg' => [
 				'type' => 'success', 
 				'title'  =>  'System Settings',
-				'msg' =>  'Feeses Updated All Students'
+				'msg' =>  __('modules.fees_scenario_all_students_updated')
 			]
 		]);
 

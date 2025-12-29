@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Notice |')
+  @section('title', __('modules.pages_notice_title').' |')
 
   @section('head')
 
@@ -20,9 +20,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Notice Boards</h2>
+                  <h2>{{ __("modules.pages_notice_board_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Notice</a>
                       </li>
@@ -44,7 +44,7 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li>
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-clipboard"></span> Notices</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-clipboard"></span> {{ __('modules.tabs_notices') }}</a>
                             </li>
                             @can('noticeboard.create')
                               <li class="make-notice">
@@ -82,7 +82,7 @@
                             @can('noticeboard.create')
                               <div id="tab-11" class="tab-pane fade make-notice">
                                   <div class="panel-body">
-                                    <h2> Create Notice </h2>
+                                    <h2> {{ __('modules.forms_create_notice') }} </h2>
                                     <div class="hr-line-dashed"></div>
 
                                       <form id="tchr_rgstr" method="POST" action="{{ URL('noticeboard/create') }}" class="form-horizontal" >
@@ -174,7 +174,7 @@
 
       $(document).ready(function(){
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('a[href="#tab-11"]').tab('show');
       @else
         $('a[href="#tab-10"]').tab('show');

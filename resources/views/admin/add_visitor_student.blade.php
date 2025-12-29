@@ -180,7 +180,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Students</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Students</a>
                     </li>
@@ -202,7 +202,7 @@
                         <ul class="nav nav-tabs">
                             @can('students.add')
                                 <li class="add-student">
-                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Admit Students</a>
+                                    <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_admit_students') }}</a>
                                 </li>
                             @endcan
                         </ul>
@@ -210,7 +210,7 @@
                             @can('students.add')
                                 <div id="tab-11" class="tab-pane fade add-student">
                                     <div class="panel-body">
-                                        <h2> Admit Student </h2>
+                                        <h2> {{ __('modules.forms_admit_student') }} </h2>
                                         <div class="hr-line-dashed"></div>
 
                                         <form v-if="admission_allow" id="tchr_rgstr" method="post"
@@ -268,7 +268,7 @@
                                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                                 <label class="col-md-2 control-label">Student Name</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" name="name" placeholder="Name"
+                                                    <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}"
                                                         value="{{ $visitorStudents->name }}" class="form-control" />
                                                     @if ($errors->has('name'))
                                                         <span class="help-block">
@@ -462,7 +462,7 @@
                                                 <label class="col-md-2 control-label">Date Of Admission</label>
                                                 <div class="col-md-6">
                                                     <input type="text" id="datetimepicker5" name="doa"
-                                                        placeholder="Date of Admission" value="{{ old('doa') }}"
+                                                        placeholder="{{ __('labels.date_of_admission_placeholder') }}" value="{{ old('doa') }}"
                                                         class="form-control" required="true" />
                                                     @if ($errors->has('doa'))
                                                         <span class="help-block">
@@ -505,7 +505,7 @@
                                             <div class="form-group">
                                                 <label class="col-md-2 control-label">Address</label>
                                                 <div class="col-md-6">
-                                                    <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                                    <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                                 </div>
                                             </div>
 
@@ -515,7 +515,7 @@
                                                     <div class="input-group m-b">
                                                         <span class="input-group-addon">+92</span>
                                                         <input type="text" name="phone" value="{{ old('phone') }}"
-                                                            placeholder="Contact No" class="form-control"
+                                                            placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control"
                                                             data-mask="9999999999" />
                                                     </div>
                                                     @if ($errors->has('phone'))
@@ -706,7 +706,7 @@
                                                                     <div class="guardian-model-form-row">
                                                                         <div class="guardian-model-form-group">
                                                                             <label class="guardian-model-form-label">Address</label>
-                                                                             <textarea id="guardian_address" style="height: 34px; width: 246px;" type="text" name="address" placeholder="Address" class="form-control"></textarea>
+                                                                             <textarea id="guardian_address" style="height: 34px; width: 246px;" type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control"></textarea>
                                                                         </div>
                                                                         <div class="guardian-model-form-group">
                                                                             <label class="guardian-model-form-label">Income</label>
@@ -843,7 +843,7 @@
                 }
             });
 
-            @if (COUNT($errors) >= 1)
+            @if (count($errors) >= 1)
                 $('#tchr_rgstr [name="gender"]').val('{{ old('gender') }}');
                 $('#tchr_rgstr [name="guardian"]').val('{{ old('guardian') }}');
                 $('#tchr_rgstr [name="class"]').val("{{ old('class') }}");
@@ -856,7 +856,7 @@
                 allowClear: true,
             });
 
-            @if (COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+            @if (count($errors) >= 1 && !$errors->has('toastrmsg'))
                 $('.nav-tabs a[href="#tab-11"]').tab('show');
             @else
                 $('.nav-tabs a[href="#tab-10"]').tab('show');

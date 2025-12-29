@@ -6,10 +6,10 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Carbon\Carbon;
-use App\Voucher;
-use App\VoucherDetail;
-use App\Vendor;
-use App\Item;
+use App\Model\Voucher;
+use App\Model\VoucherDetail;
+use App\Model\Vendor;
+use App\Model\Item;
 use Auth;
 use DB;
 use App\Http\Controllers\Controller;
@@ -22,6 +22,11 @@ class VouchersController extends Controller
           'voucher_no'  =>  'required',
           'voucher_date' =>  'required',
           'items.*.*' =>  'required',
+      ], [
+          'vendor.required'  =>  __('validation.vendor_required'),
+          'voucher_no.required'  =>  __('validation.voucher_no_required'),
+          'voucher_date.required' =>  __('validation.voucher_date_required'),
+          'items.required' =>  __('validation.items_required'),
       ]);
     }
 
@@ -48,8 +53,8 @@ class VouchersController extends Controller
       return  redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.vouchers_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -68,8 +73,8 @@ class VouchersController extends Controller
       return  redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.vouchers_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -84,8 +89,8 @@ class VouchersController extends Controller
       return redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Vouchers Registration',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.vouchers_registration_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -105,8 +110,8 @@ class VouchersController extends Controller
       return redirect('vouchers')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Vouchers Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.vouchers_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 
@@ -128,7 +133,7 @@ class VouchersController extends Controller
 			$Item->save();
 		}
 
-		if (COUNT($request->input('items')) >= 1) {
+		if (count($request->input('items')) >= 1) {
 			foreach ($request->input('items') as $key => $value) {
 				$VoucherDetail = new VoucherDetail;
 				$Item = Item::find($value['id']);

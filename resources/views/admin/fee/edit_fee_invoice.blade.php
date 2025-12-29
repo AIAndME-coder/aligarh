@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Edit Fees Invoice |')
+  @section('title', __('modules.pages_edit_fees_invoice_title').' |')
 
   @section('head')
 	<link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -21,7 +21,7 @@
 			  <div class="col-lg-8 col-md-6">
 				  <h2>Fees</h2>
 				  <ol class="breadcrumb">
-					<li>Home</li>
+					<li>{{ __("common.home") }}</li>
 					  <li Class="active">
 					  <a>Edit Fee Invoie# {{ $invoice_master->id }}</a>
 					  </li>

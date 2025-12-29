@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-	@section('title', 'Exam Grades |')
+	@section('title', __('modules.pages_exam_grades_title').' |')
 
 	@section('head')
 
@@ -20,7 +20,7 @@
 							<div class="col-lg-8 col-md-6">
 									<h2>Settings</h2>
 									<ol class="breadcrumb">
-										<li>Home</li>
+										<li>{{ __("common.home") }}</li>
 										@can('exam-grades.update')
 											<li Class="active">
 												<a>Exam Grades</a>
@@ -43,7 +43,7 @@
 												<ul class="nav nav-tabs">
 													@can('exam-grades.update')
 														<li class="active">
-															<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Exam Grades</a>
+															<a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_exam_grades') }}</a>
 														</li>
 													@endcan
 												</ul>
@@ -72,8 +72,8 @@
 																								<th>Percent From</th>
 																								<th>Percent To</th>
 																								<th>Prifix</th>
-																								<th>Name</th>
-																								<th>Action</th>
+																								<th>{{ __("labels.name") }}</th>
+																								<th>{{ __("labels.action") }}</th>
 																							</tr>
 																						</thead>
 																						<tbody>

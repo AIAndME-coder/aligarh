@@ -1,8 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Student Certificates |')
-
-  @section('head')
+	@section('title', __('modules.pages_student_certificates_title').' |')  @section('head')
   <!-- HEAD -->
 	<script type="text/javascript" src="{{ asset('src/js/plugins/ckeditor_4.10.1/ckeditor.js') }}"></script>
   @endsection
@@ -20,7 +18,7 @@
 			  <div class="col-lg-8 col-md-6">
 				  <h2>Student Certificate</h2>
 				  <ol class="breadcrumb">
-					<li>Home</li>
+					<li>{{ __("common.home") }}</li>
 					<li><a href="{{ URL('students') }}"> Students </a></li>
 					<li Class="active">
 						<a>Profile</a>

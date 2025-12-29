@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Guardians |')
+  @section('title', __('modules.pages_guardians_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
@@ -218,10 +218,6 @@
         font-size: 18px;
       }
 
-      .info-value {
-        font-size: 10px;
-      }
-
       .status-badge {
         font-size: 10px;
         padding: 4px 12px;
@@ -324,9 +320,9 @@
           <!-- Heading -->
           <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-lg-8 col-md-6">
-                  <h2>Guardians</h2>
+                  <h2>{{ __("modules.pages_guardians_title") }}</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Guardians</a>
                       </li>
@@ -349,12 +345,12 @@
                         <ul class="nav nav-tabs">
                           @canany(['guardian.index','guardian.grid'])
                             <li class="">
-                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> Guardians</a>
+                              <a data-toggle="tab" href="#tab-10"><span class="fa fa-list"></span> {{ __('modules.tabs_guardians') }}</a>
                             </li>
                           @endcanany
                             @can('guardian.add')
                               <li class="add-guardian">
-                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> Add Guardians</a>
+                                <a data-toggle="tab" href="#tab-11"><span class="fa fa-plus"></span> {{ __('modules.tabs_add_guardian') }}</a>
                               </li>
                             @endcan
                         </ul>
@@ -440,7 +436,7 @@
                                                           </div>
                                                           <div class="info-content">
                                                               <div class="info-label">Address</div>
-                                                              <div class="info-value" style="font-size: 9px !important">@{{ guardian.address }}</div>
+                                                              <div class="info-value">@{{ guardian.address }}</div>
                                                           </div>
                                                       </li>
                                                       <li class="info-item">
@@ -458,6 +454,11 @@
                                                         <a :href="'{{ url('guardians/edit') }}/' + guardian.id" class="btn btn-sm btn-outline-primary">
                                                             <i class="fa fa-pencil"></i> Edit
                                                         </a>
+                                                      @endcan
+                                                			@can('fee.bulk.print.invoice')
+                                                      <a :href="'{{ url('fee/group-chalan') }}/' + guardian.id" class="btn btn-sm btn-outline-primary" title="Due Payments" target="_blank">
+                                                          <i class="fa fa-print"></i>
+                                                      </a>
                                                       @endcan
                                                   </div>
                                               </div>
@@ -487,11 +488,11 @@
                                     <table class="table table-striped table-bordered table-hover dataTables-guardian" width="100%">
                                       <thead>
                                         <tr>
-                                          <th>Name</th>
-                                          <th>E-Mail</th>
-                                          <th>Contact</th>
-                                          <th>Address</th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.name") }}</th>
+                                          <th>{{ __("labels.email_label") }}</th>
+                                          <th>{{ __("labels.contact") }}</th>
+                                          <th>{{ __("labels.address") }}</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </thead>
                                       <tfoot>
@@ -500,7 +501,7 @@
                                           <th><input type="text" placeholder="E-mail..."></th>
                                           <th><input type="text" placeholder="Contact..."></th>
                                           <th><input type="text" placeholder="Address..."></th>
-                                          <th>Options</th>
+                                          <th>{{ __("labels.options") }}</th>
                                         </tr>
                                       </tfoot>
                                     </table>
@@ -511,7 +512,7 @@
                             @can('guardian.add')
                               <div id="tab-11" class="tab-pane fade add-guardian">
                                   <div class="panel-body">
-                                    <h2> Guardian Registration </h2>
+                                    <h2> {{ __('modules.forms_role_registration') }} </h2>
                                     <div class="hr-line-dashed"></div>
 
                                       <form id="tchr_rgstr" method="post" action="{{ URL('guardians/add') }}" class="form-horizontal" >
@@ -520,7 +521,7 @@
                                         <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Name</label>
                                           <div class="col-md-6">
-                                            <input type="text" name="name" placeholder="Name" value="{{ old('name') }}" class="form-control"/>
+                                            <input type="text" name="name" placeholder="{{ __("labels.name_placeholder") }}" value="{{ old('name') }}" class="form-control"/>
                                             @if ($errors->has('name'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -556,7 +557,7 @@
                                         <div class="form-group">
                                           <label class="col-md-2 control-label">Address</label>
                                           <div class="col-md-6">
-                                            <textarea type="text" name="address" placeholder="Address" class="form-control">{{ old('address') }}</textarea>
+                                            <textarea type="text" name="address" placeholder="{{ __("labels.address_placeholder_ellipsis") }}" class="form-control">{{ old('address') }}</textarea>
                                           </div>
                                         </div>
 
@@ -565,7 +566,7 @@
                                           <div class="col-md-6">
                                             <div class="input-group m-b">
                                               <span class="input-group-addon">+92</span>
-                                              <input type="text" name="phone" value="{{ old('phone') }}" placeholder="Contact No" class="form-control" data-mask="9999999999"/>
+                                              <input type="text" name="phone" value="{{ old('phone') }}" placeholder="{{ __('labels.contact_no_placeholder') }}" class="form-control" data-mask="9999999999"/>
                                             </div>
                                             @if ($errors->has('phone'))
                                                 <span class="help-block">
@@ -738,7 +739,7 @@
            }
         });
 
-      @if(COUNT($errors) >= 1 && !$errors->has('toastrmsg'))
+      @if(count($errors) >= 1 && !$errors->has('toastrmsg'))
         $('.nav-tabs a[href="#tab-11"]').tab('show');
       @else
         $('.nav-tabs a[href="#tab-10"]').tab('show');

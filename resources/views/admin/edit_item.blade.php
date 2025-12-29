@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Edit Item |')
+  @section('title', __('modules.pages_edit_item_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -19,7 +19,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Items</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li>
                           <a>Items</a>
                       </li>
@@ -43,7 +43,7 @@
                <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h2>Edit Item</h2>
+                        <h2>{{ __('modules.forms_edit_item') }}</h2>
                         <div class="hr-line-dashed"></div>
                     </div>
 
@@ -53,9 +53,9 @@
                                       {{ csrf_field() }}
 
                                       <div class="form-group{{ ($errors->has('name'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">Item Name</label>
+                                        <label class="col-md-2 control-label">{{ __('modules.labels_item_name') }}</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="name" placeholder="Item Name" value="{{ old('name', $item['name']) }}" class="form-control"/>
+                                          <input type="text" name="name" placeholder="{{ __('modules.labels_item_name') }}" value="{{ old('name', $item['name']) }}" class="form-control"/>
                                           @if ($errors->has('name'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('name') }}</strong>
@@ -67,7 +67,7 @@
                                       <div class="form-group{{ ($errors->has('category'))? ' has-error' : '' }}">
                                         <label class="col-md-2 control-label">Category</label>
                                         <div class="col-md-6">
-                                          <input type="text" name="category" placeholder="Category" value="{{ old('category', $item['category']) }}" class="form-control"/>
+                                          <input type="text" name="category" placeholder="{{ __('labels.category_placeholder') }}" value="{{ old('category', $item['category']) }}" class="form-control"/>
                                           @if ($errors->has('category'))
                                               <span class="help-block">
                                                   <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('category') }}</strong>
@@ -114,7 +114,7 @@
 
                                       <div class="form-group">
                                           <div class="col-md-offset-2 col-md-6">
-                                              <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> Save Changes </button>
+                                              <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-save"></span> {{ __('modules.buttons_save') }} </button>
                                           </div>
                                       </div>
                                     </form>

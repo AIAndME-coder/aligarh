@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Classe;
-use App\Section;
-use App\Student;
-use App\Teacher;
-use App\Employee;
+use App\Model\Classe;
+use App\Model\Section;
+use App\Model\Student;
+use App\Model\Teacher;
+use App\Model\Employee;
 use Carbon\Carbon;
-use App\AttendanceLeave;
+use App\Model\AttendanceLeave;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -80,25 +80,23 @@ class AttendanceLeaveController extends Controller
 		);
 
 		if ($validator->fails()) {
-			return redirect()->back()
-				->withErrors($validator)
-				->withInput()
-				->with([
-					'toastrmsg' => [
-						'type' => 'Attendance Leave',
-						'title' => 'Leave',
-						'msg' => 'There was an issue while Creating Leave',
-					],
-				]);
-		}
+		return redirect()->back()
+			->withErrors($validator)
+			->withInput()
+			->with([
+				'toastrmsg' => [
+					'type' => 'Attendance Leave',
+					'title' => __('modules.attendance_title'),
+					'msg' => __('modules.attendance_leave_create_error'),
+				],
+			]);
+	}
 
-		$modelMap = [
-			'Student' => Student::class,
-			'Teacher' => Teacher::class,
-			'Employee' => Employee::class,
-		];
-
-		$modelClass = $modelMap[$request->type] ?? null;
+	$modelMap = [
+		'Student' => Student::class,
+		'Teacher' => Teacher::class,
+		'Employee' => Employee::class,
+	];		$modelClass = $modelMap[$request->type] ?? null;
 		if (!$modelClass) {
 			return redirect()->back()->withErrors(['type' => 'Invalid type']);
 		}
@@ -116,16 +114,14 @@ class AttendanceLeaveController extends Controller
 		$personModel = $leave->person;
 		$this->updateLeaveId($personModel, $leave->from_date, $leave->to_date, $leave->id);
 
-		return redirect('attendance-leave')->with([
-			'toastrmsg' => [
-				'type' => 'success',
-				'title' => 'Attendance Leave',
-				'msg' => 'Registration Successful',
-			],
-		]);
-	}
-
-
+	return redirect('attendance-leave')->with([
+		'toastrmsg' => [
+			'type' => 'success',
+			'title' => __('modules.attendance_title'),
+			'msg' => __('modules.attendance_leave_register_success'),
+		],
+	]);
+}
 	public function Edit($id)
 	{
 		$data['attendanceLeave'] = AttendanceLeave::with('person')->findOrFail($id);
@@ -155,18 +151,16 @@ class AttendanceLeaveController extends Controller
 				->withErrors($validator)
 				->withInput()
 				->with([
-					'toastrmsg' => [
-						'type' => 'Attendance Leave',
-						'title' => 'Leave',
-						'msg' => 'There was an issue while Creating Leave',
-					],
-				]);
-		}
+				'toastrmsg' => [
+					'type' => 'Attendance Leave',
+					'title' => __('modules.attendance_title'),
+					'msg' => __('modules.attendance_leave_create_error'),
+				],
+			]);
+	}
 
 
-		$attendanceLeave = AttendanceLeave::findOrFail($id);
-
-		if ($attendanceLeave->from_date !== $request->input('from_date') || $attendanceLeave->to_date !== $request->input('to_date')) {
+	$attendanceLeave = AttendanceLeave::findOrFail($id);		if ($attendanceLeave->from_date !== $request->input('from_date') || $attendanceLeave->to_date !== $request->input('to_date')) {
 
 			$personModel = $attendanceLeave->person;
 
@@ -188,8 +182,8 @@ class AttendanceLeaveController extends Controller
 		return redirect('attendance-leave')->with([
 			'toastrmsg' => [
 				'type' => 'success',
-				'title' => 'Attendance Leave',
-				'msg' => 'Successful Update',
+				'title' => __('modules.attendance_title'),
+				'msg' => __('modules.attendance_leave_update_success'),
 			],
 		]);
 	}
@@ -203,37 +197,31 @@ class AttendanceLeaveController extends Controller
 			]
 		);
 
-		if ($validator->fails()) {
-			return redirect()->back()
-				->withErrors($validator)
-				->withInput()
-				->with([
-					'toastrmsg' => [
-						'type' => 'Attendance Leave',
-						'title' => 'Leave',
-						'msg' => 'There was an issue while Deleting Attendance Leave',
-					],
-				]);
-		}
-
-		$attendanceLeave = AttendanceLeave::find($request->input('id'));
-
-		$personModel = $attendanceLeave->person;
+	if ($validator->fails()) {
+		return redirect()->back()
+			->withErrors($validator)
+			->withInput()
+			->with([
+				'toastrmsg' => [
+					'type' => 'Attendance Leave',
+					'title' => __('modules.attendance_leave_title_label'),
+				'msg' => __('modules.attendance_leave_delete_error'),
+			],
+		]);
+	}	$attendanceLeave = AttendanceLeave::find($request->input('id'));		$personModel = $attendanceLeave->person;
 
 		//leave_id null 
 		$this->updateLeaveId($personModel, $attendanceLeave->from_date, $attendanceLeave->to_date);
 		$attendanceLeave->delete();
 
-		return redirect('attendance-leave')->with([
-			'toastrmsg' => [
-				'type' => 'success',
-				'title' => 'Attendance Leave',
-				'msg' => 'Deleted Successfully',
-			],
-		]);
-	}
-
-
+	return redirect('attendance-leave')->with([
+		'toastrmsg' => [
+			'type' => 'success',
+			'title' => __('modules.attendance_title'),
+			'msg' => __('modules.attendance_leave_delete_success'),
+		],
+	]);
+}
 	private function updateLeaveId($personModel, $fromDate, $toDate, $leaveId = null)
 	{
 		$personModel->attendances()

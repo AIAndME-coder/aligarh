@@ -1,9 +1,7 @@
 @php use Illuminate\Support\Str; @endphp
 @extends('admin.layouts.master')
 
-@section('title', 'Quizzes |')
-
-@section('head')
+  @section('title', __('modules.pages_quizzes_title').' |')@section('head')
     <link href="{{ asset('src/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('src/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" rel="stylesheet">
@@ -365,7 +363,7 @@
             <div class="col-lg-8 col-md-6">
                 <h2>Quizzes</h2>
                 <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                     <li Class="active">
                         <a>Quiz</a>
                     </li>
@@ -487,7 +485,7 @@
                             @can('quizzes.create')
                                 <div id="tab-11" class="tab-pane fade make-quiz">
                                     <div class="panel-body" style="min-height: 400px">
-                                        <h2> Create Quiz</h2>
+                                        <h2> {{ __('modules.forms_create_quiz') }}</h2>
                                         <div class="hr-line-dashed"></div>
                                         <form method="post" id="create_quiz" action="{{ route('quizzes.create') }}"
                                             class="form-horizontal jumbotron" role="form">
@@ -561,7 +559,7 @@
 
 
                                             <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
-                                                <label class="col-md-2 control-label">Date </label>
+                                                <label class="col-md-2 control-label">{{ __('labels.date') }} </label>
                                                 <div class="col-md-6">
                                                     <input id="datetimepicker" type="text" name="date"
                                                         class="form-control" placeholder="Date" value="{{ old('date') }}"
@@ -634,7 +632,7 @@
                                                             <table class="table table-bordered">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Name</th>
+                                                                        <th>{{ __("labels.name") }}</th>
                                                                         <th>GR Number</th>
                                                                         <th>Obtained Marks</th>
                                                                         <th id="togglePresentHeader" style="cursor: pointer;">Present</th>

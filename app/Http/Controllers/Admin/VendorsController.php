@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-use App\Vendor;
+use App\Model\Vendor;
 use Auth;
 use App\Http\Controllers\Controller;
 
@@ -31,8 +31,8 @@ class VendorsController extends Controller
       return  redirect('vendors')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.vendors_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -49,8 +49,8 @@ class VendorsController extends Controller
       return  redirect('vendors')->with([
         'toastrmsg' => [
           'type' => 'warning', 
-          'title'  =>  '# Invalid URL',
-          'msg' =>  'Do Not write hard URL\'s'
+          'title'  =>  __('modules.vendors_invalid_url_title'),
+          'msg' =>  __('modules.common_url_error')
           ]
       ]);
       }
@@ -63,8 +63,8 @@ class VendorsController extends Controller
       return redirect('vendors')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Parents Registration',
-          'msg' =>  'Save Changes Successfull'
+          'title'  =>  __('modules.vendors_registration_title'),
+          'msg' =>  __('modules.common_save_success')
           ]
       ]);
     }
@@ -79,8 +79,8 @@ class VendorsController extends Controller
       return redirect('vendors')->with([
         'toastrmsg' => [
           'type' => 'success', 
-          'title'  =>  'Parents Registration',
-          'msg' =>  'Registration Successfull'
+          'title'  =>  __('modules.vendors_registration_title'),
+          'msg' =>  __('modules.common_register_success')
           ]
       ]);
 

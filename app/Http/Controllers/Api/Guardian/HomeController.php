@@ -7,18 +7,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 //use Illuminate\Support\Facades\Auth;
-use App\Guardian;
+use App\Model\Guardian;
 
 class HomeController extends Controller
 {
 
+    /**
+     * Get Guardian Home Dashboard
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function Home(Request $request){
 //                return $request->user()->token()->id;
 //				return response('error',	404);
 //				return $request->user();
 		$images_base64 = [];
         $guardian   =    Guardian::where('id', $request->user()->foreign_id)
-        ->with(['Student' => function($query){
+        ->with(['Students' => function($query){
             $query->with(['StdClass' => function($qry){
                 $qry->select('id', 'name');
             }])
@@ -28,7 +33,7 @@ class HomeController extends Controller
             ->Active();
         }])->first();
 
-        foreach ($guardian->Student as $key => $student) {
+        foreach ($guardian->Students as $key => $student) {
 			if($student->image_dir){
 				$image = Storage::get($student->image_dir);
 				$type = pathinfo($student->image_dir, PATHINFO_EXTENSION);
@@ -36,7 +41,7 @@ class HomeController extends Controller
 			}
         }
 
-        return response()->json(['User' => ['User'  =>  $request->user(), 'Profile' =>  $guardian], 'Students' => $guardian->Student, 'ImagesBase64' => $images_base64], 200, ['Content-Type' => 'application/json'], JSON_NUMERIC_CHECK);
+        return response()->json(['User' => ['User'  =>  $request->user(), 'Profile' =>  $guardian], 'Students' => $guardian->Students, 'ImagesBase64' => $images_base64], 200, ['Content-Type' => 'application/json'], JSON_NUMERIC_CHECK);
     }
 
 }

@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-  @section('title', 'Edit User |')
+  @section('title', __('modules.pages_edit_user_title').' |')
 
   @section('head')
   <link href="{{ asset('src/css/plugins/jasny/jasny-bootstrap.min.css') }}" rel="stylesheet">
@@ -21,7 +21,7 @@
               <div class="col-lg-8 col-md-6">
                   <h2>Users</h2>
                   <ol class="breadcrumb">
-                    <li>Home</li>
+                    <li>{{ __("common.home") }}</li>
                       <li Class="active">
                           <a>Users</a>
                       </li>
@@ -64,7 +64,7 @@
                                       </div>
 
                                       <div class="form-group{{ ($errors->has('email'))? ' has-error' : '' }}">
-                                        <label class="col-md-2 control-label">E-Mail</label>
+                                        <label class="col-md-2 control-label">{{ __('labels.e_mail') }}</label>
                                         <div class="col-md-6">
                                           <input type="text" placeholder="E-Mail" value="{{ old('email', $user->email) }}" class="form-control" readonly="true" />
                                           @if ($errors->has('email'))
@@ -79,7 +79,7 @@
                                         <label class="col-md-2 control-label">Allow Session</label>
                                         <div class="col-md-6">
                                           <select class="select2 form-control" id="allow_session" multiple="multiple" name="allow_session[]" style="width: 100%">
-                                          @foreach(App\AcademicSession::UserAllowSession()->get() AS $session)
+                                          @foreach(App\Model\AcademicSession::UserAllowSession()->get() AS $session)
                                               <option value="{{ $session->id }}">{{ $session->title }}</option>
                                           @endforeach
                                           </select>
@@ -110,7 +110,7 @@
                                         <div class="form-group{{ ($errors->has('password'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Password</label>
                                           <div class="col-md-6">
-                                            <input type="password" id="password" name="password" placeholder="Password" value="{{ old('password') }}" class="form-control"/>
+                                            <input type="password" id="password" name="password" placeholder="{{ __('labels.password_placeholder') }}" value="{{ old('password') }}" class="form-control"/>
                                             @if ($errors->has('password'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('password') }}</strong>
@@ -121,7 +121,7 @@
                                         <div class="form-group{{ ($errors->has('re_password'))? ' has-error' : '' }}">
                                           <label class="col-md-2 control-label">Confirm Password</label>
                                           <div class="col-md-6">
-                                            <input type="password" name="re_password" placeholder="Confirm Password" value="{{ old('re_password') }}" class="form-control"/>
+                                            <input type="password" name="re_password" placeholder="{{ __('labels.confirm_password_placeholder') }}" value="{{ old('re_password') }}" class="form-control"/>
                                             @if ($errors->has('re_password'))
                                                 <span class="help-block">
                                                     <strong><span class="fa fa-exclamation-triangle"></span> {{ $errors->first('re_password') }}</strong>

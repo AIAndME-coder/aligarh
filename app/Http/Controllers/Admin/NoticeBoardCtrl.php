@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\NoticeBoard;
-use App\SmsLog;
-use App\BulkSms;
+use App\Model\NoticeBoard;
+use App\Model\SmsLog;
+use App\Model\BulkSms;
 use Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
@@ -37,38 +37,40 @@ class NoticeBoardCtrl extends Controller
 		$this->SetAttributes($NoticeBoard, $request);
 		$NoticeBoard->save();
 
-		return redirect('noticeboard')->with([
+	return redirect('noticeboard')->with([
+		'toastrmsg' => [
+			'type' => 'success', 
+			'title'  =>  __('modules.notice_created_success'),
+			'msg' =>  __('modules.notice_created_success')
+		]
+	]);
+}
+
+public function DeleteNotice(Request $request){
+
+	$NoticeBoard = NoticeBoard::findOrfail($request->input('id'));
+	$NoticeBoard->delete();
+
+	if ($request->ajax()) {
+		return  response(['type' => 'success','title'  =>  __('modules.notice_removed'),'msg' =>  __('modules.notice_removed')]);
+	} else { 
+		return redirect('routines')->with([
 			'toastrmsg' => [
 				'type' => 'success', 
-				'title'  =>  'Notice Board',
-				'msg' =>  'Create Successfull'
+				'title'  =>  __('modules.notice_removed'),
+				'msg' =>  __('modules.notice_removed')
 			]
 		]);
 	}
-
-	public function DeleteNotice(Request $request){
-
-		$NoticeBoard = NoticeBoard::findOrfail($request->input('id'));
-		$NoticeBoard->delete();
-
-		if ($request->ajax()) {
-			return  response(['type' => 'success','title'  =>  'Notice Board','msg' =>  'Notice Removed']);
-		} else { 
-			return redirect('routines')->with([
-				'toastrmsg' => [
-					'type' => 'success', 
-					'title'  =>  'Notice Board',
-					'msg' =>  'Notice Removed'
-				]
-			]);
-		}
-	}
-
-	protected function PostValidate($request){
+}	protected function PostValidate($request){
 		$this->validate($request, [
 			'title'  =>  'required',
 			'notice'  =>  'required',
 			'till_date' =>  'required',
+		], [
+			'title.required'  =>  __('validation.title_required'),
+			'notice.required'  =>  __('validation.notice_required'),
+			'till_date.required' =>  __('validation.till_date_required'),
 		]);
 	}
 
